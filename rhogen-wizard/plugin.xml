@@ -15,6 +15,7 @@
             class="rhogenwizard.wizards.RhogenAppWizard"
             id="rhogenwizard.wizards.RhogenWizard">
       </wizard>
+      <!--
       <wizard
             name="Rhogen model wizard"
             icon="icons/sample.gif"
@@ -22,6 +23,7 @@
             class="rhogenwizard.wizards.RhogenModelWizard"
             id="rhogenwizard.wizards.RhogenWizard">
       </wizard>
+      -->
    </extension>
 
 </plugin>

@@ -31,17 +31,7 @@ public class RhodesProjectSupport
         Assert.isTrue(projectName.trim().length() != 0);
 
         IProject project = createBaseProject(projectName, location);
-      /*  
-        try 
-        {            
-            //addFilesToProjectStructure(project, location.getPath() + "/" + projectName);
-        } 
-        catch (CoreException e) 
-        {
-            e.printStackTrace();
-            project = null;
-        }
-        */
+
         return project;
     }
 
