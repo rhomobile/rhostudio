@@ -19,8 +19,9 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.URIUtil;
 
-import rhogenwizard.CustomProjectSupport;
+import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.RhodesAdapter;
+import rhogenwizard.RhodesProjectSupport;
 
 public class RhogenAppWizard extends Wizard implements INewWizard 
 {
@@ -53,16 +54,15 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
-		final String appFolder = m_pageApp.getAppFolder();
-		final String appName = m_pageApp.getAppName();
-	
+		final BuildInfoHolder holder = m_pageApp.getBuildInformation();
+		
 		IRunnableWithProgress op = new IRunnableWithProgress() 
 		{
 			public void run(IProgressMonitor monitor) throws InvocationTargetException 
 			{
 				try
 				{
-					doFinish(appFolder, appName, monitor);
+					doFinish(holder, monitor);
 				}
 				catch (CoreException e) {
 					throw new InvocationTargetException(e);
@@ -97,49 +97,20 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 */
 	private void doFinish(
-		String containerName,
-		String appName,
+		BuildInfoHolder infoHolder,
 		IProgressMonitor monitor)
 		throws CoreException 
 	{
 		try 
 		{
-			monitor.beginTask("Creating " + appName, 2);
+			monitor.beginTask("Creating " + infoHolder.m_appName, 2);
 			monitor.worked(1);
 			monitor.setTaskName("Opening file for editing...");
 
-			m_rhogenAdapter.generateApp(containerName, appName);
+			m_rhogenAdapter.generateApp(infoHolder);
 			
+			RhodesProjectSupport.createProject(infoHolder.m_appName, URIUtil.toURI(new Path(infoHolder.m_appDir)));
 			
-			CustomProjectSupport.createProject(appName, URIUtil.toURI(new Path(containerName)));
-			
-
-
-/*
-			getShell().getDisplay().asyncExec(new Runnable() 
-			{	
-				@Override
-				public void run() 
-				{
-					File fileToOpen = new File("C:\\Android\\asd.txt");
-					 
-					if (fileToOpen.exists() && fileToOpen.isFile()) 
-					{
-					    IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
-					    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					 
-					    try {
-					        IDE.openEditorOnFileStore( page, fileStore );
-					    } 
-					    catch ( PartInitException e ) {
-					        //Put your exception handler here if you wish to
-					    }
-					} else {
-					    //Do something if the file does not exist
-					}	
-				}
-			});
-			*/
 			monitor.worked(1);
 		} 
 		catch (Exception e1)
