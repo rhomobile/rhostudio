@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RhogenWizard
-Bundle-SymbolicName: RhogenWizard; singleton:=true
+Bundle-Name: Rhomobile
+Bundle-SymbolicName: Rhomobile; singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: rhogenwizard.Activator
 Require-Bundle: org.eclipse.ui,
