@@ -5,8 +5,9 @@ import org.eclipse.core.resources.IProjectNature;
 
 import org.eclipse.core.runtime.CoreException;
 
-public class ProjectNature implements IProjectNature {
-
+public class ProjectNature implements IProjectNature 
+{
+	IProject m_project = null;
     public static final String NATURE_ID = "customplugin.projectNature"; //$NON-NLS-1$
 
     @Override
@@ -21,13 +22,12 @@ public class ProjectNature implements IProjectNature {
 
     @Override
     public IProject getProject() {
-        // TODO Auto-generated method stub
-        return null;
+        return m_project;
     }
 
     @Override
     public void setProject(IProject project) {
-        // TODO Auto-generated method stub
+    	m_project = project;
     }
 
 }

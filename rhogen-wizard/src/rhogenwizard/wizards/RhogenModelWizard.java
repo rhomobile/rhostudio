@@ -1,9 +1,13 @@
 package rhogenwizard.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
@@ -15,25 +19,25 @@ import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 import org.eclipse.ui.*;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.ui.views.navigator.*;
 
 import rhogenwizard.RhodesAdapter;
 
 public class RhogenModelWizard extends Wizard implements INewWizard 
 {
 	private RhodesModelWizardPage m_pageModel = null;
-	private ISelection           selection = null;
-	private RhodesAdapter        m_rhogenAdapter = new RhodesAdapter();
-	
+	private ISelection            m_selection = null;
+	private RhodesAdapter         m_rhogenAdapter = new RhodesAdapter();
+	private String 	              m_projectLocation = null;
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenModelWizard() 
+	public RhogenModelWizard(String projectLocation) 
 	{
 		super();
 		setNeedsProgressMonitor(true);
+		
+		m_projectLocation = projectLocation;
 	}
 	
 	/**
@@ -41,7 +45,7 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageModel = new RhodesModelWizardPage(selection);
+		m_pageModel = new RhodesModelWizardPage(m_selection);
 		addPage(m_pageModel);
 	}
 
@@ -52,8 +56,7 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
-		final String modelFolder = m_pageModel.getModelFolder();
-		final String modelName = m_pageModel.getModelName();
+		final String modelName   = m_pageModel.getModelName();
 		final String modelParams = m_pageModel.getModelParams();
 	
 		IRunnableWithProgress op = new IRunnableWithProgress() 
@@ -62,7 +65,7 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 			{
 				try
 				{
-					doFinish(modelFolder, modelName, modelParams, monitor);
+					doFinish(modelName, modelParams, monitor);
 				}
 				catch (CoreException e) {
 					throw new InvocationTargetException(e);
@@ -97,7 +100,6 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 */
 	private void doFinish(
-		String modelFolder,
 		String modelName,
 		String modelParams,
 		IProgressMonitor monitor)
@@ -108,33 +110,16 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 			monitor.beginTask("Creating model " + modelName, 2);
 			monitor.worked(1);
 			monitor.setTaskName("Opening file for editing...");
-
-			m_rhogenAdapter.generateModel(modelFolder, modelName, modelParams);
 			
-			/*
-			getShell().getDisplay().asyncExec(new Runnable() 
-			{	
-				@Override
-				public void run() {
-					File fileToOpen = new File("C:\\Android\\asd.txt");
-					 
-					if (fileToOpen.exists() && fileToOpen.isFile()) 
-					{
-					    IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
-					    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					 
-					    try {
-					        IDE.openEditorOnFileStore( page, fileStore );
-					    } 
-					    catch ( PartInitException e ) {
-					        //Put your exception handler here if you wish to
-					    }
-					} else {
-					    //Do something if the file does not exist
-					}	
-				}
-			});
-			*/
+			if (null != m_projectLocation)
+			{
+				m_rhogenAdapter.generateModel(m_projectLocation, modelName, modelParams);
+			}
+			else
+			{
+				//TODO show error message
+			}
+			
 			monitor.worked(1);
 		} 
 		catch (Exception e1)
@@ -149,6 +134,8 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+		this.m_selection = selection;
 	}
+	
+
 }

@@ -1,5 +1,7 @@
 package rhogenwizard.wizards;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -25,7 +27,6 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 public class RhodesModelWizardPage extends WizardPage 
 {
 	private Text       m_modelName   = null;
-	private Text       m_modelFolder = null;
 	private Text       m_modelParams = null;
 	private ISelection m_selection   = null;
 
@@ -50,6 +51,7 @@ public class RhodesModelWizardPage extends WizardPage
 		layout.numColumns = 3;
 		layout.verticalSpacing = 9;
 		
+		// first row
 		Label label = new Label(container, SWT.NULL);
 		label.setText("&Model name:");
 
@@ -65,27 +67,9 @@ public class RhodesModelWizardPage extends WizardPage
 		label = new Label(container, SWT.NULL); 
 		label.setText("");
 		
+		// second row
 		label = new Label(container, SWT.NULL);
-		label.setText("&Model folder:");
-
-		m_modelFolder = new Text(container, SWT.BORDER | SWT.SINGLE);
-		m_modelFolder.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		m_modelFolder.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
-		
-		Button button = new Button(container, SWT.PUSH);
-		button.setText("Browse...");
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleBrowse();
-			}
-		});
-		
-		label = new Label(container, SWT.NULL);
-		label.setText("&Model parameters:");
+		label.setText("&Model attributes:");
 
 		m_modelParams = new Text(container, SWT.BORDER | SWT.SINGLE);
 		m_modelParams.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -117,29 +101,14 @@ public class RhodesModelWizardPage extends WizardPage
 			updateStatus("Model name must be specified");
 			return;
 		}
-		
-		if (getModelFolder().length() == 0) {
-			updateStatus("Model folder must be specified");
-			return;
-		}
-		
+			
 		if (getModelParams().length() == 0) {
-			updateStatus("Model params must be specified");
+			updateStatus("Model attributes must be specified. Sample: list of one or\n" +
+					"   more string attributes (i.e. name,industry,progress), NO spaces between attributes");
 			return;
 		}
 
 		updateStatus(null);
-	}
-	
-	/**
-	 * Uses the standard container selection dialog to choose the new value for
-	 * the container field.
-	 */
-	private void handleBrowse() 
-	{
-		DirectoryDialog appDirDialog = new DirectoryDialog(getShell());		
-		final String selectAppDir = appDirDialog.open();
-		m_modelFolder.setText(selectAppDir);
 	}
 
 	private void updateStatus(String message) {
@@ -153,9 +122,5 @@ public class RhodesModelWizardPage extends WizardPage
 	
 	public String getModelParams() {
 		return m_modelParams.getText();
-	}
-	
-	public String getModelFolder() {
-		return m_modelFolder.getText();
 	}
 }
