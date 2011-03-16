@@ -2,28 +2,19 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-   <extension
-         point="org.eclipse.ui.newWizards">
+   <extension point="org.eclipse.ui.newWizards">
       <category
-            name="Rhomobile"
+            name="Rhodes"
             id="RhogenAppWizard">
       </category>
       <wizard
-            name="Rhogen application wizard"
-            icon="icons/sample.gif"
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.RhogenAppWizard"
-            id="rhogenwizard.wizards.RhogenWizard">
-      </wizard>
-      <!--
-      <wizard
-            name="Rhogen model wizard"
             icon="icons/sample.gif"
-            category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhogenModelWizard"
-            id="rhogenwizard.wizards.RhogenWizard">
+            id="rhogenwizard.wizards.RhogenWizard"
+            name="Rhogen application wizard"
+            project="true"> 
       </wizard>
-      -->
    </extension>
 
 </plugin>
