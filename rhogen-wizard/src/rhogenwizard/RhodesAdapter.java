@@ -20,14 +20,15 @@ public class RhodesAdapter
 		}
 	}
 	
-	public boolean generateApp(String workDir, String appName) throws Exception
+	public boolean generateApp(BuildInfoHolder holder) throws Exception
 	{
-		m_executor.setWorkingDirectory(workDir);
+		m_executor.setWorkingDirectory(holder.m_appDir);
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(m_rhogenExe + " ");
 		sb.append("app ");
-		sb.append(appName);
+		sb.append(holder.m_appName);
+		sb.append(" " + holder.generateAttributeString());
 		
 		m_executor.runCommand(sb.toString());
 		
