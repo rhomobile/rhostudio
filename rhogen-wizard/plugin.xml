@@ -7,6 +7,7 @@
             name="Rhodes"
             id="RhogenAppWizard">
       </category>
+      
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.RhogenAppWizard"
@@ -17,4 +18,37 @@
       </wizard>
    </extension>
 
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IProject"
+            id="rhogenwizard.contribution1">
+            
+         <menu
+               label="Rhodes"
+               path="additions"
+               id="rhogen-model.menumodel">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         
+         <action
+               label="New model"
+               class="rhogenwizard.actions.NewModelAction"
+               menubarPath="rhogen-model.menumodel/group1"
+               enablesFor="1"
+               id="rhogen-model.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+   
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            name="Rhodes Editor"
+            extensions="yml,rb,erb"
+            icon="icons/sample.gif"
+            class="rhogenwizard.editors.RhodesEditor"
+            id="rhogenwizard.editors.RhodesEditor">
+      </editor>
+   </extension>
 </plugin>
