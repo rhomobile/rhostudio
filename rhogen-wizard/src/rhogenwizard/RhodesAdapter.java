@@ -1,7 +1,5 @@
 package rhogenwizard;
 
-import rhogenwizard.OSValidator.OSType;
-
 public class RhodesAdapter 
 {
 	private static final String winRhogenFileName = "rhogen.bat";
@@ -12,22 +10,24 @@ public class RhodesAdapter
 	
 	public RhodesAdapter()
 	{
-		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) {
+		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
+		{
 			 m_rhogenExe = winRhogenFileName;
 		} 
-		else {
+		else
+		{
 			m_rhogenExe = unixRhogenFileName;
 		}
 	}
 	
 	public boolean generateApp(BuildInfoHolder holder) throws Exception
 	{
-		m_executor.setWorkingDirectory(holder.m_appDir);
+		m_executor.setWorkingDirectory(holder.getProjectLocationPath().toOSString());
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(m_rhogenExe + " ");
 		sb.append("app ");
-		sb.append(holder.m_appName);
+		sb.append(holder.appName);
 		sb.append(" " + holder.generateAttributeString());
 		
 		m_executor.runCommand(sb.toString());

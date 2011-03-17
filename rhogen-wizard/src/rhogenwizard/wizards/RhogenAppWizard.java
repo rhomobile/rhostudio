@@ -103,13 +103,13 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	{
 		try 
 		{
-			monitor.beginTask("Creating " + infoHolder.m_appName, 2);
+			monitor.beginTask("Creating " + infoHolder.appName, 2);
 			monitor.worked(1);
 			monitor.setTaskName("Opening file for editing...");
 
 			m_rhogenAdapter.generateApp(infoHolder);
 			
-			RhodesProjectSupport.createProject(infoHolder.m_appName, URIUtil.toURI(new Path(infoHolder.m_appDir)));
+			RhodesProjectSupport.createProject(infoHolder);
 			
 			monitor.worked(1);
 		} 

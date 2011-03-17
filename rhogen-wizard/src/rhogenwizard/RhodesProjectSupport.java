@@ -25,12 +25,12 @@ import org.eclipse.core.runtime.Path;
 
 public class RhodesProjectSupport
 {
-    public static IProject createProject(String projectName, URI location) 
+    public static IProject createProject(BuildInfoHolder projectInfo) 
     {
-        Assert.isNotNull(projectName);
-        Assert.isTrue(projectName.trim().length() != 0);
+        Assert.isNotNull(projectInfo.appName);
+        Assert.isTrue(projectInfo.appName.trim().length() != 0);
 
-        IProject project = createBaseProject(projectName, location);
+        IProject project = createBaseProject(projectInfo);
 
         return project;
     }
@@ -41,20 +41,23 @@ public class RhodesProjectSupport
      * @param location
      * @param projectName
      */
-    private static IProject createBaseProject(String projectName, URI location) 
+    private static IProject createBaseProject(BuildInfoHolder projectInfo) 
     {
         // it is acceptable to use the ResourcesPlugin class
-        IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+        IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectInfo.appName);
 
         if (!newProject.exists())
         {
-            URI projectLocation = location;
+            URI projectLocation = projectInfo.getProjectLocation();
             String path = URIUtil.toPath(projectLocation).toOSString();
-            path = path + "//" + projectName;
+            path = path + "//" + projectInfo.appName;
 
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
 
-            desc.setLocationURI(URIUtil.toURI(path));
+            if (!projectInfo.isInDefaultWs)
+            {
+            	desc.setLocationURI(URIUtil.toURI(path));
+            }
             
             try 
             {

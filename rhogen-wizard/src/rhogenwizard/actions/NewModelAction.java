@@ -33,7 +33,7 @@ public class NewModelAction implements IObjectActionDelegate
 	{
 		m_shell = targetPart.getSite().getShell();
 		
-		m_projectLocation = getCurrectProjectLocation(targetPart);
+		m_projectLocation = getCurrentProjectLocation(targetPart);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class NewModelAction implements IObjectActionDelegate
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 	
-	private String getCurrectProjectLocation(IWorkbenchPart targetPart)
+	private String getCurrentProjectLocation(IWorkbenchPart targetPart)
 	{
 		try
 		{
@@ -63,11 +63,11 @@ public class NewModelAction implements IObjectActionDelegate
 			
 			ISelectionService selService = worbenchWindow.getSelectionService();
 			
-			ITreeSelection currectSelection = (ITreeSelection)selService.getSelection();
+			ITreeSelection currentSelection = (ITreeSelection)selService.getSelection();
 			
-			if (null != currectSelection)
+			if (null != currentSelection)
 			{
-				org.eclipse.jface.viewers.TreePath treeItemSelections = currectSelection.getPaths()[0];
+				org.eclipse.jface.viewers.TreePath treeItemSelections = currentSelection.getPaths()[0];
 				
 				IProject currentProject = (IProject) treeItemSelections.getSegment(0);
 						
