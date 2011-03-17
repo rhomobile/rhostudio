@@ -52,7 +52,7 @@ public class SysCommandExecutor
 		return m_cmdError.toString();
 	}
 	
-	public int runCommand(String commandLine) throws Exception
+	public int runCommand(List<String> commandLine) throws Exception
 	{	
 		/* run command */
 		Process process = runCommandHelper(commandLine);
@@ -65,10 +65,12 @@ public class SysCommandExecutor
 		try {
 			exitStatus = process.waitFor();
 					
-		} catch (Throwable ex) {
+		} 
+		catch (Throwable ex) {
 			throw new Exception(ex.getMessage());
 			
-		} finally {
+		}
+		finally {
 			/* notify output and error read threads to stop reading */
 			notifyOutputAndErrorReadThreadsToStopReading();
 		}
@@ -76,14 +78,18 @@ public class SysCommandExecutor
 		return exitStatus;
 	}	
 	
-	private Process runCommandHelper(String commandLine) throws IOException
+	private Process runCommandHelper(List<String> commandLine) throws IOException
 	{
-		Process process = null;		
-		if( m_workingDirectory == null )
-			process = Runtime.getRuntime().exec(commandLine, getEnvTokens());
-		else
-			process = Runtime.getRuntime().exec(commandLine, getEnvTokens(), new File(m_workingDirectory));
+		Process process = null;
+
+		ProcessBuilder pb = new ProcessBuilder(commandLine);
 		
+		if (m_workingDirectory != null) {
+			pb.directory(new File(m_workingDirectory));
+		}
+		
+		process = pb.start();
+				
 		return process;
 	}
 	

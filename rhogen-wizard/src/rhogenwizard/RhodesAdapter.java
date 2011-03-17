@@ -1,5 +1,8 @@
 package rhogenwizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RhodesAdapter 
 {
 	private static final String winRhogenFileName = "rhogen.bat";
@@ -24,13 +27,12 @@ public class RhodesAdapter
 	{
 		m_executor.setWorkingDirectory(holder.getProjectLocationPath().toOSString());
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append(m_rhogenExe + " ");
-		sb.append("app ");
-		sb.append(holder.appName);
-		sb.append(" " + holder.generateAttributeString());
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rhogenExe);
+		cmdLine.add("app");
+		cmdLine.add(holder.appName);
 		
-		m_executor.runCommand(sb.toString());
+		m_executor.runCommand(cmdLine);
 		
 		return true;		
 	}
@@ -39,13 +41,13 @@ public class RhodesAdapter
 	{
 		m_executor.setWorkingDirectory(workDir);
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append(m_rhogenExe + " ");
-		sb.append("model ");
-		sb.append(modelParams + " ");
-		sb.append(modelName);
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rhogenExe);
+		cmdLine.add("model");
+		cmdLine.add(modelParams);
+		cmdLine.add(modelName);
 		
-		m_executor.runCommand(sb.toString());
+		m_executor.runCommand(cmdLine);
 		
 		return true;		
 	}

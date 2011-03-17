@@ -17,7 +17,7 @@ import rhogenwizard.wizards.RhogenModelWizard;
 public class NewModelAction implements IObjectActionDelegate 
 {
 	private Shell   m_shell = null;
-	private String  m_projectLocation = null;
+	private IProject m_currentProject = null;
 	
 	/**
 	 * Constructor for Action1.
@@ -33,7 +33,7 @@ public class NewModelAction implements IObjectActionDelegate
 	{
 		m_shell = targetPart.getSite().getShell();
 		
-		m_projectLocation = getCurrentProjectLocation(targetPart);
+		m_currentProject = getCurrentProjectLocation(targetPart);
 	}
 
 	/**
@@ -41,12 +41,14 @@ public class NewModelAction implements IObjectActionDelegate
 	 */
 	public void run(IAction action) 
 	{
-		@SuppressWarnings("unused")
-		RhogenModelWizard wizard = new RhogenModelWizard(m_projectLocation);
-		
-		WizardDialog dialog = new WizardDialog(m_shell, wizard );
-		dialog.create();
-		dialog.open();
+		if (null != m_currentProject)
+		{
+			RhogenModelWizard wizard = new RhogenModelWizard(m_currentProject);
+			
+			WizardDialog dialog = new WizardDialog(m_shell, wizard);
+			dialog.create();
+			dialog.open();
+		}
 	}
 
 	/**
@@ -55,7 +57,7 @@ public class NewModelAction implements IObjectActionDelegate
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 	
-	private String getCurrentProjectLocation(IWorkbenchPart targetPart)
+	private IProject getCurrentProjectLocation(IWorkbenchPart targetPart)
 	{
 		try
 		{
@@ -71,7 +73,7 @@ public class NewModelAction implements IObjectActionDelegate
 				
 				IProject currentProject = (IProject) treeItemSelections.getSegment(0);
 						
-				return currentProject.getLocation().toOSString();				
+				return currentProject;
 			}
 		}
 		catch(NullPointerException e)

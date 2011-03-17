@@ -29,15 +29,17 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	private ISelection            m_selection = null;
 	private RhodesAdapter         m_rhogenAdapter = new RhodesAdapter();
 	private String 	              m_projectLocation = null;
+	private IProject			  m_currentProject = null;
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenModelWizard(String projectLocation) 
+	public RhogenModelWizard(IProject currentProject) 
 	{
 		super();
 		setNeedsProgressMonitor(true);
 		
-		m_projectLocation = projectLocation;
+		m_currentProject  = currentProject;
+		m_projectLocation = m_currentProject.getLocation().toOSString();
 	}
 	
 	/**
@@ -119,6 +121,8 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 			{
 				//TODO show error message
 			}
+			
+			m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 			
 			monitor.worked(1);
 		} 
