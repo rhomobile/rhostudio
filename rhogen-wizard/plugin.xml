@@ -4,7 +4,7 @@
 
    <extension point="org.eclipse.ui.newWizards">
       <category
-            name="Rhodes"
+            name="Rhomobile"
             id="RhogenAppWizard">
       </category>
       
@@ -13,7 +13,7 @@
             class="rhogenwizard.wizards.RhogenAppWizard"
             icon="icons/sample.gif"
             id="rhogenwizard.wizards.RhogenWizard"
-            name="Rhogen application wizard"
+            name="Rhodes application"
             project="true"> 
       </wizard>
    </extension>
@@ -33,7 +33,7 @@
          </menu>
          
          <action
-               label="New model"
+               label="Rhodes model"
                class="rhogenwizard.actions.NewModelAction"
                menubarPath="rhogen-model.menumodel/group1"
                enablesFor="1"
@@ -51,4 +51,29 @@
             id="rhogenwizard.editors.RhodesEditor">
       </editor>
    </extension>
+   
+   <extension point="org.eclipse.core.resources.builders"
+              id="rhogenBuilder"
+              name="Rhodes Project Builder" >
+      <builder
+            hasNature="true">
+         <run
+               class="rhogenwizard.builder.RhogenBuilder">
+         </run>
+      </builder>
+   </extension>
+   
+   <extension point="org.eclipse.core.resources.natures"
+              id="rhogenNature"
+              name="Rhodes Project Nature">
+      <runtime>
+         <run
+               class="rhogenwizard.builder.RhogenNature">
+         </run>
+      </runtime>
+      <builder
+            id="rhogen-build.rhogenBuilder">
+      </builder>
+   </extension>
+   
 </plugin>
