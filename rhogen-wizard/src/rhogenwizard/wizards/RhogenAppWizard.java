@@ -2,6 +2,8 @@ package rhogenwizard.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
@@ -19,6 +21,7 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.URIUtil;
 
+import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
@@ -113,9 +116,16 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			
 			monitor.worked(1);
 		} 
-		catch (Exception e1)
+		catch (AlredyCreatedException e)
 		{
-			e1.printStackTrace();
+			MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK);
+			messageBox.setText("Warining");
+			messageBox.setMessage(e.getMessage());
+			messageBox.open();			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 	

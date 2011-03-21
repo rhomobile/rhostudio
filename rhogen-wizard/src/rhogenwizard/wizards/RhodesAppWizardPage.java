@@ -34,12 +34,9 @@ import rhogenwizard.BuildInfoHolder;
 
 public class RhodesAppWizardPage extends WizardPage 
 {
-	private static final int      marginSize = 8;
-
 	private Table      m_generalAttrsTable = null; 
 	private Text       m_appFolderText = null;
 	private Text       m_appNameText      = null;
-	private ISelection m_selection     = null;
 	private String     m_selectAppDir  = null;
 	private Button     m_defaultPathButton = null;
 	private Button     m_browseButton = null;
@@ -49,11 +46,11 @@ public class RhodesAppWizardPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public RhodesAppWizardPage(ISelection selection) {
+	public RhodesAppWizardPage(ISelection selection) 
+	{
 		super("wizardPage");
 		setTitle("Rhodes application generator wizard");
 		setDescription("Desc wizar");
-		this.m_selection = selection;
 	}
 	
 	public void createAppSettingBarControls(Composite composite)
@@ -74,7 +71,8 @@ public class RhodesAppWizardPage extends WizardPage
 
 		m_appNameText = new Text(composite, SWT.BORDER | SWT.SINGLE);
 		m_appNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		m_appNameText.addModifyListener(new ModifyListener() {
+		m_appNameText.addModifyListener(new ModifyListener() 
+		{
 			public void modifyText(ModifyEvent e) {
 				dialogChanged();
 			}
@@ -85,6 +83,7 @@ public class RhodesAppWizardPage extends WizardPage
 		// 2 row
 		m_defaultPathButton = new Button(composite, SWT.CHECK);
 		m_defaultPathButton.setText("Create application in default workspace");
+		m_defaultPathButton.setSelection(true);
 		m_defaultPathButton.addSelectionListener(new SelectionAdapter() 
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -174,6 +173,8 @@ public class RhodesAppWizardPage extends WizardPage
 	private void initialize() 
 	{	
 		m_appNameText.setText("RhodesApplication1");
+		
+		setControlsForDefaultPath();
 	}
 
 	/**
