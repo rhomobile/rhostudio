@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 
 import org.eclipse.core.filesystem.URIUtil;
@@ -21,17 +22,26 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 
+import rhogenwizard.builder.RhogenNature;
 
 public class RhodesProjectSupport
 {
-    public static IProject createProject(BuildInfoHolder projectInfo) 
+    public static IProject createProject(BuildInfoHolder projectInfo) throws AlredyCreatedException 
     {
         Assert.isNotNull(projectInfo.appName);
         Assert.isTrue(projectInfo.appName.trim().length() != 0);
 
         IProject project = createBaseProject(projectInfo);
 
+        addNature(project);
+        
         return project;
     }
 
@@ -40,9 +50,12 @@ public class RhodesProjectSupport
      *
      * @param location
      * @param projectName
+     * @throws AlredyCreatedException 
      */
-    private static IProject createBaseProject(BuildInfoHolder projectInfo) 
+    private static IProject createBaseProject(BuildInfoHolder projectInfo) throws AlredyCreatedException 
     {
+    	ResourcesPlugin.getPlugin().getLog().log(new Status(Status.OK, "asdasd", "kkkkkkkkkkk"));
+    	
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectInfo.appName);
 
@@ -58,7 +71,7 @@ public class RhodesProjectSupport
             {
             	desc.setLocationURI(URIUtil.toURI(path));
             }
-            
+			
             try 
             {
                 newProject.create(desc, null);
@@ -73,7 +86,7 @@ public class RhodesProjectSupport
         }
         else
         {
-        	//TODO - add message box 
+        	throw new AlredyCreatedException(newProject);
         }
 
         return newProject;
@@ -161,4 +174,24 @@ public class RhodesProjectSupport
     		e.printStackTrace();
     	}
     }
+    
+	private static void addNature(IProject project) 
+	{
+		try 
+		{
+			IProjectDescription description = project.getDescription();
+			String[] natures = description.getNatureIds();
+
+			// Add the nature
+			String[] newNatures = new String[natures.length + 1];
+			System.arraycopy(natures, 0, newNatures, 0, natures.length);
+			newNatures[natures.length] = RhogenNature.NATURE_ID;
+			description.setNatureIds(newNatures);
+			project.setDescription(description, null);
+		} 
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }

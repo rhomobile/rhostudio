@@ -52,28 +52,43 @@
       </editor>
    </extension>
    
-   <extension point="org.eclipse.core.resources.builders"
-              id="rhogenBuilder"
-              name="Rhodes Project Builder" >
+    <extension
+         id="rhogenBuilder"
+         name="Rhodes Project Builder"
+         point="org.eclipse.core.resources.builders">
       <builder
-            hasNature="true">
+            hasNature="true"
+            isConfigurable="false">
          <run
                class="rhogenwizard.builder.RhogenBuilder">
          </run>
       </builder>
    </extension>
    
-   <extension point="org.eclipse.core.resources.natures"
-              id="rhogenNature"
-              name="Rhodes Project Nature">
+   <extension
+         id="rhogenNature"
+         name="Rhodes Project Nature"
+         point="org.eclipse.core.resources.natures">
       <runtime>
          <run
                class="rhogenwizard.builder.RhogenNature">
          </run>
       </runtime>
       <builder
-            id="rhogen-build.rhogenBuilder">
+            id="Rhomobile.rhogenBuilder">
       </builder>
    </extension>
-   
+ 
+ <!--
+<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+          delegate="org.eclipse.jdt.internal.launching.JavaAppletLaunchConfigurationDelegate"
+          id="org.eclipse.jdt.launching.javaApplet"
+          modes="run, debug"
+          name="Java Applet 111"
+          public="true">        
+    </launchConfigurationType>
+</extension>
+-->
+ 
 </plugin>
