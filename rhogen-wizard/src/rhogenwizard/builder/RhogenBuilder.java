@@ -7,7 +7,10 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
+
 import rhogenwizard.RhodesAdapter;
+import rhogenwizard.ConsoleHelper;
 
 public class RhogenBuilder extends IncrementalProjectBuilder 
 {
@@ -25,12 +28,15 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 	{ 
 		try 
 		{
-			if (kind != CLEAN_BUILD)
+			String platformName = (String) getProject().getSessionProperty(getPlatformQualifier());
+			
+			if (kind != CLEAN_BUILD && platformName != null)
 			{
-				m_rhodeAdapter.buildApp(getProject().getLocation().toOSString(), "android");
-				return null;
+				ConsoleHelper.consolePrint("Build project " + getProject().getName() + " for platform " + platformName);
+				m_rhodeAdapter.buildApp(getProject().getLocation().toOSString(), platformName);
 			}
 			
+			/*
 			if (kind == FULL_BUILD) 
 			{
 				fullBuild(monitor);
@@ -48,6 +54,7 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 					incrementalBuild(delta, monitor);
 				}
 			}
+			*/
 		}
 		catch (Exception e) 
 		{
@@ -73,5 +80,10 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 	{
 		// the visitor does the work.
 		delta.accept(new RhogenDeltaVisitor());
+	}
+	
+	public static QualifiedName getPlatformQualifier()
+	{
+		return new QualifiedName("buider", "platform=");
 	}
 }

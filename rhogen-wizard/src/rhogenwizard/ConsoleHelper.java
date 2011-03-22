@@ -8,7 +8,7 @@ import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-class ConsoleHelper
+public class ConsoleHelper
 {
    public static MessageConsole findConsole(String name) 
    {
@@ -43,5 +43,10 @@ class ConsoleHelper
 	   MessageConsole myConsole = findConsole("");
 	   MessageConsoleStream out = myConsole.newMessageStream();
 	   return out;
+   }
+   
+   public static void consolePrint(String msg)
+   {
+	   getConsoleMsgStream().println(msg);
    }
 }
