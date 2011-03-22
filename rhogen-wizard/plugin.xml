@@ -52,10 +52,9 @@
       </editor>
    </extension>
    
-    <extension
-         id="rhogenBuilder"
-         name="Rhodes Project Builder"
-         point="org.eclipse.core.resources.builders">
+    <extension point="org.eclipse.core.resources.builders"
+               id="rhogenBuilder"
+               name="Rhodes Project Builder">
       <builder
             hasNature="true"
             isConfigurable="false">
@@ -65,10 +64,9 @@
       </builder>
    </extension>
    
-   <extension
-         id="rhogenNature"
-         name="Rhodes Project Nature"
-         point="org.eclipse.core.resources.natures">
+   <extension point="org.eclipse.core.resources.natures"
+              id="rhogenNature"
+              name="Rhodes Project Nature">
       <runtime>
          <run
                class="rhogenwizard.builder.RhogenNature">
@@ -77,18 +75,24 @@
       <builder
             id="Rhomobile.rhogenBuilder">
       </builder>
-   </extension>
+   	</extension>
  
- <!--
-<extension point="org.eclipse.debug.core.launchConfigurationTypes">
-    <launchConfigurationType
-          delegate="org.eclipse.jdt.internal.launching.JavaAppletLaunchConfigurationDelegate"
-          id="org.eclipse.jdt.launching.javaApplet"
-          modes="run, debug"
-          name="Java Applet 111"
-          public="true">        
-    </launchConfigurationType>
-</extension>
--->
- 
+   	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+	          delegate="rhogenwizard.launcher.RhogenLaunchDelegate"
+	          id="rhogenwizard.launcher.rhodesApp"
+	          modes="run, debug"
+	          name="Rhodes Application"
+	          public="true">        
+	    </launchConfigurationType>
+	</extension>
+	
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    	<launchConfigurationTabGroup
+        	type="rhogenwizard.launcher.rhodesApp"
+        	class="rhogenwizard.launcher.RhogenTabGroup"
+        	id="rhogenwizard.launcher.rhodesApp">
+    	</launchConfigurationTabGroup>
+	</extension>
+
 </plugin>
