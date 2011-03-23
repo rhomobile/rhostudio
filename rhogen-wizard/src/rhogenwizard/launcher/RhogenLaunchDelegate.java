@@ -48,9 +48,8 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	public static final String platforrmCfgAttribute = "platform";
 	
 	private ILaunch m_launch = null;
-
-	String m_projectName = null;
-	String m_platformName = null;
+	private String  m_projectName = null;
+	private String  m_platformName = null;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
@@ -66,7 +65,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 			
-			if (project == null || m_platformName != null || m_platformName.length() > 0)
+			if (project == null || m_platformName == null || m_platformName.length() == 0)
 			{
 				throw new IllegalArgumentException();
 			}
