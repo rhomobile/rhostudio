@@ -1,19 +1,20 @@
-Description
+rhomobile-eclipse-plugin
+---
 
-Rhodes plugin for easy create and editing rhodes application and model.
+An eclipse plugin for easily generating and developing rhodes applications.
 
-Steps of build plugin
+Steps to build the plugin:
 
 1. Download latest JDK.
 
 2. Download and install 'Eclipse for RCP and RAP Developers'
 http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/heliossr2
 
-3. Download plugin sourses from git repositary.
+3. Download plugin sources from git repository.
 
 4. Import project into Eclipse workspace (menu item File/Import)
 
-5. Build project (menu item Project/Build). If this menu item greyed then uncheck 'build automaticaly' located below.
+5. Build project (menu item Project/Build). If this menu item disabled then uncheck 'build automatically' located below.
 
 6. Export jar package. 
    Open export dialog (menu item File/Export). In open window select tree item 'Plugin Development/Deployable plugin and fragments'. 
