@@ -21,11 +21,13 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.internal.ui.stringsubstitution.ResourceSelector;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.swt.graphics.Resource;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbench;
@@ -37,6 +39,7 @@ import org.eclipse.ui.ide.ResourceSelectionUtil;
 import org.eclipse.ui.views.navigator.IResourceNavigator;
 import org.eclipse.ui.views.navigator.ResourceNavigator;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.builder.RhogenBuilder;
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
@@ -54,16 +57,26 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	 */
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException 
 	{
-		m_launch = launch;
-
-		m_projectName  = configuration.getAttribute(projectNameCfgAttribute, "");
-		m_platformName = configuration.getAttribute(platforrmCfgAttribute, "");
-		
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-		
-		project.build(IncrementalProjectBuilder.CLEAN_BUILD, null);
-		
-		buildForLaunch(configuration, mode, monitor);		
+		try
+		{
+			m_launch = launch;
+	
+			m_projectName  = configuration.getAttribute(projectNameCfgAttribute, "");
+			m_platformName = configuration.getAttribute(platforrmCfgAttribute, "");
+			
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
+			
+			if (project == null || m_platformName != null || m_platformName.length() > 0)
+			{
+				throw new IllegalArgumentException();
+			}
+			
+			buildForLaunch(configuration, mode, monitor);
+		}
+		catch(IllegalArgumentException e)
+		{
+			ConsoleHelper.consolePrint("Error - Platform and project name should be assigned");
+		}
 	}
 
 	@Override

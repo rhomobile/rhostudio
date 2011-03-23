@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.ConsoleHelper;
@@ -24,10 +25,10 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException 
+	protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException 
 	{ 
 		try 
-		{
+		{			
 			String platformName = (String) getProject().getSessionProperty(getPlatformQualifier());
 			
 			if (kind != CLEAN_BUILD && platformName != null)
@@ -35,26 +36,6 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 				ConsoleHelper.consolePrint("Build project " + getProject().getName() + " for platform " + platformName);
 				m_rhodeAdapter.buildApp(getProject().getLocation().toOSString(), platformName);
 			}
-			
-			/*
-			if (kind == FULL_BUILD) 
-			{
-				fullBuild(monitor);
-			}
-			else
-			{
-				IResourceDelta delta = getDelta(getProject());
-				
-				if (delta == null) 
-				{
-					fullBuild(monitor);
-				}
-				else
-				{
-					incrementalBuild(delta, monitor);
-				}
-			}
-			*/
 		}
 		catch (Exception e) 
 		{

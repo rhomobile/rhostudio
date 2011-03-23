@@ -10,8 +10,10 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class ConsoleHelper
 {
-   public static MessageConsole findConsole(String name) 
-   {
+	private static MessageConsole msgConsole = null;
+	
+	public static MessageConsole findConsole(String name) 
+	{
 		ConsolePlugin   plugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = plugin.getConsoleManager();
 		IConsole[]      existing = conMan.getConsoles();
@@ -29,18 +31,24 @@ public class ConsoleHelper
 		conMan.addConsoles(new IConsole[]{myConsole});
 		
 		return myConsole;
-   }
+	}
 
-   public static OutputStream getConsoleStream()
-   {
-	   MessageConsole myConsole = findConsole("Rhodes console");
-	   MessageConsoleStream out = myConsole.newMessageStream();
-	   return out;
-   }
+	public static OutputStream getConsoleStream()
+	{
+		if (msgConsole == null)
+		{
+			msgConsole = findConsole("Rhodes console");
+			
+		}
+		
+		MessageConsoleStream out = msgConsole.newMessageStream();
+		
+	   	return out;
+	}
    
    public static MessageConsoleStream  getConsoleMsgStream()
    {
-	   MessageConsole myConsole = findConsole("");
+	   MessageConsole myConsole = findConsole("Rhodes console");
 	   MessageConsoleStream out = myConsole.newMessageStream();
 	   return out;
    }

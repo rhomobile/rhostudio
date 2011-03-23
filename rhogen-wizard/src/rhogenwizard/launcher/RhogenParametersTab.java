@@ -12,6 +12,7 @@ import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -39,11 +40,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.RhodesAdapter;
+import rhogenwizard.StringHelper;
 
-public class RhogenParametersTab extends  AbstractLaunchConfigurationTab
+public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
 {
-
-
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Text 		m_appNameText = null;
@@ -89,7 +89,7 @@ public class RhogenParametersTab extends  AbstractLaunchConfigurationTab
 		});
 		
 		// 2 row
-		SWTFactory.createLabel(namecomp, "Platforms", 1); 
+		SWTFactory.createLabel(namecomp, "Platform:", 1); 
 		
 		m_selectPlatformCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, items);
 		m_selectPlatformCombo.addSelectionListener(new SelectionAdapter()
@@ -143,17 +143,6 @@ public class RhogenParametersTab extends  AbstractLaunchConfigurationTab
 	public void performApply(ILaunchConfigurationWorkingCopy configuration)
 	{
 		m_configuration = configuration;
-		/*
-		if (m_selProject != null)
-		{
-			configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
-			
-			if (m_platformName != null)
-			{
-				configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, m_platformName);
-			}
-		}
-		*/
 	}
 
 	@Override
@@ -188,13 +177,13 @@ public class RhogenParametersTab extends  AbstractLaunchConfigurationTab
 				
 				if (m_selProject != null)
 				{
-					m_appNameText.setText(m_selProject.getName());
+					selProjectName = m_selProject.getName();
+					m_appNameText.setText(selProjectName);
 				}
 			}
 		}
 		catch (CoreException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -224,6 +213,8 @@ public class RhogenParametersTab extends  AbstractLaunchConfigurationTab
 			if (result.length == 1) 
 			{				
 				String selProjectName = ((Path) result[0]).toString();
+				selProjectName = selProjectName.replaceAll("/", "");
+				
 				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
 				m_appNameText.setText(selProjectName);
 				

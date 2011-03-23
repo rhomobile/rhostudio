@@ -10,14 +10,20 @@ import org.eclipse.ui.console.MessageConsoleStream;
 class RhodesLogAdapter implements ILogDevice
 {
 	MessageConsoleStream m_consoleStream = ConsoleHelper.getConsoleMsgStream();
-	
+
 	@Override
 	public void log(String str) 
 	{
 		if (null != m_consoleStream)
 		{
-			m_consoleStream.println(str);
+			m_consoleStream.println(prepareString(str));
 		}
+	}
+	
+	private String prepareString(String message)
+	{
+		message = message.replaceAll("\\p{Cntrl}", " ");  		
+		return message;
 	}
 }
 
@@ -72,6 +78,8 @@ public class RhodesAdapter
 	{
 		m_executor.setWorkingDirectory(workDir);
 		
+		modelParams = modelParams.replace(' ', '_');
+		
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rhogenExe);
 		cmdLine.add("model");
@@ -85,8 +93,10 @@ public class RhodesAdapter
 	
 	public boolean buildApp(String workDir, String platformName) throws Exception
 	{
+		ConsoleHelper.consolePrint("build started");
+		
 		StringBuilder sb = new StringBuilder();
-		sb.append("build:");
+		sb.append("run:");
 		sb.append(platformName);
 		
 		m_executor.setWorkingDirectory(workDir);
