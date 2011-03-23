@@ -45,14 +45,24 @@
    <extension point="org.eclipse.ui.editors">
       <editor
             name="Rhodes Editor"
-            extensions="yml,rb,erb"
+            extensions="yml"
             icon="icons/sample.gif"
             class="rhogenwizard.editors.RhodesEditor"
             id="rhogenwizard.editors.RhodesEditor">
       </editor>
    </extension>
    
-    <extension point="org.eclipse.core.resources.builders"
+	<extension point="org.eclipse.ui.editors">
+      <editor
+            name="Ruby Editor"
+            extensions="rb,erb"
+            icon="icons/ruby.gif"
+            class="rhogenwizard.editors.RubyEditor"
+            id="rhogenwizard.editors.RubyEditor">
+      </editor>
+   </extension>
+   
+   <extension point="org.eclipse.core.resources.builders"
                id="rhogenBuilder"
                name="Rhodes Project Builder">
       <builder
@@ -77,6 +87,14 @@
       </builder>
    	</extension>
  
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+	    <launchConfigurationTypeImage
+	        icon="icons/sample.gif"
+	        configTypeID="rhogenwizard.launcher.rhodesApp"
+	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
+	    </launchConfigurationTypeImage>
+	</extension>
+	 
    	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
 	          delegate="rhogenwizard.launcher.RhogenLaunchDelegate"
