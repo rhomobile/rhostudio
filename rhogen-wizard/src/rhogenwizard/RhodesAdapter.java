@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.eclipse.ui.console.MessageConsoleStream;
 
@@ -38,7 +39,6 @@ public class RhodesAdapter
 	public static final String platformAdroid = "android";
 	public static final String platformBlackBerry = "bb";
 	public static final String platformIPhone = "iphone";
-	public static final String platformSymbian = "symbian";
 	
 	private String m_rhogenExe = null; 
 	private String m_rakeExe = null;
@@ -60,7 +60,7 @@ public class RhodesAdapter
 		}
 	}
 	
-	public boolean generateApp(BuildInfoHolder holder) throws Exception
+	public void generateApp(BuildInfoHolder holder) throws Exception
 	{
 		m_executor.setWorkingDirectory(holder.getProjectLocationPath().toOSString());
 		
@@ -70,15 +70,13 @@ public class RhodesAdapter
 		cmdLine.add(holder.appName);
 		
 		m_executor.runCommand(cmdLine);
-		
-		return true;		
 	}
 	
-	public boolean generateModel(String workDir, String modelName, String modelParams) throws Exception
+	public void generateModel(String workDir, String modelName, String modelParams) throws Exception
 	{
 		m_executor.setWorkingDirectory(workDir);
 		
-		modelParams = modelParams.replace(' ', '_');
+		modelParams = prepareModelAttributes(modelParams);
 		
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rhogenExe);
@@ -87,11 +85,9 @@ public class RhodesAdapter
 		cmdLine.add(modelParams);
 		
 		m_executor.runCommand(cmdLine);
-		
-		return true;		
 	}
 	
-	public boolean buildApp(String workDir, String platformName) throws Exception
+	public void buildApp(String workDir, String platformName) throws Exception
 	{
 		ConsoleHelper.consolePrint("build started");
 		
@@ -105,8 +101,29 @@ public class RhodesAdapter
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		
-		m_executor.runCommand(cmdLine);
+		m_executor.runCommand(cmdLine);		
+	}
+	
+	private String prepareModelAttributes(String modelAttr)
+	{
+		StringBuilder   sb = new StringBuilder();
+		StringTokenizer st = new StringTokenizer(modelAttr, ",");
 		
-		return true;		
+		while (st.hasMoreTokens()) 
+		{
+			String token = st.nextToken();
+			
+			token = token.trim();
+			token = token.replace(' ', '_');
+			
+			sb.append(token);
+			
+			if (st.hasMoreTokens())
+			{
+				sb.append(",");
+			}
+		}
+		
+		return sb.toString();
 	}
 }
