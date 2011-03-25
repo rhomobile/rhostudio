@@ -39,7 +39,7 @@ public class RhodesModelWizardPage extends WizardPage
 	{
 		super("wizardPage");
 		setTitle("Model information");
-		setDescription("Model create description");
+		setDescription("Model create");
 		this.m_selection = selection;
 	}
 

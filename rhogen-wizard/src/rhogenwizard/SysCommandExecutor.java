@@ -62,15 +62,16 @@ public class SysCommandExecutor
 	    
 		/* wait for command execution to terminate */
 		int exitStatus = -1;
-		try {
-			exitStatus = process.waitFor();
-					
+		try 
+		{
+			exitStatus = process.waitFor();		
 		} 
-		catch (Throwable ex) {
-			throw new Exception(ex.getMessage());
-			
+		catch (Throwable ex) 
+		{
+			throw new Exception(ex.getMessage());	
 		}
-		finally {
+		finally 
+		{
 			/* notify output and error read threads to stop reading */
 			notifyOutputAndErrorReadThreadsToStopReading();
 		}

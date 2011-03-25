@@ -5,6 +5,9 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import rhogenwizard.buildfile.AppYmlFile;
+import rhogenwizard.buildfile.SdkYmlFile;
+
 /**
  * The activator class controls the plug-in life cycle
  */

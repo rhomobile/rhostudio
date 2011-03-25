@@ -4,14 +4,14 @@
 
    <extension point="org.eclipse.ui.newWizards">
       <category
-            name="Rhomobile"
-            id="RhogenAppWizard">
+            id="RhogenAppWizard"
+            name="Rhomobile">
       </category>
       
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.RhogenAppWizard"
-            icon="icons/sample.gif"
+            icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenWizard"
             name="Rhodes application"
             project="true"> 
@@ -24,20 +24,22 @@
             id="rhogenwizard.contribution1">
             
          <menu
+               icon="icons/sample16.png"
+               id="rhogen-model.menumodel"
                label="Rhodes"
-               path="additions"
-               id="rhogen-model.menumodel">
+               path="additions">
             <separator
                   name="group1">
             </separator>
          </menu>
          
          <action
-               label="Rhodes model"
                class="rhogenwizard.actions.NewModelAction"
-               menubarPath="rhogen-model.menumodel/group1"
                enablesFor="1"
-               id="rhogen-model.newAction">
+               icon="icons/sample16.png"
+               id="rhogen-model.newAction"
+               label="Rhodes model"
+               menubarPath="rhogen-model.menumodel/group1">
          </action>
       </objectContribution>
    </extension>
@@ -46,7 +48,7 @@
       <editor
             name="Rhodes Editor"
             extensions="yml"
-            icon="icons/sample.gif"
+            icon="icons/sample16.png"
             class="rhogenwizard.editors.RhodesEditor"
             id="rhogenwizard.editors.RhodesEditor">
       </editor>
@@ -56,7 +58,7 @@
       <editor
             name="Ruby Editor"
             extensions="rb,erb"
-            icon="icons/ruby.gif"
+            icon="icons/ruby.png"
             class="rhogenwizard.editors.RubyEditor"
             id="rhogenwizard.editors.RubyEditor">
       </editor>
@@ -83,13 +85,13 @@
          </run>
       </runtime>
       <builder
-            id="Rhomobile.rhogenBuilder">
+            id="com.rhomobile.eclipse.rhogenBuilder">
       </builder>
    	</extension>
  
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
-	        icon="icons/sample.gif"
+	        icon="icons/sample16.png"
 	        configTypeID="rhogenwizard.launcher.rhodesApp"
 	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
 	    </launchConfigurationTypeImage>

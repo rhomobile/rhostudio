@@ -11,7 +11,7 @@ public class RhogenNature implements IProjectNature
 	/**
 	 * ID of this project nature
 	 */
-	public static final String NATURE_ID = "Rhomobile.rhogenNature";
+	public static final String NATURE_ID = "com.rhomobile.eclipse.rhogenNature";
 
 	private IProject project;
 

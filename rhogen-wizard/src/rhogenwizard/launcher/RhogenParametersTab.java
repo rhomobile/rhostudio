@@ -59,7 +59,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		String items[] = { RhodesAdapter.platformAdroid, 
 				           RhodesAdapter.platformBlackBerry, 
 				           RhodesAdapter.platformIPhone, 
-				           RhodesAdapter.platformSymbian,
 				           RhodesAdapter.platformWinMobile };
 
 		Composite composite = SWTFactory.createComposite(parent, 1, 1, GridData.FILL_HORIZONTAL);

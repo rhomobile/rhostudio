@@ -56,10 +56,7 @@ public class RhodesAppWizardPage extends WizardPage
 	public void createAppSettingBarControls(Composite composite)
 	{
 	   GridLayout layout = new GridLayout ();
-		  
-	   // create controls for first expand 
-       layout.marginLeft = layout.marginTop=layout.marginRight=layout.marginBottom=8;
-       layout.verticalSpacing = 10;
+	   
        composite.setLayout(layout);
 
 		layout.numColumns = 3;
@@ -126,52 +123,22 @@ public class RhodesAppWizardPage extends WizardPage
 	 */
 	public void createControl(Composite parent) 
 	{	
-	    ExpandBar bar = new ExpandBar (parent, SWT.V_SCROLL);
-	    Composite composite = new Composite (bar, SWT.NONE);
-
-	    createAppSettingBarControls(composite);
-	   
-	    // create first expand bar
-	    ExpandItem itemCommonSetting = new ExpandItem (bar, SWT.NONE, 0);
-	    itemCommonSetting.setText("Common application attributes");
-	    itemCommonSetting.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-	    itemCommonSetting.setControl(composite);
-	    itemCommonSetting.setExpanded(true);
-	    
-	    // -------------------------------------- //
-		  
-	    composite = new Composite (bar, SWT.NONE);
-	    GridLayout layout = new GridLayout (2, false);
-	    layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 8;
-	    layout.verticalSpacing = 10;
-	    composite.setLayout(layout);  
-	    
-	    m_generalAttrsTable = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL);
-
-	    String[] attributesText = BuildInfoHolder.getAttributesStrings();
-	    
-	    for(int i=0; i<attributesText.length; ++i)
-	    {
-		    TableItem item = new TableItem(m_generalAttrsTable, SWT.NONE);
-		    item.setText(attributesText[i]);
-	    }
-	    
-	    ExpandItem itemGeneralAttr = new ExpandItem (bar, SWT.NONE, 1);
-	    itemGeneralAttr.setText("General attributes");
-	    itemGeneralAttr.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-	    itemGeneralAttr.setControl(composite);
-	    itemGeneralAttr.setExpanded(false);
-	  
+		Composite container = new Composite(parent, SWT.NULL);
+		
+	    createAppSettingBarControls(container);
+	    	  
         initialize();
 		dialogChanged();
-		setControl(composite);
+		setControl(container);
 	}
 
 	/**
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
 	private void initialize() 
-	{	
+	{		
+		setDescription("");
+		
 		m_appNameText.setText("RhodesApplication1");
 		
 		setControlsForDefaultPath();
@@ -245,12 +212,6 @@ public class RhodesAppWizardPage extends WizardPage
 		
 		newInfo.appDir = getAppFolder();
 		newInfo.appName = getAppName();
-		
-		newInfo.isPretend = m_generalAttrsTable.getItem(0).getChecked();
-		newInfo.isForce   = m_generalAttrsTable.getItem(1).getChecked();
-		newInfo.isSkip    = m_generalAttrsTable.getItem(2).getChecked();
-		newInfo.isDelete  = m_generalAttrsTable.getItem(3).getChecked();
-		newInfo.isDebug   = m_generalAttrsTable.getItem(4).getChecked();
 		
 		newInfo.isInDefaultWs = m_defaultPathButton.getSelection();
 		
