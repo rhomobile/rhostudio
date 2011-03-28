@@ -1,5 +1,7 @@
 package rhogenwizard.wizards;
 
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.io.File;
 
 import org.eclipse.jface.viewers.ISelection;
@@ -13,6 +15,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -20,6 +24,7 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
@@ -34,6 +39,9 @@ import rhogenwizard.BuildInfoHolder;
 
 public class RhodesAppWizardPage extends WizardPage 
 {
+	private static final int labelWidht = 120;
+	private static final int textWidht = 300;
+	
 	private Table      m_generalAttrsTable = null; 
 	private Text       m_appFolderText = null;
 	private Text       m_appNameText      = null;
@@ -54,31 +62,35 @@ public class RhodesAppWizardPage extends WizardPage
 	}
 	
 	public void createAppSettingBarControls(Composite composite)
-	{
-	   GridLayout layout = new GridLayout ();
-	   
-       composite.setLayout(layout);
-
-		layout.numColumns = 3;
+	{	
+		GridLayout layout = new GridLayout(1, true);
 		layout.verticalSpacing = 9;
+		
+        composite.setLayout(layout);
 
+        RowData labelAligment = new RowData(labelWidht, SWT.DEFAULT);
+        RowData textAligment  = new RowData(textWidht, SWT.DEFAULT);
 		// 1 row
-		Label label = new Label(composite, SWT.NULL);
+		Composite rowContainer1 = new Composite(composite, SWT.NULL);
+		rowContainer1.setLayout(new RowLayout());
+		Label label = new Label(rowContainer1, SWT.NULL);
+		label.setLayoutData(labelAligment);
 		label.setText("&Project name:");
-
-		m_appNameText = new Text(composite, SWT.BORDER | SWT.SINGLE);
-		m_appNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		m_appNameText = new Text(rowContainer1, SWT.BORDER | SWT.SINGLE);
+		m_appNameText.setLayoutData(textAligment);
 		m_appNameText.addModifyListener(new ModifyListener() 
 		{
 			public void modifyText(ModifyEvent e) {
 				dialogChanged();
 			}
 		});
-
-		label = new Label(composite, SWT.NULL);
 		
 		// 2 row
-		m_defaultPathButton = new Button(composite, SWT.CHECK);
+		Composite rowContainer2 = new Composite(composite, SWT.NULL);
+		rowContainer2.setLayout(new RowLayout());
+
+		m_defaultPathButton = new Button(rowContainer2, SWT.CHECK);
 		m_defaultPathButton.setText("Create application in default workspace");
 		m_defaultPathButton.setSelection(true);
 		m_defaultPathButton.addSelectionListener(new SelectionAdapter() 
@@ -90,15 +102,16 @@ public class RhodesAppWizardPage extends WizardPage
 			}
 		});
 
-		label = new Label(composite, SWT.NULL);
-		label = new Label(composite, SWT.NULL);
-
 		// 3 row
-		label = new Label(composite, SWT.NULL);
+		Composite rowContainer3 = new Composite(composite, SWT.NULL);
+		rowContainer3.setLayout(new RowLayout());
+		
+		label = new Label(rowContainer3, SWT.NULL);
 		label.setText("&Application folder:");
+		label.setLayoutData(labelAligment);
 
-		m_appFolderText = new Text(composite, SWT.BORDER | SWT.SINGLE);
-		m_appFolderText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		m_appFolderText = new Text(rowContainer3, SWT.BORDER | SWT.SINGLE);
+		m_appFolderText.setLayoutData(textAligment);
 		m_appFolderText.addModifyListener(new ModifyListener() 
 		{
 			public void modifyText(ModifyEvent e) 
@@ -107,7 +120,7 @@ public class RhodesAppWizardPage extends WizardPage
 			}
 		});
 
-		m_browseButton = new Button(composite, SWT.PUSH);
+		m_browseButton = new Button(rowContainer3, SWT.PUSH);
 		m_browseButton.setText("Browse...");
 		m_browseButton.addSelectionListener(new SelectionAdapter() 
 		{
@@ -126,7 +139,7 @@ public class RhodesAppWizardPage extends WizardPage
 		Composite container = new Composite(parent, SWT.NULL);
 		
 	    createAppSettingBarControls(container);
-	    	  
+	    
         initialize();
 		dialogChanged();
 		setControl(container);
