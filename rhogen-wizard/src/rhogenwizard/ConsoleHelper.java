@@ -11,6 +11,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 public class ConsoleHelper
 {
 	private static MessageConsole msgConsole = null;
+	private static MessageConsole appConsole = null;
 	
 	public static MessageConsole findConsole(String name) 
 	{
@@ -38,7 +39,7 @@ public class ConsoleHelper
 		if (msgConsole == null)
 		{
 			msgConsole = findConsole("Rhodes console");
-			
+			appConsole = findConsole("Rhodes application console");
 		}
 		
 		MessageConsoleStream out = msgConsole.newMessageStream();
@@ -48,11 +49,23 @@ public class ConsoleHelper
    
    public static MessageConsoleStream  getConsoleMsgStream()
    {
-	   MessageConsole myConsole = findConsole("Rhodes console");
+	   MessageConsole myConsole = findConsole("Rhodes build console");
 	   MessageConsoleStream out = myConsole.newMessageStream();
 	   return out;
    }
-   
+
+   public static MessageConsoleStream  getConsoleAppStream()
+   {
+	   MessageConsole myConsole = findConsole("Rhodes application console");
+	   MessageConsoleStream out = myConsole.newMessageStream();
+	   return out;
+   }
+
+   public static void consoleAppPrint(String msg)
+   {
+	   getConsoleAppStream().println(msg);
+   }
+
    public static void consolePrint(String msg)
    {
 	   getConsoleMsgStream().println(msg);

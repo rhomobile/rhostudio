@@ -1,5 +1,7 @@
 package rhogenwizard.launcher;
 
+import java.io.FileNotFoundException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -41,12 +43,23 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.StringHelper;
+import rhogenwizard.buildfile.AppYmlFile;
 
 public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
 {
+	private static String platformItems[] = {  "Android simplator", 
+							           "Android phone", 
+							           "iPhone simulator", 
+							           "iPhone phone",
+							           "Windows Mobile simulator",
+							           "Windows Mobile phone",
+							           "Blackberry simulator",
+							           "Blackberry phone" };
+	
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Text 		m_appNameText = null;
+	Text 		m_appLogText = null;
 	
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
@@ -56,11 +69,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	@Override
 	public void createControl(Composite parent)
 	{
-		String items[] = { RhodesAdapter.platformAdroid, 
-				           RhodesAdapter.platformBlackBerry, 
-				           RhodesAdapter.platformIPhone, 
-				           RhodesAdapter.platformWinMobile };
-
 		Composite composite = SWTFactory.createComposite(parent, 1, 1, GridData.FILL_HORIZONTAL);
 		m_comp = composite;
 
@@ -90,19 +98,41 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		// 2 row
 		SWTFactory.createLabel(namecomp, "Platform:", 1); 
 		
-		m_selectPlatformCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, items);
+		m_selectPlatformCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, platformItems);
 		m_selectPlatformCombo.addSelectionListener(new SelectionAdapter()
 		{	
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				m_platformName = m_selectPlatformCombo.getText();
-				m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) m_platformName);
+				if (m_configuration != null)
+				{
+					encodePlatformInformation(m_selectPlatformCombo.getText());
+				}
+				
 				showApplyButton();
 			}
 		});
 		
-		//////////////////////////////////////////////
+		label = SWTFactory.createLabel(namecomp, "", 1);
+		
+		// 3 row
+		/*
+		SWTFactory.createLabel(namecomp, "Rhodes log file:", 1); 
+		
+		m_appLogText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE, 1);	
+		m_appLogText.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(ModifyEvent e) 
+			{
+				if (m_configuration != null)
+				{
+					m_configuration.setAttribute(RhogenLaunchDelegate.prjectLogFileName, m_appLogText.getText());
+				}
+				
+				showApplyButton();
+			}
+		});
+		*/
 	}
 	
 	IProject getSelectedProject()
@@ -160,15 +190,18 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 		
 		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) "android");
+		configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, (String) "no");
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) 
 	{
 		try 
-		{
-			String selProjectName = null;
+		{			
+			String selProjectName = null, selProjectPlatform = null;
 			selProjectName = configuration.getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
+			selProjectPlatform = configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
+			boolean onDevice = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "").equals("yes");
 			
 			if (selProjectName != "")
 			{
@@ -178,12 +211,53 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				{
 					selProjectName = m_selProject.getName();
 					m_appNameText.setText(selProjectName);
+					
+					updateLogFileText();
+					
+					int platformIdx = -1;
+					if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+					{
+						platformIdx = 0;
+					}
+					else if (selProjectPlatform.equals(RhodesAdapter.platformIPhone))
+					{
+						platformIdx = 2;
+					}
+					else if (selProjectPlatform.equals(RhodesAdapter.platformWinMobile))
+					{
+						platformIdx = 4;
+					}
+					else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
+					{
+						platformIdx = 6;
+					}
+
+					if (onDevice)
+					{
+						platformIdx += 1;
+					}
+					
+					m_selectPlatformCombo.select(platformIdx);
 				}
 			}
 		}
 		catch (CoreException e) 
 		{
 			e.printStackTrace();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	void updateLogFileText() throws FileNotFoundException, CoreException
+	{
+		if (m_appLogText != null)
+		{
+//			AppYmlFile projectConfig = AppYmlFile.createFromProject(m_selProject);
+//			m_appLogText.setText(projectConfig.getAppLog());
+//			m_selProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 		}
 	}
 	
@@ -201,35 +275,76 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	
 	void selectProjectDialog()
 	{	
-		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
-				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
-				"Select project");
-		
-		if (dialog.open() == ContainerSelectionDialog.OK) 
+		try 
 		{
-			Object[] result = dialog.getResult();
+			ContainerSelectionDialog dialog = new ContainerSelectionDialog(
+					getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, "Select project");
 			
-			if (result.length == 1) 
-			{				
-				String selProjectName = ((Path) result[0]).toString();
-				selProjectName = selProjectName.replaceAll("/", "");
-				
-				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
-				m_appNameText.setText(selProjectName);
-				
-				m_configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
-				showApplyButton();
-			}
-			else
+			if (dialog.open() == ContainerSelectionDialog.OK) 
 			{
-				MessageDialog.openInformation(getShell(), "Message", "Select single project.");
+				Object[] result = dialog.getResult();
+				
+				if (result.length == 1) 
+				{				
+					String selProjectName = ((Path) result[0]).toString();
+					selProjectName = selProjectName.replaceAll("/", "");
+					
+					m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+					m_appNameText.setText(selProjectName);
+					
+					updateLogFileText();
+					
+					m_configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
+					showApplyButton();
+				}
+				else
+				{
+					MessageDialog.openInformation(getShell(), "Message", "Select single project.");
+				}
 			}
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 	
-	void showApplyButton()
+	private void showApplyButton()
 	{
 		this.setDirty(false);
 		this.getLaunchConfigurationDialog().updateButtons();		
+	}
+	
+	private void encodePlatformInformation(String selPlatform)
+	{
+		if (selPlatform.contains("phone"))
+		{
+			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "yes");
+		}
+		else
+		{
+			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "no");
+		}
+		
+		if (selPlatform.equals(platformItems[0]) || selPlatform.equals(platformItems[1]))
+		{
+			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformAdroid);
+		}
+		else if (selPlatform.equals(platformItems[2]) || selPlatform.equals(platformItems[3]))
+		{
+			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformIPhone);
+		}
+		else if (selPlatform.equals(platformItems[4]) || selPlatform.equals(platformItems[5]))
+		{
+			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformWinMobile);
+		}	
+		else if (selPlatform.equals(platformItems[6]) || selPlatform.equals(platformItems[7]))
+		{
+			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformBlackBerry);
+		}
 	}
 }

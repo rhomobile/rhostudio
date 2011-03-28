@@ -1,6 +1,12 @@
 package rhogenwizard.launcher;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.KeyStore.Builder;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,26 +45,59 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.ide.ResourceSelectionUtil;
 import org.eclipse.ui.views.navigator.IResourceNavigator;
 import org.eclipse.ui.views.navigator.ResourceNavigator;
 
+import rhogenwizard.AsyncStreamReader;
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.ILogDevice;
+import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.builder.RhogenBuilder;
+import rhogenwizard.buildfile.AppYmlFile;
+import rhogenwizard.buildfile.SdkYmlFile;
+
+class AppLogAdapter implements ILogDevice
+{
+	MessageConsoleStream m_consoleStream = ConsoleHelper.getConsoleAppStream();
+
+	@Override
+	public void log(String str) 
+	{
+		if (null != m_consoleStream)
+		{
+			m_consoleStream.println(prepareString(str));
+		}
+	}
+	
+	private String prepareString(String message)
+	{
+		message = message.replaceAll("\\p{Cntrl}", " ");  		
+		return message;
+	}
+}
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
 	public static final String projectNameCfgAttribute = "project_name";
 	public static final String platforrmCfgAttribute = "platform";
+	public static final String platforrmDeviceCfgAttribute = "device";
+	public static final String prjectLogFileName = "log_filename";
 	
 	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
 	
 	private String  m_projectName = null;
 	private String  m_platformName = null;
+	private boolean m_onDevice = false;
 	private AtomicBoolean m_buildFinished = new AtomicBoolean();
+	private StringBuffer m_logOutput = null;
+	private AsyncStreamReader m_appLogReader = null;
+	private AppLogAdapter m_logAdapter = new AppLogAdapter();
+	private InputStream m_logFileStream = null;
 	
 	private void setProcessFinished(boolean b)
 	{
@@ -80,8 +119,18 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		{
 			setProcessFinished(false); 
 			
+			if (m_appLogReader != null)
+			{
+				m_appLogReader.stopReading();
+			}
+			
 			m_projectName   = configuration.getAttribute(projectNameCfgAttribute, "");
 			m_platformName  = configuration.getAttribute(platforrmCfgAttribute, "");
+			
+			if (configuration.getAttribute(platforrmDeviceCfgAttribute, "").equals("yes"))
+			{
+				m_onDevice = true;
+			}
 			
 			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 			
@@ -97,8 +146,9 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				{
 					try 
 					{
-						rhodesAdapter.buildApp(project.getLocation().toOSString(), m_platformName);
+						rhodesAdapter.buildApp(project.getLocation().toOSString(), m_platformName, m_onDevice);
 						setProcessFinished(true);
+						startLogOutput(project);
 					} 
 					catch (Exception e) 
 					{
@@ -114,24 +164,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			    {
 					if (monitor.isCanceled()) 
 				    {
-						List<String> cmdLine = new ArrayList<String>();
-						
-						if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
-						{
-							cmdLine.add("taskkill");
-							cmdLine.add("/F");
-							cmdLine.add("/IM");
-							cmdLine.add("ruby.exe");
-						}
-						else
-						{
-							cmdLine.add("killall");
-							cmdLine.add("-9");
-							cmdLine.add("ruby");
-						}
-						
-						SysCommandExecutor executor = new SysCommandExecutor();
-						executor.runCommand(cmdLine);
+						OSHelper.killProcess("ruby", "ruby.exe");
 						return;
 				    }
 					
@@ -183,6 +216,23 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) 
 	{
+	}
+	
+	private void startLogOutput(IProject project) throws FileNotFoundException
+	{
+		AppYmlFile projectConfig = AppYmlFile.createFromProject(project);
+		
+		String rhodesConfigPath  = projectConfig.getSdkPath() + "/" + SdkYmlFile.configName;
+		SdkYmlFile sdkConfig = new SdkYmlFile(rhodesConfigPath);
+		
+		String logFilePath = sdkConfig.getAppName() + "/" + projectConfig.getAppLog(); 
+		File a = new File(logFilePath);
+		
+		m_logFileStream =  new FileInputStream(a);
+		
+		m_logOutput = new StringBuffer();
+		m_appLogReader = new AsyncStreamReader(m_logFileStream, m_logOutput, m_logAdapter, "APPLOG");		
+		m_appLogReader.start();
 	}
 }
 

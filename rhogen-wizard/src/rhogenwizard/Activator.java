@@ -34,6 +34,7 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 		
 		ConsoleHelper.consolePrint("Rhodes started");
+		ConsoleHelper.consoleAppPrint("Application log output");
 	}
 
 	/*

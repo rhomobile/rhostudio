@@ -87,13 +87,18 @@ public class RhodesAdapter
 		m_executor.runCommand(cmdLine);
 	}
 	
-	public void buildApp(String workDir, String platformName) throws Exception
+	public void buildApp(String workDir, String platformName, boolean onDevice) throws Exception
 	{
 		ConsoleHelper.consolePrint("build started");
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("run:");
 		sb.append(platformName);
+		
+		if (onDevice)
+		{
+			sb.append(":device");
+		}
 		
 		m_executor.setWorkingDirectory(workDir);
 		
