@@ -18,4 +18,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.filesystem
 Bundle-ClassPath: lib/jyaml-1.3.jar,
- .
+ .,
+ lib/snakeyaml-1.8.jar
