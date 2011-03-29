@@ -97,11 +97,11 @@ public class SysCommandExecutor
 	private void startOutputAndErrorReadThreads(InputStream processOut, InputStream processErr)
 	{
 		m_cmdOutput = new StringBuffer();
-		m_cmdOutputThread = new AsyncStreamReader(processOut, m_cmdOutput, m_ouputLogDevice, "OUTPUT");		
+		m_cmdOutputThread = new AsyncStreamReader(false, processOut, m_cmdOutput, m_ouputLogDevice, "OUTPUT");		
 		m_cmdOutputThread.start();
 		
 		m_cmdError = new StringBuffer();
-		m_cmdErrorThread = new AsyncStreamReader(processErr, m_cmdError, m_errorLogDevice, "ERROR");
+		m_cmdErrorThread = new AsyncStreamReader(false, processErr, m_cmdError, m_errorLogDevice, "ERROR");
 		m_cmdErrorThread.start();
 	}
 	

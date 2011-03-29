@@ -90,14 +90,15 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	
 	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
 	
-	private String  m_projectName = null;
-	private String  m_platformName = null;
-	private boolean m_onDevice = false;
-	private AtomicBoolean m_buildFinished = new AtomicBoolean();
-	private StringBuffer m_logOutput = null;
+	private String            m_projectName = null;
+	private String            m_platformName = null;
+	private String			  m_appLogName = null; 
+	private boolean           m_onDevice = false;
+	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
+	private StringBuffer      m_logOutput = null;
 	private AsyncStreamReader m_appLogReader = null;
-	private AppLogAdapter m_logAdapter = new AppLogAdapter();
-	private InputStream m_logFileStream = null;
+	private AppLogAdapter     m_logAdapter = new AppLogAdapter();
+	private InputStream       m_logFileStream = null;
 	
 	private void setProcessFinished(boolean b)
 	{
@@ -126,6 +127,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			
 			m_projectName   = configuration.getAttribute(projectNameCfgAttribute, "");
 			m_platformName  = configuration.getAttribute(platforrmCfgAttribute, "");
+			m_appLogName    = configuration.getAttribute(prjectLogFileName, "");
 			
 			if (configuration.getAttribute(platforrmDeviceCfgAttribute, "").equals("yes"))
 			{
@@ -134,11 +136,11 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			
 			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 			
-			if (project == null || m_platformName == null || m_platformName.length() == 0)
+			if (project == null || m_platformName == null || m_platformName.length() == 0 || !project.isOpen())
 			{
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Error - Platform and project name should be assigned");
 			}
-			
+						
 			Thread cancelingThread = new Thread(new Runnable() 
 			{	
 				@Override
@@ -183,12 +185,14 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		}
 		catch(IllegalArgumentException e)
 		{
-			ConsoleHelper.consolePrint("Error - Platform and project name should be assigned");
+			ConsoleHelper.consolePrint(e.getMessage());
 		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
+		
+		monitor.done();
 	}
 
 	@Override
@@ -221,17 +225,14 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	private void startLogOutput(IProject project) throws FileNotFoundException
 	{
 		AppYmlFile projectConfig = AppYmlFile.createFromProject(project);
+				
+		String logFilePath = project.getLocation().toOSString() + File.separatorChar + projectConfig.getAppLog(); 
+		File logFile = new File(logFilePath);
 		
-		String rhodesConfigPath  = projectConfig.getSdkPath() + "/" + SdkYmlFile.configName;
-		SdkYmlFile sdkConfig = new SdkYmlFile(rhodesConfigPath);
-		
-		String logFilePath = sdkConfig.getAppName() + "/" + projectConfig.getAppLog(); 
-		File a = new File(logFilePath);
-		
-		m_logFileStream =  new FileInputStream(a);
+		m_logFileStream =  new FileInputStream(logFile);
 		
 		m_logOutput = new StringBuffer();
-		m_appLogReader = new AsyncStreamReader(m_logFileStream, m_logOutput, m_logAdapter, "APPLOG");		
+		m_appLogReader = new AsyncStreamReader(true, m_logFileStream, m_logOutput, m_logAdapter, "APPLOG");		
 		m_appLogReader.start();
 	}
 }
