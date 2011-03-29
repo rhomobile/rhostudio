@@ -54,8 +54,6 @@ public class RhodesProjectSupport
      */
     private static IProject createBaseProject(BuildInfoHolder projectInfo) throws AlredyCreatedException 
     {
-    	ResourcesPlugin.getPlugin().getLog().log(new Status(Status.OK, "asdasd", "kkkkkkkkkkk"));
-    	
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectInfo.appName);
 
@@ -63,7 +61,7 @@ public class RhodesProjectSupport
         {
             URI projectLocation = projectInfo.getProjectLocation();
             String path = URIUtil.toPath(projectLocation).toOSString();
-            path = path + "//" + projectInfo.appName;
+            path = path + File.separatorChar + projectInfo.appName;
 
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
 
@@ -152,7 +150,7 @@ public class RhodesProjectSupport
 	
 	    		for (String path : paths) 
 	            {
-	    			String endPath = projectPath + "/" + path;
+	    			String endPath = projectPath + File.separatorChar + path;
 	    			
 	        		File currFile = new File(endPath);
 	            	
