@@ -33,8 +33,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		
-		ConsoleHelper.consolePrint("Rhodes started");
-		ConsoleHelper.consoleAppPrint("Application log output");
+		ConsoleHelper.consolePrint("");
+		ConsoleHelper.consoleAppPrint("");
 	}
 
 	/*
