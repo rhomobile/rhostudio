@@ -1,21 +1,13 @@
 package rhogenwizard.buildfile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.ho.yaml.Yaml;
-import org.ho.yaml.YamlConfig;
-import org.omg.CORBA.portable.OutputStream;
-import org.yaml.snakeyaml.Dumper;
-
-class MyConfig extends YamlConfig
-{
-};
 
 public class YmlFile
 {
@@ -25,13 +17,19 @@ public class YmlFile
 	public YmlFile(String ymlFileName) throws FileNotFoundException
 	{
 		m_filePath = ymlFileName;
-		m_dataStorage = (Map) Yaml.load(new File(ymlFileName));
+		File ymlFile = new File(ymlFileName);
+		load(ymlFile);
 	}
 	
 	public YmlFile(File ymlFile) throws FileNotFoundException
 	{
 		m_filePath = ymlFile.getAbsolutePath();
-		m_dataStorage = (Map) Yaml.load(ymlFile);
+		load(ymlFile);
+	}
+	
+	private void load(File ymlFile) throws FileNotFoundException
+	{
+		m_dataStorage = (Map) Yaml.load(ymlFile);		
 	}
 	
 	public String get(String sectionName, String paramName)
@@ -64,8 +62,8 @@ public class YmlFile
 		{
 			org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
 			String dataString = dumpEncoder.dump(m_dataStorage);
-			File outFile = new File(m_filePath);
 			
+			File outFile = new File(m_filePath);
 			FileOutputStream os = new FileOutputStream(outFile);
 			os.write(dataString.getBytes());
 		} 

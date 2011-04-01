@@ -54,6 +54,11 @@ public class SysCommandExecutor
 	
 	public int runCommand(List<String> commandLine) throws Exception
 	{	
+		if (m_cmdOutput != null)
+		{
+			m_cmdOutput.delete(0, m_cmdOutput.length());
+		}
+		
 		/* run command */
 		Process process = runCommandHelper(commandLine);
 		
