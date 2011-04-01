@@ -30,6 +30,15 @@ class RhodesLogAdapter implements ILogDevice
 
 public class RhodesAdapter 
 {
+	public enum EPlatformType
+	{
+		eWm,
+		eAndroid,
+		eBb,
+		eIPhone,
+		eUnknown
+	};
+	
 	private static final String winRhogenFileName = "rhogen.bat";
 	private static final String unixRhogenFileName = "rhogen";
 	private static final String winRakeFileName = "rake.bat";
@@ -87,9 +96,11 @@ public class RhodesAdapter
 		m_executor.runCommand(cmdLine);
 	}
 	
-	public void buildApp(String workDir, String platformName, boolean onDevice) throws Exception
+	public void buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception
 	{
 		ConsoleHelper.consolePrint("build started");
+		
+		String platformName = convertDescFromPlatform(platformType);
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("run:");
@@ -130,5 +141,57 @@ public class RhodesAdapter
 		}
 		
 		return sb.toString();
+	}
+	
+	public static EPlatformType convertPlatformFromDesc(String plDesc)
+	{
+		if (plDesc.equals(platformWinMobile))
+		{
+			return EPlatformType.eWm;
+		}
+		else if (plDesc.equals(platformAdroid))
+		{
+			return EPlatformType.eAndroid;
+		}
+		else if (plDesc.equals(platformBlackBerry))
+		{
+			return EPlatformType.eBb;
+		}
+		else if (plDesc.equals(platformIPhone))
+		{
+			return EPlatformType.eIPhone;
+		}
+
+		return EPlatformType.eUnknown;
+	}
+	
+	public static String convertDescFromPlatform(EPlatformType plType)
+	{
+		switch(plType)
+		{
+		case eWm:
+			return platformWinMobile;
+		case eAndroid:
+			return platformAdroid;
+		case eBb:
+			return platformBlackBerry;
+		case eIPhone:
+			return platformIPhone;
+		}
+
+		return null;
+	}
+	
+	public String runRakeTask(String workDir, String taskName) throws Exception
+	{
+		m_executor.setWorkingDirectory(workDir);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(taskName);
+		
+		m_executor.runCommand(cmdLine);
+		
+		return m_executor.getCommandOutput();
 	}
 }

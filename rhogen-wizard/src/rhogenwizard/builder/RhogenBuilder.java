@@ -34,7 +34,7 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 			if (kind != CLEAN_BUILD && platformName != null)
 			{
 				ConsoleHelper.consolePrint("Build project " + getProject().getName() + " for platform " + platformName);
-				m_rhodeAdapter.buildApp(getProject().getLocation().toOSString(), platformName, false);
+				//m_rhodeAdapter.buildApp(getProject().getLocation().toOSString(), platformName, false);
 			}
 		}
 		catch (Exception e) 

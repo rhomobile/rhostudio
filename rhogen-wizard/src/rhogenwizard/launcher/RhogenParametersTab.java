@@ -48,13 +48,13 @@ import rhogenwizard.buildfile.AppYmlFile;
 public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
 {
 	private static String platformItems[] = {  "Android simplator", 
-							           "Android phone", 
-							           "iPhone simulator", 
-							           "iPhone phone",
-							           "Windows Mobile simulator",
-							           "Windows Mobile phone",
-							           "Blackberry simulator",
-							           "Blackberry phone" };
+									           "Android phone", 
+									           "iPhone simulator", 
+									           "iPhone phone",
+									           "Windows Mobile simulator",
+									           "Windows Mobile phone",
+									           "Blackberry simulator",
+									           "Blackberry phone" };
 	
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
@@ -114,25 +114,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		});
 		
 		label = SWTFactory.createLabel(namecomp, "", 1);
-		
-		// 3 row
-		/*
-		SWTFactory.createLabel(namecomp, "Rhodes log file:", 1); 
-		
-		m_appLogText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE, 1);	
-		m_appLogText.addModifyListener(new ModifyListener() 
-		{
-			public void modifyText(ModifyEvent e) 
-			{
-				if (m_configuration != null)
-				{
-					m_configuration.setAttribute(RhogenLaunchDelegate.prjectLogFileName, m_appLogText.getText());
-				}
-				
-				showApplyButton();
-			}
-		});
-		*/
 	}
 	
 	IProject getSelectedProject()
@@ -209,12 +190,11 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				
 				if (m_selProject != null)
 				{
-					selProjectName = m_selProject.getName();
-					m_appNameText.setText(selProjectName);
-					
-					updateLogFileText();
-					
 					int platformIdx = -1;
+					selProjectName = m_selProject.getName();
+					
+					m_appNameText.setText(selProjectName);
+
 					if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 					{
 						platformIdx = 0;
@@ -236,7 +216,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 					{
 						platformIdx += 1;
 					}
-					
+
 					m_selectPlatformCombo.select(platformIdx);
 				}
 			}
@@ -245,20 +225,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		{
 			e.printStackTrace();
 		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	void updateLogFileText() throws FileNotFoundException, CoreException
-	{
-		if (m_appLogText != null)
-		{
-//			AppYmlFile projectConfig = AppYmlFile.createFromProject(m_selProject);
-//			m_appLogText.setText(projectConfig.getAppLog());
-//			m_selProject.refreshLocal(IResource.DEPTH_INFINITE, null);
-		}
 	}
 	
 	@Override
@@ -274,42 +240,29 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	}
 	
 	void selectProjectDialog()
-	{	
-		try 
-		{
-			ContainerSelectionDialog dialog = new ContainerSelectionDialog(
+	{
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 					getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, "Select project");
 			
-			if (dialog.open() == ContainerSelectionDialog.OK) 
-			{
-				Object[] result = dialog.getResult();
+		if (dialog.open() == ContainerSelectionDialog.OK) 
+		{
+			Object[] result = dialog.getResult();
+			
+			if (result.length == 1) 
+			{				
+				String selProjectName = ((Path) result[0]).toString();
+				selProjectName = selProjectName.replaceAll("/", "");
 				
-				if (result.length == 1) 
-				{				
-					String selProjectName = ((Path) result[0]).toString();
-					selProjectName = selProjectName.replaceAll("/", "");
-					
-					m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
-					m_appNameText.setText(selProjectName);
-					
-					updateLogFileText();
-					
-					m_configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
-					showApplyButton();
-				}
-				else
-				{
-					MessageDialog.openInformation(getShell(), "Message", "Select single project.");
-				}
+				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+				m_appNameText.setText(selProjectName);
+				
+				m_configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
+				showApplyButton();
 			}
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (CoreException e) 
-		{
-			e.printStackTrace();
+			else
+			{
+				MessageDialog.openInformation(getShell(), "Message", "Select single project.");
+			}
 		}
 	}
 	
