@@ -1,6 +1,8 @@
 package rhogenwizard;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,24 +53,22 @@ public class AsyncStreamReader extends Thread
 	}
 	
 	private void readFile() throws IOException, InterruptedException
-	{		
-		BufferedReader bufOut = new BufferedReader(new InputStreamReader(fInputStream));		
+	{
+		BufferedReader bufOut = new BufferedReader(new InputStreamReader(fInputStream));
 		String line = null;
 		
 		while (fStop == false)
 		{
-			int ret = bufOut.read();
-			
-			if (fInputStream.available() > 0)
+			if (bufOut.ready())
 			{
 				line = bufOut.readLine();
 				
-				fBuffer.append(ret + line + fNewLine);
+				fBuffer.append(line + fNewLine);
 				printToDisplayDevice(line);				
 			}
 			else
 			{
-				Thread.sleep(50);
+				Thread.sleep(500);
 			}
 		}
 		
