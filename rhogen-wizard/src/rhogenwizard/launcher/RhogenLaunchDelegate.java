@@ -3,83 +3,27 @@ package rhogenwizard.launcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.KeyStore.Builder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.core.internal.events.BuildManager;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.debug.internal.ui.stringsubstitution.ResourceSelector;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IPageLayout;
-import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.console.MessageConsoleStream;
-import org.eclipse.ui.ide.ResourceSelectionUtil;
-import org.eclipse.ui.views.navigator.IResourceNavigator;
-import org.eclipse.ui.views.navigator.ResourceNavigator;
 
 import rhogenwizard.AsyncStreamReader;
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.ILogDevice;
+import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.OSValidator;
 import rhogenwizard.RhodesAdapter;
-import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.RhodesAdapter.EPlatformType;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.buildfile.SdkYmlFile;
 
-class AppLogAdapter implements ILogDevice
-{
-	MessageConsoleStream m_consoleStream = ConsoleHelper.getConsoleAppStream();
-
-	@Override
-	public void log(String str) 
-	{
-		if (null != m_consoleStream)
-		{
-			m_consoleStream.println(prepareString(str));
-		}
-	}
-	
-	private String prepareString(String message)
-	{
-		message = message.replaceAll("\\p{Cntrl}", " ");  		
-		return message;
-	}
-}
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -89,16 +33,13 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	public static final String prjectLogFileName = "log_filename";
 	
 	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
+	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	private String            m_projectName = null;
 	private String            m_platformName = null;
 	private String			  m_appLogName = null; 
 	private boolean           m_onDevice = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
-	private StringBuffer      m_logOutput = null;
-	private AsyncStreamReader m_appLogReader = null;
-	private AppLogAdapter     m_logAdapter = new AppLogAdapter();
-	private InputStream       m_logFileStream = null;
 	
 	private void setProcessFinished(boolean b)
 	{
@@ -120,10 +61,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		{
 			setProcessFinished(false); 
 			
-			if (m_appLogReader != null)
-			{
-				m_appLogReader.stopReading();
-			}
+			rhodesLogHelper.stopLog();
 			
 			m_projectName   = configuration.getAttribute(projectNameCfgAttribute, "");
 			m_platformName  = configuration.getAttribute(platforrmCfgAttribute, "");
@@ -148,9 +86,10 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				{
 					try 
 					{
-						rhodesAdapter.buildApp(project.getLocation().toOSString(), m_platformName, m_onDevice);
+						EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
+						rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice);
 						setProcessFinished(true);
-						startLogOutput(project);
+						startLogOutput(project, type);
 					} 
 					catch (Exception e) 
 					{
@@ -222,18 +161,10 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	{
 	}
 	
-	private void startLogOutput(IProject project) throws FileNotFoundException
+	private void startLogOutput(IProject project, EPlatformType type) throws Exception
 	{
-		AppYmlFile projectConfig = AppYmlFile.createFromProject(project);
-				
-		String logFilePath = project.getLocation().toOSString() + File.separatorChar + projectConfig.getAppLog(); 
-		File logFile = new File(logFilePath);
-		
-		m_logFileStream =  new FileInputStream(logFile);
-		
-		m_logOutput = new StringBuffer();
-		m_appLogReader = new AsyncStreamReader(true, m_logFileStream, m_logOutput, m_logAdapter, "APPLOG");		
-		m_appLogReader.start();
+		rhodesLogHelper.configurePlatform(type);
+		rhodesLogHelper.startLog(project);
 	}
 }
 
