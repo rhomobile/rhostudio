@@ -10,6 +10,9 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class ConsoleHelper
 {
+	private static final String appConsoleName = "Rhodes application console";
+	private static final String buildConsoleName = "Rhodes build console";
+	
 	private static MessageConsole msgConsole = null;
 	private static MessageConsole appConsole = null;
 	
@@ -38,8 +41,8 @@ public class ConsoleHelper
 	{
 		if (msgConsole == null)
 		{
-			msgConsole = findConsole("Rhodes console");
-			appConsole = findConsole("Rhodes application console");
+			msgConsole = findConsole(buildConsoleName);
+			appConsole = findConsole(appConsoleName);
 		}
 		
 		MessageConsoleStream out = msgConsole.newMessageStream();
@@ -49,14 +52,14 @@ public class ConsoleHelper
    
    public static MessageConsoleStream  getConsoleMsgStream()
    {
-	   MessageConsole myConsole = findConsole("Rhodes build console");
+	   MessageConsole myConsole = findConsole(buildConsoleName);
 	   MessageConsoleStream out = myConsole.newMessageStream();
 	   return out;
    }
 
    public static MessageConsoleStream  getConsoleAppStream()
    {
-	   MessageConsole myConsole = findConsole("Rhodes application console");
+	   MessageConsole myConsole = findConsole(appConsoleName);
 	   MessageConsoleStream out = myConsole.newMessageStream();
 	   return out;
    }
@@ -69,5 +72,14 @@ public class ConsoleHelper
    public static void consolePrint(String msg)
    {
 	   getConsoleMsgStream().println(msg);
+   }
+   
+   public static void showAppConsole()
+   {
+	   ConsolePlugin   plugin = ConsolePlugin.getDefault();
+	   IConsoleManager conMan = plugin.getConsoleManager();
+	   
+	   MessageConsole myConsole = findConsole(appConsoleName);
+	   conMan.showConsoleView(myConsole);
    }
 }
