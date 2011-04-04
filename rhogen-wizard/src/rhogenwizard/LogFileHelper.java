@@ -38,15 +38,17 @@ public class LogFileHelper
 		private IProject 	  m_project = null;
 		private LogFileHelper m_helper = null;
 		private String logFilePath = null;
-		
-		public BbLogFileWaiter(IProject project, LogFileHelper helper) throws Exception 
+		//private RhodesAdapter.EPlatformType m_type = RhodesAdapter.EPlatformType.eUnknown;
+
+		public BbLogFileWaiter(IProject project, LogFileHelper helper/*, RhodesAdapter.EPlatformType type*/) throws Exception 
 		{
 			m_project = project;
 			m_helper  = helper;
+			//m_type    = type;
 			
 			if (m_project != null && m_helper != null)
 			{
-				logFilePath = m_helper.getBbLogFilePath(m_project);
+				logFilePath = m_helper.getLogFilePath(m_project, "run:bb:get_log");
 			}
 		}
 
@@ -149,7 +151,7 @@ public class LogFileHelper
 	
 	private void bbLog(IProject project) throws Exception
 	{
-		String logPath = getBbLogFilePath(project);
+		String logPath = getLogFilePath(project,"run:bb:get_log");
 	
 		if (logPath != null)
 		{
@@ -157,11 +159,11 @@ public class LogFileHelper
 		}
 	}
 	
-	private String getBbLogFilePath(IProject project) throws Exception
+	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
 		RhodesAdapter rhodesExecutor = new RhodesAdapter();
 		
-		String output = rhodesExecutor.runRakeTask(project.getLocation().toOSString(), "run:bb:get_log");
+		String output = rhodesExecutor.runRakeTask(project.getLocation().toOSString(), taskName);
 		
 		StringTokenizer st = new StringTokenizer(output, "\n");
 		
@@ -198,8 +200,13 @@ public class LogFileHelper
 		
 	}
 	
-	private void iphoneLog(IProject project)
+	private void iphoneLog(IProject project) throws Exception
 	{
+		String logPath = getLogFilePath(project, "run:get_log");
 		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
 	}
 }
