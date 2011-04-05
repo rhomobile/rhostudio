@@ -72,13 +72,13 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				m_onDevice = true;
 			}
 			
-			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-			
-			if (project == null || m_platformName == null || m_platformName.length() == 0 || !project.isOpen())
+			if (m_projectName == null || m_projectName.length() == 0 || m_platformName == null || m_platformName.length() == 0)
 			{
 				throw new IllegalArgumentException("Error - Platform and project name should be assigned");
 			}
-						
+			
+			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
+									
 			Thread cancelingThread = new Thread(new Runnable() 
 			{	
 				@Override

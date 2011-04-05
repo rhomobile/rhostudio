@@ -163,6 +163,16 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		if (m_selProject == null)
 		{
 			m_selProject = getSelectedProject();
+
+			if (m_selProject == null)
+			{
+				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+				
+				if (allProjects.length == 1)
+				{
+					m_selProject = allProjects[0];			
+				}
+			}
 		}
 		
 		if (m_selProject != null)
@@ -170,7 +180,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
 		}
 		
-		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) "android");
+		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);
 		configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, (String) "no");
 	}
 
@@ -180,9 +190,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		try 
 		{			
 			String selProjectName = null, selProjectPlatform = null;
-			selProjectName = configuration.getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
-			selProjectPlatform = configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
-			boolean onDevice = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "").equals("yes");
+			selProjectName        = configuration.getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
+			selProjectPlatform    = configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
+			boolean onDevice      = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "").equals("yes");
 			
 			if (selProjectName != "")
 			{
