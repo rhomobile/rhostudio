@@ -1,18 +1,21 @@
 package rhogenwizard.buildfile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
-import org.ho.yaml.Yaml;
+import org.yaml.snakeyaml.Yaml;
 
 public class YmlFile
 {
 	private String m_filePath = null;
 	private Map m_dataStorage = null;
+	
+	public YmlFile()
+	{}
 	
 	public YmlFile(String ymlFileName) throws FileNotFoundException
 	{
@@ -29,7 +32,16 @@ public class YmlFile
 	
 	private void load(File ymlFile) throws FileNotFoundException
 	{
-		m_dataStorage = (Map) Yaml.load(ymlFile);		
+		final Yaml yaml = new Yaml();
+		FileReader fr = new FileReader(ymlFile);
+		
+		m_dataStorage = (Map) yaml.load(fr);
+	}
+	
+	public void fromString(String ymlFiledata)
+	{
+		final Yaml yaml = new Yaml();
+		m_dataStorage = (Map) yaml.load(ymlFiledata);
 	}
 	
 	public String get(String sectionName, String paramName)
@@ -44,32 +56,46 @@ public class YmlFile
 		return null;
 	}
 
-	public String get(String sectionName)
+	public String getString(String sectionName)
 	{
 		String section = (String) m_dataStorage.get(sectionName);
 		return section;
 	}
 	
-	public void set(String sectionName, String value) throws FileNotFoundException 
+	public Object getObject(String sectionName)
 	{
-		m_dataStorage.put(sectionName, value);
-		save();
+		Object section = (Object) m_dataStorage.get(sectionName);
+		return section;
 	}
 	
-	private void save() throws FileNotFoundException
+	public void set(String sectionName, Object value) 
+	{
+		m_dataStorage.put(sectionName, value);
+	}
+	
+	public void save() throws FileNotFoundException
 	{
 		try 
 		{
-			org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
-			String dataString = dumpEncoder.dump(m_dataStorage);
-			
-			File outFile = new File(m_filePath);
-			FileOutputStream os = new FileOutputStream(outFile);
-			os.write(dataString.getBytes());
+			if (m_filePath.length() != 0)
+			{
+				org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
+				String dataString = dumpEncoder.dump(m_dataStorage);
+				
+				File outFile = new File(m_filePath);
+				FileOutputStream os = new FileOutputStream(outFile);
+				os.write(dataString.getBytes());
+			}
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void saveTo(String newPath) throws FileNotFoundException
+	{
+		m_filePath = newPath;
+		save();
 	}
 }
