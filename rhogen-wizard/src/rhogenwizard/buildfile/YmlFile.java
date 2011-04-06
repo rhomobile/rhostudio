@@ -30,6 +30,11 @@ public class YmlFile
 		load(ymlFile);
 	}
 	
+	public String getPath()
+	{
+		return m_filePath;
+	}
+	
 	private void load(File ymlFile) throws FileNotFoundException
 	{
 		final Yaml yaml = new Yaml();
@@ -56,6 +61,22 @@ public class YmlFile
 		return null;
 	}
 
+	public String get(String mainSection, String sectionName, String paramName)
+	{
+		Map mSection = (Map) m_dataStorage.get(mainSection);
+		
+		if (null != mSection)
+		{
+			Map section = (Map) mSection.get(sectionName);
+			
+			if (null != section)
+			{
+				return (String) section.get(paramName);
+			}
+		}
+		
+		return null;
+	}
 	public String getString(String sectionName)
 	{
 		String section = (String) m_dataStorage.get(sectionName);
@@ -67,7 +88,22 @@ public class YmlFile
 		Object section = (Object) m_dataStorage.get(sectionName);
 		return section;
 	}
-	
+
+	public void set(String mainSection, String subSection, String paramName, Object value) 
+	{
+		Map mSection = (Map) m_dataStorage.get(mainSection);
+		
+		if (null != mSection)
+		{
+			Map section = (Map) mSection.get(subSection);
+			
+			if (null != section)
+			{
+				section.put(paramName, value);
+			}
+		}
+	}
+
 	public void set(String sectionName, Object value) 
 	{
 		m_dataStorage.put(sectionName, value);

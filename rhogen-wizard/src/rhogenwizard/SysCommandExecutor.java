@@ -14,11 +14,11 @@ public class SysCommandExecutor
 {	
 	private ILogDevice m_ouputLogDevice = null;
 	private ILogDevice m_errorLogDevice = null;
-	private String m_workingDirectory = null;
+	private String     m_workingDirectory = null;
 	private List<EnvironmentVar> m_environmentVarList = null;
 	
-	private StringBuffer m_cmdOutput = null;
-	private StringBuffer m_cmdError = null;
+	private StringBuffer      m_cmdOutput = null;
+	private StringBuffer      m_cmdError = null;
 	private AsyncStreamReader m_cmdOutputThread = null;
 	private AsyncStreamReader m_cmdErrorThread = null;	
 	
@@ -44,11 +44,13 @@ public class SysCommandExecutor
 		m_environmentVarList.add(new EnvironmentVar(name, value));
 	}
 	
-	public String getCommandOutput() {		
+	public String getCommandOutput()
+	{		
 		return m_cmdOutput.toString();
 	}
 	
-	public String getCommandError() {
+	public String getCommandError() 
+	{
 		return m_cmdError.toString();
 	}
 	

@@ -70,6 +70,7 @@ public class RhodesAppWizardPage extends WizardPage
 
         RowData labelAligment = new RowData(labelWidht, SWT.DEFAULT);
         RowData textAligment  = new RowData(textWidht, SWT.DEFAULT);
+        
 		// 1 row
 		Composite rowContainer1 = new Composite(composite, SWT.NULL);
 		rowContainer1.setLayout(new RowLayout());
