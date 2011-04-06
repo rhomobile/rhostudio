@@ -87,10 +87,18 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 					try 
 					{
 						EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
-						rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice);
+						
+						if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) == 0)
+						{
+							ConsoleHelper.showAppConsole();
+							startLogOutput(project, type);
+						}
+						else
+						{
+							ConsoleHelper.consolePrint("Error in build application");
+						}
+						
 						setProcessFinished(true);
-						ConsoleHelper.showAppConsole();
-						startLogOutput(project, type);
 					} 
 					catch (Exception e) 
 					{

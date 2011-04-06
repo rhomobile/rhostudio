@@ -81,7 +81,7 @@ public class RhodesAdapter
 		m_executor.runCommand(cmdLine);
 	}
 	
-	public void generateModel(String workDir, String modelName, String modelParams) throws Exception
+	public int generateModel(String workDir, String modelName, String modelParams) throws Exception
 	{
 		m_executor.setWorkingDirectory(workDir);
 		
@@ -93,10 +93,10 @@ public class RhodesAdapter
 		cmdLine.add(modelName);
 		cmdLine.add(modelParams);
 		
-		m_executor.runCommand(cmdLine);
+		return m_executor.runCommand(cmdLine);
 	}
 	
-	public void buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception
+	public int buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception
 	{
 		ConsoleHelper.consolePrint("build started");
 		
@@ -117,7 +117,7 @@ public class RhodesAdapter
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		
-		m_executor.runCommand(cmdLine);		
+		return m_executor.runCommand(cmdLine);
 	}
 	
 	private String prepareModelAttributes(String modelAttr)
