@@ -56,6 +56,7 @@ public class RhodesAdapter
 	public RhodesAdapter()
 	{
 		m_executor.setOutputLogDevice(new RhodesLogAdapter());
+		m_executor.setErrorLogDevice(new RhodesLogAdapter());
 		
 		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
 		{
