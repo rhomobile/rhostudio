@@ -16,8 +16,17 @@
             name="Rhodes application"
             project="true"> 
       </wizard>
+      
+      <wizard
+            category="RhogenAppWizard"
+            class="rhogenwizard.wizards.RhogenModelWizard"
+            icon="icons/sample16.png"
+            id="rhogenwizard.wizards.RhogenModelWizard"
+            name="Rhodes application model"> 
+      </wizard>
    </extension>
-
+   
+   <!--
    <extension point="org.eclipse.ui.popupMenus">
       <objectContribution
             objectClass="org.eclipse.core.resources.IProject"
@@ -43,14 +52,16 @@
          </action>
       </objectContribution>
    </extension>
+   -->
    
    <extension point="org.eclipse.ui.editors">
       <editor
-            name="Rhodes Editor"
-            extensions="yml"
-            icon="icons/sample16.png"
             class="rhogenwizard.editors.RhodesEditor"
-            id="rhogenwizard.editors.RhodesEditor">
+            extensions="yml"
+            filenames="rhobuild"
+            icon="icons/sample16.png"
+            id="rhogenwizard.editors.RhodesEditor"
+            name="Rhodes Editor">
       </editor>
    </extension>
    
@@ -115,4 +126,27 @@
     	</launchConfigurationTabGroup>
 	</extension>
 
+    <extension point="org.eclipse.ui.preferencePages">
+      <page
+            name="Rhomobile Preferences"
+            class="rhogenwizard.preferences.RhogenPreferencePage"
+            id="rhogenwizard.preferences.RhogenPreferencePage">
+      </page>
+    </extension>
+
+    <extension point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="rhogenwizard.preferences.PreferenceInitializer">
+      </initializer>
+    </extension>
+    <extension
+          point="org.eclipse.ui.navigator.navigatorContent">
+       <commonWizard
+             menuGroupId="asd"
+             type="new"
+             wizardId="rhogenwizard.wizards.RhogenModelWizard">
+          <enablement></enablement>
+       </commonWizard>
+    </extension>
+ 
 </plugin>
