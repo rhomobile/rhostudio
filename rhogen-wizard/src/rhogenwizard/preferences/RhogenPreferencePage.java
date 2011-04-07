@@ -56,7 +56,7 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 	public void createFieldEditors() 
 	{
 		//addField(new DirectoryFieldEditor(PreferenceConstants.BUILDFILE_PATH, 
-		//		"&Java path:", getFieldEditorParent()));
+		//		"&Rhodes folder:", getFieldEditorParent()));
 		
 		addField(new DirectoryFieldEditor(PreferenceConstants.JAVA_PATH, 
 				"&Java path:", getFieldEditorParent()));

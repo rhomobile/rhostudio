@@ -88,9 +88,8 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		GridData labelAligment = new GridData();
 		labelAligment.widthHint = labelWidht;
 		
-		GridData textAligment = new GridData();
-		textAligment.widthHint = textWidth;
-		
+		GridData textAligment = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
+		 
 		GridData buttonAligment = new GridData();
 		buttonAligment.widthHint = buttonWidht;
 		
@@ -415,7 +414,9 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 	{
 		DirectoryDialog appDirDialog = new DirectoryDialog(this.getContainer().getShell());
 		String newPath = appDirDialog.open();
-		m_rhodesPathText.setText(newPath);
+		
+		if (newPath != null)
+			m_rhodesPathText.setText(newPath);
 	}
 	
 	private String getFileLocation()

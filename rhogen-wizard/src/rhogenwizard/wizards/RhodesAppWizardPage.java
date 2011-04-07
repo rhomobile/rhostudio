@@ -1,7 +1,5 @@
 package rhogenwizard.wizards;
 
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.io.File;
 
 import org.eclipse.jface.viewers.ISelection;
@@ -11,22 +9,14 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import rhogenwizard.BuildInfoHolder;
@@ -63,22 +53,22 @@ public class RhodesAppWizardPage extends WizardPage
 	
 	public void createAppSettingBarControls(Composite composite)
 	{	
-		GridLayout layout = new GridLayout(1, true);
+		GridLayout layout = new GridLayout(3, false);
 		layout.verticalSpacing = 9;
 		
         composite.setLayout(layout);
-
-        RowData labelAligment = new RowData(labelWidht, SWT.DEFAULT);
-        RowData textAligment  = new RowData(textWidht, SWT.DEFAULT);
+        
+        GridData textAligment = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
+        
+        GridData checkBoxAligment = new GridData();
+        checkBoxAligment.horizontalAlignment = GridData.FILL;
+        checkBoxAligment.horizontalSpan = 3;
         
 		// 1 row
-		Composite rowContainer1 = new Composite(composite, SWT.NULL);
-		rowContainer1.setLayout(new RowLayout());
-		Label label = new Label(rowContainer1, SWT.NULL);
-		label.setLayoutData(labelAligment);
+		Label label = new Label(composite, SWT.NULL);
 		label.setText("&Project name:");
 		
-		m_appNameText = new Text(rowContainer1, SWT.BORDER | SWT.SINGLE);
+		m_appNameText = new Text(composite, SWT.BORDER | SWT.SINGLE);
 		m_appNameText.setLayoutData(textAligment);
 		m_appNameText.addModifyListener(new ModifyListener() 
 		{
@@ -87,13 +77,13 @@ public class RhodesAppWizardPage extends WizardPage
 			}
 		});
 		
+		label = new Label(composite, SWT.NULL);
+		
 		// 2 row
-		Composite rowContainer2 = new Composite(composite, SWT.NULL);
-		rowContainer2.setLayout(new RowLayout());
-
-		m_defaultPathButton = new Button(rowContainer2, SWT.CHECK);
+		m_defaultPathButton = new Button(composite, SWT.CHECK);
 		m_defaultPathButton.setText("Create application in default workspace");
 		m_defaultPathButton.setSelection(true);
+		m_defaultPathButton.setLayoutData(checkBoxAligment);
 		m_defaultPathButton.addSelectionListener(new SelectionAdapter() 
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -102,16 +92,12 @@ public class RhodesAppWizardPage extends WizardPage
 				dialogChanged();
 			}
 		});
-
-		// 3 row
-		Composite rowContainer3 = new Composite(composite, SWT.NULL);
-		rowContainer3.setLayout(new RowLayout());
 		
-		label = new Label(rowContainer3, SWT.NULL);
+		// 3 row
+		label = new Label(composite, SWT.NULL);
 		label.setText("&Application folder:");
-		label.setLayoutData(labelAligment);
 
-		m_appFolderText = new Text(rowContainer3, SWT.BORDER | SWT.SINGLE);
+		m_appFolderText = new Text(composite, SWT.BORDER | SWT.SINGLE);
 		m_appFolderText.setLayoutData(textAligment);
 		m_appFolderText.addModifyListener(new ModifyListener() 
 		{
@@ -121,7 +107,7 @@ public class RhodesAppWizardPage extends WizardPage
 			}
 		});
 
-		m_browseButton = new Button(rowContainer3, SWT.PUSH);
+		m_browseButton = new Button(composite, SWT.PUSH);
 		m_browseButton.setText("Browse...");
 		m_browseButton.addSelectionListener(new SelectionAdapter() 
 		{
