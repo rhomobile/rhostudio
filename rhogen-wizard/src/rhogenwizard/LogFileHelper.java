@@ -38,13 +38,11 @@ public class LogFileHelper
 		private IProject 	  m_project = null;
 		private LogFileHelper m_helper = null;
 		private String logFilePath = null;
-		//private RhodesAdapter.EPlatformType m_type = RhodesAdapter.EPlatformType.eUnknown;
 
-		public BbLogFileWaiter(IProject project, LogFileHelper helper/*, RhodesAdapter.EPlatformType type*/) throws Exception 
+		public BbLogFileWaiter(IProject project, LogFileHelper helper) throws Exception 
 		{
 			m_project = project;
 			m_helper  = helper;
-			//m_type    = type;
 			
 			if (m_project != null && m_helper != null)
 			{
@@ -111,7 +109,6 @@ public class LogFileHelper
 			adnroidLog(project);
 			break;
 		case eBb:
-			//bbLog(project);
 			waitBbLog(project);
 			break;
 		case eIPhone:
@@ -195,14 +192,19 @@ public class LogFileHelper
 		waitingLog.start();
 	}
 	
-	private void wmLog(IProject project)
+	private void wmLog(IProject project) throws Exception
 	{
+		String logPath = getLogFilePath(project, "run:wm:get_log");
 		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
 	}
 	
 	private void iphoneLog(IProject project) throws Exception
 	{
-		String logPath = getLogFilePath(project, "run:get_log");
+		String logPath = getLogFilePath(project, "run:iphone:get_log");
 		
 		if (logPath != null)
 		{
