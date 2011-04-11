@@ -9,9 +9,9 @@ import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
 
-public class RhogenPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
+public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {
-	public RhogenPreferencePage() 
+	public RhogenPreferencePageWm() 
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -25,11 +25,11 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 
 		try 
 		{
-			String javaPath = getPreferenceStore().getString(PreferenceConstants.JAVA_PATH);
+			String cabWizPath = getPreferenceStore().getString(PreferenceConstants.CAB_WIZARD_PATH);
 			
 			SdkYmlFile ymlFile = SdkYmlAdapter.getRhobuildFile();
 		
-			ymlFile.setJavaPath(javaPath);
+			ymlFile.setCabWizPath(cabWizPath);
 			
 			ymlFile.save();
 		} 
@@ -49,8 +49,8 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 	 */
 	public void createFieldEditors() 
 	{
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.JAVA_PATH, 
-				"&Java path:", getFieldEditorParent()));
+		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.CAB_WIZARD_PATH, 
+				"&Cab wizard path:", getFieldEditorParent()));
 	}
 
 	/* (non-Javadoc)

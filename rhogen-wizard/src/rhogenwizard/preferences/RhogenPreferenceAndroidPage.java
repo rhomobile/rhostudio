@@ -9,9 +9,9 @@ import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
 
-public class RhogenPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
+public class RhogenPreferenceAndroidPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {
-	public RhogenPreferencePage() 
+	public RhogenPreferenceAndroidPage() 
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -25,11 +25,13 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 
 		try 
 		{
-			String javaPath = getPreferenceStore().getString(PreferenceConstants.JAVA_PATH);
+			String sdkPath = getPreferenceStore().getString(PreferenceConstants.ANDROID_SDK_PATH);
+			String ndkPath = getPreferenceStore().getString(PreferenceConstants.ANDROID_NDK_PATH);
 			
 			SdkYmlFile ymlFile = SdkYmlAdapter.getRhobuildFile();
 		
-			ymlFile.setJavaPath(javaPath);
+			ymlFile.setAndroidNdkPath(ndkPath);
+			ymlFile.setAndroidSdkPath(sdkPath);
 			
 			ymlFile.save();
 		} 
@@ -49,8 +51,11 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 	 */
 	public void createFieldEditors() 
 	{
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.JAVA_PATH, 
-				"&Java path:", getFieldEditorParent()));
+		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.ANDROID_SDK_PATH, 
+				"&Android SDK:", getFieldEditorParent()));
+		
+		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.ANDROID_NDK_PATH, 
+				"&Android NDK:", getFieldEditorParent()));
 	}
 
 	/* (non-Javadoc)
