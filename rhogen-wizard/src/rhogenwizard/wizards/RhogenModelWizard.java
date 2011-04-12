@@ -6,8 +6,12 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +26,7 @@ import org.eclipse.ui.*;
 import org.eclipse.ui.views.navigator.*;
 
 import rhogenwizard.RhodesAdapter;
+import rhogenwizard.RhodesProjectSupport;
 
 public class RhogenModelWizard extends Wizard implements INewWizard 
 {
@@ -30,6 +35,16 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	private RhodesAdapter         m_rhogenAdapter = new RhodesAdapter();
 	private String 	              m_projectLocation = null;
 	private IProject			  m_currentProject = null;
+	
+	public RhogenModelWizard()
+	{
+		super();
+		setNeedsProgressMonitor(true);
+		
+		m_currentProject = RhodesProjectSupport.getSelectedProject();
+		m_projectLocation = m_currentProject.getLocation().toOSString();
+	}
+	
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
@@ -140,6 +155,4 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.m_selection = selection;
 	}
-	
-
 }
