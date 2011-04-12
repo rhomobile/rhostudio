@@ -23,6 +23,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -191,5 +196,32 @@ public class RhodesProjectSupport
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public static IProject getSelectedProject()
+	{
+		IProject project = null;
+		
+		IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
+		
+		if (workbenchWindows.length > 0)
+		{
+			IWorkbenchPage page = workbenchWindows[0].getActivePage(); 
+		
+			ISelection selection = page.getSelection();
+	
+			if (selection instanceof IStructuredSelection)
+			{
+				IStructuredSelection sel = (IStructuredSelection) selection;
+				Object res = sel.getFirstElement();
+				
+				if (res instanceof IResource)
+				{
+				   project = ((IResource)res).getProject();
+				}		
+			}
+		}
+		
+		return project;
 	}
 }

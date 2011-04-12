@@ -45,12 +45,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.RhodesAdapter;
+import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.StringHelper;
 import rhogenwizard.buildfile.AppYmlFile;
 
 public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
 {
-	private static String platformItems[] = {  "Android simplator", 
+	private static String platformItems[] = {  "Android simulator", 
 									           "Android phone", 
 									           "iPhone simulator", 
 									           "iPhone phone",
@@ -119,33 +120,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		
 		label = SWTFactory.createLabel(namecomp, "", 1);
 	}
-	
-	IProject getSelectedProject()
-	{
-		IProject project = null;
-		
-		IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
-		
-		if (workbenchWindows.length > 0)
-		{
-			IWorkbenchPage page = workbenchWindows[0].getActivePage(); 
-		
-			ISelection selection = page.getSelection();
-	
-			if (selection instanceof IStructuredSelection)
-			{
-				IStructuredSelection sel = (IStructuredSelection) selection;
-				Object res = sel.getFirstElement();
-				
-				if (res instanceof IResource)
-				{
-				   project = ((IResource)res).getProject();
-				}		
-			}
-		}
-		
-		return project;
-	}
 
 	@Override
 	public Control getControl() 
@@ -166,7 +140,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		
 		if (m_selProject == null)
 		{
-			m_selProject = getSelectedProject();
+			m_selProject = RhodesProjectSupport.getSelectedProject();
 
 			if (m_selProject == null)
 			{

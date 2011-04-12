@@ -30,12 +30,6 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 		try 
 		{			
 			String platformName = (String) getProject().getSessionProperty(getPlatformQualifier());
-			
-			if (kind != CLEAN_BUILD && platformName != null)
-			{
-				ConsoleHelper.consolePrint("Build project " + getProject().getName() + " for platform " + platformName);
-				//m_rhodeAdapter.buildApp(getProject().getLocation().toOSString(), platformName, false);
-			}
 		}
 		catch (Exception e) 
 		{
@@ -43,6 +37,23 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 		}
 
 		return null;
+	}
+
+	@Override
+	protected void clean(IProgressMonitor monitor) throws CoreException 
+	{
+		try 
+		{
+			ConsoleHelper.consolePrint("Clean project started");
+			m_rhodeAdapter.cleanApp(getProject().getLocation().toOSString());
+			ConsoleHelper.consolePrint("Clean application cancelled");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+
+		super.clean(monitor);
 	}
 
 	protected void fullBuild(final IProgressMonitor monitor) throws CoreException 
