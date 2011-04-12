@@ -238,22 +238,35 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		String appLog  = m_appLogText.getText();
 		String sdkPath = m_rhodesPathText.getText();
 		
+		String sdkAppName = m_ymlFile.getAppName();
+		String sdkAppLog  = m_ymlFile.getAppLog();
+		String sdkSdkPath = m_ymlFile.getSdkPath();
+		
 		if (appName != null && appName.length() != 0)
 		{
-			m_ymlFile.setAppName(appName);
-			applyChanges();
+			if (!appName.equals(sdkAppName))
+			{
+				m_ymlFile.setAppName(appName);
+				applyChanges();
+			}
 		}
 		
 		if (appLog != null && appLog.length() != 0)
 		{
-			m_ymlFile.setAppLog(appLog);
-			applyChanges();
+			if (!sdkAppLog.equals(appLog))
+			{
+				m_ymlFile.setAppLog(appLog);
+				applyChanges();
+			}
 		}
 		
 		if (sdkPath != null && sdkPath.length() != 0)
 		{
-			m_ymlFile.setSdkPath(sdkPath);
-			applyChanges();
+			if (!sdkSdkPath.equals(sdkPath))
+			{
+				m_ymlFile.setSdkPath(sdkPath);
+				applyChanges();
+			}
 		}
 	}
 
