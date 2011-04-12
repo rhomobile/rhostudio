@@ -176,21 +176,6 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 				handleAddCapab();
 			}
 		});
-		
-		// end row
-//		label = new Label(composite, SWT.NULL);
-//		label = new Label(composite, SWT.NULL);
-		
-//		m_applyButton = new Button(composite, SWT.PUSH);
-//		m_applyButton.setText("Apply");
-//		m_applyButton.setLayoutData(buttonAligment);
-//		m_applyButton.addSelectionListener(new SelectionAdapter() 
-//		{
-//			public void widgetSelected(SelectionEvent e) 
-//			{
-//				applyChanges();
-//			}
-//		});
 
 		int index = addPage(composite);
 		setPageText(index, "Rhobuild setting");
@@ -208,6 +193,8 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 				return;
 
 			FileEditorInput fileEditor = (FileEditorInput)editorInput;
+
+			m_editor.updatePartControl(fileEditor);
 			
 			fileEditor.getFile().getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 		} 
@@ -370,6 +357,11 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 			
 				return;
 			}	
+			
+			if (newPageIndex == 1)
+			{
+				m_editor.setInput(new FileEditorInput(getFile()));
+			}
 		} 
 		catch (FileNotFoundException e) 
 		{
@@ -411,7 +403,7 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 			m_rhodesPathText.setText(newPath);
 	}
 
-	private String getFileName()
+	private IFile getFile()
 	{
 		IEditorInput editorInput = getEditorInput();
 		
@@ -422,7 +414,17 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		
 		IFile currFile = fileEditorInput.getFile();
 		
-		return currFile.getName();
+		return currFile;
+	}
+	
+	private String getFileName()
+	{
+		IFile currFile = getFile();
+
+		if (currFile != null)
+			return currFile.getName();
+		
+		return null;
 	}
 	
 	private String getFileLocation()
