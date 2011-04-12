@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -104,7 +105,6 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 		{
 			public void widgetSelected(SelectionEvent event) 
 			{
-				setFont();
 			}
 		});
 
@@ -134,8 +134,6 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 	protected void createPages() 
 	{
 		createPage0();
-		createPage1();
-		createPage2();
 	}
 	
 	/**
@@ -189,6 +187,8 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 			throw new PartInitException("Invalid Input: Must be IFileEditorInput");
 		
 		super.init(site, editorInput);
+		
+		setTitle(getFileName());
 	}
 	
 	/* (non-Javadoc)
@@ -205,10 +205,6 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 	protected void pageChange(int newPageIndex) 
 	{
 		super.pageChange(newPageIndex);
-		
-		if (newPageIndex == 2) {
-			sortWords();
-		}
 	}
 	
 	/**
@@ -234,51 +230,18 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 			});
 		}
 	}
-	
-	/**
-	 * Sets the font related data to be applied to the text in page 2.
-	 */
-	void setFont() 
-	{
-		FontDialog fontDialog = new FontDialog(getSite().getShell());
-		fontDialog.setFontList(text.getFont().getFontData());
-		FontData fontData = fontDialog.open();
-		
-		if (fontData != null) 
-		{
-			if (font != null)
-				font.dispose();
-			font = new Font(text.getDisplay(), fontData);
-			text.setFont(font);
-		}
-	}
-	
-	/**
-	 * Sorts the words in page 0, and shows them in page 2.
-	 */
-	void sortWords() 
-	{
-		String editorText = editor.getDocumentProvider().getDocument(editor.getEditorInput()).get();
 
-		StringTokenizer tokenizer =
-			new StringTokenizer(editorText, " \t\n\r\f!@#\u0024%^&*()-_=+`~[]{};:'\",.<>/?|\\");
+	private String getFileName()
+	{
+		IEditorInput editorInput = getEditorInput();
 		
-		ArrayList editorWords = new ArrayList();
-		
-		while (tokenizer.hasMoreTokens())
-		{
-			editorWords.add(tokenizer.nextToken());
-		}
+		if (!(editorInput instanceof IFileEditorInput))
+			return null;
 
-		Collections.sort(editorWords, Collator.getInstance());
-		StringWriter displayText = new StringWriter();
+		IFileEditorInput fileEditorInput = (IFileEditorInput)editorInput;
 		
-		for (int i = 0; i < editorWords.size(); i++) 
-		{
-			displayText.write(((String) editorWords.get(i)));
-			displayText.write(System.getProperty("line.separator"));
-		}
+		IFile currFile = fileEditorInput.getFile();
 		
-		text.setText(displayText.toString());
+		return currFile.getName();
 	}
 }

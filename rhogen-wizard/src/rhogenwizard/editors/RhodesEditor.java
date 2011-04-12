@@ -178,19 +178,19 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		});
 		
 		// end row
-		label = new Label(composite, SWT.NULL);
-		label = new Label(composite, SWT.NULL);
+//		label = new Label(composite, SWT.NULL);
+//		label = new Label(composite, SWT.NULL);
 		
-		m_applyButton = new Button(composite, SWT.PUSH);
-		m_applyButton.setText("Apply");
-		m_applyButton.setLayoutData(buttonAligment);
-		m_applyButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(SelectionEvent e) 
-			{
-				applyChanges();
-			}
-		});
+//		m_applyButton = new Button(composite, SWT.PUSH);
+//		m_applyButton.setText("Apply");
+//		m_applyButton.setLayoutData(buttonAligment);
+//		m_applyButton.addSelectionListener(new SelectionAdapter() 
+//		{
+//			public void widgetSelected(SelectionEvent e) 
+//			{
+//				applyChanges();
+//			}
+//		});
 
 		int index = addPage(composite);
 		setPageText(index, "Rhobuild setting");
@@ -210,8 +210,6 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 			FileEditorInput fileEditor = (FileEditorInput)editorInput;
 			
 			fileEditor.getFile().getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
-			
-			m_applyButton.setEnabled(false);
 		} 
 		catch (CoreException e) 
 		{
@@ -231,8 +229,6 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 
 	private void showCapabilitiesText(List<String> capList)
 	{
-		//m_applyButton.setEnabled(false);
-		
 		if (capList != null)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -246,15 +242,11 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 			m_capabText.setText(sb.toString());
 			
 			m_ymlFile.setCapabilities(capList);
-			
-			m_applyButton.setEnabled(true);
 		}
 	}
 	
 	private void dialogChanged() 
 	{
-		//m_applyButton.setEnabled(false);
-		
 		String appName = m_appNameText.getText();
 		String appLog  = m_appLogText.getText();
 		String sdkPath = m_rhodesPathText.getText();
@@ -262,19 +254,19 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		if (appName != null && appName.length() != 0)
 		{
 			m_ymlFile.setAppName(appName);
-			m_applyButton.setEnabled(true);
+			applyChanges();
 		}
 		
 		if (appLog != null && appLog.length() != 0)
 		{
 			m_ymlFile.setAppLog(appLog);
-			m_applyButton.setEnabled(true);
+			applyChanges();
 		}
 		
 		if (sdkPath != null && sdkPath.length() != 0)
 		{
 			m_ymlFile.setSdkPath(sdkPath);
-			m_applyButton.setEnabled(true);
+			applyChanges();
 		}
 	}
 
@@ -343,6 +335,8 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 			throw new PartInitException("Invalid Input: Must be IFileEditorInput");
 		
 		super.init(site, editorInput);
+		
+		setTitle(getFileName());
 	}
 	
 	/* (non-Javadoc)
@@ -373,9 +367,7 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 				m_appNameText.setText(m_ymlFile.getAppName());
 				
 				showCapabilitiesText(m_ymlFile.getCapabilities());
-				
-				m_applyButton.setEnabled(false);
-				
+			
 				return;
 			}	
 		} 
@@ -417,6 +409,20 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		
 		if (newPath != null)
 			m_rhodesPathText.setText(newPath);
+	}
+
+	private String getFileName()
+	{
+		IEditorInput editorInput = getEditorInput();
+		
+		if (!(editorInput instanceof IFileEditorInput))
+			return null;
+
+		IFileEditorInput fileEditorInput = (IFileEditorInput)editorInput;
+		
+		IFile currFile = fileEditorInput.getFile();
+		
+		return currFile.getName();
 	}
 	
 	private String getFileLocation()
