@@ -22,7 +22,7 @@
             class="rhogenwizard.wizards.RhogenModelWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenModelWizard"
-            name="Rhodes application model"> 
+            name="Rhodes model"> 
       </wizard>
    </extension>
    
@@ -132,6 +132,24 @@
             class="rhogenwizard.preferences.RhogenPreferencePage"
             id="rhogenwizard.preferences.RhogenPreferencePage">
       </page>
+      <page
+            category="rhogenwizard.preferences.RhogenPreferencePage"
+            class="rhogenwizard.preferences.RhogenPreferenceAndroidPage"
+            id="rhogen-wizard.page1"
+            name="Android">
+      </page>
+      <page
+            category="rhogenwizard.preferences.RhogenPreferencePage"
+            class="rhogenwizard.preferences.RhogenPreferencePageBb"
+            id="rhogen-wizard.page2"
+            name="Blackberry">
+      </page>
+      <page
+            category="rhogenwizard.preferences.RhogenPreferencePage"
+            class="rhogenwizard.preferences.RhogenPreferencePageWm"
+            id="rhogen-wizard.page3"
+            name="Windows Mobile">
+      </page>
     </extension>
 
     <extension point="org.eclipse.core.runtime.preferences">
@@ -139,8 +157,8 @@
             class="rhogenwizard.preferences.PreferenceInitializer">
       </initializer>
     </extension>
-    <extension
-          point="org.eclipse.ui.navigator.navigatorContent">
+    
+    <extension point="org.eclipse.ui.navigator.navigatorContent">
        <commonWizard
              menuGroupId="asd"
              type="new"
