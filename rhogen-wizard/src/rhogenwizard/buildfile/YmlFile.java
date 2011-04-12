@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
@@ -77,6 +78,86 @@ public class YmlFile
 		
 		return null;
 	}
+	
+
+	public Object getObject(String mainSection, String sectionName)
+	{
+		Map mSection = (Map) m_dataStorage.get(mainSection);
+		
+		if (null != mSection)
+		{
+			return  mSection.get(sectionName);
+		}
+		
+		return null;
+	}
+	
+	public String get(String commonSection, String mainSection, String sectionName, String paramName)
+	{
+		try
+		{
+			Map comSection =  (Map) m_dataStorage.get(commonSection);
+			
+			if (comSection == null)
+				return null;
+			
+			Map mSection = (Map) comSection.get(mainSection);
+			
+			if (null != mSection)
+			{
+				Map section = (Map) mSection.get(sectionName);
+				
+				if (null != section)
+				{
+					return (String) section.get(paramName).toString();
+				}
+				
+				section = (Map) mSection.get(new Double(sectionName));
+				
+				if (null != section)
+				{
+					return (String) section.get(paramName).toString();
+				}
+			}
+		}
+		catch(Exception e) {
+		}
+
+		return null;
+	}
+	
+	public void set(String commonSection, String mainSection, Object sectionName, String paramName, Object value)
+	{
+		try
+		{
+			Map comSection =  (Map) m_dataStorage.get(commonSection);
+			
+			if (comSection != null)
+			{			
+				Map mSection = (Map) comSection.get(mainSection);
+				
+				if (null != mSection)
+				{
+					Map section = (Map) mSection.get(sectionName);
+					
+					if (null != section)
+					{
+						section.put(paramName, value);
+					}
+					else
+					{
+						LinkedHashMap m = new LinkedHashMap();
+						m.put(paramName, value);
+						mSection.put(sectionName, m);
+					}
+				}
+			}
+		}
+		catch(Exception e) 
+		{
+		}
+	}
+	
 	public String getString(String sectionName)
 	{
 		String section = (String) m_dataStorage.get(sectionName);

@@ -2,6 +2,10 @@ package rhogenwizard.buildfile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SdkYmlFile extends YmlFile 
 {
@@ -60,5 +64,54 @@ public class SdkYmlFile extends YmlFile
 	public void setCabWizPath(String newCabWizPath)
 	{
 		super.set("env", "paths", "cabwiz", (Object)newCabWizPath);
+	}
+
+	public String getBbJdkPath(String version)
+	{
+		return super.get("env", "paths", version, "jde");
+	}
+
+	public void setBbJdkPath(String version, String value)
+	{
+		super.set("env", "paths", new Double(version), "jde", value);
+	}
+	
+	public String getBbMdsPath(String version) 
+	{
+		return super.get("env", "paths", version, "mds");
+	}
+	
+	public void setBbMdsPath(String version, String value)
+	{
+		super.set("env", "paths", new Double(version), "mds", value);
+	}
+
+	public String getBbSimPort(String version) 
+	{
+		return super.get("env", "paths", version, "sim");
+	}
+	
+	public void setBbSimPort(String version, Integer value)
+	{
+		super.set("env", "paths", new Double(version), "sim", value);
+	}
+	
+	public List<String> getBbVersions()
+	{
+		List<String> versions = new ArrayList<String>();
+		
+		Map pathItems = (Map) super.getObject("env", "paths");
+		
+		Set keys = pathItems.keySet();
+		
+		for (Object s : keys)
+		{
+			if (s instanceof Double)
+			{
+				versions.add(s.toString());
+			}
+		}
+		
+		return versions;
 	}
 }
