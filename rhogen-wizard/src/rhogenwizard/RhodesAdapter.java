@@ -195,4 +195,14 @@ public class RhodesAdapter
 		
 		return m_executor.getCommandOutput();
 	}
+
+	public void cleanApp(String workDir) throws Exception 
+	{
+		String cleanCmd = "clean:";
+
+		runRakeTask(workDir, cleanCmd + platformWinMobile);
+		runRakeTask(workDir, cleanCmd + platformAdroid);
+		runRakeTask(workDir, cleanCmd + platformBlackBerry);
+		runRakeTask(workDir, cleanCmd + platformIPhone);
+	}
 }
