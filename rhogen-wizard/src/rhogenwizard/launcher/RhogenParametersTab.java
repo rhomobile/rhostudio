@@ -19,6 +19,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -49,8 +50,18 @@ import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.StringHelper;
 import rhogenwizard.buildfile.AppYmlFile;
 
+class ControlWrapper extends Composite
+{
+
+	public ControlWrapper(Composite parent, int style) {
+		super(parent, style);
+	}
+
+}
+
 public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
 {
+	private static int    minTabSize      = 650;
 	private static String platformItems[] = {  "Android simulator", 
 									           "Android phone", 
 									           "iPhone simulator", 
@@ -76,9 +87,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	{
 		Composite composite = SWTFactory.createComposite(parent, 1, 1, GridData.FILL_HORIZONTAL);
 		m_comp = composite;
-
+		
 		Composite namecomp = SWTFactory.createComposite(composite, composite.getFont(), 3, 1, GridData.FILL_HORIZONTAL, 0, 0);
-
+		
 		// 1 row
 		Label label = SWTFactory.createLabel(namecomp, "&Project name:", 1);
 
@@ -124,6 +135,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	@Override
 	public Control getControl() 
 	{
+		m_comp.setSize(500, 500);
 		return m_comp;
 	}
 
@@ -166,7 +178,15 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	public void initializeFrom(ILaunchConfiguration configuration) 
 	{
 		try 
-		{			
+		{		
+			Control scrollParent = getLaunchConfigurationDialog().getActiveTab().getControl().getParent();
+			
+			if (scrollParent instanceof ScrolledComposite)
+			{
+				ScrolledComposite sc = (ScrolledComposite)scrollParent;
+				sc.setMinSize(scrollParent.computeSize(minTabSize, SWT.DEFAULT));	
+			}
+			
 			String selProjectName = null, selProjectPlatform = null;
 			selProjectName        = configuration.getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
 			selProjectPlatform    = configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
