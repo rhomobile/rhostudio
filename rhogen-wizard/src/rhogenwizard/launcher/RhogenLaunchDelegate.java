@@ -78,7 +78,12 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			}
 			
 			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-									
+						
+			if (!project.isOpen())
+			{
+				throw new IllegalArgumentException("Error - Project not found ");
+			}
+			
 			Thread cancelingThread = new Thread(new Runnable() 
 			{	
 				@Override
