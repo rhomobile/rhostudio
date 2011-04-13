@@ -155,9 +155,8 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		label.setText("Capabilities:");
 		label.setLayoutData(labelAligment);
 		
-		m_capabText = new Text(composite, SWT.BORDER | SWT.SINGLE);
+		m_capabText = new Text(composite, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		m_capabText.setLayoutData(textAligment);
-		m_capabText.setEnabled(false);
 		m_capabText.addModifyListener(new ModifyListener() 
 		{
 			public void modifyText(ModifyEvent e)
@@ -212,6 +211,7 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 	{
 		CapabDialog dlg = new CapabDialog(getContainer().getShell(), m_ymlFile);
 		showCapabilitiesText(dlg.open());
+		applyChanges();
 	}
 
 	private void showCapabilitiesText(List<String> capList)
@@ -374,9 +374,14 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 			if (newPageIndex == 1)
 			{
 				m_editor.setInput(new FileEditorInput(getFile()));
+				getFile().getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
 		} 
 		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (CoreException e) 
 		{
 			e.printStackTrace();
 		} 
