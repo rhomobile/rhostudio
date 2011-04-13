@@ -123,7 +123,7 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 		addField(m_selectCombo);
 		
 		m_bbVer = new StringFieldEditor(PreferenceConstants.BB_VERSION_NAME, 
-				"Blackberry version name:", getFieldEditorParent());
+				"Version name:", getFieldEditorParent());
 		addField(m_bbVer);
 		
 		m_jdkDir = new RhogenDirectoryFieldEditor(PreferenceConstants.BB_JDK_PATH, 
@@ -135,7 +135,7 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 		addField(m_mdsDir);
 		
 		m_simPort =  new StringFieldEditor(PreferenceConstants.BB_SIM, 
-				"Blackberry simulator port:", getFieldEditorParent());
+				"Simulator device:", getFieldEditorParent());
 		addField(m_simPort);
 	}
 
