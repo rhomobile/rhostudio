@@ -82,4 +82,16 @@ public class ConsoleHelper
 	   MessageConsole myConsole = findConsole(appConsoleName);
 	   conMan.showConsoleView(myConsole);
    }
+   
+   public static void cleanAppConsole()
+   {
+	   MessageConsole myConsole = findConsole(appConsoleName);
+	   myConsole.clearConsole();
+   }
+
+   public static void cleanBuildConsole()
+   {
+	   MessageConsole myConsole = findConsole(buildConsoleName);
+	   myConsole.clearConsole();
+   }
 }

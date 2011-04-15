@@ -16,6 +16,8 @@ import rhogenwizard.ConsoleHelper;
 
 public class YmlFile
 {
+	private static boolean SNAKE_YAML_SAVE = false;
+	
 	private String m_filePath = null;
 	private Map m_dataStorage = null;
 	
@@ -199,40 +201,46 @@ public class YmlFile
 	
 	public void save() throws FileNotFoundException
 	{
-//		try 
-//		{
+		try 
+		{
 			if (m_filePath.length() != 0)
 			{
-//				org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
-//				String dataString = dumpEncoder.dump(m_dataStorage);
-//				
-//				File outFile = new File(m_filePath);
-//				FileOutputStream os = new FileOutputStream(outFile);
-//				os.write(dataString.getBytes());
+				String dataString = null;
+
+				File outFile = new File(m_filePath);
+				FileOutputStream os = new FileOutputStream(outFile);
+
+				if (SNAKE_YAML_SAVE)
+				{
+					org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
+					dataString = dumpEncoder.dump(m_dataStorage);
+				}
+				else
+				{
+					StringBuilder sb = new StringBuilder();
+					
+				    Iterator it = m_dataStorage.entrySet().iterator();
+				    
+				    while (it.hasNext()) 
+				    {
+				        Map.Entry pairs = (Map.Entry)it.next();
+				        
+				        Object key = (Object) pairs.getKey();
+				        Object val = pairs.getValue();
+				        
+				        saveSelector(sb, "", key.toString(), val);
+				    }
+				    
+				    dataString = sb.toString();
+				}
 				
-				StringBuilder sb = new StringBuilder();
-				
-				//saveMap(sb, "", null, m_dataStorage);
-			    
-			    Iterator it = m_dataStorage.entrySet().iterator();
-			    
-			    while (it.hasNext()) 
-			    {
-			        Map.Entry pairs = (Map.Entry)it.next();
-			        
-			        Object key = (Object) pairs.getKey();
-			        Object val = pairs.getValue();
-			        
-			        saveSelector(sb, "", key.toString(), val);
-			    }
-			    
-			    ConsoleHelper.consolePrint(sb.toString());
+			    os.write(dataString.getBytes());
 			}
-//		} 
-//		catch (IOException e) 
-//		{
-//			e.printStackTrace();
-//		}
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	void saveSelector(StringBuilder sb, String prefix, String name, Object val)

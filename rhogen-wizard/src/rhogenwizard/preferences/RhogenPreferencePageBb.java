@@ -2,6 +2,7 @@ package rhogenwizard.preferences;
 
 import java.util.List;
 
+import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.preference.*;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -13,7 +14,8 @@ import rhogenwizard.Activator;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 
-public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
+
+public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements IWorkbenchPreferencePage, IItemAddedNotifier
 {
 	private static final String newVersionLabel = "New version";
 	
@@ -44,7 +46,7 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 
 		try 
 		{
-			String bbVersionName = m_bbVer.getStringValue();
+			String bbVersionName = m_selectCombo.getCombo().getText();
 			String bbJdkPath     = m_jdkDir.getStringValue();
 			String bbMdsPath     = m_mdsDir.getStringValue();
 			String bbSimPort     = m_simPort.getStringValue();
@@ -90,16 +92,13 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 			comboItems[i] = newItem;
 		}
 		
-//		String[] newVerItem = {newVersionLabel, newVersionLabel};
-//		comboItems[bbVers.size()] = newVerItem;
-
 		return comboItems;
 	}
 
 	public void createFieldEditors() 
 	{
 		m_selectCombo = new RhogenComboFieldEditor(PreferenceConstants.BB_VERSION, 
-				"Blackberry version:", prepareComboItems(), getFieldEditorParent());
+				"Blackberry version:", prepareComboItems(), getFieldEditorParent(), this);
 		
 		m_selectCombo.setSelectionListener(new SelectionAdapter() 
 		{
@@ -121,7 +120,6 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 						m_mdsDir.setStringValue(bbMdsPath);
 						m_jdkDir.setStringValue(bbJdkPath);
 						m_simPort.setStringValue(bbSimPort);
-						m_bbVer.setStringValue(bbVer);
 					}
 				} 
 				catch (Exception e1) 
@@ -132,10 +130,6 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 		});
 		
 		addField(m_selectCombo);
-		
-//		m_bbVer = new StringFieldEditor(PreferenceConstants.BB_VERSION_NAME, 
-//				"Version name:", getFieldEditorParent());
-//		addField(m_bbVer);
 		
 		m_jdkDir = new RhogenDirectoryFieldEditor(PreferenceConstants.BB_JDK_PATH, 
 				"&Blackbery JDE path:", getFieldEditorParent());
@@ -156,5 +150,10 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 	public void init(IWorkbench workbench) 
 	{
 		m_pInit = PreferenceInitializer.getInstance();
+	}
+
+	@Override
+	public void addNewValue(String value) 
+	{
 	}	
 }

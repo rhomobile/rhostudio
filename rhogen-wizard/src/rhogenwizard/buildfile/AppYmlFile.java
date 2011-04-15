@@ -117,11 +117,11 @@ public class AppYmlFile extends YmlFile
 
 	public String getAndroidEmuName() 
 	{
-		return "";
+		return super.get("android", "emulator");
 	}
 
 	public void setAndroidEmuName(String newName)
 	{
-		//super.set("android", "version", newName);
+		super.set("android", "emulator", newName);
 	}
 }

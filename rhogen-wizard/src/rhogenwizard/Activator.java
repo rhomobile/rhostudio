@@ -33,8 +33,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		
-		ConsoleHelper.consolePrint("");
-		ConsoleHelper.consoleAppPrint("");
+		ConsoleHelper.consoleAppPrint(" ");
+		ConsoleHelper.consolePrint(" ");
 	}
 
 	/*

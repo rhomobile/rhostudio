@@ -1,6 +1,8 @@
 package rhogenwizard.preferences;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
@@ -8,21 +10,44 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
+class DoubleValidator implements IInputValidator
+{
+	@Override
+	public String isValid(String newText) {
+		try
+		{
+			Double v = new Double(newText);
+			return v.toString();
+		}
+		catch(NumberFormatException e)
+		{
+		}
+
+		return "";
+	}
+}
 
 public class RhogenComboFieldEditor extends FieldEditor
 {
+	private Button fNewVersin = null;
 	private Combo fCombo;
 	private String fValue;
 	private String[][] fEntryNamesAndValues;
-
-	public RhogenComboFieldEditor(String name, String labelText, String[][] entryNamesAndValues, Composite parent) 
+	private IItemAddedNotifier fNewValueNotify = null;
+	
+	public RhogenComboFieldEditor(String name, String labelText, String[][] entryNamesAndValues,
+			Composite parent, IItemAddedNotifier notifier) 
 	{
 		init(name, labelText);
 		Assert.isTrue(checkArray(entryNamesAndValues));
 		fEntryNamesAndValues = entryNamesAndValues;
+		fNewValueNotify = notifier;
 		createControl(parent);		
 	}
 
@@ -57,8 +82,6 @@ public class RhogenComboFieldEditor extends FieldEditor
 				((GridData)control.getLayoutData()).horizontalSpan = 1;
 				left = left - 1;
 			}
-			
-			((GridData)fCombo.getLayoutData()).horizontalSpan = left;
 		} 
 		else
 		{
@@ -73,7 +96,8 @@ public class RhogenComboFieldEditor extends FieldEditor
 		}
 	}
 
-	protected void doFillIntoGrid(Composite parent, int numColumns) 
+	
+	protected void doFillIntoGrid(final Composite parent, int numColumns) 
 	{
 		int comboC = 1;
 		if (numColumns > 1) 
@@ -87,10 +111,33 @@ public class RhogenComboFieldEditor extends FieldEditor
 		control.setLayoutData(gd);
 		control = getComboBoxControl(parent);
 		gd = new GridData();
-		gd.horizontalSpan = comboC;
 		gd.horizontalAlignment = GridData.FILL;
 		control.setLayoutData(gd);
 		control.setFont(parent.getFont());
+		
+		fNewVersin = new Button(parent, SWT.PUSH);
+		fNewVersin.setText("New Version");
+		fNewVersin.setLayoutData(gd);
+		fNewVersin.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				final Shell parentShell = parent.getShell();
+				InputDialog inputDlg = new InputDialog(parentShell, "New version", 
+						"New Blackberry SDK version", "", null);
+				inputDlg.open();
+				
+				if (fNewValueNotify != null)
+				{
+					fNewValueNotify.addNewValue(inputDlg.getValue());
+				}
+				
+				fCombo.add(inputDlg.getValue());
+
+				super.widgetSelected(e);
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -126,7 +173,7 @@ public class RhogenComboFieldEditor extends FieldEditor
 	 */
 	public int getNumberOfControls() 
 	{
-		return 2;
+		return 3;
 	}
 
 	/*

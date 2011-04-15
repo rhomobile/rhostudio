@@ -68,6 +68,8 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			
 			rhodesLogHelper.stopLog();
 			
+			ConsoleHelper.cleanBuildConsole();
+			
 			m_projectName   = configuration.getAttribute(projectNameCfgAttribute, "");
 			m_platformName  = configuration.getAttribute(platforrmCfgAttribute, "");
 			m_appLogName    = configuration.getAttribute(prjectLogFileName, "");
