@@ -313,6 +313,7 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 	 */
 	public void doSave(IProgressMonitor monitor)
 	{
+		m_editor.doSave(monitor);
 	}
 	
 	/**
@@ -358,13 +359,20 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		{	
 			if (newPageIndex == 0)
 			{
+				m_editor.doSave(null);
+				
 				String pathToFile = getFileLocation();
 				
+				m_ymlFile = null;
 				m_ymlFile = new AppYmlFile(pathToFile);
 				
-				m_appLogText.setText(m_ymlFile.getAppLog());
-				m_rhodesPathText.setText(m_ymlFile.getSdkPath());
-				m_appNameText.setText(m_ymlFile.getAppName());
+				String sdk = m_ymlFile.getSdkPath();
+				String appName = m_ymlFile.getAppName();
+				String logName = m_ymlFile.getAppLog();
+				
+				m_appLogText.setText(logName);
+				m_rhodesPathText.setText(sdk);
+				m_appNameText.setText(appName);
 				
 				showCapabilitiesText(m_ymlFile.getCapabilities());
 			
