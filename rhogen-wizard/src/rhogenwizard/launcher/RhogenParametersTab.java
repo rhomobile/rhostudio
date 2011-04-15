@@ -11,6 +11,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -63,6 +64,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	Text 		m_appLogText = null;
 	Text        m_adroidEmuNameText = null;
 	Button 		m_cleanButton = null;
+	Label       m_androidEmuNameLabel = null;
 	
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
@@ -141,19 +143,24 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		});
 
 		// 3 row
-		label = SWTFactory.createLabel(namecomp, "Emulator name", 1);
+		m_androidEmuNameLabel = SWTFactory.createLabel(namecomp, "Emulator name", 1);
 		
-		m_adroidEmuNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE, 1);	
+		m_adroidEmuNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY, 1);
 		m_adroidEmuNameText.addModifyListener(new ModifyListener() 
 		{
 			public void modifyText(ModifyEvent e) 
 			{
+			}
+		});
+		
+		Button changeButton = SWTFactory.createPushButton(namecomp, "Change...", null);
+		changeButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e) 
+			{
 				if (m_configuration != null)
 				{
-					String newText = m_adroidEmuNameText.getText();
-					m_configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, newText);
-					
-					changeAdroidEmuName(newText);
+					encodeAndroidEmuName(m_adroidEmuNameText.getText());
 					showApplyButton();
 				}
 			}
@@ -179,6 +186,12 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				}
 			}
 		});
+	}
+	
+	private void showAndroidEmuName(boolean isVisible)
+	{
+		m_androidEmuNameLabel.setVisible(isVisible);
+		m_adroidEmuNameText.setVisible(isVisible);
 	}
 
 	protected void changeAdroidEmuName(String newName) 
@@ -208,8 +221,10 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			{
 				m_configuration.setAttribute(RhogenLaunchDelegate.androidVersionAttribute, m_ymlFile.getAndroidVer());
 				m_configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, m_ymlFile.getBlackberryVer());
+				m_configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, m_ymlFile.getAndroidEmuName());
 				
 				setPlatformVersionCombo();
+				//setAndroidEmuName();
 			}
 		} 
 		catch (FileNotFoundException e) 
@@ -218,6 +233,32 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 	}
 
+	private void setAndroidEmuName()
+	{
+		try 
+		{
+			showAndroidEmuName(false);
+			
+			String selProjectPlatform = m_configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
+			String emuName            = m_configuration.getAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, "");
+			
+			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+			{
+				showAndroidEmuName(true);
+				
+				if (!m_adroidEmuNameText.getText().equals(emuName))
+				{
+					m_adroidEmuNameText.setText(emuName);
+				}
+			}
+		}
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) 
 	{
@@ -284,7 +325,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			boolean onDevice      = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
 			boolean isClean       = configuration.getAttribute(RhogenLaunchDelegate.isCleanAttribute, false);
 			
-			
 			if (selProjectName != "")
 			{
 				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
@@ -312,15 +352,12 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			String selBlackBarryVer   = m_configuration.getAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, "");
 			String selAndroidEmuName  = m_configuration.getAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, "");
 			
-			m_adroidEmuNameText.setVisible(false);
-			
 			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
-				m_adroidEmuNameText.setVisible(true);
-				m_adroidEmuNameText.setText(selAndroidEmuName);
-				
 				showAndroidVersions();
 				showVersionCombo(true);
+				showAndroidEmuName(true);
+				setAndroidEmuName();
 				
 				for (int idx=0; idx < androidVersions.length; idx++)
 				{
@@ -454,6 +491,29 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 	}
 	
+	void encodeAndroidEmuName(String emuName)
+	{
+		try 
+		{
+			InputDialog inputDlg = new InputDialog(getShell(), "New emulator name", "New emulator name", "", null);
+			inputDlg.setDefaultImage(null);
+			
+			if (inputDlg.open() == InputDialog.OK)
+			{
+				String newEmuName = inputDlg.getValue();
+				
+				m_adroidEmuNameText.setText(newEmuName);
+				m_configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, newEmuName);
+				m_ymlFile.setAndroidEmuName(newEmuName);
+				m_ymlFile.save();
+			}
+		}
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	void encodeVersionCombo(String selVersion)
 	{
 		try
@@ -549,5 +609,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 		
 		setPlatformVersionCombo();
+		setAndroidEmuName();
 	}
 }
