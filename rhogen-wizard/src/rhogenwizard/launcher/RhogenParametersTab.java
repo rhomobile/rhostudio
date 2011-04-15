@@ -1,5 +1,8 @@
 package rhogenwizard.launcher;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -28,15 +31,8 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
-
-class ControlWrapper extends Composite
-{
-
-	public ControlWrapper(Composite parent, int style) {
-		super(parent, style);
-	}
-
-}
+import rhogenwizard.buildfile.AppYmlFile;
+import rhogenwizard.buildfile.SdkYmlFile;
 
 public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
 {
@@ -50,22 +46,36 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 									           "Blackberry simulator",
 									           "Blackberry phone" };
 	
+	private static String androidVersions[] = { "1.5",
+											    "1.6",
+											    "2.1",
+											    "2.2",
+											    "2.3",
+											    "2.3.3",
+											    "3.0" };
+	
+	private static String bbVersions[] = {};
+	
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
+	Combo       m_selectPlatformVersionCombo = null;
 	Text 		m_appNameText = null;
 	Text 		m_appLogText = null;
+	Text        m_adroidEmuNameText = null;
+	Button 		m_cleanButton = null;
 	
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
+	String      m_selPlatformVersion = null;
 	
 	ILaunchConfigurationWorkingCopy m_configuration;
+	AppYmlFile m_ymlFile = null;
 	
 	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(final Composite parent)
 	{
 		Composite composite = SWTFactory.createComposite(parent, 1, 1, GridData.FILL_HORIZONTAL);
-		composite.setSize(parent.getSize().x, parent.getSize().y);
 		m_comp = composite;
 		
 		Composite namecomp = SWTFactory.createComposite(composite, composite.getFont(), 3, 1, GridData.FILL_HORIZONTAL, 0, 0);
@@ -107,19 +117,81 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				if (m_configuration != null)
 				{
 					encodePlatformInformation(m_selectPlatformCombo.getText());
+					showApplyButton();
 				}
-				
-				showApplyButton();
 			}
 		});
 		
-		label = SWTFactory.createLabel(namecomp, "", 1);
+        GridData comboAligment = new GridData();
+        comboAligment.horizontalAlignment = GridData.FILL;
+        
+		m_selectPlatformVersionCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, androidVersions);
+		m_selectPlatformVersionCombo.setLayoutData(comboAligment);
+		m_selectPlatformVersionCombo.addSelectionListener(new SelectionAdapter()
+		{	
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				if (m_configuration != null)
+				{
+					encodeVersionCombo(m_selectPlatformVersionCombo.getText());
+					showApplyButton();
+				}
+			}
+		});
+
+		// 3 row
+		label = SWTFactory.createLabel(namecomp, "Emulator name", 1);
+		
+		m_adroidEmuNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE, 1);	
+		m_adroidEmuNameText.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(ModifyEvent e) 
+			{
+				if (m_configuration != null)
+				{
+					String newText = m_adroidEmuNameText.getText();
+					m_configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, newText);
+					
+					changeAdroidEmuName(newText);
+					showApplyButton();
+				}
+			}
+		});
+		
+		// 4 row
+        GridData checkBoxAligment = new GridData();
+        checkBoxAligment.horizontalAlignment = GridData.FILL;
+        checkBoxAligment.horizontalSpan = 3;
+        
+		m_cleanButton = new Button(composite, SWT.CHECK);
+		m_cleanButton.setText("Clean before build");
+		m_cleanButton.setSelection(false);
+		m_cleanButton.setLayoutData(checkBoxAligment);
+		m_cleanButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (m_configuration != null)
+				{
+					m_configuration.setAttribute(RhogenLaunchDelegate.isCleanAttribute, m_cleanButton.getSelection());
+					showApplyButton();
+				}
+			}
+		});
+	}
+
+	protected void changeAdroidEmuName(String newName) 
+	{
+		if (m_ymlFile != null)
+		{
+			m_ymlFile.setAndroidEmuName(newName);
+		}
 	}
 
 	@Override
 	public Control getControl() 
 	{
-		m_comp.setSize(500, 500);
 		return m_comp;
 	}
 
@@ -127,6 +199,23 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	public void performApply(ILaunchConfigurationWorkingCopy configuration)
 	{
 		m_configuration = configuration;
+		
+		try 
+		{
+			m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+			
+			if (m_ymlFile != null)
+			{
+				m_configuration.setAttribute(RhogenLaunchDelegate.androidVersionAttribute, m_ymlFile.getAndroidVer());
+				m_configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, m_ymlFile.getBlackberryVer());
+				
+				setPlatformVersionCombo();
+			}
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -142,9 +231,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			{
 				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 				
-				if (allProjects.length == 1)
+				if (allProjects.length > 0)
 				{
-					m_selProject = allProjects[0];			
+					m_selProject = allProjects[0];
 				}
 			}
 		}
@@ -152,17 +241,35 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		if (m_selProject != null)
 		{
 			configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
+			
+			try 
+			{
+				m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+			
+				String androidVersion = m_ymlFile.getAndroidVer();
+				String bbVersion      = m_ymlFile.getBlackberryVer();
+				String androidEmuName = m_ymlFile.getAndroidEmuName();
+				
+				configuration.setAttribute(RhogenLaunchDelegate.androidVersionAttribute, androidVersion);
+				configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, bbVersion);
+				configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, androidEmuName);
+			} 
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);
-		configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, (String) "no");
+		configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
+		configuration.setAttribute(RhogenLaunchDelegate.isCleanAttribute, false);
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) 
 	{
 		try 
-		{		
+		{
 			Control scrollParent = getLaunchConfigurationDialog().getActiveTab().getControl().getParent();
 			
 			if (scrollParent instanceof ScrolledComposite)
@@ -171,52 +278,115 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				sc.setMinSize(scrollParent.computeSize(minTabSize, SWT.DEFAULT));	
 			}
 			
-			String selProjectName = null, selProjectPlatform = null;
+			String selProjectName = null, selProjectPlatform = null, selAndroidEmuName = null;
 			selProjectName        = configuration.getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
 			selProjectPlatform    = configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
-			boolean onDevice      = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "").equals("yes");
+			boolean onDevice      = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
+			boolean isClean       = configuration.getAttribute(RhogenLaunchDelegate.isCleanAttribute, false);
+			
 			
 			if (selProjectName != "")
 			{
 				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
-				
-				if (m_selProject != null)
-				{
-					int platformIdx = -1;
-					selProjectName = m_selProject.getName();
-					
-					m_appNameText.setText(selProjectName);
-
-					if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
-					{
-						platformIdx = 0;
-					}
-					else if (selProjectPlatform.equals(RhodesAdapter.platformIPhone))
-					{
-						platformIdx = 2;
-					}
-					else if (selProjectPlatform.equals(RhodesAdapter.platformWinMobile))
-					{
-						platformIdx = 4;
-					}
-					else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
-					{
-						platformIdx = 6;
-					}
-
-					if (onDevice)
-					{
-						platformIdx += 1;
-					}
-
-					m_selectPlatformCombo.select(platformIdx);
-				}
+				m_appNameText.setText(selProjectName);
 			}
+			
+			setPlatformCombo(selProjectPlatform, onDevice);
+			
+			m_cleanButton.setSelection(isClean);
 		}
 		catch (CoreException e) 
 		{
 			e.printStackTrace();
 		} 
+	}
+	
+	private void setPlatformVersionCombo() 
+	{
+		try
+		{
+			int maxAndroidVerIdx = androidVersions.length - 1;
+		
+			String selProjectPlatform = m_configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
+			String selAndroidVer      = m_configuration.getAttribute(RhogenLaunchDelegate.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
+			String selBlackBarryVer   = m_configuration.getAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, "");
+			String selAndroidEmuName  = m_configuration.getAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, "");
+			
+			m_adroidEmuNameText.setVisible(false);
+			
+			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+			{
+				m_adroidEmuNameText.setVisible(true);
+				m_adroidEmuNameText.setText(selAndroidEmuName);
+				
+				showAndroidVersions();
+				showVersionCombo(true);
+				
+				for (int idx=0; idx < androidVersions.length; idx++)
+				{
+					String currVer = androidVersions[idx];
+					
+					if (currVer.equals(selAndroidVer))
+					{
+						m_selectPlatformVersionCombo.select(idx);
+						break;
+					}
+				}
+			}
+			else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
+			{
+				List<String> bbVersions = showBbVersions();
+				showVersionCombo(true);
+				
+				for (int idx=0; idx < bbVersions.size(); idx++)
+				{
+					String currVer = bbVersions.get(idx);
+					
+					if (currVer.equals(selBlackBarryVer))
+					{
+						m_selectPlatformVersionCombo.select(idx);
+						break;
+					}
+				}
+			}
+			else
+			{
+				showVersionCombo(false);
+			}
+		}
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private void setPlatformCombo(String selProjectPlatform, boolean onDevice)
+	{
+		int platformIdx = -1;
+		
+		if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+		{
+			platformIdx = 0;
+		}
+		else if (selProjectPlatform.equals(RhodesAdapter.platformIPhone))
+		{
+			platformIdx = 2;
+		}
+		else if (selProjectPlatform.equals(RhodesAdapter.platformWinMobile))
+		{
+			platformIdx = 4;
+		}
+		else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
+		{
+			platformIdx = 6;
+		}
+
+		if (onDevice)
+		{
+			platformIdx += 1;
+		}
+
+		m_selectPlatformCombo.select(platformIdx);
 	}
 	
 	@Override
@@ -249,6 +419,17 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				m_appNameText.setText(selProjectName);
 				
 				m_configuration.setAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, m_selProject.getName());
+				
+				try 
+				{
+					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+					setPlatformVersionCombo();
+				}
+				catch (FileNotFoundException e) 
+				{
+					e.printStackTrace();
+				}
+				
 				showApplyButton();
 			}
 			else
@@ -264,16 +445,91 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		this.getLaunchConfigurationDialog().updateButtons();		
 	}
 	
+	void showVersionCombo(boolean isShow)
+	{
+		if (m_selectPlatformVersionCombo != null)
+		{
+			m_selectPlatformVersionCombo.setEnabled(isShow);
+			m_selectPlatformVersionCombo.setVisible(isShow);
+		}
+	}
+	
+	void encodeVersionCombo(String selVersion)
+	{
+		try
+		{
+			String androidVersion = m_ymlFile.getAndroidVer();
+			String bbVersion      = m_ymlFile.getBlackberryVer();
+			
+			String selPlatform = m_configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
+			
+			RhodesAdapter.EPlatformType type = RhodesAdapter.convertPlatformFromDesc(selPlatform);
+			
+			if (type == RhodesAdapter.EPlatformType.eAndroid)
+			{
+				m_configuration.setAttribute(RhogenLaunchDelegate.androidVersionAttribute, selVersion);
+				m_ymlFile.setAndroidVer(selVersion);
+			}
+			else if (type == RhodesAdapter.EPlatformType.eBb)
+			{
+				m_configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, selVersion);
+				m_ymlFile.setBbVer(selVersion);
+			}
+			
+			m_ymlFile.save();
+		}
+		catch(CoreException e)
+		{
+			e.printStackTrace();
+		}
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private void showAndroidVersions()
+	{
+		m_selectPlatformVersionCombo.removeAll();
+		
+		for (String s: androidVersions) 
+		{
+			m_selectPlatformVersionCombo.add(s);
+		}
+	}
+	
+	private List<String> showBbVersions()
+	{
+		try 
+		{
+			m_selectPlatformVersionCombo.removeAll();
+			
+			String m_ymlSdkPath = m_ymlFile.getSdkConfigPath();
+			
+			SdkYmlFile sdkYmlFile = new SdkYmlFile(m_ymlSdkPath);
+			
+			List<String> bbVers = sdkYmlFile.getBbVersions();
+			
+			for (String s: bbVers) 
+			{
+				m_selectPlatformVersionCombo.add(s);
+			}
+			
+			m_selectPlatformVersionCombo.select(0);
+			
+			return bbVers;
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	private void encodePlatformInformation(String selPlatform)
 	{
-		if (selPlatform.contains("phone"))
-		{
-			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "yes");
-		}
-		else
-		{
-			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, "no");
-		}
+		m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
 		
 		if (selPlatform.equals(platformItems[0]) || selPlatform.equals(platformItems[1]))
 		{
@@ -291,5 +547,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		{
 			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformBlackBerry);
 		}
+		
+		setPlatformVersionCombo();
 	}
 }

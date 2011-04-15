@@ -30,6 +30,10 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	public static final String projectNameCfgAttribute = "project_name";
 	public static final String platforrmCfgAttribute = "platform";
 	public static final String platforrmDeviceCfgAttribute = "device";
+	public static final String androidVersionAttribute = "aversion";
+	public static final String androidEmuNameAttribute = "aemuname";
+	public static final String blackberryVersionAttribute = "bversion";
+	public static final String isCleanAttribute = "clean";
 	public static final String prjectLogFileName = "log_filename";
 	
 	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
@@ -38,6 +42,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	private String            m_projectName = null;
 	private String            m_platformName = null;
 	private String			  m_appLogName = null; 
+	private boolean           m_isClean = false;
 	private boolean           m_onDevice = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	
@@ -66,22 +71,24 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			m_projectName   = configuration.getAttribute(projectNameCfgAttribute, "");
 			m_platformName  = configuration.getAttribute(platforrmCfgAttribute, "");
 			m_appLogName    = configuration.getAttribute(prjectLogFileName, "");
+			m_isClean       = configuration.getAttribute(isCleanAttribute, false);
+			m_onDevice      = configuration.getAttribute(platforrmDeviceCfgAttribute, false);
 			
-			if (configuration.getAttribute(platforrmDeviceCfgAttribute, "").equals("yes"))
-			{
-				m_onDevice = true;
-			}
+			final EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
 			
-			if (m_projectName == null || m_projectName.length() == 0 || m_platformName == null || m_platformName.length() == 0)
-			{
+			if (m_projectName == null || m_projectName.length() == 0 || m_platformName == null || m_platformName.length() == 0) {
 				throw new IllegalArgumentException("Error - Platform and project name should be assigned");
 			}
 			
 			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 						
-			if (!project.isOpen())
-			{
+			if (!project.isOpen()) {
 				throw new IllegalArgumentException("Error - Project not found ");
+			}
+			
+			if (m_isClean) {
+				ConsoleHelper.consolePrint("Clean started");
+				rhodesAdapter.cleanPlatform(project.getLocation().toOSString(), type);
 			}
 			
 			Thread cancelingThread = new Thread(new Runnable() 
@@ -91,7 +98,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				{
 					try 
 					{
-						EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
+						ConsoleHelper.consolePrint("build started");
 						
 						if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) == 0)
 						{
