@@ -13,10 +13,15 @@ public class AppYmlFile extends YmlFile
 
 	public static AppYmlFile createFromProject(IProject project) throws FileNotFoundException 
 	{
-		String projectPath = project.getLocation().toOSString();
-		String projectFullPath = projectPath + "/" + configFileName; 
+		if (project != null)
+		{
+			String projectPath = project.getLocation().toOSString();
+			String projectFullPath = projectPath + "/" + configFileName; 
+			
+			return new AppYmlFile(projectFullPath);
+		}
 		
-		return new AppYmlFile(projectFullPath);
+		return null;
 	}
 
 	public static AppYmlFile createFromString(String data) 
@@ -38,6 +43,11 @@ public class AppYmlFile extends YmlFile
 	public AppYmlFile(File ymlFile) throws FileNotFoundException 
 	{
 		super(ymlFile);
+	}
+	
+	public String getSdkConfigPath()
+	{
+		return getSdkPath() + File.separator + SdkYmlFile.configName;
 	}
 	
 	public String getAppLog()
@@ -78,5 +88,40 @@ public class AppYmlFile extends YmlFile
 	public void setAppName(String appName)
 	{
 		super.set("name", appName);
+	}
+
+	public String getAndroidVer() 
+	{
+		if (super.getObject("android", "version") != null)
+		{
+			return super.getObject("android", "version").toString();
+		}
+		
+		return null;
+	}
+
+	public String getBlackberryVer() 
+	{
+		return super.get("bbver").toString();
+	}
+
+	public void setAndroidVer(String selVersion)
+	{
+		super.set("android", "version", selVersion);
+	}
+
+	public void setBbVer(String selVersion) 
+	{
+		super.set("bbver", selVersion);
+	}
+
+	public String getAndroidEmuName() 
+	{
+		return "";
+	}
+
+	public void setAndroidEmuName(String newName)
+	{
+		//super.set("android", "version", newName);
 	}
 }

@@ -5,10 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
+
+import rhogenwizard.ConsoleHelper;
 
 public class YmlFile
 {
@@ -22,7 +26,10 @@ public class YmlFile
 	{
 		m_filePath = ymlFileName;
 		File ymlFile = new File(ymlFileName);
-		load(ymlFile);
+		
+		if (ymlFile.exists()) {
+			load(ymlFile);
+		}
 	}
 	
 	public YmlFile(File ymlFile) throws FileNotFoundException
@@ -61,7 +68,7 @@ public class YmlFile
 		
 		return null;
 	}
-
+	
 	public String get(String mainSection, String sectionName, String paramName)
 	{
 		Map mSection = (Map) m_dataStorage.get(mainSection);
@@ -192,27 +199,162 @@ public class YmlFile
 	
 	public void save() throws FileNotFoundException
 	{
-		try 
-		{
+//		try 
+//		{
 			if (m_filePath.length() != 0)
 			{
-				org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
-				String dataString = dumpEncoder.dump(m_dataStorage);
+//				org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
+//				String dataString = dumpEncoder.dump(m_dataStorage);
+//				
+//				File outFile = new File(m_filePath);
+//				FileOutputStream os = new FileOutputStream(outFile);
+//				os.write(dataString.getBytes());
 				
-				File outFile = new File(m_filePath);
-				FileOutputStream os = new FileOutputStream(outFile);
-				os.write(dataString.getBytes());
+				StringBuilder sb = new StringBuilder();
+				
+				//saveMap(sb, "", null, m_dataStorage);
+			    
+			    Iterator it = m_dataStorage.entrySet().iterator();
+			    
+			    while (it.hasNext()) 
+			    {
+			        Map.Entry pairs = (Map.Entry)it.next();
+			        
+			        Object key = (Object) pairs.getKey();
+			        Object val = pairs.getValue();
+			        
+			        saveSelector(sb, "", key.toString(), val);
+			    }
+			    
+			    ConsoleHelper.consolePrint(sb.toString());
 			}
-		} 
-		catch (IOException e) 
+//		} 
+//		catch (IOException e) 
+//		{
+//			e.printStackTrace();
+//		}
+	}
+	
+	void saveSelector(StringBuilder sb, String prefix, String name, Object val)
+	{
+        if (val instanceof List)
+        {
+        	saveList(sb, prefix, name, (List)val);
+        }
+        else if (val instanceof Map)
+        {
+        	saveMap(sb, prefix, name, (Map)val);
+        }
+        else
+        {
+        	saveValue(sb, prefix, name, val);
+        }
+	}
+	
+	private void saveValue(StringBuilder sb, String prefix, String name, Object l)
+	{
+		sb.append(prefix);
+		sb.append(name);
+		sb.append(": ");
+		
+		if (l != null) 
 		{
-			e.printStackTrace();
+			if (l instanceof String)
+			{
+				String itemValue = l.toString();
+				itemValue = itemValue.replace("\\", "/");
+
+				sb.append("\"");
+				sb.append(itemValue.toString());
+				sb.append("\"");
+			}
+			else
+			{
+				sb.append(l.toString());
+			}
 		}
+		
+		sb.append("\n");
+	}
+	
+	private void saveList(StringBuilder sb, String prefix, String name, List l)
+	{
+		sb.append(prefix);
+		sb.append(name);
+		sb.append(": \n");
+		
+		for (int i=0; i<l.size(); ++i)
+		{
+			Object val = l.get(i);
+
+			sb.append("  - ");
+			
+			String renderVal = val.toString();
+			
+			char firstChar = renderVal.charAt(0);
+			char lstChar   = renderVal.charAt(renderVal.length() - 1);
+			
+			if (firstChar == '*' || lstChar == '*')
+			{
+				sb.append("\"");
+				sb.append(val.toString());
+				sb.append("\"");
+			}
+			else
+			{
+				sb.append(val.toString());
+			}
+			
+			sb.append("\n");		
+		}
+	}
+	
+	private void saveMap(StringBuilder sb, String prefix, String name,  Map m)
+	{
+		if (name != null)
+		{
+			sb.append(prefix);
+			sb.append(name);
+			sb.append(":\n");
+		}
+		
+	    Iterator it = m.entrySet().iterator();
+	    
+	    while (it.hasNext()) 
+	    {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        
+	        Object key = (Object) pairs.getKey();
+	        Object val = pairs.getValue();
+	        
+	        saveSelector(sb, prefix + "  ", key.toString(), val);
+	    }
 	}
 	
 	public void saveTo(String newPath) throws FileNotFoundException
 	{
 		m_filePath = newPath;
 		save();
+	}
+
+	public Object get(String section) 
+	{
+		return m_dataStorage.get(section);
+	}
+
+	public void set(String sectionName, String param, String value) 
+	{
+		Map mSection = (Map) m_dataStorage.get(sectionName);
+		
+		if (null != mSection)
+		{
+			mSection.put(param, value);
+		}
+		else
+		{
+			LinkedHashMap m = new LinkedHashMap();
+			m.put(param, value);
+			m_dataStorage.put(sectionName, m);
+		}
 	}
 }
