@@ -128,7 +128,7 @@
 
     <extension point="org.eclipse.ui.preferencePages">
       <page
-            name="Rhomobile Preferences"
+            name="Rhomobile"
             class="rhogenwizard.preferences.RhogenPreferencePage"
             id="rhogenwizard.preferences.RhogenPreferencePage">
       </page>
