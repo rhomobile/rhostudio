@@ -99,8 +99,6 @@ public class RhodesAdapter
 	
 	public int buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception
 	{
-		ConsoleHelper.consolePrint("build started");
-		
 		String platformName = convertDescFromPlatform(platformType);
 		
 		StringBuilder sb = new StringBuilder();
@@ -204,5 +202,13 @@ public class RhodesAdapter
 		runRakeTask(workDir, cleanCmd + platformAdroid);
 		runRakeTask(workDir, cleanCmd + platformBlackBerry);
 		runRakeTask(workDir, cleanCmd + platformIPhone);
+	}
+	
+	public void cleanPlatform(String workDir, EPlatformType type) throws Exception
+	{
+		String cleanCmd = "clean:";
+		String platformName = convertDescFromPlatform(type);
+		
+		runRakeTask(workDir, cleanCmd + platformName);
 	}
 }
