@@ -11,6 +11,8 @@ import rhogenwizard.buildfile.YmlFile;
 
 public class RhogenPreferenceAndroidPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {
+	PreferenceInitializer m_pInit = null;
+	
 	public RhogenPreferenceAndroidPage() 
 	{
 		super(GRID);
@@ -22,24 +24,7 @@ public class RhogenPreferenceAndroidPage extends FieldEditorPreferencePage imple
 	public boolean performOk()
 	{
 		boolean ret = super.performOk();
-
-		try 
-		{
-			String sdkPath = getPreferenceStore().getString(PreferenceConstants.ANDROID_SDK_PATH);
-			String ndkPath = getPreferenceStore().getString(PreferenceConstants.ANDROID_NDK_PATH);
-			
-			SdkYmlFile ymlFile = SdkYmlAdapter.getRhobuildFile();
-		
-			ymlFile.setAndroidNdkPath(ndkPath);
-			ymlFile.setAndroidSdkPath(sdkPath);
-			
-			ymlFile.save();
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-
+		m_pInit.savePreferences();
 		return ret;
 	}
 
@@ -63,7 +48,6 @@ public class RhogenPreferenceAndroidPage extends FieldEditorPreferencePage imple
 	 */
 	public void init(IWorkbench workbench) 
 	{
-		PreferenceInitializer pInit = new PreferenceInitializer();
-		pInit.initializeDefaultPreferences();
+		m_pInit = PreferenceInitializer.getInstance();
 	}	
 }

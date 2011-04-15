@@ -15,12 +15,14 @@ import rhogenwizard.buildfile.SdkYmlFile;
 
 public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {
+	private static final String newVersionLabel = "New version";
+	
+	private PreferenceInitializer       m_pInit = null;
 	private RhogenComboFieldEditor 	    m_selectCombo = null;
 	private RhogenDirectoryFieldEditor 	m_jdkDir = null;
 	private RhogenDirectoryFieldEditor 	m_mdsDir = null;
 	private StringFieldEditor 		    m_simPort = null;
 	private StringFieldEditor           m_bbVer = null;
-	private PreferenceInitializer    	m_pInit = new PreferenceInitializer();
 	
 	public RhogenPreferencePageBb() 
 	{
@@ -45,17 +47,20 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 			String bbVersionName = m_bbVer.getStringValue();
 			String bbJdkPath     = m_jdkDir.getStringValue();
 			String bbMdsPath     = m_mdsDir.getStringValue();
-			String bbSim         = m_simPort.getStringValue();
+			String bbSimPort     = m_simPort.getStringValue();
 			
-			SdkYmlFile ymlFile = SdkYmlAdapter.getRhobuildFile();
+			getPreferenceStore().setValue(PreferenceConstants.BB_VERSION_NAME, bbVersionName);
+			getPreferenceStore().setValue(PreferenceConstants.BB_JDK_PATH, bbJdkPath);
+			getPreferenceStore().setValue(PreferenceConstants.BB_MDS_PATH, bbMdsPath);
+			getPreferenceStore().setValue(PreferenceConstants.BB_SIM, bbSimPort);
+
+			m_pInit.savePreferences();
 			
-			if (ymlFile != null)
+			if (m_selectCombo.getCombo().getText().equals(newVersionLabel))
 			{
-				ymlFile.setBbJdkPath(bbVersionName, bbJdkPath);
-				ymlFile.setBbMdsPath(bbVersionName, bbMdsPath);
-				ymlFile.setBbSimPort(bbVersionName, new Integer(bbSim));
-				
-				ymlFile.save();
+				int insIndex = m_selectCombo.getCombo().getItemCount() - 1;
+				insIndex = insIndex > 0 ? insIndex : 0;
+				m_selectCombo.getCombo().add(bbVersionName, insIndex);
 			}
 		} 
 		catch (Exception e) 
@@ -70,7 +75,13 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 	{
 		List<String> bbVers = m_pInit.getBbVersions();
 		
-		String[][] comboItems = new String[bbVers.size() + 1][];
+		if (bbVers == null || bbVers.size() == 0)
+		{
+			String[][] fake = {{"", ""}};
+			return fake;
+		}
+		
+		String[][] comboItems = new String[bbVers.size()/* + 1*/][];
 		
 		for (int i=0; i<bbVers.size(); ++i)
 		{
@@ -79,8 +90,8 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 			comboItems[i] = newItem;
 		}
 		
-		String[] newVerItem = {"New version", "New version"};
-		comboItems[bbVers.size()] = newVerItem;
+//		String[] newVerItem = {newVersionLabel, newVersionLabel};
+//		comboItems[bbVers.size()] = newVerItem;
 
 		return comboItems;
 	}
@@ -99,7 +110,7 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 				{
 					String bbVer = m_selectCombo.getCombo().getText();
 					
-					SdkYmlFile ymlFile = SdkYmlAdapter.getRhobuildFile();
+					SdkYmlFile ymlFile = m_pInit.getYmlFile();
 
 					if (ymlFile != null)
 					{
@@ -122,9 +133,9 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 		
 		addField(m_selectCombo);
 		
-		m_bbVer = new StringFieldEditor(PreferenceConstants.BB_VERSION_NAME, 
-				"Version name:", getFieldEditorParent());
-		addField(m_bbVer);
+//		m_bbVer = new StringFieldEditor(PreferenceConstants.BB_VERSION_NAME, 
+//				"Version name:", getFieldEditorParent());
+//		addField(m_bbVer);
 		
 		m_jdkDir = new RhogenDirectoryFieldEditor(PreferenceConstants.BB_JDK_PATH, 
 				"&Blackbery JDE path:", getFieldEditorParent());
@@ -144,6 +155,6 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 	 */
 	public void init(IWorkbench workbench) 
 	{
-		m_pInit.initializeDefaultPreferences();
+		m_pInit = PreferenceInitializer.getInstance();
 	}	
 }

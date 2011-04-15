@@ -25,13 +25,7 @@ public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements
 
 		try 
 		{
-			String cabWizPath = getPreferenceStore().getString(PreferenceConstants.CAB_WIZARD_PATH);
-			
-			SdkYmlFile ymlFile = SdkYmlAdapter.getRhobuildFile();
-		
-			ymlFile.setCabWizPath(cabWizPath);
-			
-			ymlFile.save();
+			PreferenceInitializer.getInstance().savePreferences();
 		} 
 		catch (Exception e) 
 		{
@@ -58,7 +52,6 @@ public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements
 	 */
 	public void init(IWorkbench workbench) 
 	{
-		PreferenceInitializer pInit = new PreferenceInitializer();
-		pInit.initializeDefaultPreferences();
+		PreferenceInitializer pInit = PreferenceInitializer.getInstance();
 	}	
 }
