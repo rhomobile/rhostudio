@@ -4,11 +4,11 @@ How using Rhomobile Eclipse plugin
 
 You should open application wizard (File->New->Projects->Rhomobile->Rhodes Application)
 
-<a href='https://github.com/rhomobile/rhomobile-eclipse-plugin/tree/master/docs/image/app_wizard/1.jpg' >img</a>
+<a href='https://github.com/rhomobile/rhomobile-eclipse-plugin/tree/master/docs/image/app_wizard/1.jpg'>application wizard</a>
 
 Assign application name and destination folder (by default destination is eclipse workspace folder)
 
-<app_wizard/2.jpg>
+<img src='https://github.com/rhomobile/rhomobile-eclipse-plugin/tree/master/docs/image/app_wizard/2.jpg'>
 
 After press on finish button you can see script output in Rhodes build console
 
