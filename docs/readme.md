@@ -4,7 +4,7 @@ How using Rhomobile Eclipse plugin
 
 You should open application wizard (File->New->Projects->Rhomobile->Rhodes Application)
 
-<img src='image/app_wizard/1.jpg' />
+<img src='https://github.com/rhomobile/rhomobile-eclipse-plugin/tree/master/docs/image/app_wizard/1.jpg' />
 
 Assign application name and destination folder (by default destination is eclipse workspace folder)
 
