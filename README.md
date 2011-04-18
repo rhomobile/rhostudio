@@ -9,11 +9,26 @@ Use RhoStudio to:
 - Build and run on Rhodes application on iPhone, Android, Windows Mobile, and BlackBerry simulators and devices
 - See build and application execution logs in Eclipse output console
 
+## Install RhoStudio in Eclipse
+
+Open menu Help->Install New Software... 
+
+In Install popup add RhoStudio update site:
+
+- Enter name: RhoStudio
+- Enter location: http://rhostudio.rhomobile.com
+
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/install/add-update-site.png'></img>
+
+Check Rhomobile (or RhoStudio) and press Next. Follow instructions.
+
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/install/install.png'></img>
+
 ## Generate Rhodes Application
 
 You should open application wizard. In the menu: File->New->Projects->Rhomobile->Rhodes Application
 
-Select Rhodes Application wizzard:
+Select Rhodes Application wizard:
 
 <img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/1.jpg'></img>
 
@@ -29,7 +44,9 @@ After pressing Finish button you'll see Rhodes generator script output in the ou
 
 To generate Rhodes model and associated Controller and View templates you should right click on the application project in package explorer and open project popup menu.
 
-<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/1.jpg'>Project popup menu</a>
+Project popup menu:<br/>
+
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/1.jpg'></img>
 
 In the project popup menu select 'Rhomobile->Rhodes Model' item to open Rhodes Model wizard. Use this wizard to assign model name and specify model fields as a coma separated string. (Keep in mind, whitespaces at the field name begining and end will be trimmed and whitespaces in the middle of the field name will be replaced with underscore character.)
 
@@ -115,7 +132,7 @@ Press Run button to build and run application. Build output will appear in the R
 - mport project into Eclipse workspace (menu item File/Import)
 - build project (menu item Project/Build). If this menu item disabled then uncheck 'build automatically' located below
 - export jar package: 
-   Open export dialog (menu item File/Export). 
-   In open window select tree item 'Plugin Development/Deployable plugin and fragments'
-   In wizard you can assign destination directory for plugin jar package and his file name
+   open export dialog (menu item File/Export); 
+   in open window select tree item 'Plugin Development/Deployable plugin and fragments';
+   in wizard you can assign destination directory for plugin jar package and his file name
 - copy created plugin into you eclipse (in subfolder /plugins/) and reboot Eclipse
