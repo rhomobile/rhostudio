@@ -4,7 +4,8 @@ How using Rhomobile Eclipse plugin
 
 You should open application wizard (File->New->Projects->Rhomobile->Rhodes Application)
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/1.jpg'>Select wizzard</a>
+Select wizzard:
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/1.jpg'>Select wizzard</img>
 
 Assign application name and destination folder (by default destination is eclipse workspace folder)
 
