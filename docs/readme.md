@@ -1,90 +1,99 @@
-How using Rhomobile Eclipse plugin
+# How using Rhomobile Eclipse plugin
 
-1. Create application
+## Generate Rhodes Application
 
-You should open application wizard (File->New->Projects->Rhomobile->Rhodes Application)
+You should open application wizard. In the menu: File->New->Projects->Rhomobile->Rhodes Application
 
-Select wizzard:
-<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/1.jpg'>Select wizzard</img>
+Select Rhodes Application wizzard:
+
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/1.jpg'></img>
 
 Assign application name and destination folder (by default destination is eclipse workspace folder)
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/2.jpg'>Application wizard</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/2.jpg'></img>
 
-After press on finish button you can see script output in Rhodes build console
+After pressing Finish button you'll see Rhodes generator script output in the output console (Rhodes build log console).
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/4.jpg'>Build console</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/app_wizard/4.jpg'></img>
 
-2. Create model
+## Generate Rhodes Model
 
-For create model you should find the application project in package explorer and was right click on it.
+To generate Rhodes model and associated Controller and View templates you should right click on the application project in package explorer and open project popup menu.
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/1.jpg'>Project popup menu</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/1.jpg'>Project popup menu</a>
 
-After popup menu opened, need select 'Rhomobile->Rhodes model' item. You should see model wizard.
-Assign model name and fields of data set separated by comma. 
-Whitespace in the middle in name of fields will be replaced on underline chars.
+In the project popup menu select 'Rhomobile->Rhodes Model' item to open Rhodes Model wizard. Use this wizard to assign model name and specify model fields as a coma separated string. (Keep in mind, whitespaces at the field name begining and end will be trimmed and whitespaces in the middle of the field name will be replaced with underscore character.)
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/3.jpg'>Model wizard</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/3.jpg'></img>
 
-After model wizard finished you should see creation log in Rhodes build console.
+After pressing Finish button you'll see Rhodes model generator script output in the output console (Rhodes build log console).
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/4.jpg'>Build console</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/model_wizard/4.jpg'></img>
                                                            
-3. Edit build.yml
+## Edit build.yml
 
-For open build.yml editor you should be double click on 'build.yml' item in project tree. 
-After you opened editor  you see two tabs, text editor and WISIWIG editor. 
+You should edit build.yml to manage Rhodes build time configuration. 
+Double click on 'build.yml' item in project tree to open build.yml editor. 
+In the editor you'll see two tabs: text editor and WISIWIG editor. 
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/yml_editor/1.jpg'>WISIWIG editor</a>
+WISIWIG editor:<br/>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/yml_editor/1.jpg'></img>
 
-You can make changes in any editors and they appear in both editors.
+Text editor:<br/>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/yml_editor/3.jpg'></img>
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/yml_editor/3.jpg'>Text editor</a>
+Make changes on ant editor tabs and they appear in another.
 
-In WISIWIG editor can assign application name, log file name (locate in application folder after run applicatin)
-rhodes direcory, and capabilities.
+Use WISIWIG editor to assign application name, application capabilities, log file name (locate in application folder after application run), and location of Rhodes (useful in case you have more then one Rhodes gem installed or build your app using Rhodes source code).
 
-For change capabilities need press Add button and select items in opened dialog. 
+To change application capabilities press Add button and select items in the popup dialog. 
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/yml_editor/2.jpg'>Capabilities dialog</a>
+Application capabilities dialog:<br/>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/yml_editor/2.jpg'></img>
 
-Selected capabilities appears in text field in editor. 
+Selected application capabilities will appear in text field in the WISIWIG editor. 
 
-4. Edit rhobuild.yml
+## Edit rhobuild.yml
 
-Open preferences (Window->Preferences) and select Rhomobile item.
-You see main page and can change JDK path her. 
+Use rhobuild.yml to manage location(s) of platform SDK-s/JDK-s used to build Rhodes application; rhobuild.yml located in the Rhodes gem folder (or in the Rhodes source code folder). 
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/1.jpg'>Main preference page</a>
+To edit rhobuild.yml open Preferences (Window->Preferences) and select Rhomobile item.
 
-For android you can change Android SDK and NDK path.
+Main preference page:<br/>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/1.jpg'></img>
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/2.jpg'>Android preference page</a>
+Android preference page:<br/>
 
-For blackberry you can change path for selected version and add new version
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/2.jpg'></img>
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/3.jpg'>Blackberry preference page</a>
+Use this page to set Android SDK and NDK path.
 
-For Windows Mobile you can change path to Cab Wizard utility
+Blackberry preference page:<br/>
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/5.jpg'>Windows Mobile preference page</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/3.jpg'></img>
 
-5. Build application
+Use this page to set path to BlackBerry JDK-s, path to MDS server, and device simulator name
 
-For start build process you should create run configuration. 
+Windows Mobile preference page:<br/>
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/configuration/1.jpg'>Commin configuration dialog</a>
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/preferences/5.jpg'></img>
 
-After open configuration manager and double click on 'Rhodes application' item you 
-can edit confiruration for terget platform. 
+Use this page to set path to Cab Wizard utility used by build script to build cab file. 
 
-<a href='http://rhodocs.s3.amazonaws.com/eclipse-plugin/configuration/2.jpg'>Rhodes configuration</a>
+## Build application
 
-For android and blackberry platform you can select emulator version.
+To start build process you should create Run Configuration. 
 
-For android platform you can assign AVD name. 
+Run configuration dialog:<br/>
 
-After all changes are made, you can run the configuration (press Run button). 
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/configuration/1.jpg'></img>
 
-Build is started and build output appears in build console.
+To edit configuration for the target platform open Run Configuration manager and double click on 'Rhodes application'. 
+
+Rhodes configuration:<br/>
+
+<img src='http://rhodocs.s3.amazonaws.com/eclipse-plugin/configuration/2.jpg'></img>
+
+For Android and BlackBerry platform you may select emulator version. For Android platform you may assign AVD name. 
+
+Press Run button to build and run application. Build output will appear in the Rhodes build output console. Application log will be available in the Rhodes application output console.
