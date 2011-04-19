@@ -1,5 +1,6 @@
 package rhogenwizard.preferences;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.eclipse.jface.preference.*;
@@ -11,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
@@ -37,8 +39,11 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 
 	private String[][] prepareComboItems()
 	{
-		List<String> projNames = PreferenceInitializer.getInstance().getRhodesProjects();
-		
+		List<String> projNames;
+
+		projNames = PreferenceInitializer.getInstance().getRhodesProjects();
+
+	
 		if (projNames == null || projNames.size() == 0)
 		{
 			MessageBox mb = new MessageBox(getShell(), SWT.ICON_WARNING);

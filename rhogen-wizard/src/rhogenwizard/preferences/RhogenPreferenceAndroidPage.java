@@ -1,10 +1,13 @@
 package rhogenwizard.preferences;
 
+import java.io.FileNotFoundException;
+
 import org.eclipse.jface.preference.*;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;

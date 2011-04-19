@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 
 import rhogenwizard.Activator;
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
@@ -36,10 +37,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		{
 			if (m_initPref != null)
 			{
-				//if (m_initPref.m_currProject == null || m_initPref.isRhodesPathChanged())
-				//{
 					m_initPref.initFromFirstProject();
-				//}
 				
 				return m_initPref;
 			}
@@ -51,6 +49,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		}
 		catch (Exception e) 
 		{
+			ConsoleHelper.consolePrint(e.toString());
 			e.printStackTrace();
 		}
 		

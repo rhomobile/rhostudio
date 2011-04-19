@@ -26,7 +26,6 @@
       </wizard>
    </extension>
    
-   <!--
    <extension point="org.eclipse.ui.popupMenus">
       <objectContribution
             objectClass="org.eclipse.core.resources.IProject"
@@ -35,7 +34,7 @@
          <menu
                icon="icons/sample16.png"
                id="rhogen-model.menumodel"
-               label="Rhodes"
+               label="Rhomobile"
                path="additions">
             <separator
                   name="group1">
@@ -52,7 +51,6 @@
          </action>
       </objectContribution>
    </extension>
-   -->
    
    <extension point="org.eclipse.ui.editors">
       <editor
@@ -96,7 +94,7 @@
          </run>
       </runtime>
       <builder
-            id="com.rhomobile.eclipse.rhogenBuilder">
+            id="com.rhomobile.rhostudio.rhogenBuilder">
       </builder>
    	</extension>
  
@@ -165,6 +163,14 @@
              wizardId="rhogenwizard.wizards.RhogenModelWizard">
           <enablement></enablement>
        </commonWizard>
+    </extension>
+    <extension
+          id="rhostudio_id"
+          point="org.eclipse.core.runtime.products">
+       <product
+             application="org.eclipse.ant.core.antRunner"
+             name="Rhostudio product">
+       </product>
     </extension>
  
 </plugin>

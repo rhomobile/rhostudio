@@ -1,5 +1,6 @@
 package rhogenwizard.preferences;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -11,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 

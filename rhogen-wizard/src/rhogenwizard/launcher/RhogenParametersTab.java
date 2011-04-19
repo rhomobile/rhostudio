@@ -47,8 +47,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 									           "Blackberry simulator",
 									           "Blackberry phone" };
 	
-	private static String androidVersions[] = { "1.5",
-											    "1.6",
+	private static String androidVersions[] = { "1.6",
 											    "2.1",
 											    "2.2",
 											    "2.3",
@@ -143,7 +142,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		});
 
 		// 3 row
-		m_androidEmuNameLabel = SWTFactory.createLabel(namecomp, "Emulator name", 1);
+		m_androidEmuNameLabel = SWTFactory.createLabel(namecomp, "AVD name", 1);
 		
 		m_adroidEmuNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE, 1);
 		m_adroidEmuNameText.addModifyListener(new ModifyListener() 
@@ -310,7 +309,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				m_appNameText.setText(selProjectName);
 				m_adroidEmuNameText.setText(selAndroidEmuName);
 				
-				m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+				if (m_selProject.isOpen()) {
+					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+				}
 			}
 			
 			setPlatformCombo(selProjectPlatform, onDevice);
