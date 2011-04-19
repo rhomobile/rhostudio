@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="rhostudio_feature"
+      label="RhoStudio"
+      version="0.9.0.qualifier">
+
+   <description>
+      Use RhoStudio-beta1 to:
+- Generate Rhodes applications
+- Generate Rhodes Models and associated Controllers 
+and View templates
+- Manage build configuration (build.yml and rhobuild.yml) using
+Eclipse UI
+- Build and run on Rhodes application on iPhone, Android, Windows
+Mobile, and BlackBerry simulators and devices
+- See build and application execution logs in Eclipse output
+console
+   </description>
+
+   <copyright>
+      © 2011 Rhomobile All rights reserved.
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      (The MIT License)
+Copyright (c) 2008-2010 Rhomobile, Inc.
+Permission is hereby granted, free of charge, to any person 
+obtaining a copy of this software and associated documentation
+files (the &quot;Software&quot;), to deal in the Software without 
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons 
+to whom the Software is furnished to do so, subject to 
+the following conditions: The above copyright notice and 
+this permission notice shall be included in all copies 
+or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   </license>
+
+   <url>
+      <discovery label="Rhomobile official site" url="http://rhomobile.com"/>
+   </url>
+
+   <plugin
+         id="com.rhomobile.rhostudio"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
