@@ -11,6 +11,8 @@ Use RhoStudio to:
 
 ## Install RhoStudio in Eclipse
 
+You will need Rhodes 2.4 (or later) gem or source code installed for RhoStudio to work. See [here](http://docs.rhomobile.com/rhodes/install) how to install Rhodes. 
+
 Open menu Help->Install New Software... 
 
 In Install popup add RhoStudio update site:
