@@ -3,6 +3,7 @@ package rhogenwizard.buildfile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -139,6 +140,8 @@ public class SdkYmlFile extends YmlFile
 				}
 			}
 		}
+		
+		Collections.sort(versions, String.CASE_INSENSITIVE_ORDER);
 		
 		return versions;
 	}
