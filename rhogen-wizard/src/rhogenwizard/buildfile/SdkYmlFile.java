@@ -73,7 +73,14 @@ public class SdkYmlFile extends YmlFile
 
 	public void setBbJdkPath(String version, String value)
 	{
-		super.set("env", "paths", new Double(version), "jde", value);
+		try
+		{
+			super.set("env", "paths", new Double(version), "jde", value);
+		}
+		catch(NumberFormatException e)
+		{
+			super.set("env", "paths", version, "jde", value);
+		}
 	}
 	
 	public String getBbMdsPath(String version) 
@@ -83,7 +90,14 @@ public class SdkYmlFile extends YmlFile
 	
 	public void setBbMdsPath(String version, String value)
 	{
-		super.set("env", "paths", new Double(version), "mds", value);
+		try
+		{
+			super.set("env", "paths", new Double(version), "mds", value);
+		}
+		catch(NumberFormatException e)
+		{
+			super.set("env", "paths", version, "mds", value);
+		}
 	}
 
 	public String getBbSimPort(String version) 
@@ -93,7 +107,14 @@ public class SdkYmlFile extends YmlFile
 	
 	public void setBbSimPort(String version, Integer value)
 	{
-		super.set("env", "paths", new Double(version), "sim", value);
+		try
+		{
+			super.set("env", "paths", new Double(version), "sim", value);
+		}
+		catch(NumberFormatException e)
+		{
+			super.set("env", "paths", version, "sim", value);
+		}
 	}
 	
 	public List<String> getBbVersions()
@@ -106,9 +127,16 @@ public class SdkYmlFile extends YmlFile
 		
 		for (Object s : keys)
 		{
-			if (s instanceof Double)
+			Object o = pathItems.get(s);
+			
+			if (o instanceof Map)
 			{
-				versions.add(s.toString());
+				Map m1 = (Map)o;
+				
+				if (m1.get("mds") != null)
+				{
+					versions.add(s.toString());
+				}
 			}
 		}
 		

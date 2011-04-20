@@ -135,7 +135,7 @@ public class YmlFile
 		return null;
 	}
 	
-	public void set(String commonSection, String mainSection, Object sectionName, String paramName, Object value)
+	public boolean set(String commonSection, String mainSection, Object sectionName, String paramName, Object value)
 	{
 		try
 		{
@@ -164,7 +164,10 @@ public class YmlFile
 		}
 		catch(Exception e) 
 		{
+			return false;
 		}
+		
+		return true;
 	}
 	
 	public String getString(String sectionName)
