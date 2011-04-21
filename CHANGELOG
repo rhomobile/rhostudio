@@ -1,0 +1,7 @@
+## 0.9.0
+
+- Generate Rhodes application(s)
+- Generate Rhodes Model(s) and associated Controllers and View templates
+- Manage build configuration (build.yml and rhobuild.yml) using Eclipse UI
+- Build and run on Rhodes application on iPhone, Android, Windows Mobile, and BlackBerry simulators and devices
+- See build and application execution logs in Eclipse output console
