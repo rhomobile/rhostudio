@@ -42,7 +42,11 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 		setNeedsProgressMonitor(true);
 		
 		m_currentProject = RhodesProjectSupport.getSelectedProject();
-		m_projectLocation = m_currentProject.getLocation().toOSString();
+		
+		if (m_currentProject != null)
+		{
+			m_projectLocation = m_currentProject.getLocation().toOSString();
+		}
 	}
 	
 	/**
@@ -141,9 +145,9 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 			
 			monitor.worked(1);
 		} 
-		catch (Exception e1)
+		catch (Exception e)
 		{
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
