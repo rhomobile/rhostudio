@@ -127,7 +127,7 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		
 		// row 2
 		label = new Label(composite, SWT.NULL);
-		label.setText("Rhodes folder path:");
+		label.setText("Rhodes path:");
 		label.setLayoutData(labelAligment);
 		
 		m_rhodesPathText = new Text(composite, SWT.BORDER | SWT.SINGLE);
