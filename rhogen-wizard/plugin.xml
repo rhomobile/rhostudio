@@ -172,5 +172,14 @@
              name="Rhostudio product">
        </product>
     </extension>
+    
+   <extension point="org.eclipse.ui.perspectives">
+      <perspective
+            name="RhoStudio"
+            icon="icons/sample16.png"
+            class="rhogenwizard.perspectives.RhostudioPerspective"
+            id="rhogenwizard.perspectives.RhostudioPerspective">
+      </perspective>
+   </extension>
  
 </plugin>
