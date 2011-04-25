@@ -213,29 +213,9 @@ public class YmlFile
 				File outFile = new File(m_filePath);
 				FileOutputStream os = new FileOutputStream(outFile);
 
-				if (SNAKE_YAML_SAVE)
-				{
-					org.yaml.snakeyaml.Yaml dumpEncoder = new org.yaml.snakeyaml.Yaml();
-					dataString = dumpEncoder.dump(m_dataStorage);
-				}
-				else
-				{
-					StringBuilder sb = new StringBuilder();
-					
-				    Iterator it = m_dataStorage.entrySet().iterator();
-				    
-				    while (it.hasNext()) 
-				    {
-				        Map.Entry pairs = (Map.Entry)it.next();
-				        
-				        Object key = (Object) pairs.getKey();
-				        Object val = pairs.getValue();
-				        
-				        saveSelector(sb, "", key.toString(), val);
-				    }
-				    
-				    dataString = sb.toString();
-				}
+				IStructureConverter converter = new CustomConverter();
+				converter.applyDataStirage(m_dataStorage);
+				dataString = converter.convertStructure();
 				
 			    os.write(dataString.getBytes());
 			}
@@ -244,102 +224,6 @@ public class YmlFile
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	void saveSelector(StringBuilder sb, String prefix, String name, Object val)
-	{
-        if (val instanceof List)
-        {
-        	saveList(sb, prefix, name, (List)val);
-        }
-        else if (val instanceof Map)
-        {
-        	saveMap(sb, prefix, name, (Map)val);
-        }
-        else
-        {
-        	saveValue(sb, prefix, name, val);
-        }
-	}
-	
-	private void saveValue(StringBuilder sb, String prefix, String name, Object l)
-	{
-		sb.append(prefix);
-		sb.append(name);
-		sb.append(": ");
-		
-		if (l != null) 
-		{
-			if (l instanceof String)
-			{
-				String itemValue = l.toString();
-				itemValue = itemValue.replace("\\", "/");
-
-				sb.append("\"");
-				sb.append(itemValue.toString());
-				sb.append("\"");
-			}
-			else
-			{
-				sb.append(l.toString());
-			}
-		}
-		
-		sb.append("\n");
-	}
-	
-	private void saveList(StringBuilder sb, String prefix, String name, List l)
-	{
-		sb.append(prefix);
-		sb.append(name);
-		sb.append(": \n");
-		
-		for (int i=0; i<l.size(); ++i)
-		{
-			Object val = l.get(i);
-
-			sb.append("  - ");
-			
-			String renderVal = val.toString();
-			
-			char firstChar = renderVal.charAt(0);
-			char lstChar   = renderVal.charAt(renderVal.length() - 1);
-			
-			if (firstChar == '*' || lstChar == '*')
-			{
-				sb.append("\"");
-				sb.append(val.toString());
-				sb.append("\"");
-			}
-			else
-			{
-				sb.append(val.toString());
-			}
-			
-			sb.append("\n");		
-		}
-	}
-	
-	private void saveMap(StringBuilder sb, String prefix, String name,  Map m)
-	{
-		if (name != null)
-		{
-			sb.append(prefix);
-			sb.append(name);
-			sb.append(":\n");
-		}
-		
-	    Iterator it = m.entrySet().iterator();
-	    
-	    while (it.hasNext()) 
-	    {
-	        Map.Entry pairs = (Map.Entry)it.next();
-	        
-	        Object key = (Object) pairs.getKey();
-	        Object val = pairs.getValue();
-	        
-	        saveSelector(sb, prefix + "  ", key.toString(), val);
-	    }
 	}
 	
 	public void saveTo(String newPath) throws FileNotFoundException

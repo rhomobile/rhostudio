@@ -56,9 +56,19 @@ public class CustomConverter extends AbstractStructureConverter
 				String itemValue = l.toString();
 				itemValue = itemValue.replace("\\", "/");
 
-				sb.append("\"");
-				sb.append(itemValue.toString());
-				sb.append("\"");
+				char firstChar = itemValue.charAt(0);
+				char lstChar   = itemValue.charAt(itemValue.length() - 1);
+				
+				if (firstChar == '*' || lstChar == '*')
+				{
+					sb.append("\"");
+					sb.append(itemValue.toString());
+					sb.append("\"");
+				}
+				else
+				{
+					sb.append(itemValue.toString());
+				}
 			}
 			else
 			{

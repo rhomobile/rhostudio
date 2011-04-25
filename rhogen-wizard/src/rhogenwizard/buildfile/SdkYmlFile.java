@@ -128,13 +128,13 @@ public class SdkYmlFile extends YmlFile
 		
 		for (Object s : keys)
 		{
-			Object o = pathItems.get(s);
+			Object item = pathItems.get(s);
 			
-			if (o instanceof Map)
+			if (item instanceof Map)
 			{
-				Map m1 = (Map)o;
+				Map mapItem = (Map)item;
 				
-				if (m1.get("mds") != null)
+				if (mapItem.get("mds") != null)
 				{
 					versions.add(s.toString());
 				}
