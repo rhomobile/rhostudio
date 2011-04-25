@@ -39,8 +39,8 @@ public class RhodesAdapter
 		eUnknown
 	};
 	
-	private static final String winRhogenFileName = "rhogen.bat";
-	private static final String unixRhogenFileName = "rhogen";
+	private static final String winRhogenFileName = "rhodes.bat";
+	private static final String unixRhogenFileName = "rhodes";
 	private static final String winRakeFileName = "rake.bat";
 	private static final String unixRakeFileName = "rake";
 		
