@@ -30,94 +30,49 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
    <plugins>
       <plugin id="com.ibm.icu"/>
-      <plugin id="com.ibm.icu.source"/>
       <plugin id="com.jcraft.jsch"/>
-      <plugin id="com.jcraft.jsch.source"/>
       <plugin id="com.rhomobile.rhostudio"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.servlet.jsp"/>
-      <plugin id="javax.xml"/>
-      <plugin id="javax.xml.bind"/>
       <plugin id="org.antlr.runtime"/>
       <plugin id="org.apache.ant"/>
-      <plugin id="org.apache.ant.source"/>
       <plugin id="org.apache.commons.codec"/>
-      <plugin id="org.apache.commons.codec.source"/>
       <plugin id="org.apache.commons.el"/>
       <plugin id="org.apache.commons.httpclient"/>
-      <plugin id="org.apache.commons.httpclient.source"/>
       <plugin id="org.apache.commons.lang"/>
       <plugin id="org.apache.commons.logging"/>
-      <plugin id="org.apache.commons.logging.source"/>
       <plugin id="org.apache.jasper"/>
       <plugin id="org.apache.lucene"/>
       <plugin id="org.apache.lucene.analysis"/>
-      <plugin id="org.apache.ws.commons.util"/>
-      <plugin id="org.apache.xerces"/>
-      <plugin id="org.apache.xml.resolver"/>
-      <plugin id="org.apache.xml.serializer"/>
-      <plugin id="org.apache.xmlrpc"/>
       <plugin id="org.eclipse.ant.core"/>
-      <plugin id="org.eclipse.ant.core.source"/>
-      <plugin id="org.eclipse.ant.launching"/>
-      <plugin id="org.eclipse.ant.ui"/>
       <plugin id="org.eclipse.compare"/>
       <plugin id="org.eclipse.compare.core"/>
-      <plugin id="org.eclipse.compare.core.source"/>
-      <plugin id="org.eclipse.compare.source"/>
-      <plugin id="org.eclipse.compare.win32"/>
-      <plugin id="org.eclipse.compare.win32.source"/>
-      <plugin id="org.eclipse.core.boot"/>
       <plugin id="org.eclipse.core.commands"/>
-      <plugin id="org.eclipse.core.commands.source"/>
       <plugin id="org.eclipse.core.contenttype"/>
-      <plugin id="org.eclipse.core.contenttype.source"/>
       <plugin id="org.eclipse.core.databinding"/>
-      <plugin id="org.eclipse.core.databinding.beans"/>
-      <plugin id="org.eclipse.core.databinding.beans.source"/>
       <plugin id="org.eclipse.core.databinding.observable"/>
-      <plugin id="org.eclipse.core.databinding.observable.source"/>
       <plugin id="org.eclipse.core.databinding.property"/>
-      <plugin id="org.eclipse.core.databinding.property.source"/>
-      <plugin id="org.eclipse.core.databinding.source"/>
       <plugin id="org.eclipse.core.expressions"/>
-      <plugin id="org.eclipse.core.expressions.source"/>
       <plugin id="org.eclipse.core.externaltools"/>
-      <plugin id="org.eclipse.core.externaltools.source"/>
       <plugin id="org.eclipse.core.filebuffers"/>
-      <plugin id="org.eclipse.core.filebuffers.source"/>
       <plugin id="org.eclipse.core.filesystem"/>
-      <plugin id="org.eclipse.core.filesystem.source"/>
       <plugin id="org.eclipse.core.filesystem.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.jobs"/>
-      <plugin id="org.eclipse.core.jobs.source"/>
       <plugin id="org.eclipse.core.net"/>
-      <plugin id="org.eclipse.core.net.source"/>
       <plugin id="org.eclipse.core.net.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.resources"/>
-      <plugin id="org.eclipse.core.resources.source"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
-      <plugin id="org.eclipse.core.runtime.compatibility"/>
       <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.auth.source"/>
       <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.registry.source"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.source"/>
-      <plugin id="org.eclipse.core.runtime.source"/>
       <plugin id="org.eclipse.core.variables"/>
-      <plugin id="org.eclipse.core.variables.source"/>
-      <plugin id="org.eclipse.cvs"/>
       <plugin id="org.eclipse.debug.core"/>
-      <plugin id="org.eclipse.debug.core.source"/>
       <plugin id="org.eclipse.debug.ui"/>
-      <plugin id="org.eclipse.debug.ui.source"/>
       <plugin id="org.eclipse.dltk"/>
       <plugin id="org.eclipse.dltk.console"/>
       <plugin id="org.eclipse.dltk.console.ui"/>
@@ -167,378 +122,155 @@
       <plugin id="org.eclipse.dltk.validators.core"/>
       <plugin id="org.eclipse.dltk.validators.externalchecker"/>
       <plugin id="org.eclipse.dltk.validators.ui"/>
-      <plugin id="org.eclipse.draw2d"/>
       <plugin id="org.eclipse.ecf"/>
       <plugin id="org.eclipse.ecf.filetransfer"/>
-      <plugin id="org.eclipse.ecf.filetransfer.source"/>
       <plugin id="org.eclipse.ecf.identity"/>
-      <plugin id="org.eclipse.ecf.identity.source"/>
       <plugin id="org.eclipse.ecf.provider.filetransfer"/>
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient"/>
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient.source"/>
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient.ssl" fragment="true"/>
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient.ssl.source"/>
-      <plugin id="org.eclipse.ecf.provider.filetransfer.source"/>
       <plugin id="org.eclipse.ecf.provider.filetransfer.ssl" fragment="true"/>
-      <plugin id="org.eclipse.ecf.provider.filetransfer.ssl.source"/>
-      <plugin id="org.eclipse.ecf.source"/>
       <plugin id="org.eclipse.ecf.ssl" fragment="true"/>
-      <plugin id="org.eclipse.ecf.ssl.source"/>
+      <plugin id="org.eclipse.egit"/>
+      <plugin id="org.eclipse.egit.core"/>
+      <plugin id="org.eclipse.egit.core.source"/>
+      <plugin id="org.eclipse.egit.doc"/>
+      <plugin id="org.eclipse.egit.mylyn.ui"/>
+      <plugin id="org.eclipse.egit.mylyn.ui.source"/>
+      <plugin id="org.eclipse.egit.ui"/>
+      <plugin id="org.eclipse.egit.ui.source"/>
       <plugin id="org.eclipse.emf.common"/>
-      <plugin id="org.eclipse.emf.common.ui"/>
       <plugin id="org.eclipse.emf.ecore"/>
-      <plugin id="org.eclipse.emf.ecore.change"/>
-      <plugin id="org.eclipse.emf.ecore.edit"/>
       <plugin id="org.eclipse.emf.ecore.xmi"/>
-      <plugin id="org.eclipse.emf.edit"/>
-      <plugin id="org.eclipse.emf.edit.ui"/>
-      <plugin id="org.eclipse.epp.mpc.core"/>
-      <plugin id="org.eclipse.epp.mpc.help.ui"/>
-      <plugin id="org.eclipse.epp.mpc.ui"/>
-      <plugin id="org.eclipse.epp.package.common"/>
-      <plugin id="org.eclipse.epp.package.rcp"/>
-      <plugin id="org.eclipse.epp.usagedata.gathering"/>
-      <plugin id="org.eclipse.epp.usagedata.recording"/>
-      <plugin id="org.eclipse.epp.usagedata.ui"/>
       <plugin id="org.eclipse.equinox.app"/>
-      <plugin id="org.eclipse.equinox.app.source"/>
       <plugin id="org.eclipse.equinox.common"/>
-      <plugin id="org.eclipse.equinox.common.source"/>
       <plugin id="org.eclipse.equinox.concurrent"/>
-      <plugin id="org.eclipse.equinox.ds"/>
-      <plugin id="org.eclipse.equinox.ds.source"/>
-      <plugin id="org.eclipse.equinox.event"/>
-      <plugin id="org.eclipse.equinox.event.source"/>
       <plugin id="org.eclipse.equinox.frameworkadmin"/>
       <plugin id="org.eclipse.equinox.frameworkadmin.equinox"/>
-      <plugin id="org.eclipse.equinox.frameworkadmin.equinox.source"/>
-      <plugin id="org.eclipse.equinox.frameworkadmin.source"/>
       <plugin id="org.eclipse.equinox.http.jetty"/>
-      <plugin id="org.eclipse.equinox.http.registry"/>
       <plugin id="org.eclipse.equinox.http.servlet"/>
-      <plugin id="org.eclipse.equinox.jsp.jasper"/>
-      <plugin id="org.eclipse.equinox.jsp.jasper.registry"/>
-      <plugin id="org.eclipse.equinox.launcher"/>
-      <plugin id="org.eclipse.equinox.launcher.source"/>
-      <plugin id="org.eclipse.equinox.launcher.win32.win32.x86" fragment="true"/>
-      <plugin id="org.eclipse.equinox.p2.artifact.repository"/>
-      <plugin id="org.eclipse.equinox.p2.artifact.repository.source"/>
-      <plugin id="org.eclipse.equinox.p2.console"/>
-      <plugin id="org.eclipse.equinox.p2.console.source"/>
       <plugin id="org.eclipse.equinox.p2.core"/>
-      <plugin id="org.eclipse.equinox.p2.core.source"/>
-      <plugin id="org.eclipse.equinox.p2.director"/>
-      <plugin id="org.eclipse.equinox.p2.director.app"/>
-      <plugin id="org.eclipse.equinox.p2.director.app.source"/>
-      <plugin id="org.eclipse.equinox.p2.director.source"/>
-      <plugin id="org.eclipse.equinox.p2.directorywatcher"/>
-      <plugin id="org.eclipse.equinox.p2.directorywatcher.source"/>
-      <plugin id="org.eclipse.equinox.p2.discovery"/>
-      <plugin id="org.eclipse.equinox.p2.discovery.compatibility"/>
       <plugin id="org.eclipse.equinox.p2.engine"/>
-      <plugin id="org.eclipse.equinox.p2.engine.source"/>
-      <plugin id="org.eclipse.equinox.p2.extensionlocation"/>
-      <plugin id="org.eclipse.equinox.p2.extensionlocation.source"/>
-      <plugin id="org.eclipse.equinox.p2.garbagecollector"/>
-      <plugin id="org.eclipse.equinox.p2.garbagecollector.source"/>
-      <plugin id="org.eclipse.equinox.p2.jarprocessor"/>
-      <plugin id="org.eclipse.equinox.p2.jarprocessor.source"/>
       <plugin id="org.eclipse.equinox.p2.metadata"/>
-      <plugin id="org.eclipse.equinox.p2.metadata.generator"/>
-      <plugin id="org.eclipse.equinox.p2.metadata.generator.source"/>
       <plugin id="org.eclipse.equinox.p2.metadata.repository"/>
-      <plugin id="org.eclipse.equinox.p2.metadata.repository.source"/>
-      <plugin id="org.eclipse.equinox.p2.metadata.source"/>
-      <plugin id="org.eclipse.equinox.p2.operations"/>
-      <plugin id="org.eclipse.equinox.p2.operations.source"/>
-      <plugin id="org.eclipse.equinox.p2.publisher"/>
-      <plugin id="org.eclipse.equinox.p2.publisher.source"/>
-      <plugin id="org.eclipse.equinox.p2.ql"/>
-      <plugin id="org.eclipse.equinox.p2.ql.source"/>
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins"/>
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins.source"/>
       <plugin id="org.eclipse.equinox.p2.repository"/>
-      <plugin id="org.eclipse.equinox.p2.repository.source"/>
-      <plugin id="org.eclipse.equinox.p2.repository.tools"/>
-      <plugin id="org.eclipse.equinox.p2.repository.tools.source"/>
-      <plugin id="org.eclipse.equinox.p2.touchpoint.eclipse"/>
-      <plugin id="org.eclipse.equinox.p2.touchpoint.eclipse.source"/>
-      <plugin id="org.eclipse.equinox.p2.touchpoint.natives"/>
-      <plugin id="org.eclipse.equinox.p2.touchpoint.natives.source"/>
-      <plugin id="org.eclipse.equinox.p2.ui"/>
-      <plugin id="org.eclipse.equinox.p2.ui.discovery"/>
-      <plugin id="org.eclipse.equinox.p2.ui.sdk"/>
-      <plugin id="org.eclipse.equinox.p2.ui.sdk.scheduler"/>
-      <plugin id="org.eclipse.equinox.p2.ui.sdk.scheduler.source"/>
-      <plugin id="org.eclipse.equinox.p2.ui.sdk.source"/>
-      <plugin id="org.eclipse.equinox.p2.ui.source"/>
-      <plugin id="org.eclipse.equinox.p2.updatechecker"/>
-      <plugin id="org.eclipse.equinox.p2.updatechecker.source"/>
-      <plugin id="org.eclipse.equinox.p2.updatesite"/>
-      <plugin id="org.eclipse.equinox.p2.updatesite.source"/>
       <plugin id="org.eclipse.equinox.preferences"/>
-      <plugin id="org.eclipse.equinox.preferences.source"/>
       <plugin id="org.eclipse.equinox.registry"/>
-      <plugin id="org.eclipse.equinox.registry.source"/>
       <plugin id="org.eclipse.equinox.security"/>
-      <plugin id="org.eclipse.equinox.security.source"/>
-      <plugin id="org.eclipse.equinox.security.ui"/>
-      <plugin id="org.eclipse.equinox.security.ui.source"/>
       <plugin id="org.eclipse.equinox.security.win32.x86" fragment="true"/>
-      <plugin id="org.eclipse.equinox.security.win32.x86.source"/>
       <plugin id="org.eclipse.equinox.simpleconfigurator"/>
       <plugin id="org.eclipse.equinox.simpleconfigurator.manipulator"/>
-      <plugin id="org.eclipse.equinox.simpleconfigurator.manipulator.source"/>
-      <plugin id="org.eclipse.equinox.simpleconfigurator.source"/>
-      <plugin id="org.eclipse.equinox.util"/>
-      <plugin id="org.eclipse.equinox.util.source"/>
-      <plugin id="org.eclipse.gef"/>
       <plugin id="org.eclipse.help"/>
-      <plugin id="org.eclipse.help.appserver"/>
-      <plugin id="org.eclipse.help.appserver.source"/>
       <plugin id="org.eclipse.help.base"/>
-      <plugin id="org.eclipse.help.source"/>
       <plugin id="org.eclipse.help.ui"/>
-      <plugin id="org.eclipse.help.webapp"/>
-      <plugin id="org.eclipse.jdt"/>
-      <plugin id="org.eclipse.jdt.apt.core"/>
-      <plugin id="org.eclipse.jdt.apt.pluggable.core"/>
-      <plugin id="org.eclipse.jdt.apt.ui"/>
       <plugin id="org.eclipse.jdt.compiler.apt" fragment="true"/>
       <plugin id="org.eclipse.jdt.compiler.tool" fragment="true"/>
       <plugin id="org.eclipse.jdt.core"/>
       <plugin id="org.eclipse.jdt.core.manipulation"/>
       <plugin id="org.eclipse.jdt.debug"/>
       <plugin id="org.eclipse.jdt.debug.ui"/>
-      <plugin id="org.eclipse.jdt.doc.user"/>
-      <plugin id="org.eclipse.jdt.junit"/>
-      <plugin id="org.eclipse.jdt.junit.core"/>
-      <plugin id="org.eclipse.jdt.junit.runtime"/>
-      <plugin id="org.eclipse.jdt.junit4.runtime"/>
       <plugin id="org.eclipse.jdt.launching"/>
       <plugin id="org.eclipse.jdt.ui"/>
-      <plugin id="org.eclipse.jem.util"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
-      <plugin id="org.eclipse.jface.databinding.source"/>
-      <plugin id="org.eclipse.jface.source"/>
       <plugin id="org.eclipse.jface.text"/>
-      <plugin id="org.eclipse.jface.text.source"/>
+      <plugin id="org.eclipse.jgit"/>
       <plugin id="org.eclipse.jsch.core"/>
-      <plugin id="org.eclipse.jsch.core.source"/>
       <plugin id="org.eclipse.jsch.ui"/>
-      <plugin id="org.eclipse.jsch.ui.source"/>
       <plugin id="org.eclipse.ltk.core.refactoring"/>
-      <plugin id="org.eclipse.ltk.core.refactoring.source"/>
       <plugin id="org.eclipse.ltk.ui.refactoring"/>
-      <plugin id="org.eclipse.ltk.ui.refactoring.source"/>
+      <plugin id="org.eclipse.mylyn.commons.core"/>
+      <plugin id="org.eclipse.mylyn.commons.net"/>
+      <plugin id="org.eclipse.mylyn.commons.ui"/>
+      <plugin id="org.eclipse.mylyn.context.core"/>
+      <plugin id="org.eclipse.mylyn.context.ui"/>
+      <plugin id="org.eclipse.mylyn.monitor.core"/>
+      <plugin id="org.eclipse.mylyn.monitor.ui"/>
+      <plugin id="org.eclipse.mylyn.resources.ui"/>
+      <plugin id="org.eclipse.mylyn.tasks.core"/>
+      <plugin id="org.eclipse.mylyn.tasks.ui"/>
+      <plugin id="org.eclipse.mylyn.team.ui"/>
+      <plugin id="org.eclipse.mylyn.wikitext.core"/>
+      <plugin id="org.eclipse.mylyn.wikitext.mediawiki.core"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
-      <plugin id="org.eclipse.osgi.services.source"/>
-      <plugin id="org.eclipse.osgi.source"/>
-      <plugin id="org.eclipse.osgi.util"/>
-      <plugin id="org.eclipse.osgi.util.source"/>
-      <plugin id="org.eclipse.pde"/>
-      <plugin id="org.eclipse.pde.api.tools"/>
-      <plugin id="org.eclipse.pde.api.tools.ui"/>
-      <plugin id="org.eclipse.pde.build"/>
-      <plugin id="org.eclipse.pde.core"/>
-      <plugin id="org.eclipse.pde.doc.user"/>
-      <plugin id="org.eclipse.pde.ds.core"/>
-      <plugin id="org.eclipse.pde.ds.ui"/>
-      <plugin id="org.eclipse.pde.junit.runtime"/>
-      <plugin id="org.eclipse.pde.launching"/>
-      <plugin id="org.eclipse.pde.runtime"/>
-      <plugin id="org.eclipse.pde.ua.core"/>
-      <plugin id="org.eclipse.pde.ua.ui"/>
-      <plugin id="org.eclipse.pde.ui"/>
-      <plugin id="org.eclipse.pde.ui.templates"/>
-      <plugin id="org.eclipse.platform"/>
-      <plugin id="org.eclipse.platform.doc.isv"/>
-      <plugin id="org.eclipse.platform.doc.user"/>
-      <plugin id="org.eclipse.platform.source"/>
-      <plugin id="org.eclipse.rap.help"/>
-      <plugin id="org.eclipse.rap.ui.intro"/>
-      <plugin id="org.eclipse.rap.ui.launch"/>
-      <plugin id="org.eclipse.rap.ui.templates"/>
-      <plugin id="org.eclipse.rcp"/>
-      <plugin id="org.eclipse.rcp.source"/>
       <plugin id="org.eclipse.rse.connectorservice.ssh"/>
       <plugin id="org.eclipse.rse.core"/>
-      <plugin id="org.eclipse.rse.doc.user"/>
       <plugin id="org.eclipse.rse.efs"/>
-      <plugin id="org.eclipse.rse.efs.ui"/>
       <plugin id="org.eclipse.rse.files.ui"/>
-      <plugin id="org.eclipse.rse.importexport"/>
-      <plugin id="org.eclipse.rse.processes.ui"/>
       <plugin id="org.eclipse.rse.services"/>
       <plugin id="org.eclipse.rse.services.ssh"/>
-      <plugin id="org.eclipse.rse.shells.ui"/>
       <plugin id="org.eclipse.rse.subsystems.files.core"/>
-      <plugin id="org.eclipse.rse.subsystems.processes.core"/>
-      <plugin id="org.eclipse.rse.subsystems.processes.shell.linux"/>
       <plugin id="org.eclipse.rse.subsystems.shells.core"/>
       <plugin id="org.eclipse.rse.ui"/>
       <plugin id="org.eclipse.search"/>
-      <plugin id="org.eclipse.search.source"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
-      <plugin id="org.eclipse.swt.win32.win32.x86.source"/>
       <plugin id="org.eclipse.team.core"/>
-      <plugin id="org.eclipse.team.core.source"/>
-      <plugin id="org.eclipse.team.cvs.core"/>
-      <plugin id="org.eclipse.team.cvs.ssh2"/>
-      <plugin id="org.eclipse.team.cvs.ui"/>
       <plugin id="org.eclipse.team.ui"/>
-      <plugin id="org.eclipse.team.ui.source"/>
       <plugin id="org.eclipse.text"/>
-      <plugin id="org.eclipse.text.source"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.browser"/>
-      <plugin id="org.eclipse.ui.browser.source"/>
       <plugin id="org.eclipse.ui.cheatsheets"/>
-      <plugin id="org.eclipse.ui.cheatsheets.source"/>
       <plugin id="org.eclipse.ui.console"/>
-      <plugin id="org.eclipse.ui.console.source"/>
       <plugin id="org.eclipse.ui.editors"/>
-      <plugin id="org.eclipse.ui.editors.source"/>
       <plugin id="org.eclipse.ui.externaltools"/>
-      <plugin id="org.eclipse.ui.externaltools.source"/>
       <plugin id="org.eclipse.ui.forms"/>
-      <plugin id="org.eclipse.ui.forms.source"/>
       <plugin id="org.eclipse.ui.ide"/>
       <plugin id="org.eclipse.ui.ide.application"/>
-      <plugin id="org.eclipse.ui.ide.application.source"/>
-      <plugin id="org.eclipse.ui.ide.source"/>
       <plugin id="org.eclipse.ui.intro"/>
-      <plugin id="org.eclipse.ui.intro.source"/>
       <plugin id="org.eclipse.ui.intro.universal"/>
-      <plugin id="org.eclipse.ui.intro.universal.source"/>
       <plugin id="org.eclipse.ui.navigator"/>
       <plugin id="org.eclipse.ui.navigator.resources"/>
-      <plugin id="org.eclipse.ui.navigator.resources.source"/>
-      <plugin id="org.eclipse.ui.navigator.source"/>
       <plugin id="org.eclipse.ui.net"/>
-      <plugin id="org.eclipse.ui.net.source"/>
-      <plugin id="org.eclipse.ui.presentations.r21"/>
-      <plugin id="org.eclipse.ui.presentations.r21.source"/>
-      <plugin id="org.eclipse.ui.source"/>
       <plugin id="org.eclipse.ui.views"/>
       <plugin id="org.eclipse.ui.views.log"/>
       <plugin id="org.eclipse.ui.views.properties.tabbed"/>
-      <plugin id="org.eclipse.ui.views.properties.tabbed.source"/>
-      <plugin id="org.eclipse.ui.views.source"/>
       <plugin id="org.eclipse.ui.win32" fragment="true"/>
-      <plugin id="org.eclipse.ui.win32.source"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.ui.workbench.compatibility" fragment="true"/>
       <plugin id="org.eclipse.ui.workbench.compatibility.source"/>
       <plugin id="org.eclipse.ui.workbench.source"/>
       <plugin id="org.eclipse.ui.workbench.texteditor"/>
       <plugin id="org.eclipse.ui.workbench.texteditor.source"/>
-      <plugin id="org.eclipse.update.configurator"/>
-      <plugin id="org.eclipse.update.configurator.source"/>
-      <plugin id="org.eclipse.update.core"/>
-      <plugin id="org.eclipse.update.core.source"/>
-      <plugin id="org.eclipse.update.core.win32" fragment="true"/>
-      <plugin id="org.eclipse.update.core.win32.source"/>
-      <plugin id="org.eclipse.update.scheduler"/>
-      <plugin id="org.eclipse.update.scheduler.source"/>
-      <plugin id="org.eclipse.update.ui"/>
-      <plugin id="org.eclipse.update.ui.source"/>
-      <plugin id="org.eclipse.xsd"/>
-      <plugin id="org.eclipse.xsd.edit"/>
       <plugin id="org.h2"/>
-      <plugin id="org.hamcrest.core"/>
-      <plugin id="org.junit"/>
-      <plugin id="org.junit4"/>
       <plugin id="org.mortbay.jetty.server"/>
       <plugin id="org.mortbay.jetty.util"/>
-      <plugin id="org.objectweb.asm"/>
-      <plugin id="org.sat4j.core"/>
-      <plugin id="org.sat4j.pb"/>
    </plugins>
 
    <configurations>
       <plugin id="com.ibm.icu" autoStart="false" startLevel="0" />
-      <plugin id="com.ibm.icu.source" autoStart="false" startLevel="0" />
       <plugin id="com.jcraft.jsch" autoStart="false" startLevel="0" />
-      <plugin id="com.jcraft.jsch.source" autoStart="false" startLevel="0" />
       <plugin id="com.rhomobile.rhostudio" autoStart="false" startLevel="0" />
       <plugin id="javax.servlet" autoStart="false" startLevel="0" />
       <plugin id="javax.servlet.jsp" autoStart="false" startLevel="0" />
-      <plugin id="javax.xml" autoStart="false" startLevel="0" />
-      <plugin id="javax.xml.bind" autoStart="false" startLevel="0" />
       <plugin id="org.antlr.runtime" autoStart="false" startLevel="0" />
       <plugin id="org.apache.ant" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.ant.source" autoStart="false" startLevel="0" />
       <plugin id="org.apache.commons.codec" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.commons.codec.source" autoStart="false" startLevel="0" />
       <plugin id="org.apache.commons.el" autoStart="false" startLevel="0" />
       <plugin id="org.apache.commons.httpclient" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.commons.httpclient.source" autoStart="false" startLevel="0" />
       <plugin id="org.apache.commons.lang" autoStart="false" startLevel="0" />
       <plugin id="org.apache.commons.logging" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.commons.logging.source" autoStart="false" startLevel="0" />
       <plugin id="org.apache.jasper" autoStart="false" startLevel="0" />
       <plugin id="org.apache.lucene" autoStart="false" startLevel="0" />
       <plugin id="org.apache.lucene.analysis" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.ws.commons.util" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.xerces" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.xml.resolver" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.xml.serializer" autoStart="false" startLevel="0" />
-      <plugin id="org.apache.xmlrpc" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ant.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ant.core.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ant.launching" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ant.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.compare" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.compare.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.compare.core.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.compare.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.compare.win32" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.compare.win32.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.boot" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.commands" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.commands.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.contenttype" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.contenttype.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.databinding" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.databinding.beans" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.databinding.beans.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.databinding.observable" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.databinding.observable.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.databinding.property" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.databinding.property.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.databinding.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.expressions" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.expressions.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.externaltools" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.externaltools.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.filebuffers" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.filebuffers.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.filesystem" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.filesystem.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.jobs" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.jobs.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.net" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.net.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.resources" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.resources.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.runtime" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.runtime.compatibility" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.runtime.compatibility.auth" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.runtime.compatibility.auth.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.runtime.compatibility.registry.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.runtime.compatibility.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.runtime.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.core.variables" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.core.variables.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.cvs" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.debug.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.debug.core.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.debug.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.debug.ui.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.console" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.console.ui" autoStart="false" startLevel="0" />
@@ -588,285 +320,109 @@
       <plugin id="org.eclipse.dltk.validators.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.validators.externalchecker" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.validators.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.draw2d" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ecf" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ecf.filetransfer" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.filetransfer.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ecf.identity" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.identity.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ecf.provider.filetransfer" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient.ssl.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.provider.filetransfer.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.provider.filetransfer.ssl.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ecf.ssl.source" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.core" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.core.source" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.doc" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.mylyn.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.mylyn.ui.source" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.egit.ui.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.emf.common" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.emf.common.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.emf.ecore" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.emf.ecore.change" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.emf.ecore.edit" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.emf.ecore.xmi" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.emf.edit" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.emf.edit.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.mpc.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.mpc.help.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.mpc.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.package.common" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.package.rcp" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.usagedata.gathering" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.usagedata.recording" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.epp.usagedata.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.app" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.app.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.common.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.concurrent" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.ds.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.event.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.frameworkadmin" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.frameworkadmin.equinox" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.frameworkadmin.equinox.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.frameworkadmin.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.http.jetty" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.http.registry" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.http.servlet" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.jsp.jasper" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.jsp.jasper.registry" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.launcher" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.launcher.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.artifact.repository" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.artifact.repository.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.console" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.console.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.core.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.director" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.director.app" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.director.app.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.director.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.directorywatcher" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.directorywatcher.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.discovery" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.discovery.compatibility" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.engine" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.engine.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.extensionlocation" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.extensionlocation.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.garbagecollector" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.garbagecollector.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.jarprocessor" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.jarprocessor.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.metadata" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.metadata.generator" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.metadata.generator.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.metadata.repository" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.metadata.repository.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.metadata.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.operations" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.operations.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.publisher" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.publisher.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ql" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ql.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.repository" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.repository.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.repository.tools" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.repository.tools.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.touchpoint.eclipse" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.touchpoint.eclipse.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.touchpoint.natives" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.touchpoint.natives.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui.discovery" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui.sdk" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui.sdk.scheduler" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui.sdk.scheduler.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui.sdk.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.ui.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.updatechecker" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.updatechecker.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.updatesite" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.updatesite.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.preferences" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.preferences.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.registry" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.registry.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.security" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.security.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.security.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.security.ui.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.security.win32.x86.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator.manipulator" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.simpleconfigurator.manipulator.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.simpleconfigurator.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.util" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.util.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.gef" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.help" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.help.appserver" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.help.appserver.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.help.base" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.help.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.help.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.help.webapp" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.apt.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.apt.pluggable.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.apt.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jdt.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jdt.core.manipulation" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jdt.debug" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jdt.debug.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.doc.user" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.junit" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.junit.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.junit.runtime" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jdt.junit4.runtime" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jdt.launching" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jdt.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jem.util" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jface" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jface.databinding" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jface.databinding.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jface.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jface.text" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jface.text.source" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.jgit" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jsch.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jsch.core.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.jsch.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.jsch.ui.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ltk.core.refactoring" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ltk.core.refactoring.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ltk.ui.refactoring" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ltk.ui.refactoring.source" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.commons.core" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.commons.net" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.commons.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.context.core" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.context.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.monitor.core" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.monitor.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.resources.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.tasks.core" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.tasks.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.team.ui" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.wikitext.core" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.mylyn.wikitext.mediawiki.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.osgi" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.osgi.services" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.osgi.services.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.osgi.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.osgi.util" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.osgi.util.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.api.tools" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.api.tools.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.build" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.doc.user" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.ds.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.ds.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.junit.runtime" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.launching" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.runtime" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.ua.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.ua.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.pde.ui.templates" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.platform" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.platform.doc.isv" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.platform.doc.user" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.platform.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rap.help" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rap.ui.intro" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rap.ui.launch" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rap.ui.templates" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rcp" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rcp.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.connectorservice.ssh" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.doc.user" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.efs" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.efs.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.files.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.importexport" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.processes.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.services" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.services.ssh" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.shells.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.subsystems.files.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.subsystems.processes.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.rse.subsystems.processes.shell.linux" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.subsystems.shells.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rse.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.search" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.search.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.swt" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.swt.win32.win32.x86.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.team.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.team.core.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.team.cvs.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.team.cvs.ssh2" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.team.cvs.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.team.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.team.ui.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.text" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.text.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.browser" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.browser.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.cheatsheets" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.cheatsheets.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.console" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.console.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.editors" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.editors.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.externaltools" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.externaltools.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.forms" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.forms.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.ide" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.ide.application" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.ide.application.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.ide.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.intro" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.intro.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.intro.universal" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.intro.universal.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.navigator" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.navigator.resources" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.navigator.resources.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.navigator.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.net" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.net.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.presentations.r21" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.presentations.r21.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.views" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.views.log" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.views.properties.tabbed" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.views.properties.tabbed.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.views.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.ui.win32.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.workbench" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.workbench.compatibility.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.workbench.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.workbench.texteditor" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ui.workbench.texteditor.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.configurator" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.configurator.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.core.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.core.win32.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.scheduler" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.scheduler.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.update.ui.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.xsd" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.xsd.edit" autoStart="false" startLevel="0" />
       <plugin id="org.h2" autoStart="false" startLevel="0" />
-      <plugin id="org.hamcrest.core" autoStart="false" startLevel="0" />
-      <plugin id="org.junit" autoStart="false" startLevel="0" />
-      <plugin id="org.junit4" autoStart="false" startLevel="0" />
       <plugin id="org.mortbay.jetty.server" autoStart="false" startLevel="0" />
       <plugin id="org.mortbay.jetty.util" autoStart="false" startLevel="0" />
-      <plugin id="org.objectweb.asm" autoStart="false" startLevel="0" />
-      <plugin id="org.sat4j.core" autoStart="false" startLevel="0" />
-      <plugin id="org.sat4j.pb" autoStart="false" startLevel="0" />
    </configurations>
 
 </product>
