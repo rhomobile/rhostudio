@@ -1,12 +1,6 @@
 package rhogenwizard.editors;
 
 
-import java.io.StringWriter;
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.StringTokenizer;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -14,45 +8,18 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IDE;
 
-/**
- * An example showing how to create a multi-page editor.
- * This example has 3 pages:
- * <ul>
- * <li>page 0 contains a nested text editor.
- * <li>page 1 allows you to change the font used in page 2
- * <li>page 2 shows the words in page 0 in sorted order
- * </ul>
- */
 public class RubyEditor extends MultiPageEditorPart implements IResourceChangeListener{
 
 	/** The text editor used in page 0. */
 	private TextEditor editor;
 
-	/** The font chosen in page 1. */
-	private Font font;
-
-	/** The text widget used in page 2. */
-	private StyledText text;
-	
 	/**
 	 * Creates a multi-page editor example.
 	 */
@@ -76,56 +43,9 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 		}
 		catch (PartInitException e) 
 		{
-			ErrorDialog.openError(
-				getSite().getShell(),
-				"Error creating nested text editor",
-				null,
-				e.getStatus());
+			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor",
+				null, e.getStatus());
 		}
-	}
-	
-	/**
-	 * Creates page 1 of the multi-page editor,
-	 * which allows you to change the font used in page 2.
-	 */
-	void createPage1() 
-	{
-		Composite composite = new Composite(getContainer(), SWT.NONE);
-		GridLayout layout = new GridLayout();
-		composite.setLayout(layout);
-		layout.numColumns = 2;
-
-		Button fontButton = new Button(composite, SWT.NONE);
-		GridData gd = new GridData(GridData.BEGINNING);
-		gd.horizontalSpan = 2;
-		fontButton.setLayoutData(gd);
-		fontButton.setText("Change Font...");
-		
-		fontButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(SelectionEvent event) 
-			{
-			}
-		});
-
-		int index = addPage(composite);
-		setPageText(index, "Properties");
-	}
-	
-	/**
-	 * Creates page 2 of the multi-page editor,
-	 * which shows the sorted text.
-	 */
-	void createPage2() 
-	{
-		Composite composite = new Composite(getContainer(), SWT.NONE);
-		FillLayout layout = new FillLayout();
-		composite.setLayout(layout);
-		text = new StyledText(composite, SWT.H_SCROLL | SWT.V_SCROLL);
-		text.setEditable(false);
-
-		int index = addPage(composite);
-		setPageText(index, "Preview");
 	}
 	
 	/**
