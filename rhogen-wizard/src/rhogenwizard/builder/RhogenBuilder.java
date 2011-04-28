@@ -15,7 +15,7 @@ import rhogenwizard.ConsoleHelper;
 
 public class RhogenBuilder extends IncrementalProjectBuilder 
 {
-	public  static final String BUILDER_ID = "com.rhomobile.eclipse.rhogenBuilder";
+	public  static final String BUILDER_ID = "rhogenwizard.builder.RhogenBuilder";
 
 	private RhodesAdapter m_rhodeAdapter = new RhodesAdapter();
 
