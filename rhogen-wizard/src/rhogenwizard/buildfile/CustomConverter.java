@@ -56,18 +56,25 @@ public class CustomConverter extends AbstractStructureConverter
 				String itemValue = l.toString();
 				itemValue = itemValue.replace("\\", "/");
 
-				char firstChar = itemValue.charAt(0);
-				char lstChar   = itemValue.charAt(itemValue.length() - 1);
-				
-				if (firstChar == '*' || lstChar == '*')
+				if (itemValue.length() != 0)
 				{
-					sb.append("\"");
-					sb.append(itemValue.toString());
-					sb.append("\"");
+					char firstChar = itemValue.charAt(0);
+					char lstChar   = itemValue.charAt(itemValue.length() - 1);
+					
+					if (firstChar == '*' || lstChar == '*')
+					{
+						sb.append("\"");
+						sb.append(itemValue.toString());
+						sb.append("\"");
+					}
+					else
+					{
+						sb.append(itemValue.toString());
+					}
 				}
 				else
 				{
-					sb.append(itemValue.toString());
+					sb.append("");
 				}
 			}
 			else
@@ -94,19 +101,26 @@ public class CustomConverter extends AbstractStructureConverter
 			
 			String renderVal = val.toString();
 			
-			char firstChar = renderVal.charAt(0);
-			char lstChar   = renderVal.charAt(renderVal.length() - 1);
-			
-			if (firstChar == '*' || lstChar == '*')
+			if (renderVal.length() != 0)
 			{
-				sb.append("\"");
-				sb.append(val.toString());
-				sb.append("\"");
+				char firstChar = renderVal.charAt(0);
+				char lstChar   = renderVal.charAt(renderVal.length() - 1);
+				
+				if (firstChar == '*' || lstChar == '*')
+				{
+					sb.append("\"");
+					sb.append(val.toString());
+					sb.append("\"");
+				}
+				else
+				{
+					sb.append(val.toString());
+				}
 			}
 			else
 			{
-				sb.append(val.toString());
-			}
+				sb.append("");
+			}	
 			
 			sb.append("\n");		
 		}
