@@ -65,11 +65,11 @@
    
 	<extension point="org.eclipse.ui.editors">
       <editor
-            name="Ruby Editor"
+            class="org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor"
             extensions="rb,erb"
             icon="icons/ruby.png"
-            class="rhogenwizard.editors.RubyEditor"
-            id="rhogenwizard.editors.RubyEditor">
+            id="rhogenwizard.editors.RubyEditor"
+            name="Ruby Editor">
       </editor>
    </extension>
    
@@ -175,11 +175,27 @@
     
    <extension point="org.eclipse.ui.perspectives">
       <perspective
-            name="RhoStudio"
-            icon="icons/sample16.png"
             class="rhogenwizard.perspectives.RhostudioPerspective"
-            id="rhogenwizard.perspectives.RhostudioPerspective">
+            icon="icons/sample16.png"
+            id="rhogenwizard.perspectives.RhostudioPerspective"
+            name="RhoStudio">
       </perspective>
+   </extension>
+   
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ant.core.antRunner"
+            name="aaaa">
+         <property
+               name="appName"
+               value="aaaa">
+         </property>
+         
+            <property name="preferenceCustomization"
+             value="plugin_customization.ini"/>
+      </product>
    </extension>
  
 </plugin>
