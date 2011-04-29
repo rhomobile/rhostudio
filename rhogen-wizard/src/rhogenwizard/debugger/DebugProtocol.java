@@ -39,21 +39,21 @@ public class DebugProtocol {
 		}
 	}
 	
-    public void step() {
+	public void step() {
 		this.state = DebugState.RUNNING;
 		debugServer.send("STEP");
-    }
-    
-    public void resume() {
+	}
+	
+	public void resume() {
 		this.state = DebugState.RUNNING;
 		debugServer.send("CONT");
-    }
-    
-    public void setBreakpoint(String file, int line) {
+	}
+	
+	public void setBreakpoint(String file, int line) {
 		debugServer.send("BP:"+file+":"+line);
-    }
+	}
 
-    public void evaluate(String expression) {
+	public void evaluate(String expression) {
 		debugServer.send("EV:"+expression);
-    }
+	}
 }

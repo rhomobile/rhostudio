@@ -5,5 +5,5 @@ public interface IDebugCallback {
 	public void breakpoint(String file, int line);
 	public void evaluation(String value);
 	public void unknown(String cmd);
-	//public void exited(); // not yet implemented
+	// public void exited(); - not yet implemented
 }
