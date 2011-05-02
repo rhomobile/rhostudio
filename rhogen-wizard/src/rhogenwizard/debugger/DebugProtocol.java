@@ -32,8 +32,7 @@ public class DebugProtocol {
 			String[] bp = cmd.split(":");
 			debugCallback.breakpoint(bp[1].replace('|', ':').replace('\\', '/'), Integer.parseInt(bp[2]));
 		} else if (cmd.startsWith("EV:")) {
-			String[] bp = cmd.split(":");
-			debugCallback.evaluation(bp[1].replace("\\n", "\n"));
+			debugCallback.evaluation(cmd.substring(3).replace("\\n", "\n"));
 		} else {
 			debugCallback.unknown(cmd);
 		}
