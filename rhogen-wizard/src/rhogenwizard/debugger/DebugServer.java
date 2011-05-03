@@ -17,8 +17,10 @@ import java.net.SocketException;
  */
 public class DebugServer extends Thread {
 	static private PrintStream debugOutput = null;
+	private static int debugServerPort0 = 9000;
+	private static int debugServerPort1 = 9999;
 	
-	private int debugServerPort = 9000;
+	private int debugServerPort = 0;
 	private IDebugCallback debugCallback;
 	private DebugProtocol debugProtocol = null;
 
@@ -27,7 +29,7 @@ public class DebugServer extends Thread {
 	private OutputStreamWriter outToClient = null;
 
 	/**
-	 * Create a debug server on default port (9000).
+	 * Create a debug server.
 	 * @param callback - object to receive events from the debug target (Rhodes application).
 	 */
 	public DebugServer(IDebugCallback callback) {
@@ -36,14 +38,13 @@ public class DebugServer extends Thread {
 	}
 
 	/**
-	 * Create a debug server on a specified port.
-	 * @param callback - object to receive events from the debug target (Rhodes application).
-	 * @param port - server port to bind/listen to.
+	 * Set port range to bind Debug Server to (default 9000-9999).
+	 * @param port0 - starting port number.
+	 * @param port1 - ending port number.
 	 */
-	public DebugServer(IDebugCallback callback, int port) {
-		this.debugServerPort = port;
-		this.debugCallback = callback;
-		this.initialize();
+	public static void setDebugPortRange(int port0, int port1) {
+		debugServerPort0 = port0;
+		debugServerPort1 = port1;
 	}
 
 	/**
@@ -64,12 +65,27 @@ public class DebugServer extends Thread {
 
 	private void initialize() {
 		try {
-			this.serverSocket = new java.net.ServerSocket(this.debugServerPort);
+			// find & bind free local port
+			this.serverSocket = null;
+			this.debugServerPort = 0;
+			for (int i=debugServerPort0; i<=debugServerPort1; i++) {
+				try {
+					ServerSocket s = new ServerSocket(i);
+					this.serverSocket = s;
+					break;
+				} catch( IOException ioe ) { }
+			}
+			if (this.serverSocket == null) {
+				throw new IOException(String.format("Unable to open server in port range (%d..%d)",
+					debugServerPort0,debugServerPort1));
+			}
 			assert this.serverSocket.isBound();
-			if ((debugOutput != null) && this.serverSocket.isBound()) {
-				debugOutput.println("Debug server port "
-					+ this.serverSocket.getLocalPort()
-					+ " is ready and waiting for Rhodes application to connect...");
+			if (this.serverSocket.isBound()) {
+				this.debugServerPort = this.serverSocket.getLocalPort();
+				if ((debugOutput != null)) {
+					debugOutput.println("Debug server port " + this.debugServerPort +
+						" is ready and waiting for Rhodes application to connect...");
+				}
 			}
 		} catch (SocketException se) {
 			se.printStackTrace();
