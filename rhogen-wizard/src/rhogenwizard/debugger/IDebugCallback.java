@@ -19,7 +19,8 @@ public interface IDebugCallback {
 	public void breakpoint(String file, int line);
 
 	/**
-	 * Called after execution of the one line of Ruby code after the {@link DebugServer#debugStep()} method call.  
+	 * Called after execution of next method of Ruby code after the
+	 * {@link DebugServer#debugStepOver()} or {@link DebugServer#debugStepInto()} method call.  
 	 * @param file - file path within <code>app</code> folder of the Rhodes application,
 	 * e.g. <code>"application.rb"</code>.
 	 * @param line - effective line number (starting with 1).
@@ -42,4 +43,14 @@ public interface IDebugCallback {
 	 * Called just before Rhodes application exit.
 	 */
 	public void exited();
+
+	/**
+	 * Local variable auto-watch. Called for each local variable right after
+	 * the stop at breakpoint or a step over/into, i.e. just after the call of
+	 * {@link IDebugCallback#breakpoint(String, int)} or
+	 * {@link IDebugCallback#step(String, int)}. 
+	 * @param variable - name of the local variable.
+	 * @param value - current value of the local variable.
+	 */
+	public void autoWatch(String variable, String value);
 }

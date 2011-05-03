@@ -141,21 +141,31 @@ public class DebugServer extends Thread {
 	 * @return Returns a {@link DebugState}.
 	 */
 	public DebugState debugGetState() {
-		return this.debugProtocol.getState();
+		return this.debugProtocol!=null ? this.debugProtocol.getState() : DebugState.NOTCONNECTED;
 	}
 
 	/**
-	 * Execute one step (one line of Ruby code).
+	 * Step over the next method call (without entering it) at the currently executing line of Ruby code.
 	 */
-	public void debugStep() {
-		this.debugProtocol.step();
+	public void debugStepOver() {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.stepOver();
+	}
+	
+	/**
+	 * Step into the next method call at the currently executing line of Ruby code.
+	 */
+	public void debugStepInto() {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.stepInto();
 	}
 	
 	/**
 	 * Resume a normal execution of the Rhodes application (after the stop at breakpoint or after {@link #debugStep()} method call). 
 	 */
 	public void debugResume() {
-		this.debugProtocol.resume();
+		if (this.debugProtocol!=null)
+			this.debugProtocol.resume();
 	}
 	
 	/**
@@ -166,7 +176,8 @@ public class DebugServer extends Thread {
 	 * @param line - effective line number (starting with 1). Must point to non-empty line of code.
 	 */
 	public void debugBreakpoint(String file, int line) {
-		this.debugProtocol.addBreakpoint(file, line);
+		if (this.debugProtocol!=null)
+			this.debugProtocol.addBreakpoint(file, line);
 	}
 
 	/**
@@ -177,14 +188,16 @@ public class DebugServer extends Thread {
 	 * @param line - effective line number (starting with 1). Must point to non-empty line of code.
 	 */
 	public void debugRemoveBreakpoint(String file, int line) {
-		this.debugProtocol.removeBreakpoint(file, line);
+		if (this.debugProtocol!=null)
+			this.debugProtocol.removeBreakpoint(file, line);
 	}
 
 	/**
 	 * Remove all breakpoints.
 	 */
 	public void debugRemoveAllBreakpoints() {
-		this.debugProtocol.removeAllBreakpoints();
+		if (this.debugProtocol!=null)
+			this.debugProtocol.removeAllBreakpoints();
 	}
 
 	/**
@@ -192,7 +205,8 @@ public class DebugServer extends Thread {
 	 * @param skip - if <code>true</code>, skip all breakpoints; if <code>false</code>, stop at breakpoints.
 	 */
 	public void debugSkipBreakpoints(boolean skip) {
-		this.debugProtocol.skipBreakpoints(skip);
+		if (this.debugProtocol!=null)
+			this.debugProtocol.skipBreakpoints(skip);
 	}
 
 	/**
@@ -202,7 +216,8 @@ public class DebugServer extends Thread {
 	 * {@link IDebugCallback#evaluation(String)} method call.  
 	 */
 	public void debugEvaluate(String expression) {
-		this.debugProtocol.evaluate(expression);
+		if (this.debugProtocol!=null)
+			this.debugProtocol.evaluate(expression);
 	}
 
 }
