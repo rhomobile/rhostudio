@@ -11,32 +11,53 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * Rhodes Debug Server implementation.
+ * @author Albert R. Timashev
+ */
 public class DebugServer extends Thread {
 	static private PrintStream debugOutput = null;
 	
 	private int debugServerPort = 9000;
-	IDebugCallback debugCallback;
-	DebugProtocol debugProtocol = null;
+	private IDebugCallback debugCallback;
+	private DebugProtocol debugProtocol = null;
 
 	private ServerSocket serverSocket = null;
 	private BufferedReader inFromClient = null;
 	private OutputStreamWriter outToClient = null;
 
+	/**
+	 * Create a debug server on default port (9000).
+	 * @param callback - object to receive events from the debug target (Rhodes application).
+	 */
 	public DebugServer(IDebugCallback callback) {
 		this.debugCallback = callback;
 		this.initialize();
 	}
 
+	/**
+	 * Create a debug server on a specified port.
+	 * @param callback - object to receive events from the debug target (Rhodes application).
+	 * @param port - server port to bind/listen to.
+	 */
 	public DebugServer(IDebugCallback callback, int port) {
 		this.debugServerPort = port;
 		this.debugCallback = callback;
 		this.initialize();
 	}
 
+	/**
+	 * Set an output stream for a detailed debug information.
+	 * @param stream - output stream (if null, no debug information will be passed anywhere). 
+	 */
 	public static void setDebugOutputStream(PrintStream stream) {
 		debugOutput = stream;
 	}
 	
+	/**
+	 * Get the debug server port.
+	 * @return Port number the debug server is bound/listening to. 
+	 */
 	public int getPort() {
 		return this.debugServerPort;
 	}
@@ -84,6 +105,9 @@ public class DebugServer extends Thread {
 		}
 	}
 
+	/**
+	 * Shutdown the debug server (close all connections and a server socket).
+	 */
 	public void shutdown() {
 		this.interrupt();
 		try {
@@ -112,22 +136,71 @@ public class DebugServer extends Thread {
 		}
 	}
 
+	/**
+	 * Get current state of the connected Rhodes application.
+	 * @return Returns a {@link DebugState}.
+	 */
 	public DebugState debugGetState() {
 		return this.debugProtocol.getState();
 	}
 
+	/**
+	 * Execute one step (one line of Ruby code).
+	 */
 	public void debugStep() {
 		this.debugProtocol.step();
 	}
 	
+	/**
+	 * Resume a normal execution of the Rhodes application (after the stop at breakpoint or after {@link #debugStep()} method call). 
+	 */
 	public void debugResume() {
 		this.debugProtocol.resume();
 	}
 	
+	/**
+	 * Add a breakpoint.
+	 * @param file - file path within <code>app</code> folder of the Rhodes application,
+	 * e.g. <code>"application.rb"</code>
+	 * (always use <code>'/'</code> as a folder/file name separator).
+	 * @param line - effective line number (starting with 1). Must point to non-empty line of code.
+	 */
 	public void debugBreakpoint(String file, int line) {
-		this.debugProtocol.setBreakpoint(file, line);
+		this.debugProtocol.addBreakpoint(file, line);
 	}
 
+	/**
+	 * Remove a breakpoint.
+	 * @param file - file path within <code>app</code> folder of the Rhodes application,
+	 * e.g. <code>"application.rb"</code>
+	 * (always use <code>'/'</code> as a folder/file name separator).
+	 * @param line - effective line number (starting with 1). Must point to non-empty line of code.
+	 */
+	public void debugRemoveBreakpoint(String file, int line) {
+		this.debugProtocol.removeBreakpoint(file, line);
+	}
+
+	/**
+	 * Remove all breakpoints.
+	 */
+	public void debugRemoveAllBreakpoints() {
+		this.debugProtocol.removeAllBreakpoints();
+	}
+
+	/**
+	 * Toggle breakpoints skip mode.
+	 * @param skip - if <code>true</code>, skip all breakpoints; if <code>false</code>, stop at breakpoints.
+	 */
+	public void debugSkipBreakpoints(boolean skip) {
+		this.debugProtocol.skipBreakpoints(skip);
+	}
+
+	/**
+	 * Evaluate Ruby expression or execute arbitrary Ruby code. 
+	 * @param expression - expression to evaluate or Ruby code to execute.
+	 * Result of evaluation/execution is returned by the
+	 * {@link IDebugCallback#evaluation(String)} method call.  
+	 */
 	public void debugEvaluate(String expression) {
 		this.debugProtocol.evaluate(expression);
 	}
