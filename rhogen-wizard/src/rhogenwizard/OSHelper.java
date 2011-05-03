@@ -5,6 +5,11 @@ import java.util.List;
 
 public class OSHelper extends OSValidator
 {
+	public static void killProcess(String processName) throws Exception
+	{
+		killProcess(processName, processName + ".exe"); 
+	}
+	
 	public static void killProcess(String unixName, String wndName) throws Exception
 	{
 		List<String> cmdLine = new ArrayList<String>();

@@ -1,14 +1,8 @@
 package rhogenwizard;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.buildfile.SdkYmlFile;
-import rhogenwizard.perspectives.RhostudioPerspective;
 
 /**
  * The activator class controls the plug-in life cycle
