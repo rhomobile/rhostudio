@@ -161,6 +161,62 @@ public class DebugServer extends Thread {
 	}
 
 	/**
+	 * Get current file path within <code>app</code> folder of the Rhodes application.
+	 * @return Returns current file path if current state of Rhodes application is either
+	 * {@link DebugState#BREAKPOINT} or {@link DebugState#STEP}. Otherwise returns "". 
+	 */
+	public String debugGetFile() {
+		if (this.debugProtocol!=null) {
+			DebugState state = this.debugProtocol.getState();
+			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+				return this.debugProtocol.getCurrentFile();
+		}
+		return "";
+	}
+
+	/**
+	 * Get current line number.
+	 * @return Returns current line number if current state of Rhodes application is either
+	 * {@link DebugState#BREAKPOINT} or {@link DebugState#STEP}. Otherwise returns 0. 
+	 */
+	public int debugGetLine() {
+		if (this.debugProtocol!=null) {
+			DebugState state = this.debugProtocol.getState();
+			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+				return this.debugProtocol.getCurrentLine();
+		}
+		return 0;
+	}
+	
+	/**
+	 * Get current class of the Rhodes application.
+	 * @return Returns current class name if current state of Rhodes application is either
+	 * {@link DebugState#BREAKPOINT} or {@link DebugState#STEP}. Otherwise returns "".
+	 */
+	public String debugGetClass() {
+		if (this.debugProtocol!=null) {
+			DebugState state = this.debugProtocol.getState();
+			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+				return this.debugProtocol.getCurrentClass();
+		}
+		return "";
+	}
+
+	/**
+	 * Get currently executing method of the Rhodes application.
+	 * @return Returns current method name if current state of Rhodes application is either
+	 * {@link DebugState#BREAKPOINT} or {@link DebugState#STEP}. Otherwise returns "".
+	 */
+	public String debugGetMethod() {
+		if (this.debugProtocol!=null) {
+			DebugState state = this.debugProtocol.getState();
+			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+				return this.debugProtocol.getCurrentMethod();
+		}
+		return "";
+	}
+
+	/**
 	 * Step over the next method call (without entering it) at the currently executing line of Ruby code.
 	 */
 	public void debugStepOver() {
@@ -236,4 +292,53 @@ public class DebugServer extends Thread {
 			this.debugProtocol.evaluate(expression);
 	}
 
+	/**
+	 * Evaluate Ruby expression or execute arbitrary Ruby code. 
+	 * @param expression - expression to evaluate or Ruby code to execute.
+	 * @param includeCode - if <code>true</code>, return the original Ruby expression/code
+	 * together with the calculated value though
+	 * {@link IDebugCallback#evaluation(String, String)} method call.
+	 * If <code>includeCode</code> is false, the result of evaluation/execution
+	 * is returned by the {@link IDebugCallback#evaluation(String)} method call.
+	 */
+	public void debugEvaluate(String expression, boolean includeCode) {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.evaluate(expression, includeCode);
+	}
+
+	/**
+	 * Get list and values of variables of all types. Result is returned by the number of
+	 * {@link IDebugCallback#watch(DebugVariableType, String, String)} method calls.
+	 */
+	public void debugGetVariables() {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.getVariables(new DebugVariableType[] {DebugVariableType.GLOBAL, DebugVariableType.LOCAL, DebugVariableType.CLASS, DebugVariableType.INSTANCE});
+	}
+	
+	/**
+	 * Get list and values of variables of the specified types. Result is returned by the number of 
+	 * {@link IDebugCallback#watch(DebugVariableType, String, String)} method calls.
+	 * @param types - list of variable types ({@link DebugVariableType}) to watch. 
+	 */
+	public void debugGetVariables(DebugVariableType[] types) {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.getVariables(types);
+	}
+	
+	/**
+	 * Suspend the execution of Ruby code. The {@link IDebugCallback#step(String, int, String, String)}
+	 * method is called when the actual stop occurs.
+	 */
+	public void debugSuspend() {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.suspend();
+	}
+	
+	/**
+	 * Terminates execution of the Rhodes application.
+	 */
+	public void debugTerminate() {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.terminate();
+	}
 }

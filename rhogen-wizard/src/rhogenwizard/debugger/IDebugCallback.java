@@ -15,8 +15,10 @@ public interface IDebugCallback {
 	 * @param file - file path within <code>app</code> folder of the Rhodes application,
 	 * e.g. <code>"application.rb"</code>.
 	 * @param line - effective line number (starting with 1).
+	 * @param className - class name of the current object ("" if none).
+	 * @param method - name of the current method ("" if none).
 	 */
-	public void breakpoint(String file, int line);
+	public void breakpoint(String file, int line, String className, String method);
 
 	/**
 	 * Called after execution of next method of Ruby code after the
@@ -24,15 +26,32 @@ public interface IDebugCallback {
 	 * @param file - file path within <code>app</code> folder of the Rhodes application,
 	 * e.g. <code>"application.rb"</code>.
 	 * @param line - effective line number (starting with 1).
+	 * @param className - class name of the current object ("" if none).
+	 * @param method - name of the current method ("" if none).
 	 */
-	public void step(String file, int line);
+	public void step(String file, int line, String className, String method);
 
 	/**
-	 * Called after the {@link DebugServer#debugEvaluate(String)} method call.
+	 * Called when Rhodes application is resumed after
+	 * {@link DebugServer#debugResume()} method call.
+	 */
+	public void resumed();
+	
+	/**
+	 * Called after the {@link DebugServer#debugEvaluate(String)} or
+	 * {@link DebugServer#debugEvaluate(String, boolean)} method call.
 	 * @param value - the resulted value of the evaluated/executed Ruby code. 
 	 */
 	public void evaluation(String value);
 
+	/**
+	 * Called after the {@link DebugServer#debugEvaluate(String, boolean)} 
+	 * method call when second parameter is <code>true</code>.
+	 * @param code - original Ruby code. 
+	 * @param value - the resulted value of the evaluated/executed Ruby code. 
+	 */
+	public void evaluation(String code, String value);
+	
 	/**
 	 * Called upon receiving an unidentified response from the Rhodes application.
 	 * @param cmd - unidentified line.
@@ -45,12 +64,11 @@ public interface IDebugCallback {
 	public void exited();
 
 	/**
-	 * Local variable auto-watch. Called for each local variable right after
-	 * the stop at breakpoint or a step over/into, i.e. just after the call of
-	 * {@link IDebugCallback#breakpoint(String, int)} or
-	 * {@link IDebugCallback#step(String, int)}. 
+	 * Variable watch. Called for each variable after the call of
+	 * {@link DebugServer#gebugGetVariables()}. 
+	 * @param type - Ruby variable type {@link DebugVariableType}.
 	 * @param variable - name of the local variable.
 	 * @param value - current value of the local variable.
 	 */
-	public void autoWatch(String variable, String value);
+	public void watch(DebugVariableType type, String variable, String value);
 }
