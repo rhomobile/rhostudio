@@ -50,7 +50,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	private static String androidVersions[] = { "1.6",
 											    "2.1",
 											    "2.2",
-											    "2.3",
+											    "2.3.1",
 											    "2.3.3",
 											    "3.0" };
 	
@@ -140,7 +140,8 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				}
 			}
 		});
-
+		m_selectPlatformVersionCombo.select(2);
+		
 		// 3 row
 		m_androidEmuNameLabel = SWTFactory.createLabel(namecomp, "AVD name", 1);
 		
@@ -222,8 +223,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			
 			String selProjectPlatform = m_configuration.getAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, "");
 			String emuName            = m_configuration.getAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, "");
+			boolean onDevice          = m_configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
 			
-			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+			if (!onDevice && selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
 				showAndroidEmuName(true);
 				
@@ -338,22 +340,30 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			String selAndroidVer      = m_configuration.getAttribute(RhogenLaunchDelegate.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
 			String selBlackBarryVer   = m_configuration.getAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, "");
 			String selAndroidEmuName  = m_configuration.getAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, "");
+			boolean onDevice          = m_configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
 			
 			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
-				showAndroidVersions();
-				showVersionCombo(true);
-				showAndroidEmuName(true);
-				setAndroidEmuName();
-				
-				for (int idx=0; idx < androidVersions.length; idx++)
+				if (onDevice)
 				{
-					String currVer = androidVersions[idx];
+					showVersionCombo(false);
+					showAndroidEmuName(false);
+				}else
+				{
+					showAndroidVersions();
+					showVersionCombo(true);
+					showAndroidEmuName(true);
+					setAndroidEmuName();
 					
-					if (currVer.equals(selAndroidVer))
+					for (int idx=0; idx < androidVersions.length; idx++)
 					{
-						m_selectPlatformVersionCombo.select(idx);
-						break;
+						String currVer = androidVersions[idx];
+						
+						if (currVer.equals(selAndroidVer))
+						{
+							m_selectPlatformVersionCombo.select(idx);
+							break;
+						}
 					}
 				}
 			}
