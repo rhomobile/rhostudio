@@ -233,6 +233,14 @@ public class DebugServer extends Thread {
 	}
 	
 	/**
+	 * Run until return from the current method of Ruby code.
+	 */
+	public void debugStepReturn() {
+		if (this.debugProtocol!=null)
+			this.debugProtocol.stepReturn();
+	}
+	
+	/**
 	 * Resume a normal execution of the Rhodes application (after the stop at breakpoint or after {@link #debugStep()} method call). 
 	 */
 	public void debugResume() {

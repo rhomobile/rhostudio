@@ -54,7 +54,7 @@ public class DebugProtocol {
 			String[] brp = cmd.split(":");
 			this.filePosition = brp[1].replace('|', ':').replace('\\', '/');
 			this.linePosition = Integer.parseInt(brp[2]);
-			this.classPosition = brp[3];
+			this.classPosition = brp[3].replace('#', ':');
 			this.methodPosition = brp[4];
 			if (bp)
 				debugCallback.breakpoint(this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
@@ -100,6 +100,11 @@ public class DebugProtocol {
 	public void stepInto() {
 		this.state = DebugState.RUNNING;
 		debugServer.send("STEPINTO");
+	}
+
+	public void stepReturn() {
+		this.state = DebugState.RUNNING;
+		debugServer.send("STEPRET");
 	}
 	
 	public void resume() {
