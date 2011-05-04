@@ -65,7 +65,7 @@ public interface IDebugCallback {
 
 	/**
 	 * Variable watch. Called for each variable after the call of
-	 * {@link DebugServer#gebugGetVariables()}. 
+	 * {@link DebugServer#debugGetVariables()} or {@link DebugServer#debugGetVariables(DebugVariableType[])}. 
 	 * @param type - Ruby variable type {@link DebugVariableType}.
 	 * @param variable - name of the local variable.
 	 * @param value - current value of the local variable.

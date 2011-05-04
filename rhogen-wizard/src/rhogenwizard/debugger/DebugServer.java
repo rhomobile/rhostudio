@@ -241,7 +241,8 @@ public class DebugServer extends Thread {
 	}
 	
 	/**
-	 * Resume a normal execution of the Rhodes application (after the stop at breakpoint or after {@link #debugStep()} method call). 
+	 * Resume a normal execution of the Rhodes application (after the stop at breakpoint or
+	 * after {@link #debugStepInto()}, {@link #debugStepOver()} or {@link #debugStepReturn()} method call). 
 	 */
 	public void debugResume() {
 		if (this.debugProtocol!=null)
@@ -306,7 +307,7 @@ public class DebugServer extends Thread {
 	 * @param includeCode - if <code>true</code>, return the original Ruby expression/code
 	 * together with the calculated value though
 	 * {@link IDebugCallback#evaluation(String, String)} method call.
-	 * If <code>includeCode</code> is false, the result of evaluation/execution
+	 * If <code>includeCode</code> is <code>false</code>, the result of evaluation/execution
 	 * is returned by the {@link IDebugCallback#evaluation(String)} method call.
 	 */
 	public void debugEvaluate(String expression, boolean includeCode) {
