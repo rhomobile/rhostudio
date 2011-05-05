@@ -38,19 +38,13 @@ public interface IDebugCallback {
 	public void resumed();
 	
 	/**
-	 * Called after the {@link DebugServer#debugEvaluate(String)} or
-	 * {@link DebugServer#debugEvaluate(String, boolean)} method call.
-	 * @param value - the resulted value of the evaluated/executed Ruby code. 
-	 */
-	public void evaluation(String value);
-
-	/**
-	 * Called after the {@link DebugServer#debugEvaluate(String, boolean)} 
-	 * method call when second parameter is <code>true</code>.
+	 * Called after the {@link DebugServer#debugEvaluate(String)} method call.
+	 * @param valid - <code>true</code> if evaluated successfully, <code>false</code> otherwise. 
 	 * @param code - original Ruby code. 
-	 * @param value - the resulted value of the evaluated/executed Ruby code. 
+	 * @param value - the resulted value of the evaluated/executed Ruby code
+	 * or the error message if evaliation failed (when <code>valid</code> is <code>false</code>). 
 	 */
-	public void evaluation(String code, String value);
+	public void evaluation(boolean valid, String code, String value);
 	
 	/**
 	 * Called upon receiving an unidentified response from the Rhodes application.

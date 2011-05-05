@@ -63,21 +63,20 @@ public class DebugProtocol {
 				debugCallback.breakpoint(this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
 			else
 				debugCallback.step(this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
-		} else if (cmd.startsWith("EV:")) {
-			debugCallback.evaluation(cmd.substring(3).replace("\\n", "\n"));
 		} else if (cmd.startsWith("EVL:")) {
-			String var = cmd.substring(4);
+			boolean valid = cmd.charAt(4)=='0';
+			String var = cmd.substring(6);
 			String val = "";
 			int val_idx = var.indexOf(':');
 			if (val_idx>=0) {
-				val = var.substring(val_idx+1).replace("\\n", "\n");
+				val = var.substring(val_idx+1); // .replace("\\n", "\n");
 				try {
 					var = URLDecoder.decode(var.substring(0,val_idx), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 					var = var.substring(0,val_idx);
 				}
 			}
-			debugCallback.evaluation(var, val);
+			debugCallback.evaluation(valid, var, val);
 		} else if (cmd.startsWith("V:")) {
 			DebugVariableType vt = DebugVariableType.variableTypeById(cmd.charAt(2));
 			String var = cmd.substring(4);
@@ -134,13 +133,9 @@ public class DebugProtocol {
 	}
 	
 	public void evaluate(String expression) {
-		evaluate(expression, true);
+		debugServer.send("EVL:"+expression);
 	}
 
-	public void evaluate(String expression, boolean includeName) {
-		debugServer.send((includeName?"EVL:":"EV:")+expression);
-	}
-	
 	public void getVariables(DebugVariableType[] types) {
 		for (DebugVariableType t: types) {
 			switch (t) {
