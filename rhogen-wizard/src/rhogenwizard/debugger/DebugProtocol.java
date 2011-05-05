@@ -1,5 +1,8 @@
 package rhogenwizard.debugger;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 public class DebugProtocol {
 	private DebugServer debugServer;
 	private IDebugCallback debugCallback;
@@ -68,7 +71,11 @@ public class DebugProtocol {
 			int val_idx = var.indexOf(':');
 			if (val_idx>=0) {
 				val = var.substring(val_idx+1).replace("\\n", "\n");
-				var = var.substring(0,val_idx).replace("\\n", "\n").replace("#", ":");
+				try {
+					var = URLDecoder.decode(var.substring(0,val_idx), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					var = var.substring(0,val_idx);
+				}
 			}
 			debugCallback.evaluation(var, val);
 		} else if (cmd.startsWith("V:")) {
