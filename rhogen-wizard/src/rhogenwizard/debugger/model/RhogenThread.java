@@ -158,7 +158,8 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public boolean canStepInto() 
 	{
-		return isSuspended();
+		return false;
+		//return isSuspended();
 	}
 	
 	/* (non-Javadoc)

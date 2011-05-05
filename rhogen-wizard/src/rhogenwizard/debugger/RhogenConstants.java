@@ -23,4 +23,6 @@ public interface RhogenConstants
 	 * <code>org.eclipse.debug.examples.pda</code>).
 	 */
 	public static final String debugModelId = "com.rhomobile.rhostudio.rhogenDebugModel";	
+	
+	public static final String debugPerspectiveId = "org.eclipse.debug.ui.DebugPerspective";
 }

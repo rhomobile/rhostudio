@@ -108,11 +108,13 @@
 	 
    	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
-	          delegate="rhogenwizard.launcher.RhogenLaunchDelegate"
-	          id="rhogenwizard.launcher.rhodesApp"
-	          modes="run, debug"
-	          name="Rhodes Application"
-	          public="true">        
+           delegate="rhogenwizard.launcher.RhogenLaunchDelegate"
+           id="rhogenwizard.launcher.rhodesApp"
+           modes="run, debug"
+           name="Rhodes Application"
+           public="true"
+           sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
+           sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
 	    </launchConfigurationType>
 	</extension>
 	
@@ -197,5 +199,84 @@
              value="plugin_customization.ini"/>
       </product>
    </extension>
- 
+   
+   
+
+   <!--
+      <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            sourceLocatorId="org.eclipse.debug.examples.core.sourceLookupDirector.pda"
+            name="Push Down Automata"
+            sourcePathComputerId="org.eclipse.debug.examples.core.sourcePathComputer.pda"
+            delegate="org.eclipse.debug.examples.core.pda.launching.PDALaunchDelegate"
+            modes="run, debug"
+            id="org.eclipse.debug.examples.core.launchConfigurationType.pda">
+      </launchConfigurationType>
+   </extension>
+   -->
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            name="PDA Source Lookup Director"
+            class="rhogenwizard.debugger.RhogenSourceLookupDirector"
+            id="com.rhomobile.rhostudio.sourceLookupDirector_pda">
+      </sourceLocator>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourcePathComputers">
+      <sourcePathComputer
+            class="rhogenwizard.debugger.RhogenSourcePathComputerDelegate"
+            id="com.rhomobile.rhostudio.sourcePathComputer_pda">
+      </sourcePathComputer>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            class="rhogenwizard.debugger.model.RhogenLineBreakpoint"
+            id="lineBreakpoint"
+            markerType="com.rhomobile.rhostudio.lineBreakpoint_marker"
+            name="PDA line breakpoint">
+      </breakpoint>
+   </extension>
+   <extension
+         id="lineBreakpoint_marker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.lineBreakpointMarker" />
+      
+      <persistent
+            value="true">
+      </persistent>
+      
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="rhogenwizard.debugger.model.RhogenModelPresentation"
+            id="com.rhomobile.rhostudio.rhogenDebugModel">
+      </debugModelPresentation>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            class="rhogenwizard.debugger.model.RhogenBreakpointAdapterFactory"
+            adaptableType="org.eclipse.ui.texteditor.ITextEditor">
+         <adapter
+               type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget">
+         </adapter>
+      </factory>
+   </extension>
+   
+      <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="Debugging PDA"
+            description="Debugging PDA"
+            id="pda.debugging"
+            parentId="org.eclipse.debug.ui.debugging">
+      </context>
+   </extension>
+   
 </plugin>

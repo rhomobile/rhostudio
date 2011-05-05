@@ -12,6 +12,7 @@
 package rhogenwizard.debugger.model;
 
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -19,17 +20,20 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.swt.graphics.Resource;
 
 import rhogenwizard.debugger.DebugServer;
 import rhogenwizard.debugger.DebugVariableType;
 import rhogenwizard.debugger.IDebugCallback;
 import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.launcher.RhogenLaunchDelegate;
 
 /**
  * PDA Debug Target
@@ -55,7 +59,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	private RhogenThread fThread;
 	private IThread[]    fThreads;
 	
-	private DebugServer m_debugServer;
+	private static DebugServer m_debugServer = null;
 
 	public RhogenDebugTarget(ILaunch launch, IProcess process) throws CoreException 
 	{
@@ -69,6 +73,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		fThreads = new IThread[] {fThread};
 				
 		DebugServer.setDebugOutputStream(System.out);
+		
+		if (m_debugServer != null)
+		{
+			m_debugServer.shutdown();
+		}
+		
 		m_debugServer = new DebugServer(this);
 		m_debugServer.start();
 
@@ -105,7 +115,14 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		if (fName == null) 
 		{
-			fName = "test programm";
+			try 
+			{
+				fName = getLaunch().getLaunchConfiguration().getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
+			} 
+			catch (CoreException e) 
+			{
+				fName = "";
+			}
 		}
 		
 		return fName;
@@ -162,6 +179,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	public void terminate() throws DebugException 
 	{
 		m_debugServer.debugTerminate();
+		m_debugServer.shutdown();
 	}
 	
 	/* (non-Javadoc)
@@ -493,60 +511,43 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void evaluation(String code, String value) 
 	{
-		try 
-		{
-			IStackFrame[] frames = fThread.getStackFrames();
-			
-			for(int i=0; i<frames.length; ++i)
-			{
-				IStackFrame frame = frames[i];
-				
-				IVariable[] stackVars = frame.getVariables();
-				
-				for (int v=0; v<stackVars.length; ++v)
-				{
-					IVariable currVar = stackVars[v];
-					
-					if (currVar instanceof RhogenVariable)
-					{
-						if (currVar.getName().equals(code))
-						{
-							RhogenVariable rhoVar = (RhogenVariable) currVar;
-						
-							RhogenValue rhoValue = (RhogenValue) rhoVar.getValue();
-							rhoValue.setValue(value);
-						}
-					}
-				}
-			}
-		}
-		catch (DebugException e)
-		{
-			e.printStackTrace();
-		}
+//		try 
+//		{
+//			IStackFrame[] frames = fThread.getStackFrames();
+//			
+//			for(int i=0; i<frames.length; ++i)
+//			{
+//				IStackFrame frame = frames[i];
+//				
+//				IVariable[] stackVars = frame.getVariables();
+//				
+//				for (int v=0; v<stackVars.length; ++v)
+//				{
+//					IVariable currVar = stackVars[v];
+//					
+//					if (currVar instanceof RhogenVariable)
+//					{
+//						if (currVar.getName().equals(code))
+//						{
+//							RhogenVariable rhoVar = (RhogenVariable) currVar;
+//						
+//							RhogenValue rhoValue = (RhogenValue) rhoVar.getValue();
+//							rhoValue.setValue(value);
+//						}
+//					}
+//				}
+//			}
+//		}
+//		catch (DebugException e)
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
 	public void watch(DebugVariableType type, String variable, String value) 
 	{
-		//if (type == DebugVariableType.LOCAL)
-		{
-			try 
-			{
-				IStackFrame[] frames = fThread.getStackFrames();
-	
-				for(int i=0; i<frames.length; ++i)
-				{
-					RhogenStackFrame frame = (RhogenStackFrame) frames[i];
-					
-					IVariable var = new RhogenVariable(frame, variable);
-					frame.addVariables(var);
-				}
-			} 
-			catch (DebugException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		IValue val = new RhogenValue(this, value);
+		DebugPlugin.getDefault().getExpressionManager().addExpression(new RhogenExpression(this, fLaunch, variable, val));
 	}	
 }

@@ -1,30 +1,17 @@
 package rhogenwizard.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
-import java.io.*;
 import org.eclipse.ui.*;
-import org.eclipse.ui.views.navigator.*;
-
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
 
@@ -88,10 +75,12 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 				{
 					doFinish(modelName, modelParams, monitor);
 				}
-				catch (CoreException e) {
+				catch (CoreException e) 
+				{
 					throw new InvocationTargetException(e);
 				} 
-				finally {
+				finally 
+				{
 					monitor.done();
 				}
 			}

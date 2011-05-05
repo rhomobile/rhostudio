@@ -25,6 +25,8 @@ import org.eclipse.debug.core.sourcelookup.containers.FolderSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.ProjectSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.WorkspaceSourceContainer;
 
+import rhogenwizard.launcher.RhogenLaunchDelegate;
+
 /**
  * Computes the default source lookup path for a PDA launch configuration.
  * The default source lookup path is the folder or project containing 
@@ -38,12 +40,12 @@ public class RhogenSourcePathComputerDelegate implements ISourcePathComputerDele
 	 */
 	public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException 
 	{
-		String path = "";//configuration.getAttribute(RhogenConstants.ATTR_PDA_PROGRAM, (String)null);
+		String m_projectName   = configuration.getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
 		ISourceContainer sourceContainer = null;
 		
-		if (path != null)
+		if (m_projectName != null)
 		{
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(/*new Path(path)*/"/RhodesApplication2/build.yml");
+			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember("/" + m_projectName + "/build.yml");
 		
 			if (resource != null) 
 			{
