@@ -83,7 +83,7 @@ public class DebugProtocol {
 			String val = "";
 			int val_idx = var.indexOf(':');
 			if (val_idx>=0) {
-				val = var.substring(val_idx+1).replace("\\n", "\n");
+				val = var.substring(val_idx+1); // .replace("\\n", "\n");
 				var = var.substring(0,val_idx);
 			}
 			debugCallback.watch(vt, var, val);
