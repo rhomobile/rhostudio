@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IDE;
 
@@ -46,6 +47,11 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor",
 				null, e.getStatus());
 		}
+	}
+	
+	public ITextEditor getTextEditor()
+	{
+		return editor;
 	}
 	
 	/**

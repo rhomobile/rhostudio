@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import rhogenwizard.editors.RubyEditor;
+
 /**
  * Creates a toggle breakpoint adapter
  */
@@ -26,9 +28,9 @@ public class RhogenBreakpointAdapterFactory implements IAdapterFactory
 	 */
 	public Object getAdapter(Object adaptableObject, Class adapterType) 
 	{
-		if (adaptableObject instanceof ITextEditor) 
+		if (adaptableObject instanceof RubyEditor) 
 		{
-			ITextEditor editorPart = (ITextEditor) adaptableObject;
+			RubyEditor editorPart = (RubyEditor) adaptableObject;
 			IResource resource = (IResource) editorPart.getEditorInput().getAdapter(IResource.class);
 		
 			if (resource != null) 

@@ -23,6 +23,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.editors.RubyEditor;
 
 /**
  * Adapter to create breakpoints in PDA files.
@@ -82,10 +83,10 @@ public class RhogenLineBreakpointAdapter implements IToggleBreakpointsTarget
 	 */
 	private ITextEditor getEditor(IWorkbenchPart part) 
 	{
-		if (part instanceof ITextEditor) 
+		if (part instanceof RubyEditor) 
 		{
-			ITextEditor editorPart = (ITextEditor) part;
-			IResource resource     = (IResource) editorPart.getEditorInput().getAdapter(IResource.class);
+			RubyEditor editorPart = (RubyEditor) part;
+			IResource resource    = (IResource) editorPart.getEditorInput().getAdapter(IResource.class);
 			
 			if (resource != null) 
 			{
@@ -93,7 +94,7 @@ public class RhogenLineBreakpointAdapter implements IToggleBreakpointsTarget
 				
 				if (extension != null && extension.equals("rb")) 
 				{
-					return editorPart;
+					return (ITextEditor) editorPart.getTextEditor();
 				}
 			}
 		}
