@@ -262,7 +262,7 @@
          point="org.eclipse.core.runtime.adapters">
       <factory
             class="rhogenwizard.debugger.model.RhogenBreakpointAdapterFactory"
-            adaptableType="org.eclipse.ui.texteditor.ITextEditor">
+            adaptableType="rhogenwizard.editors.RubyEditor">
          <adapter
                type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget">
          </adapter>
