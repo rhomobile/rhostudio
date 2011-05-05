@@ -476,11 +476,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 
 	@Override
-	public void evaluation(String value)
-	{
-	}
-
-	@Override
 	public void unknown(String cmd) 
 	{
 	}
@@ -509,7 +504,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 	
 	@Override
-	public void evaluation(String code, String value) 
+	public void evaluation(boolean valid, String code, String value) 
 	{
 //		try 
 //		{
@@ -549,5 +544,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		IValue val = new RhogenValue(this, value);
 		DebugPlugin.getDefault().getExpressionManager().addExpression(new RhogenExpression(this, fLaunch, variable, val));
+	}
+
+	@Override
+	public void watchBOL(DebugVariableType type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void watchEOL(DebugVariableType type) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
