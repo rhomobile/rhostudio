@@ -25,6 +25,8 @@ import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.ShowPerspectiveJob;
+import rhogenwizard.debugger.RhogenConstants;
 
 public class RhogenAppWizard extends Wizard implements INewWizard 
 {
@@ -113,6 +115,9 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			m_rhogenAdapter.generateApp(infoHolder);
 			
 			RhodesProjectSupport.createProject(infoHolder);
+			
+			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", RhogenConstants.rhodesPerspectiveId);
+			job.run(monitor);
 			
 			monitor.worked(1);
 		} 

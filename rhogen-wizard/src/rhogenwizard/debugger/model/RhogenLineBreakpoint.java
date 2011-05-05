@@ -71,6 +71,6 @@ public class RhogenLineBreakpoint extends LineBreakpoint
 		if (segments.length > 1)
 			return segments[1];
 		
-		return null;
+		return segments[0];
 	}
 }

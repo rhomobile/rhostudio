@@ -65,7 +65,8 @@
    
 	<extension point="org.eclipse.ui.editors">
       <editor
-            class="rhogenwizard.editors.RubyEditor"
+            class="org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor"
+            default="true"
             extensions="rb,erb"
             icon="icons/ruby.png"
             id="rhogenwizard.editors.RubyEditor"

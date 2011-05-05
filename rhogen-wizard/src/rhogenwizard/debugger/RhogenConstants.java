@@ -18,11 +18,13 @@ public interface RhogenConstants
 {	
 	public static final String breakpointMarkerId = "com.rhomobile.rhostudio.lineBreakpoint_marker";
 	
-	/**
-	 * Unique identifier for the PDA debug model (value 
-	 * <code>org.eclipse.debug.examples.pda</code>).
-	 */
-	public static final String debugModelId = "com.rhomobile.rhostudio.rhogenDebugModel";	
+	//public static final String debugModelId = "com.rhomobile.rhostudio.rhogenDebugModel";	
 	
 	public static final String debugPerspectiveId = "org.eclipse.debug.ui.DebugPerspective";
+	
+	public static final String rhogenRubyEditorId = "rhogenwizard.editors.RubyEditor";
+	
+	public static final String debugModelId = "org.eclipse.dltk.debug.rubyModel";
+	
+	public static final String rhodesPerspectiveId = "rhogenwizard.perspectives.RhostudioPerspective";
 }

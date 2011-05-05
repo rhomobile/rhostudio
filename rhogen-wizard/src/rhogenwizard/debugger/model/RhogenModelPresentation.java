@@ -17,10 +17,13 @@ import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+
+import rhogenwizard.debugger.RhogenConstants;
 
 /**
  * Renders PDA debug elements
@@ -93,7 +96,7 @@ public class RhogenModelPresentation extends LabelProvider implements IDebugMode
 	{
 		if (element instanceof IFile || element instanceof ILineBreakpoint) 
 		{
-			return "org.eclipse.ui.DefaultTextEditor";
+			return RhogenConstants.rhogenRubyEditorId; 
 		}
 		
 		return null;

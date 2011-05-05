@@ -14,6 +14,7 @@ package rhogenwizard.debugger.model;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -27,6 +28,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.swt.graphics.Resource;
 
 import rhogenwizard.debugger.DebugServer;
@@ -256,10 +258,10 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 			{
 				if (breakpoint.isEnabled()) 
 				{
-					RhogenLineBreakpoint lineBr = (RhogenLineBreakpoint) breakpoint;
+					ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 					
 					int    lineNum = lineBr.getLineNumber();
-					String srcFile = lineBr.getResourcePath();
+					String srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
 					
 					m_debugServer.debugBreakpoint(srcFile, lineNum);
 				}
@@ -281,10 +283,10 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 			{
 				if (breakpoint.isEnabled()) 
 				{
-					RhogenLineBreakpoint lineBr = (RhogenLineBreakpoint) breakpoint;
+					ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 					
 					int    lineNum = lineBr.getLineNumber();
-					String srcFile = lineBr.getResourcePath();
+					String srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
 					
 					m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
 				}
@@ -372,14 +374,24 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return null;
 	}
 	
+	static String prepareResNameForDebugger(String resName)
+	{
+		resName = resName.replace('\\', '/');
+		String[] segments = resName.split("app/");
+		
+		if (segments.length > 1)
+			return segments[1];
+		
+		return segments[0];
+	}
+	
 	/**
 	 * Install breakpoints that are already registered with the breakpoint
 	 * manager.
 	 */
 	private void installDeferredBreakpoints()
 	{
-		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().
-				getBreakpoints(RhogenConstants.debugModelId);
+		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(RhogenConstants.debugModelId);
 		
 		for (int i = 0; i < breakpoints.length; i++)
 		{
@@ -445,11 +457,11 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			IBreakpoint breakpoint = breakpoints[i];
 
-			if (breakpoint instanceof RhogenLineBreakpoint)
+			if (breakpoint instanceof ScriptLineBreakpoint)
 			{
-				RhogenLineBreakpoint lineBreakpoint = (RhogenLineBreakpoint) breakpoint;
-				String resPath = lineBreakpoint.getResourcePath();
-
+				ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
+				String resPath = prepareResNameForDebugger(lineBreakpoint.getResourcePath().toOSString());
+				
 				try 
 				{
 					if (lineBreakpoint.getLineNumber() == lineNumber && resPath.equals(file))
@@ -547,14 +559,14 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 
 	@Override
-	public void watchBOL(DebugVariableType type) {
+	public void watchBOL(DebugVariableType type) 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void watchEOL(DebugVariableType type) {
+	public void watchEOL(DebugVariableType type) 
+	{
 		// TODO Auto-generated method stub
-		
 	}	
 }

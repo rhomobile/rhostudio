@@ -31,33 +31,11 @@ import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesAdapter.EPlatformType;
+import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.debugger.RhogenConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-
-class ShowPerspectiveJob extends UIJob
-{
-	public ShowPerspectiveJob(String name) {
-		super(name);
-	}
-
-	@Override
-	public IStatus runInUIThread(IProgressMonitor monitor) {
-		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
-		
-		if (windows.length > 0) {
-			try {
-				PlatformUI.getWorkbench().showPerspective(RhogenConstants.debugPerspectiveId, windows[0]);
-			} catch (WorkbenchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		return new Status(BUILD, "aaa", "fine");
-	}
-}
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -180,7 +158,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		
 		if (mode.equals(ILaunchManager.DEBUG_MODE))
 		{
-			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective");
+			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", RhogenConstants.debugPerspectiveId);
 			job.run(monitor);
 			
 			try {

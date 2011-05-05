@@ -14,9 +14,7 @@ package rhogenwizard.debugger.model;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
-import org.eclipse.ui.texteditor.ITextEditor;
-
-import rhogenwizard.editors.RubyEditor;
+import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
 
 /**
  * Creates a toggle breakpoint adapter
@@ -31,6 +29,7 @@ public class RhogenBreakpointAdapterFactory implements IAdapterFactory
 		if (adaptableObject instanceof RubyEditor) 
 		{
 			RubyEditor editorPart = (RubyEditor) adaptableObject;
+			
 			IResource resource = (IResource) editorPart.getEditorInput().getAdapter(IResource.class);
 		
 			if (resource != null) 
