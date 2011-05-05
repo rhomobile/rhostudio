@@ -71,4 +71,18 @@ public interface IDebugCallback {
 	 * @param value - current value of the local variable.
 	 */
 	public void watch(DebugVariableType type, String variable, String value);
+
+	/**
+	 * Watch Begin-Of-List. Called before the first {@link #watch(DebugVariableType, String, String)}
+	 * callback for the particular type of variables.  
+	 * @param type - type of variables ({@link DebugVariableType}). 
+	 */
+	public void watchBOL(DebugVariableType type);
+
+	/**
+	 * Watch End-Of-List. Called after the last {@link #watch(DebugVariableType, String, String)}
+	 * callback for the particular type of variables.  
+	 * @param type - type of variables ({@link DebugVariableType}). 
+	 */
+	public void watchEOL(DebugVariableType type);
 }

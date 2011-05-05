@@ -79,13 +79,7 @@ public class DebugProtocol {
 			}
 			debugCallback.evaluation(var, val);
 		} else if (cmd.startsWith("V:")) {
-			DebugVariableType vt;
-			switch (cmd.charAt(2)) {
-			case 'G': vt = DebugVariableType.GLOBAL; break;
-			case 'C': vt = DebugVariableType.CLASS; break;
-			case 'I': vt = DebugVariableType.INSTANCE; break;
-			default: vt = DebugVariableType.LOCAL;
-			}
+			DebugVariableType vt = DebugVariableType.variableTypeById(cmd.charAt(2));
 			String var = cmd.substring(4);
 			String val = "";
 			int val_idx = var.indexOf(':');
@@ -94,11 +88,15 @@ public class DebugProtocol {
 				var = var.substring(0,val_idx);
 			}
 			debugCallback.watch(vt, var, val);
+		} else if (cmd.startsWith("VSTART:")) {
+			debugCallback.watchBOL(DebugVariableType.variableTypeById(cmd.charAt(7)));
+		} else if (cmd.startsWith("VEND:")) {
+			debugCallback.watchEOL(DebugVariableType.variableTypeById(cmd.charAt(5)));
 		} else {
 			debugCallback.unknown(cmd);
 		}
 	}
-	
+
 	public void stepOver() {
 		this.state = DebugState.RUNNING;
 		debugServer.send("STEPOVER");
@@ -136,7 +134,7 @@ public class DebugProtocol {
 	}
 	
 	public void evaluate(String expression) {
-		evaluate(expression, false);
+		evaluate(expression, true);
 	}
 
 	public void evaluate(String expression, boolean includeName) {
