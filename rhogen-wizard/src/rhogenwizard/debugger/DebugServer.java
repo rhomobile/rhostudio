@@ -294,25 +294,11 @@ public class DebugServer extends Thread {
 	 * Evaluate Ruby expression or execute arbitrary Ruby code. 
 	 * @param expression - expression to evaluate or Ruby code to execute.
 	 * Result of evaluation/execution is returned by the
-	 * {@link IDebugCallback#evaluation(String)} method call.  
+	 * {@link IDebugCallback#evaluation(boolean, String, String)} method call.
 	 */
 	public void debugEvaluate(String expression) {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.evaluate(expression);
-	}
-
-	/**
-	 * Evaluate Ruby expression or execute arbitrary Ruby code. 
-	 * @param expression - expression to evaluate or Ruby code to execute.
-	 * @param includeCode - if <code>true</code>, return the original Ruby expression/code
-	 * together with the calculated value though
-	 * {@link IDebugCallback#evaluation(String, String)} method call.
-	 * If <code>includeCode</code> is <code>false</code>, the result of evaluation/execution
-	 * is returned by the {@link IDebugCallback#evaluation(String)} method call.
-	 */
-	public void debugEvaluate(String expression, boolean includeCode) {
-		if (this.debugProtocol!=null)
-			this.debugProtocol.evaluate(expression, includeCode);
 	}
 
 	/**
