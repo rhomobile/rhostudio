@@ -79,6 +79,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	private boolean           m_isClean = false;
 	private boolean           m_onDevice = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
+	private IProcess          m_debugProcess = null;
 	
 	private void setProcessFinished(boolean b)
 	{
@@ -90,7 +91,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		return m_buildFinished.get();
 	}
 
-	public void startBuildThread(final IProject project)
+	public void startBuildThread(final IProject project, final String mode, final ILaunch launch)
 	{
 		final EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
 		
@@ -103,14 +104,21 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				{
 					ConsoleHelper.consolePrint("build started");
 					
-					if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) == 0)
+					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
-						ConsoleHelper.showAppConsole();
-						startLogOutput(project, type);
+						m_debugProcess = rhodesAdapter.debugApp(project.getLocation().toOSString(), type, launch, m_onDevice);
 					}
 					else
 					{
-						ConsoleHelper.consolePrint("Error in build application");
+						if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) == 0)
+						{
+							ConsoleHelper.showAppConsole();
+							startLogOutput(project, type);
+						}
+						else
+						{
+							ConsoleHelper.consolePrint("Error in build application");
+						}
 					}
 					
 					setProcessFinished(true);
@@ -149,6 +157,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{
+		RhogenDebugTarget target = null;
 		setProcessFinished(false); 
 		
 		rhodesLogHelper.stopLog();
@@ -181,58 +190,53 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				e.printStackTrace();
 			}
 			
-			RhogenDebugTarget  target = new RhogenDebugTarget(launch, null);
-		
-			String projectLocation = project.getLocation().toOSString();
-			
-			String[] commandLine = {"rake.bat" , "run:win32:rhosimulator"};
-			Process process = DebugPlugin.exec(commandLine, new File(projectLocation));
-			IProcess p = DebugPlugin.newProcess(launch, process, "rhodes-emu");
-		
-			target.setProcess(p);
-			launch.addDebugTarget(target);
+			target = new RhogenDebugTarget(launch, null);
 		}
-		else
+		
+		try
 		{
-			try
-			{
-				cleanSelectedPlatform(project, m_isClean);
-				
-				startBuildThread(project);
-				
-				while(true)
-				{
-					try 
-				    {
-						if (monitor.isCanceled()) 
-					    {
-							OSHelper.killProcess("ruby");
-							return;
-					    }
+			cleanSelectedPlatform(project, m_isClean);
+		
+			startBuildThread(project, mode, launch);
 						
-						if (getProcessFinished())
-						{
-							return;
-						}
-	
-						Thread.sleep(100);
-				    }
-				    catch (InterruptedException e) 
+			while(true)
+			{
+				try 
+			    {
+					if (monitor.isCanceled()) 
 				    {
-				    	e.printStackTrace();
+						OSHelper.killProcess("ruby");
+						return;
 				    }
-				}
+					
+					if (getProcessFinished())
+					{
+						break;
+					}
+
+					Thread.sleep(100);
+			    }
+			    catch (InterruptedException e) 
+			    {
+			    	e.printStackTrace();
+			    }
 			}
-			catch(IllegalArgumentException e)
-			{
-				ConsoleHelper.consolePrint(e.getMessage());
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			
-			monitor.done();
+		}
+		catch(IllegalArgumentException e)
+		{
+			ConsoleHelper.consolePrint(e.getMessage());
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		monitor.done();
+		
+		if (mode.equals(ILaunchManager.DEBUG_MODE))
+		{
+			target.setProcess(m_debugProcess);
+			launch.addDebugTarget(target);
 		}
 	}
 

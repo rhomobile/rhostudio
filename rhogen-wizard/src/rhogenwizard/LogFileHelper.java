@@ -37,7 +37,7 @@ public class LogFileHelper
 	{
 		private IProject 	  m_project = null;
 		private LogFileHelper m_helper = null;
-		private String logFilePath = null;
+		private String        m_logFilePath = null;
 
 		public BbLogFileWaiter(IProject project, LogFileHelper helper) throws Exception 
 		{
@@ -46,7 +46,7 @@ public class LogFileHelper
 			
 			if (m_project != null && m_helper != null)
 			{
-				logFilePath = m_helper.getLogFilePath(m_project, "run:bb:get_log");
+				m_logFilePath = m_helper.getLogFilePath(m_project, "run:bb:get_log");
 			}
 		}
 
@@ -57,10 +57,10 @@ public class LogFileHelper
 			{				
 				while(true)
 				{
-					if (logFilePath == null)
+					if (m_logFilePath == null)
 						return;
 					
-					File logFile = new File(logFilePath);
+					File logFile = new File(m_logFilePath);
 					
 					if (logFile.exists())
 					{			
@@ -73,7 +73,6 @@ public class LogFileHelper
 			{
 				e.printStackTrace();
 			}
-
 		}
 	}
 	
@@ -85,7 +84,6 @@ public class LogFileHelper
 	private StringBuffer     			m_logOutput = null;
 	private AppLogAdapter               m_logAdapter = new AppLogAdapter();
 
-	
 	@Override
 	protected void finalize() throws Throwable 
 	{
@@ -114,9 +112,22 @@ public class LogFileHelper
 		case eIPhone:
 			iphoneLog(project);
 			break;
+		case eWp7:
+			wpLog(project);
+			break;
 		}
 	}
 	
+	private void wpLog(IProject project) throws Exception
+	{
+		String logPath = getLogFilePath(project, "run:wp:get_log");
+		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
+	}
+
 	public void stopLog()
 	{
 		if (m_appLogReader != null)

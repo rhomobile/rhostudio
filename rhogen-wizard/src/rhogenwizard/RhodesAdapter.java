@@ -1,11 +1,15 @@
 package rhogenwizard;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 class RhodesLogAdapter implements ILogDevice
@@ -36,6 +40,8 @@ public class RhodesAdapter
 		eAndroid,
 		eBb,
 		eIPhone,
+		eWp7,
+		eEmu,
 		eUnknown
 	};
 	
@@ -48,6 +54,8 @@ public class RhodesAdapter
 	public static final String platformAdroid = "android";
 	public static final String platformBlackBerry = "bb";
 	public static final String platformIPhone = "iphone";
+	public static final String platformWp7 = "wp";
+	public static final String platformEmu = "win32:rhosimulator";
 	
 	private String m_rhogenExe = null; 
 	private String m_rakeExe = null;
@@ -95,6 +103,31 @@ public class RhodesAdapter
 		cmdLine.add(modelParams);
 		
 		return m_executor.runCommand(cmdLine);
+	}
+	
+	public IProcess debugApp(String workDir, EPlatformType platformType, ILaunch launch, boolean onDevice) throws Exception
+	{
+		String platformName = convertDescFromPlatform(platformType);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("run:");
+		sb.append(platformName);
+		
+		if (onDevice)
+		{
+			sb.append(":device");
+		}
+
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		String[] commandLine = new String[cmdLine.size()]; // {"rake.bat" , "run:win32:rhosimulator"};
+		commandLine = cmdLine.toArray(commandLine);
+		
+		Process process = DebugPlugin.exec(commandLine, new File(workDir));
+
+		return DebugPlugin.newProcess(launch, process, "rhodes-emu");
 	}
 	
 	public int buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception
@@ -160,7 +193,15 @@ public class RhodesAdapter
 		{
 			return EPlatformType.eIPhone;
 		}
-
+		else if (plDesc.equals(platformWp7))
+		{
+			return EPlatformType.eWp7;
+		}
+		else if (plDesc.equals(platformEmu))
+		{
+			return EPlatformType.eEmu;
+		}
+		
 		return EPlatformType.eUnknown;
 	}
 	
@@ -176,6 +217,10 @@ public class RhodesAdapter
 			return platformBlackBerry;
 		case eIPhone:
 			return platformIPhone;
+		case eWp7:
+			return platformWp7;
+		case eEmu:
+			return platformEmu;
 		}
 
 		return null;
@@ -202,6 +247,7 @@ public class RhodesAdapter
 		runRakeTask(workDir, cleanCmd + platformAdroid);
 		runRakeTask(workDir, cleanCmd + platformBlackBerry);
 		runRakeTask(workDir, cleanCmd + platformIPhone);
+		runRakeTask(workDir, cleanCmd + platformWp7);
 	}
 	
 	public void cleanPlatform(String workDir, EPlatformType type) throws Exception
