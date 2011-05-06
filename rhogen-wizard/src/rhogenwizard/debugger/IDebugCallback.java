@@ -1,7 +1,8 @@
 package rhogenwizard.debugger;
 
 /**
- * Interface of an object class to handle the events from the Rhodes application.
+ * Interface of an object class to handle the events from the debugger extension
+ * of Rhodes application.
  * @author Albert R. Timashev
  */
 public interface IDebugCallback {
@@ -12,8 +13,8 @@ public interface IDebugCallback {
 
 	/**
 	 * Called when the breakpoint is reached.
-	 * @param file - file path within <code>app</code> folder of the Rhodes application,
-	 * e.g. <code>"application.rb"</code>.
+	 * @param file - file path within <code>app</code> folder of the Rhodes
+	 * application, e.g. <code>"application.rb"</code>.
 	 * @param line - effective line number (starting with 1).
 	 * @param className - class name of the current object ("" if none).
 	 * @param method - name of the current method ("" if none).
@@ -22,9 +23,10 @@ public interface IDebugCallback {
 
 	/**
 	 * Called after execution of next method of Ruby code after the
-	 * {@link DebugServer#debugStepOver()} or {@link DebugServer#debugStepInto()} method call.  
-	 * @param file - file path within <code>app</code> folder of the Rhodes application,
-	 * e.g. <code>"application.rb"</code>.
+	 * {@link DebugServer#debugStepOver()}, {@link DebugServer#debugStepInto()}
+	 * or {@link DebugServer#debugStepReturn()} method call.  
+	 * @param file - file path within <code>app</code> folder of the Rhodes
+	 * application, e.g. <code>"application.rb"</code>.
 	 * @param line - effective line number (starting with 1).
 	 * @param className - class name of the current object ("" if none).
 	 * @param method - name of the current method ("" if none).
@@ -39,10 +41,12 @@ public interface IDebugCallback {
 	
 	/**
 	 * Called after the {@link DebugServer#debugEvaluate(String)} method call.
-	 * @param valid - <code>true</code> if evaluated successfully, <code>false</code> otherwise. 
-	 * @param code - original Ruby code. 
+	 * @param valid - <code>true</code> if evaluated successfully,
+	 * <code>false</code> otherwise. 
+	 * @param code - original Ruby code.
 	 * @param value - the resulted value of the evaluated/executed Ruby code
-	 * or the error message if evaliation failed (when <code>valid</code> is <code>false</code>). 
+	 * or the error message if evaliation failed (when <code>valid</code>
+	 * is <code>false</code>). 
 	 */
 	public void evaluation(boolean valid, String code, String value);
 	
@@ -59,7 +63,8 @@ public interface IDebugCallback {
 
 	/**
 	 * Variable watch. Called for each variable after the call of
-	 * {@link DebugServer#debugGetVariables()} or {@link DebugServer#debugGetVariables(DebugVariableType[])}. 
+	 * {@link DebugServer#debugGetVariables()} or
+	 * {@link DebugServer#debugGetVariables(DebugVariableType[])}. 
 	 * @param type - Ruby variable type {@link DebugVariableType}.
 	 * @param variable - name of the local variable.
 	 * @param value - current value of the local variable.
@@ -67,14 +72,16 @@ public interface IDebugCallback {
 	public void watch(DebugVariableType type, String variable, String value);
 
 	/**
-	 * Watch Begin-Of-List. Called before the first {@link #watch(DebugVariableType, String, String)}
+	 * Watch Begin-Of-List. Called before the first
+	 * {@link #watch(DebugVariableType, String, String)}
 	 * callback for the particular type of variables.  
 	 * @param type - type of variables ({@link DebugVariableType}). 
 	 */
 	public void watchBOL(DebugVariableType type);
 
 	/**
-	 * Watch End-Of-List. Called after the last {@link #watch(DebugVariableType, String, String)}
+	 * Watch End-Of-List. Called after the last
+	 * {@link #watch(DebugVariableType, String, String)}
 	 * callback for the particular type of variables.  
 	 * @param type - type of variables ({@link DebugVariableType}). 
 	 */
