@@ -412,7 +412,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		IStackFrame[] theFrames = new IStackFrame[1];
 		theFrames[0] = new RhogenStackFrame(fThread, stackData, 0);
 
-		m_debugServer.debugGetVariables();
+		DebugPlugin.getDefault().getExpressionManager().removeExpressions(DebugPlugin.getDefault().getExpressionManager().getExpressions());
+		m_debugServer.debugGetVariables(new DebugVariableType[] { DebugVariableType.LOCAL, DebugVariableType.GLOBAL });
 		
 		return theFrames;
 	}
