@@ -2,6 +2,7 @@ package rhogenwizard.debugger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class DebugProtocol {
 	private DebugServer debugServer;
@@ -133,6 +134,9 @@ public class DebugProtocol {
 	}
 	
 	public void evaluate(String expression) {
+		try {
+			expression = URLEncoder.encode(expression, "UTF-8");
+		} catch (UnsupportedEncodingException e) {}
 		debugServer.send("EVL:"+expression);
 	}
 

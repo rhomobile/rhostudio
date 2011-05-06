@@ -30,7 +30,8 @@ public class DebugServer extends Thread {
 
 	/**
 	 * Create a debug server.
-	 * @param callback - object to receive events from the debug target (Rhodes application).
+	 * @param callback - object to receive events from the debug target
+	 * (Rhodes application).
 	 */
 	public DebugServer(IDebugCallback callback) {
 		this.debugCallback = callback;
@@ -49,7 +50,8 @@ public class DebugServer extends Thread {
 
 	/**
 	 * Set an output stream for a detailed debug information.
-	 * @param stream - output stream (if null, no debug information will be passed anywhere). 
+	 * @param stream - output stream (if null, no debug information
+	 * will be passed anywhere). 
 	 */
 	public static void setDebugOutputStream(PrintStream stream) {
 		debugOutput = stream;
@@ -76,7 +78,8 @@ public class DebugServer extends Thread {
 				} catch( IOException ioe ) { }
 			}
 			if (this.serverSocket == null) {
-				throw new IOException(String.format("Unable to open server in port range (%d..%d)",
+				throw new IOException(String.format(
+					"Unable to open server in port range (%d..%d)",
 					debugServerPort0,debugServerPort1));
 			}
 			assert this.serverSocket.isBound();
@@ -122,7 +125,7 @@ public class DebugServer extends Thread {
 	}
 
 	/**
-	 * Shutdown the debug server (close all connections and a server socket).
+	 * Shutdown the debug server (close the connection and the server socket).
 	 */
 	public void shutdown() {
 		this.interrupt();
@@ -157,7 +160,8 @@ public class DebugServer extends Thread {
 	 * @return Returns a {@link DebugState}.
 	 */
 	public DebugState debugGetState() {
-		return this.debugProtocol!=null ? this.debugProtocol.getState() : DebugState.NOTCONNECTED;
+		return this.debugProtocol!=null ?
+			this.debugProtocol.getState() : DebugState.NOTCONNECTED;
 	}
 
 	/**
@@ -217,7 +221,8 @@ public class DebugServer extends Thread {
 	}
 
 	/**
-	 * Step over the next method call (without entering it) at the currently executing line of Ruby code.
+	 * Step over the next method call (without entering it) at the currently
+	 * executing line of Ruby code.
 	 */
 	public void debugStepOver() {
 		if (this.debugProtocol!=null)
@@ -241,8 +246,9 @@ public class DebugServer extends Thread {
 	}
 	
 	/**
-	 * Resume a normal execution of the Rhodes application (after the stop at breakpoint or
-	 * after {@link #debugStepInto()}, {@link #debugStepOver()} or {@link #debugStepReturn()} method call). 
+	 * Resume a normal execution of the Rhodes application (after the stop at
+	 * breakpoint or after {@link #debugStepInto()}, {@link #debugStepOver()}
+	 * or {@link #debugStepReturn()} method call). 
 	 */
 	public void debugResume() {
 		if (this.debugProtocol!=null)
@@ -251,10 +257,11 @@ public class DebugServer extends Thread {
 	
 	/**
 	 * Add a breakpoint.
-	 * @param file - file path within <code>app</code> folder of the Rhodes application,
-	 * e.g. <code>"application.rb"</code>
+	 * @param file - file path within <code>app</code> folder of the Rhodes
+	 * application, e.g. <code>"application.rb"</code>
 	 * (always use <code>'/'</code> as a folder/file name separator).
-	 * @param line - effective line number (starting with 1). Must point to non-empty line of code.
+	 * @param line - effective line number (starting with 1). Must point to
+	 * non-empty line of code.
 	 */
 	public void debugBreakpoint(String file, int line) {
 		if (this.debugProtocol!=null)
@@ -262,11 +269,11 @@ public class DebugServer extends Thread {
 	}
 
 	/**
-	 * Remove a breakpoint.
-	 * @param file - file path within <code>app</code> folder of the Rhodes application,
-	 * e.g. <code>"application.rb"</code>
+	 * Remove an existing breakpoint.
+	 * @param file - file path within <code>app</code> folder of the Rhodes
+	 * application, e.g. <code>"application.rb"</code>
 	 * (always use <code>'/'</code> as a folder/file name separator).
-	 * @param line - effective line number (starting with 1). Must point to non-empty line of code.
+	 * @param line - breakpoint effective line number (starting with 1).
 	 */
 	public void debugRemoveBreakpoint(String file, int line) {
 		if (this.debugProtocol!=null)
@@ -283,7 +290,8 @@ public class DebugServer extends Thread {
 
 	/**
 	 * Toggle breakpoints skip mode.
-	 * @param skip - if <code>true</code>, skip all breakpoints; if <code>false</code>, stop at breakpoints.
+	 * @param skip - if <code>true</code>, skip all breakpoints;
+	 * if <code>false</code>, stop at breakpoints.
 	 */
 	public void debugSkipBreakpoints(boolean skip) {
 		if (this.debugProtocol!=null)
@@ -302,17 +310,28 @@ public class DebugServer extends Thread {
 	}
 
 	/**
-	 * Get list and values of variables of all types. Result is returned by the number of
-	 * {@link IDebugCallback#watch(DebugVariableType, String, String)} method calls.
+	 * Get list and values of variables of all types. Result is returned by the
+	 * number of {@link IDebugCallback#watch(DebugVariableType, String, String)}
+	 * method calls preceded by {@link IDebugCallback#watchBOL(DebugVariableType)}
+	 * and concluded by {@link IDebugCallback#watchEOL(DebugVariableType)} for each
+	 * type of variables.
 	 */
 	public void debugGetVariables() {
 		if (this.debugProtocol!=null)
-			this.debugProtocol.getVariables(new DebugVariableType[] {DebugVariableType.GLOBAL, DebugVariableType.LOCAL, DebugVariableType.CLASS, DebugVariableType.INSTANCE});
+			this.debugProtocol.getVariables(new DebugVariableType[] {
+				DebugVariableType.GLOBAL,
+				DebugVariableType.LOCAL,
+				DebugVariableType.CLASS,
+				DebugVariableType.INSTANCE
+			});
 	}
 	
 	/**
-	 * Get list and values of variables of the specified types. Result is returned by the number of 
-	 * {@link IDebugCallback#watch(DebugVariableType, String, String)} method calls.
+	 * Get list and values of variables of the specified types. Result is returned
+	 * by the number of {@link IDebugCallback#watch(DebugVariableType, String, String)}
+	 * method calls preceded by {@link IDebugCallback#watchBOL(DebugVariableType)}
+	 * and concluded by {@link IDebugCallback#watchEOL(DebugVariableType)} for each
+	 * type of variables.
 	 * @param types - list of variable types ({@link DebugVariableType}) to watch. 
 	 */
 	public void debugGetVariables(DebugVariableType[] types) {
@@ -321,7 +340,8 @@ public class DebugServer extends Thread {
 	}
 	
 	/**
-	 * Suspend the execution of Ruby code. The {@link IDebugCallback#step(String, int, String, String)}
+	 * Suspend the execution of Ruby code. The
+	 * {@link IDebugCallback#step(String, int, String, String)}
 	 * method is called when the actual stop occurs.
 	 */
 	public void debugSuspend() {
@@ -330,7 +350,9 @@ public class DebugServer extends Thread {
 	}
 	
 	/**
-	 * Terminates execution of the Rhodes application.
+	 * Terminates execution of the Rhodes application. The
+	 * {@link IDebugCallback#exited()} method is called when the actual
+	 * exit occurs.
 	 */
 	public void debugTerminate() {
 		if (this.debugProtocol!=null)

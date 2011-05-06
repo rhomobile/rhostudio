@@ -48,7 +48,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 									           "Blackberry phone",
 									           "Windows phone simulator",
 									           "Windows phone device",
-									           "Rhodes Emulator"};
+									           "Rho simulator"};
 	
 	private static String androidVersions[] = { "1.6",
 											    "2.1",

@@ -8,8 +8,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/snakeyaml-1.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.ruby.ui/org.eclipse.dltk.ruby.ui_2.0.0.v20100524-0038.jar" sourcepath="/org.eclipse.dltk.ruby.ui/src.zip"/>
-	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.ui/org.eclipse.dltk.ui_2.0.0.v20100603-0936.jar" sourcepath="/org.eclipse.dltk.ui/src.zip"/>
-	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.debug/org.eclipse.dltk.debug_2.0.0.v20091110-1532.jar" sourcepath="/org.eclipse.dltk.debug/src.zip"/>
+	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.dltk.ruby.ui_2.0.0.v20100524-0038.jar" sourcepath="/org.eclipse.dltk.ruby.ui/src.zip"/>
+	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.dltk.ui_2.0.0.v20100909-1720.jar" sourcepath="/org.eclipse.dltk.ui/src.zip"/>
+	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.dltk.debug_2.0.0.v20091110-1532.jar" sourcepath="/org.eclipse.dltk.debug/src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
