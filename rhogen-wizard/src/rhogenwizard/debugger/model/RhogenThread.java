@@ -47,9 +47,22 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public IStackFrame[] getStackFrames() throws DebugException 
 	{
-		if (isSuspended()) {
-			return ((RhogenDebugTarget)getDebugTarget()).getStackFrames();
-		} else {
+		if (isSuspended()) 
+		{
+			IStackFrame[] stacks = ((RhogenDebugTarget)getDebugTarget()).getStackFrames();
+			
+			if (stacks[0] instanceof RhogenStackFrame)
+			{
+				RhogenStackFrame frame = (RhogenStackFrame)stacks[0];
+				
+				if (frame.getSourceName().equals(""))
+					return new IStackFrame[0];
+			}
+		
+			return stacks;
+		} 
+		else 
+		{
 			return new IStackFrame[0];
 		}
 	}
@@ -79,15 +92,18 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 		if (frames.length > 0) {
 			return frames[0];
 		}
+		
 		return null;
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.IThread#getName()
 	 */
-	public String getName() throws DebugException {
+	public String getName() throws DebugException 
+	{
 		return "Thread[1]";
 	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.IThread#getBreakpoints()
 	 */

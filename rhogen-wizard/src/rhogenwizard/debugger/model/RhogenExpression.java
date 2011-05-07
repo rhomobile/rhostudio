@@ -37,7 +37,6 @@ public class RhogenExpression implements IExpression
 	@Override
 	public Object getAdapter(Class adapter) 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -62,7 +61,10 @@ public class RhogenExpression implements IExpression
 	@Override
 	public void dispose()
 	{
-		// TODO Auto-generated method stub
 	}
 
+	public void setValue(IValue newVal)
+	{
+		m_expValue = newVal;
+	}
 }

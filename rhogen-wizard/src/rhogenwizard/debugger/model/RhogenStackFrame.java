@@ -23,10 +23,10 @@ import org.eclipse.debug.core.model.IVariable;
 
 public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame 
 {
-	private RhogenThread fThread;
-	private String fName;
+	private RhogenThread fThread = null;
+	private String fName = null;
 	private int fPC;
-	private String fFileName;
+	private String fFileName = null;
 	private int fId;
 	private List<IVariable> fVariables;
 	
@@ -41,6 +41,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	public RhogenStackFrame(RhogenThread thread, StackData stackData, int id) 
 	{
 		super((RhogenDebugTarget) thread.getDebugTarget());
+		
 		fId     = id;
 		fThread = thread;
 		init(stackData);
