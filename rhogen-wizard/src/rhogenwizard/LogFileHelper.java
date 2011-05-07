@@ -115,6 +115,10 @@ public class LogFileHelper
 		case eWp7:
 			wpLog(project);
 			break;
+		case eEmu:
+			rhoSimLog(project);
+			break;
+			
 		}
 	}
 	
@@ -128,6 +132,16 @@ public class LogFileHelper
 		}
 	}
 
+	private void rhoSimLog(IProject project) throws Exception
+	{
+		String logPath = getLogFilePath(project, "run:rhosimulator:get_log");
+		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
+	}
+	
 	public void stopLog()
 	{
 		if (m_appLogReader != null)
