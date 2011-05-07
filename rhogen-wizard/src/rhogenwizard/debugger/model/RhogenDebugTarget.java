@@ -180,8 +180,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public void terminate() throws DebugException 
 	{
-		m_debugServer.debugTerminate();
-		m_debugServer.shutdown();
+		m_debugServer.debugTerminate();	
+		exited();
 	}
 	
 	/* (non-Javadoc)
@@ -501,6 +501,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		fSuspended = false;
 		DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(this);
 		fireTerminateEvent();
+		m_debugServer.shutdown();
 	}
 
 	@Override
