@@ -84,21 +84,39 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
-						m_debugProcess = rhodesAdapter.debugApp(project.getLocation().toOSString(), type, launch, m_onDevice);
-					}
-					else
-					{
-						if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) == 0)
+						if (type != RhodesAdapter.EPlatformType.eEmu)
 						{
-							ConsoleHelper.showAppConsole();
-							startLogOutput(project, type);
+							if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) != 0)
+							{
+								ConsoleHelper.consolePrint("Error in build application");
+								setProcessFinished(true);
+								return;
+							}
 						}
 						else
 						{
-							ConsoleHelper.consolePrint("Error in build application");
+							m_debugProcess = rhodesAdapter.debugApp(project.getLocation().toOSString(), type, launch, m_onDevice);
+							
+							if (m_debugProcess == null)
+							{
+								ConsoleHelper.consolePrint("Error in build application");
+								setProcessFinished(true);
+								return;
+							}
 						}
 					}
-					
+					else
+					{
+						if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) != 0)
+						{
+							ConsoleHelper.consolePrint("Error in build application");
+							setProcessFinished(true);
+							return;
+						}
+					}
+
+					ConsoleHelper.showAppConsole();
+					startLogOutput(project, type);
 					setProcessFinished(true);
 				} 
 				catch (Exception e) 
@@ -211,7 +229,9 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		
 		monitor.done();
 		
-		if (mode.equals(ILaunchManager.DEBUG_MODE))
+		final EPlatformType plType = RhodesAdapter.convertPlatformFromDesc(m_platformName);
+		
+		if (mode.equals(ILaunchManager.DEBUG_MODE) && plType == RhodesAdapter.EPlatformType.eEmu)
 		{
 			target.setProcess(m_debugProcess);
 			launch.addDebugTarget(target);
