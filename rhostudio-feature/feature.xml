@@ -49,6 +49,55 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <discovery label="Rhomobile official site" url="http://rhomobile.com"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.dltk"/>
+      <import plugin="org.eclipse.dltk"/>
+      <import plugin="org.eclipse.dltk.console"/>
+      <import plugin="org.eclipse.dltk.console.ui"/>
+      <import plugin="org.eclipse.dltk.core"/>
+      <import plugin="org.eclipse.dltk.core.doc.isv"/>
+      <import plugin="org.eclipse.dltk.core.index"/>
+      <import plugin="org.eclipse.dltk.core.index.source"/>
+      <import plugin="org.eclipse.dltk.core.index.sql"/>
+      <import plugin="org.eclipse.dltk.core.index.sql.h2"/>
+      <import plugin="org.eclipse.dltk.core.source"/>
+      <import plugin="org.eclipse.dltk.debug"/>
+      <import plugin="org.eclipse.dltk.debug.ui"/>
+      <import plugin="org.eclipse.dltk.formatter"/>
+      <import plugin="org.eclipse.dltk.javascript.core"/>
+      <import plugin="org.eclipse.dltk.javascript.core.dom.support"/>
+      <import plugin="org.eclipse.dltk.javascript.debug"/>
+      <import plugin="org.eclipse.dltk.javascript.debug.ui"/>
+      <import plugin="org.eclipse.dltk.javascript.formatter"/>
+      <import plugin="org.eclipse.dltk.javascript.jdt.integration"/>
+      <import plugin="org.eclipse.dltk.javascript.jsjdtdebugger"/>
+      <import plugin="org.eclipse.dltk.javascript.launching"/>
+      <import plugin="org.eclipse.dltk.javascript.parser"/>
+      <import plugin="org.eclipse.dltk.javascript.rhino"/>
+      <import plugin="org.eclipse.dltk.javascript.rhino.dbgp"/>
+      <import plugin="org.eclipse.dltk.javascript.source"/>
+      <import plugin="org.eclipse.dltk.javascript.ui"/>
+      <import plugin="org.eclipse.dltk.launching"/>
+      <import plugin="org.eclipse.dltk.ruby"/>
+      <import plugin="org.eclipse.dltk.ruby.abstractdebugger"/>
+      <import plugin="org.eclipse.dltk.ruby.activestatedebugger"/>
+      <import plugin="org.eclipse.dltk.ruby.basicdebugger"/>
+      <import plugin="org.eclipse.dltk.ruby.core"/>
+      <import plugin="org.eclipse.dltk.ruby.debug"/>
+      <import plugin="org.eclipse.dltk.ruby.debug.ui"/>
+      <import plugin="org.eclipse.dltk.ruby.fastdebugger"/>
+      <import plugin="org.eclipse.dltk.ruby.formatter"/>
+      <import plugin="org.eclipse.dltk.ruby.launching"/>
+      <import plugin="org.eclipse.dltk.ruby.source"/>
+      <import plugin="org.eclipse.dltk.ruby.testing"/>
+      <import plugin="org.eclipse.dltk.ruby.ui"/>
+      <import plugin="org.eclipse.dltk.testing"/>
+      <import plugin="org.eclipse.dltk.ui"/>
+      <import plugin="org.eclipse.dltk.validators.core"/>
+      <import plugin="org.eclipse.dltk.validators.externalchecker"/>
+      <import plugin="org.eclipse.dltk.validators.ui"/>
+   </requires>
+
    <plugin
          id="com.rhomobile.rhostudio"
          download-size="0"
