@@ -58,8 +58,8 @@ public class DebugProtocol {
 			String[] brp = cmd.split(":");
 			this.filePosition = brp[1].replace('|', ':').replace('\\', '/');
 			this.linePosition = Integer.parseInt(brp[2]);
-			this.classPosition = brp[3].replace('#', ':');
-			this.methodPosition = brp[4];
+			this.classPosition = brp.length > 3 ? brp[3].replace('#', ':') : "";
+			this.methodPosition = brp.length > 4 ? brp[4] : "";
 			if (bp)
 				debugCallback.breakpoint(this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
 			else
