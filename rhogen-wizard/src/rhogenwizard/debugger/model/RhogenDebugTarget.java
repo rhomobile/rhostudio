@@ -11,6 +11,9 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -412,9 +415,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		IStackFrame[] theFrames = new IStackFrame[1];
 		theFrames[0] = new RhogenStackFrame(fThread, stackData, 0);
 
-		DebugPlugin.getDefault().getExpressionManager().removeExpressions(DebugPlugin.getDefault().getExpressionManager().getExpressions());
-		m_debugServer.debugGetVariables(new DebugVariableType[] { 
-				DebugVariableType.LOCAL, DebugVariableType.INSTANCE, DebugVariableType.CLASS, DebugVariableType.GLOBAL });
+		
 		
 		return theFrames;
 	}
@@ -477,6 +478,30 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				}
 			}
 		}
+		
+		DebugPlugin.getDefault().getExpressionManager().removeExpressions(DebugPlugin.getDefault().getExpressionManager().getExpressions());
+		
+		List<DebugVariableType> varsType = new ArrayList<DebugVariableType>();
+		
+		varsType.add(DebugVariableType.LOCAL);
+	
+		if (className.length() != 0 && method.length() != 0)
+		{
+			varsType.add(DebugVariableType.INSTANCE);
+		}
+
+		if (className.length() != 0)
+		{
+			varsType.add(DebugVariableType.CLASS);
+		}
+
+		varsType.add(DebugVariableType.GLOBAL);
+		
+		DebugVariableType[] vars = new DebugVariableType[varsType.size()];
+		
+		vars = varsType.toArray(vars);
+		
+		m_debugServer.debugGetVariables(vars);
 		
 		suspended(DebugEvent.BREAKPOINT);
 	}
