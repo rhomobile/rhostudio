@@ -31,6 +31,7 @@ public class BuildInfoHolder
 
 	public String appName = null;
 	public String appDir  = null;
+	public boolean existCreate = false; 
 	
 	public boolean isPretend = false;
 	public boolean isForce   = false;
