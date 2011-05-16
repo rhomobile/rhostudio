@@ -78,7 +78,7 @@ public class RhodesAdapter
 		}
 	}
 	
-	public void generateApp(BuildInfoHolder holder) throws Exception
+	public int generateApp(BuildInfoHolder holder) throws Exception
 	{
 		m_executor.setWorkingDirectory(holder.getProjectLocationPath().toOSString());
 		
@@ -87,7 +87,7 @@ public class RhodesAdapter
 		cmdLine.add("app");
 		cmdLine.add(holder.appName);
 		
-		m_executor.runCommand(cmdLine);
+		return m_executor.runCommand(cmdLine);
 	}
 	
 	public int generateModel(String workDir, String modelName, String modelParams) throws Exception
