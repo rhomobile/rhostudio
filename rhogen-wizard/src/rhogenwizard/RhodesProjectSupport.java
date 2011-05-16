@@ -35,10 +35,11 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import rhogenwizard.builder.RhogenNature;
+import rhogenwizard.buildfile.AppYmlFile;
 
 public class RhodesProjectSupport
 {
-    public static IProject createProject(BuildInfoHolder projectInfo) throws AlredyCreatedException 
+    public static IProject createProject(BuildInfoHolder projectInfo) throws AlredyCreatedException, CheckProjectException 
     {
         Assert.isNotNull(projectInfo.appName);
         Assert.isTrue(projectInfo.appName.trim().length() != 0);
@@ -56,8 +57,9 @@ public class RhodesProjectSupport
      * @param location
      * @param projectName
      * @throws AlredyCreatedException 
+     * @throws CheckProjectException 
      */
-    private static IProject createBaseProject(BuildInfoHolder projectInfo) throws AlredyCreatedException 
+    private static IProject createBaseProject(BuildInfoHolder projectInfo) throws AlredyCreatedException, CheckProjectException 
     {
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectInfo.appName);
@@ -66,15 +68,19 @@ public class RhodesProjectSupport
         {
             URI projectLocation = projectInfo.getProjectLocation();
             String path = URIUtil.toPath(projectLocation).toOSString();
-            path = path + File.separatorChar + projectInfo.appName;
+            
+            if (!projectInfo.existCreate)
+            	path = path + File.separatorChar + projectInfo.appName;
 
+            checkProject(newProject, path);
+            
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
 
             if (!projectInfo.isInDefaultWs)
             {
             	desc.setLocationURI(URIUtil.toURI(path));
             }
-			
+            
             try 
             {
                 newProject.create(desc, null);
@@ -95,7 +101,24 @@ public class RhodesProjectSupport
         return newProject;
     }
 
-    private static void createFolder(IFolder folder) throws CoreException
+    private static void checkProject(IProject project, String path) throws CheckProjectException 
+    {
+		File projectDir = new File(path);
+		
+		if (!projectDir.isDirectory() || !projectDir.exists())
+		{
+			throw new CheckProjectException(project);
+		}
+
+		File buildFile = new File(path + File.separator + AppYmlFile.configFileName);
+		
+		if (!buildFile.exists())
+		{
+			throw new CheckProjectException(project);
+		}
+	}
+
+	private static void createFolder(IFolder folder) throws CoreException
     {
         IContainer parent = folder.getParent();
         
