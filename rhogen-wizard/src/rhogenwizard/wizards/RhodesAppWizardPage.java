@@ -38,6 +38,7 @@ public class RhodesAppWizardPage extends WizardPage
 	private String     m_selectAppDir  = null;
 	private Button     m_defaultPathButton = null;
 	private Button     m_browseButton = null;
+	private Button     m_exitsCreateButton = null;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -94,6 +95,20 @@ public class RhodesAppWizardPage extends WizardPage
 		});
 		
 		// 3 row
+		m_exitsCreateButton = new Button(composite, SWT.CHECK);
+		m_exitsCreateButton.setText("Create application from existing sources.");
+		m_exitsCreateButton.setSelection(false);
+		m_exitsCreateButton.setLayoutData(checkBoxAligment);
+		m_exitsCreateButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				setControlsForExistingSource();
+				dialogChanged();
+			}
+		});
+		
+		// 4 row
 		label = new Label(composite, SWT.NULL);
 		label.setText("&Application folder:");
 
@@ -118,6 +133,15 @@ public class RhodesAppWizardPage extends WizardPage
 		});
 	}
 	
+	protected void setControlsForExistingSource() 
+	{
+		boolean enableDefPath = m_exitsCreateButton.getSelection();
+		
+		m_defaultPathButton.setEnabled(!enableDefPath);
+		m_browseButton.setEnabled(enableDefPath);
+		m_appFolderText.setEnabled(enableDefPath);
+	}
+
 	/**
 	 * @see IDialogPage#createControl(Composite)
 	 */
@@ -206,14 +230,25 @@ public class RhodesAppWizardPage extends WizardPage
 		return m_appNameText.getText();
 	}
 	
+	private boolean getExistCreate()
+	{
+		return m_exitsCreateButton.getSelection();
+	}
+	
 	BuildInfoHolder getBuildInformation()
 	{
 		BuildInfoHolder newInfo  = new BuildInfoHolder();
 		
-		newInfo.appDir = getAppFolder();
-		newInfo.appName = getAppName();
+		newInfo.appDir        = getAppFolder();
+		newInfo.appName       = getAppName();
+		newInfo.existCreate   = getExistCreate();
 		
-		newInfo.isInDefaultWs = m_defaultPathButton.getSelection();
+		if (newInfo.existCreate) {
+			newInfo.isInDefaultWs = false;
+		}
+		else {
+			newInfo.isInDefaultWs = m_defaultPathButton.getSelection();
+		}
 		
 		return newInfo;
 	}

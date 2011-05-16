@@ -3,6 +3,7 @@ package rhogenwizard.wizards;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -23,8 +24,10 @@ import org.eclipse.core.filesystem.URIUtil;
 
 import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
+import rhogenwizard.CheckProjectException;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.debugger.RhogenConstants;
 
@@ -69,10 +72,12 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 				{
 					doFinish(holder, monitor);
 				}
-				catch (CoreException e) {
+				catch (CoreException e) 
+				{
 					throw new InvocationTargetException(e);
 				} 
-				finally {
+				finally 
+				{
 					monitor.done();
 				}
 			}
@@ -112,21 +117,29 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			monitor.worked(1);
 			monitor.setTaskName("Opening file for editing...");
 
-			m_rhogenAdapter.generateApp(infoHolder);
-			
-			RhodesProjectSupport.createProject(infoHolder);
-			
+			IProject newProject = RhodesProjectSupport.createProject(infoHolder);
+
+			if (!infoHolder.existCreate) 
+			{
+				m_rhogenAdapter.generateApp(infoHolder);
+			}
+
+			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", RhogenConstants.rhodesPerspectiveId);
 			job.run(monitor);
 			
 			monitor.worked(1);
 		} 
+		catch (CheckProjectException e) 
+		{
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.toString());
+			msgJob.run(monitor);		
+		}
 		catch (AlredyCreatedException e)
 		{
-			MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK);
-			messageBox.setText("Warining");
-			messageBox.setMessage(e.getMessage());
-			messageBox.open();			
+			ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
+			msgJob.run(monitor);		
 		}
 		catch (Exception e)
 		{
@@ -139,7 +152,8 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 * we can initialize from it.
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
+	public void init(IWorkbench workbench, IStructuredSelection selection)
+	{
 		this.selection = selection;
 	}
 }
