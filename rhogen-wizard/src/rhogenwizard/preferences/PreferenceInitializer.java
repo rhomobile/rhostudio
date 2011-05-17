@@ -59,11 +59,18 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 	private void initFromFirstProject() 
 	{
 		List<String> projectNames = getRhodesProjects();
-		
-		if (projectNames != null && projectNames.size() > 0)
+
+		if (projectNames == null)
+			return;
+
+		for (String projectName : projectNames)
 		{
-			String firstProject = projectNames.get(0);
-			initFromProject(firstProject);
+			IProject currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			
+			if (AppYmlFile.isExists(currProject.getLocation().toOSString()))
+			{
+				initFromProject(projectName);
+			}
 		}
 	}
 
