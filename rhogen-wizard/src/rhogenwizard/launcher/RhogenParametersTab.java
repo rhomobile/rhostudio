@@ -1,6 +1,7 @@
 package rhogenwizard.launcher;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -53,7 +54,10 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 											    "2.3.1",
 											    "2.3.3",
 											    "3.0" };
-	
+
+	private static String iphoneVersions[] = { "iphone",
+											   "ipad" };
+																		
 	private static String bbVersions[] = {};
 	
 	Composite 	m_comp = null;
@@ -269,10 +273,13 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				String androidVersion = m_ymlFile.getAndroidVer();
 				String bbVersion      = m_ymlFile.getBlackberryVer();
 				String androidEmuName = m_ymlFile.getAndroidEmuName();
-				
+				String iphoneVersion  = m_ymlFile.getIphoneVer();
+
 				configuration.setAttribute(RhogenLaunchDelegate.androidVersionAttribute, androidVersion);
 				configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, bbVersion);
 				configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, androidEmuName);
+				configuration.setAttribute(RhogenLaunchDelegate.iphoneVersionAttribute, iphoneVersion);
+				
 			} 
 			catch (FileNotFoundException e)
 			{
@@ -280,7 +287,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			}
 		}
 		
-		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);
+		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformEmu);
 		configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
 		configuration.setAttribute(RhogenLaunchDelegate.isCleanAttribute, false);
 	}
@@ -341,6 +348,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			String selAndroidVer      = configuration.getAttribute(RhogenLaunchDelegate.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
 			String selBlackBarryVer   = configuration.getAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, "");
 			String selAndroidEmuName  = configuration.getAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, "");
+			String selIphoneVer       = configuration.getAttribute(RhogenLaunchDelegate.iphoneVersionAttribute, "");
 			boolean onDevice          = configuration.getAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
 			
 			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
@@ -384,6 +392,22 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 						break;
 					}
 				}
+			}
+			else if (selProjectPlatform.equals(RhodesAdapter.platformIPhone))
+			{
+				List<String> iphoneVersions = showIphoneVersions();
+				showVersionCombo(true);
+				
+				for (int idx=0; idx < iphoneVersions.size(); idx++)
+				{
+					String currVer = iphoneVersions.get(idx);
+					
+					if (currVer.equals(selIphoneVer))
+					{
+						m_selectPlatformVersionCombo.select(idx);
+						break;
+					}
+				}				
 			}
 			else
 			{
@@ -520,6 +544,11 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				m_configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, selVersion);
 				m_ymlFile.setBbVer(selVersion);
 			}
+			else if (type == RhodesAdapter.EPlatformType.eIPhone)
+			{
+				m_configuration.setAttribute(RhogenLaunchDelegate.iphoneVersionAttribute, selVersion);
+				m_ymlFile.setIphoneVer(selVersion);
+			}
 			
 			m_ymlFile.save();
 		}
@@ -542,7 +571,26 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			m_selectPlatformVersionCombo.add(s);
 		}
 	}
-	
+
+	private List<String> showIphoneVersions()
+	{
+		m_selectPlatformVersionCombo.removeAll();
+		
+		for (String s: iphoneVersions) 
+		{
+			m_selectPlatformVersionCombo.add(s);
+		}
+		
+		ArrayList<String> retList = new ArrayList<String>();
+		
+		for (int i=0; i<iphoneVersions.length; ++i)
+		{
+			retList.add(iphoneVersions[i]);
+		}
+		
+		return retList;
+	}
+
 	private List<String> showBbVersions()
 	{
 		try 

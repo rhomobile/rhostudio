@@ -23,6 +23,13 @@ public class AppYmlFile extends YmlFile
 		
 		return null;
 	}
+	
+	public static boolean isExists(String projectPath)
+	{
+		String buildFilePath = projectPath + File.separator + configFileName;
+		File buildFile = new File(buildFilePath);
+		return buildFile.exists();
+	}
 
 	public static AppYmlFile createFromString(String data) 
 	{
@@ -123,5 +130,15 @@ public class AppYmlFile extends YmlFile
 	public void setAndroidEmuName(String newName)
 	{
 		super.set("android", "emulator", newName);
+	}
+
+	public String getIphoneVer() 
+	{
+		return super.get("iphone", "emulatortarget");
+	}
+	
+	public void setIphoneVer(String iphoneTarget) 
+	{
+		super.set("iphone", "emulatortarget", iphoneTarget);
 	}
 }
