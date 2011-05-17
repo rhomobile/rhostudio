@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import java.io.*;
+
 import org.eclipse.ui.*;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.core.filesystem.EFS;
@@ -121,7 +122,10 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 
 			if (!infoHolder.existCreate) 
 			{
-				m_rhogenAdapter.generateApp(infoHolder);
+				if (m_rhogenAdapter.generateApp(infoHolder) != 0)
+				{
+					throw new IOException("The Rhodes SDK do not installed");
+				}
 			}
 
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
@@ -131,9 +135,14 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			
 			monitor.worked(1);
 		} 
+		catch (IOException e)
+		{
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
+			msgJob.run(monitor);
+		}
 		catch (CheckProjectException e) 
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.toString());
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
 			msgJob.run(monitor);		
 		}
 		catch (AlredyCreatedException e)
