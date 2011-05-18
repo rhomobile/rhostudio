@@ -40,7 +40,7 @@ public class DebugProtocol {
 	}
 	
 	protected void processCommand(String cmd) {
-		boolean bp;
+		boolean bp=false, stInto=false, stOver=false, stRet=false;
 		if(cmd.endsWith("\n"))
 			cmd = cmd.substring(0, cmd.length()-1);
 		if (cmd.compareTo("CONNECT")==0) {
@@ -53,17 +53,24 @@ public class DebugProtocol {
 		} else if (cmd.compareTo("QUIT")==0) {
 			this.state = DebugState.EXITED;
 			debugCallback.exited();
-		} else if ((bp=cmd.startsWith("BP:")) || cmd.startsWith("STEP:")) {
-			this.state = bp ? DebugState.BREAKPOINT : DebugState.STEP;
+		} else if (
+			(bp=cmd.startsWith("BP:")) ||
+			(stInto=cmd.startsWith("STEP:")) ||
+			(stOver=cmd.startsWith("STOVER:")) ||
+			(stRet=cmd.startsWith("STRET:")) ||
+			cmd.startsWith("SUSP:"))
+		{
+			this.state = bp ? DebugState.BREAKPOINT
+					: (stInto ? DebugState.STOPPED_INTO
+							: (stOver ? DebugState.STOPPED_OVER
+									: (stRet ? DebugState.STOPPED_RETURN
+											: DebugState.SUSPENDED)));
 			String[] brp = cmd.split(":");
 			this.filePosition = brp[1].replace('|', ':').replace('\\', '/');
 			this.linePosition = Integer.parseInt(brp[2]);
 			this.classPosition = brp.length > 3 ? brp[3].replace('#', ':') : "";
 			this.methodPosition = brp.length > 4 ? brp[4] : "";
-			if (bp)
-				debugCallback.breakpoint(this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
-			else
-				debugCallback.step(this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
+			debugCallback.stopped(this.state, this.filePosition, this.linePosition, this.classPosition, this.methodPosition);
 		} else if (cmd.startsWith("EVL:")) {
 			boolean valid = cmd.charAt(4)=='0';
 			String var = cmd.substring(6);

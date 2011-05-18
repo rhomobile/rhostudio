@@ -171,8 +171,7 @@ public class DebugServer extends Thread {
 	 */
 	public String debugGetFile() {
 		if (this.debugProtocol!=null) {
-			DebugState state = this.debugProtocol.getState();
-			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+			if (DebugState.paused(this.debugProtocol.getState()))
 				return this.debugProtocol.getCurrentFile();
 		}
 		return "";
@@ -185,8 +184,7 @@ public class DebugServer extends Thread {
 	 */
 	public int debugGetLine() {
 		if (this.debugProtocol!=null) {
-			DebugState state = this.debugProtocol.getState();
-			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+			if (DebugState.paused(this.debugProtocol.getState()))
 				return this.debugProtocol.getCurrentLine();
 		}
 		return 0;
@@ -199,8 +197,7 @@ public class DebugServer extends Thread {
 	 */
 	public String debugGetClass() {
 		if (this.debugProtocol!=null) {
-			DebugState state = this.debugProtocol.getState();
-			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+			if (DebugState.paused(this.debugProtocol.getState()))
 				return this.debugProtocol.getCurrentClass();
 		}
 		return "";
@@ -213,8 +210,7 @@ public class DebugServer extends Thread {
 	 */
 	public String debugGetMethod() {
 		if (this.debugProtocol!=null) {
-			DebugState state = this.debugProtocol.getState();
-			if ((state==DebugState.BREAKPOINT) || (state==DebugState.STEP))
+			if (DebugState.paused(this.debugProtocol.getState()))
 				return this.debugProtocol.getCurrentMethod();
 		}
 		return "";

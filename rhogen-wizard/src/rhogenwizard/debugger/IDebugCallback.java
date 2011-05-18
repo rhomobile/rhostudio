@@ -12,26 +12,17 @@ public interface IDebugCallback {
 	public void connected();
 
 	/**
-	 * Called when the breakpoint is reached.
+	 * Called when the breakpoint is reached or after execution of next method
+	 * of Ruby code after the {@link DebugServer#debugStepOver()},
+	 * {@link DebugServer#debugStepInto()}, {@link DebugServer#debugStepReturn()},
+	 * or {@link DebugServer#debugSuspend()} method call.  
 	 * @param file - file path within <code>app</code> folder of the Rhodes
 	 * application, e.g. <code>"application.rb"</code>.
 	 * @param line - effective line number (starting with 1).
 	 * @param className - class name of the current object ("" if none).
 	 * @param method - name of the current method ("" if none).
 	 */
-	public void breakpoint(String file, int line, String className, String method);
-
-	/**
-	 * Called after execution of next method of Ruby code after the
-	 * {@link DebugServer#debugStepOver()}, {@link DebugServer#debugStepInto()}
-	 * or {@link DebugServer#debugStepReturn()} method call.  
-	 * @param file - file path within <code>app</code> folder of the Rhodes
-	 * application, e.g. <code>"application.rb"</code>.
-	 * @param line - effective line number (starting with 1).
-	 * @param className - class name of the current object ("" if none).
-	 * @param method - name of the current method ("" if none).
-	 */
-	public void step(String file, int line, String className, String method);
+	public void stopped(DebugState state, String file, int line, String className, String method);
 
 	/**
 	 * Called when Rhodes application is resumed after
