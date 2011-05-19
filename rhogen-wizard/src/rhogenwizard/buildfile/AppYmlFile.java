@@ -141,4 +141,9 @@ public class AppYmlFile extends YmlFile
 	{
 		super.set("iphone", "emulatortarget", iphoneTarget);
 	}
+
+	public void removeAndroidEmuName() 
+	{
+		remove("android", "emulator");
+	}
 }

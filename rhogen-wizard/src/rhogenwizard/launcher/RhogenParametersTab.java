@@ -158,13 +158,21 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				{
 					try 
 					{
+						m_configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, m_adroidEmuNameText.getText());
+						
 						if (!m_adroidEmuNameText.getText().equals(""))
 						{
-							m_configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, m_adroidEmuNameText.getText());
 							m_ymlFile.setAndroidEmuName(m_adroidEmuNameText.getText());
-							m_ymlFile.save();
+						}
+						else 
+						{
+							if (!m_ymlFile.getAndroidEmuName().equals(""))
+							{
+								m_ymlFile.removeAndroidEmuName();
+							}
 						}
 						
+						m_ymlFile.save();
 						showApplyButton();
 					} 
 					catch (FileNotFoundException e1) {

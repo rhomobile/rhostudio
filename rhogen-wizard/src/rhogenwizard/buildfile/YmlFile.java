@@ -71,6 +71,16 @@ public class YmlFile
 		return null;
 	}
 	
+	public void remove(String sectionName, String paramName)
+	{
+		Map section = (Map) m_dataStorage.get(sectionName);
+		
+		if (null != section)
+		{
+			section.remove(paramName);
+		}
+	}
+	
 	public String get(String mainSection, String sectionName, String paramName)
 	{
 		Map mSection = (Map) m_dataStorage.get(mainSection);
