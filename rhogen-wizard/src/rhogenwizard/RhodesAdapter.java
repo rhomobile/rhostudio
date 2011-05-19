@@ -105,7 +105,7 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 	
-	public IProcess debugApp(String workDir, EPlatformType platformType, ILaunch launch, boolean onDevice) throws Exception
+	public IProcess debugApp(String projectName, String workDir, EPlatformType platformType, ILaunch launch, boolean onDevice) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);
 		
@@ -122,12 +122,12 @@ public class RhodesAdapter
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		
-		String[] commandLine = new String[cmdLine.size()]; // {"rake.bat" , "run:win32:rhosimulator"};
+		String[] commandLine = new String[cmdLine.size()];
 		commandLine = cmdLine.toArray(commandLine);
 		
 		Process process = DebugPlugin.exec(commandLine, new File(workDir));
 
-		return DebugPlugin.newProcess(launch, process, "rhodes-emu");
+		return DebugPlugin.newProcess(launch, process, projectName);
 	}
 	
 	public int buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception

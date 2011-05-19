@@ -96,7 +96,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 						}
 						else
 						{
-							m_debugProcess = rhodesAdapter.debugApp(project.getLocation().toOSString(), type, launch, m_onDevice);
+							m_debugProcess = rhodesAdapter.debugApp(m_projectName, project.getLocation().toOSString(), type, launch, m_onDevice);
 							
 							if (m_debugProcess == null)
 							{
