@@ -39,7 +39,7 @@ public interface IDebugCallback {
 	 * <code>false</code> otherwise. 
 	 * @param code - original Ruby code.
 	 * @param value - the resulted value of the evaluated/executed Ruby code
-	 * or the error message if evaliation failed (when <code>valid</code>
+	 * or the error message if evaluation failed (when <code>valid</code>
 	 * is <code>false</code>). 
 	 */
 	public void evaluation(boolean valid, String code, String value);

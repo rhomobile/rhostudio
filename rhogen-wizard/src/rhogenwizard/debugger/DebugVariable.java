@@ -1,5 +1,9 @@
 package rhogenwizard.debugger;
 
+/**
+ * Represents a Ruby variable - its scope, name and value.
+ * @author Albert R. Timashev
+ */
 public class DebugVariable {
 	private final DebugVariableType type;
 	private final String variable;

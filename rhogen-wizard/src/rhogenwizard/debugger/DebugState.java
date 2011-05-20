@@ -6,7 +6,11 @@ package rhogenwizard.debugger;
  * {@link DebugState#CONNECTED},
  * {@link DebugState#RUNNING},
  * {@link DebugState#BREAKPOINT},
- * {@link DebugState#STEP},
+ * {@link DebugState#STOPPED_INTO},
+ * {@link DebugState#STOPPED_OVER},
+ * {@link DebugState#STOPPED_RETURN},
+ * {@link DebugState#SUSPENDED},
+ * {@link DebugState#RESUMING},
  * {@link DebugState#EXITED}. 
  * @author Albert R. Timashev
  */
