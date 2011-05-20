@@ -19,6 +19,7 @@ public class DebugProtocol {
 	private Vector<DebugVariable> watchList = null;
 	private DebugVariableType lastWatchEOL;
 	private boolean wasWatchEOL = false;
+	private DebugEvaluation evaluationResult = null;
 	
 	public DebugProtocol (DebugServer server, IDebugCallback callback) {
 		this.debugServer = server;
@@ -91,7 +92,10 @@ public class DebugProtocol {
 					var = var.substring(0,val_idx);
 				}
 			}
-			debugCallback.evaluation(valid, var, val);
+			if (this.watchProcessing)
+				evaluationPrivate(valid, var, val);
+			else
+				debugCallback.evaluation(valid, var, val);
 		} else if (cmd.startsWith("V:")) {
 			DebugVariableType vt = DebugVariableType.variableTypeById(cmd.charAt(2));
 			String var = cmd.substring(4);
@@ -164,6 +168,10 @@ public class DebugProtocol {
 	
 	public void evaluate(String expression) throws DebugServerException {
 		checkDebugState();
+		evaluatePrivate(expression);
+	}
+
+	private void evaluatePrivate(String expression) {
 		try {
 			expression = URLEncoder.encode(expression, "UTF-8");
 		} catch (UnsupportedEncodingException e) {}
@@ -217,6 +225,23 @@ public class DebugProtocol {
 		return null;
 	}
 	
+	public DebugEvaluation instantEvaluate(String expression) {
+		if (DebugState.paused(this.state)) {
+			this.watchProcessing = true;
+			this.evaluationResult = null;
+			this.waitingThread = Thread.currentThread();
+			evaluatePrivate(expression);
+			do {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) { }
+			} while (this.evaluationResult==null);
+			this.watchProcessing = false;
+			return this.evaluationResult;
+		}
+		return null;
+	}
+
 	private void watchBOLPrivate(DebugVariableType type) { 
 		// nothing to do 
 	}
@@ -230,6 +255,11 @@ public class DebugProtocol {
 
 	private void watchPrivate(DebugVariableType type, String variable, String value) {
 		this.watchList.add(new DebugVariable(type, variable, value));
+	}
+	
+	private void evaluationPrivate(boolean valid, String code, String value) {
+		this.evaluationResult = new DebugEvaluation(valid, code, value);
+		this.waitingThread.interrupt();
 	}
 
 	public void suspend() throws DebugServerException {

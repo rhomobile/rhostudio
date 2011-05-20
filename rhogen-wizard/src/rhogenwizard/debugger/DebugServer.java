@@ -367,6 +367,24 @@ public class DebugServer extends Thread {
 	}
 
 	/**
+	 * Evaluate Ruby expression or execute arbitrary Ruby code and returns
+	 * the result. 
+	 * This method <em>must</em> be called from the thread <em>other</em>
+	 * than the instance of {@link DebugServer}, i.e. it is <em>forbidden</em>
+	 * to call it directly from {@link IDebugCallback} methods.
+	 * @param expression - expression to evaluate or Ruby code to execute.
+	 * @return Returns a {@link DebugEvaluation} object if application is
+	 * currently paused (see {@link DebugState#paused(DebugState)}).
+	 * Otherwise returns null.
+	 */
+	public DebugEvaluation debugInstantEvaluate(String expression) {
+		if (this.debugProtocol!=null)
+			return this.debugProtocol.instantEvaluate(expression);
+		else
+			return null;
+	}
+	
+	/**
 	 * Suspend the execution of Ruby code. The
 	 * {@link IDebugCallback#step(String, int, String, String)}
 	 * method is called when the actual stop occurs.
