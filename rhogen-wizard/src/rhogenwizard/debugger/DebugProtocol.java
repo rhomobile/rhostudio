@@ -199,6 +199,7 @@ public class DebugProtocol {
 	}
 
 	public Vector<DebugVariable> getWatchList() {
+		Vector<DebugVariable> result = null;
 		if (DebugState.paused(this.state)) {
 			this.waitForEOL = DebugVariableType.LOCAL;
 			this.watchProcessing = true;
@@ -220,12 +221,14 @@ public class DebugProtocol {
 				} catch (InterruptedException e) { }
 			} while (!(this.wasWatchEOL && (this.lastWatchEOL==this.waitForEOL)));
 			this.watchProcessing = false;
-			return this.watchList;
+			result = this.watchList;
+			this.watchList = null;
 		}
-		return null;
+		return result;
 	}
 	
 	public DebugEvaluation instantEvaluate(String expression) {
+		DebugEvaluation result = null;
 		if (DebugState.paused(this.state)) {
 			this.watchProcessing = true;
 			this.evaluationResult = null;
@@ -237,9 +240,10 @@ public class DebugProtocol {
 				} catch (InterruptedException e) { }
 			} while (this.evaluationResult==null);
 			this.watchProcessing = false;
-			return this.evaluationResult;
+			result = this.evaluationResult;
+			this.evaluationResult = null;
 		}
-		return null;
+		return result;
 	}
 
 	private void watchBOLPrivate(DebugVariableType type) { 
