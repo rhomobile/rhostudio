@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
+import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.buildfile.AppYmlFile;
@@ -127,6 +128,11 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			}
 		});
 		
+		if (!OSHelper.isWindows())
+		{
+			m_selectPlatformCombo.remove(m_selectPlatformCombo.getItemCount() - 1);
+		}
+			
         GridData comboAligment = new GridData();
         comboAligment.horizontalAlignment = GridData.FILL;
         
@@ -298,7 +304,11 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			}
 		}
 		
-		configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformEmu);
+		if (!OSHelper.isWindows())
+			configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);
+		else
+			configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, (String) RhodesAdapter.platformEmu);
+		
 		configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, false);
 		configuration.setAttribute(RhogenLaunchDelegate.isCleanAttribute, false);
 	}
