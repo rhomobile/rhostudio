@@ -2,18 +2,92 @@ package rhogenwizard.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
+
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.*;
+import org.eclipse.ui.progress.UIJob;
+
+import rhogenwizard.Activator;
+import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+
+class ModelCreationJob extends UIJob 
+{
+	String m_modelName = null;
+	String m_modelParams = null;
+	String m_projectLocation = null;
+	RhodesAdapter m_rhogenAdapter = null;
+	IProject m_currentProject = null;
+	
+	public ModelCreationJob(String name
+							, String projectLocation
+							, String modelName
+							, String modelParams
+							, RhodesAdapter rhogenAdapter
+							, IProject currentProject) 
+	{
+		super(name);
+		m_rhogenAdapter   = rhogenAdapter;
+		m_modelName       = modelName;
+		m_modelParams     = modelParams;
+		m_projectLocation = projectLocation;
+		m_currentProject  = currentProject;
+	}
+
+	@Override
+	public IStatus runInUIThread(IProgressMonitor monitor)
+	{
+		Shell windowShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		
+		File modelFolder = new File(m_projectLocation + "/app/" + m_modelName);
+		
+		if (modelFolder.exists())
+		{
+			MessageBox messageBox = new MessageBox(windowShell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			messageBox.setText("Model create");
+			messageBox.setMessage("Model with name " + m_modelName + " was already created. Delete old model?");
+			
+			if (SWT.OK == messageBox.open())
+			{
+				OSHelper.deleteFolder(modelFolder);
+			}
+			else
+			{
+				return new Status(BUILD, Activator.PLUGIN_ID, "model create");
+			}
+		}
+		
+		try
+		{
+			m_rhogenAdapter.generateModel(m_projectLocation, m_modelName, m_modelParams);
+			m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+		}
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return new Status(BUILD, Activator.PLUGIN_ID, "model create");
+	}
+}
 
 public class RhogenModelWizard extends Wizard implements INewWizard 
 {
@@ -119,18 +193,18 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 		{
 			monitor.beginTask("Creating model " + modelName, 2);
 			monitor.worked(1);
-			monitor.setTaskName("Opening file for editing...");
+			monitor.setTaskName("Creating model...");
 			
 			if (null != m_projectLocation)
 			{
-				m_rhogenAdapter.generateModel(m_projectLocation, modelName, modelParams);
+				ModelCreationJob modelJob = new ModelCreationJob("create model", m_projectLocation, 
+						modelName, modelParams, m_rhogenAdapter, m_currentProject);
+				modelJob.run(monitor);
 			}
 			else
 			{
 				//TODO show error message
 			}
-			
-			m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 			
 			monitor.worked(1);
 		} 

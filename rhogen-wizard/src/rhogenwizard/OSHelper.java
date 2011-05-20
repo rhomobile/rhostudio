@@ -1,5 +1,6 @@
 package rhogenwizard;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,5 +31,30 @@ public class OSHelper extends OSValidator
 		
 		SysCommandExecutor executor = new SysCommandExecutor();
 		executor.runCommand(cmdLine);
+	}
+	
+	public static void deleteFolder(String pathToRootFolder)
+	{
+		File rootFolder = new File(pathToRootFolder);
+		
+		deleteFolder(rootFolder);
+	}
+	
+	public static void deleteFolder(File rootFolder)
+	{
+		if (!rootFolder.isDirectory())
+		{
+			rootFolder.delete();
+			return;
+		}
+		
+		File[] containFiles = rootFolder.listFiles();
+		
+		for (File currFile : containFiles)
+		{
+			deleteFolder(currFile);
+		}
+		
+		rootFolder.delete();
 	}
 }
