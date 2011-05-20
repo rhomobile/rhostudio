@@ -21,14 +21,16 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 
+import rhogenwizard.debugger.DebugVariable;
+
 public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame 
 {
 	private RhogenThread fThread = null;
-	private String fName = null;
-	private int fPC;
-	private String fFileName = null;
-	private int fId;
-	private List<IVariable> fVariables;
+	private String       m_name = null;
+	private int          fPC;
+	private String       m_fileName = null;
+	private int             fId;
+	private List<IVariable> m_variablesList;
 	
 	/**
 	 * Constructs a stack frame in the given thread with the given
@@ -54,15 +56,32 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	private void init(StackData stackData)
 	{
-		fFileName   = stackData.m_resName; 
-		fPC         = stackData.m_codeLine; 
-		fName       = stackData.m_resName; 
-		fVariables  = new ArrayList<IVariable>();
+		m_fileName      = stackData.m_resName; 
+		fPC             = stackData.m_codeLine; 
+		m_name          = stackData.m_resName; 
+		m_variablesList = new ArrayList<IVariable>();
+		
+		if (stackData.m_currVariables != null)
+		{
+			for (DebugVariable var : stackData.m_currVariables)
+			{
+				try 
+				{
+					RhogenVariable stackVar = new RhogenVariable(this, var.variable());
+					stackVar.setValue(new RhogenValue(fTarget, var.value()));
+					m_variablesList.add(stackVar);
+				} 
+				catch (DebugException e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void addVariables(IVariable variable)
 	{
-		fVariables.add(variable);
+		m_variablesList.add(variable);
 	}
 	
 	/* (non-Javadoc)
@@ -78,9 +97,9 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public IVariable[] getVariables() throws DebugException 
 	{
-		IVariable[] array = new IVariable[fVariables.size()];
+		IVariable[] array = new IVariable[m_variablesList.size()];
 
-		array = fVariables.toArray(array);
+		array = m_variablesList.toArray(array);
 		
 		return array;
 	}
@@ -90,7 +109,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public boolean hasVariables() throws DebugException 
 	{
-		return fVariables.size() > 0;
+		return m_variablesList.size() > 0;
 	}
 	
 	/* (non-Javadoc)
@@ -122,7 +141,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public String getName() throws DebugException 
 	{
-		return fName;
+		return m_name;
 	}
 	
 	/* (non-Javadoc)
@@ -246,7 +265,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public String getSourceName() 
 	{
-		return fFileName;
+		return m_fileName;
 	}
 	
 	/* (non-Javadoc)

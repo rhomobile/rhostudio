@@ -13,6 +13,8 @@ package rhogenwizard.debugger.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import java.util.logging.ConsoleHandler;
 
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -21,6 +23,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.IExpressionListener;
+import org.eclipse.debug.core.IExpressionManager;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -31,38 +35,45 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.core.model.IWatchExpressionResult;
+import org.eclipse.debug.internal.core.WatchExpression;
+import org.eclipse.dltk.internal.debug.core.model.NoWatchExpressionResult;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.swt.graphics.Resource;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.debugger.DebugServer;
+import rhogenwizard.debugger.DebugState;
+import rhogenwizard.debugger.DebugVariable;
 import rhogenwizard.debugger.DebugVariableType;
 import rhogenwizard.debugger.IDebugCallback;
 import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.debugger.RhogenWatchExpressionResult;
 import rhogenwizard.launcher.RhogenLaunchDelegate;
 
 /**
  * PDA Debug Target
  */
-public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback
+public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
 {
 	// associated system process (VM)
-	private IProcess fProcess;
+	private IProcess m_processHandle;
 	
 	// containing launch object
-	private ILaunch fLaunch;
+	private ILaunch m_launchHandle;
 	
 	// program name
-	private String fName;
+	private String m_programName;
 	
 	// suspend state
-	private boolean fSuspended = true;
+	private boolean m_isSuspended = true;
 	
 	// terminated state
-	private boolean fTerminated = false;
+	private boolean m_isTerminated = false;
 	
 	// threads
-	private RhogenThread fThread;
-	private IThread[]    fThreads;
+	private RhogenThread m_threadHandle;
+	private IThread[]    m_allThreads;
 	
 	private static DebugServer m_debugServer = null;
 
@@ -70,12 +81,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		super(null);
 		
-		fLaunch  = launch;
-		fTarget  = this;
-		fProcess = process;
+		m_launchHandle  = launch;
+		fTarget         = this;
+		m_processHandle = process;
 
-		fThread  = new RhogenThread(this);
-		fThreads = new IThread[] {fThread};
+		m_threadHandle = new RhogenThread(this);
+		m_allThreads   = new IThread[] {m_threadHandle};
 				
 		DebugServer.setDebugOutputStream(System.out);
 		
@@ -83,26 +94,27 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			m_debugServer.shutdown();
 		}
+
+		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
+		DebugPlugin.getDefault().getExpressionManager().addExpressionListener(this);
 		
 		m_debugServer = new DebugServer(this);
 		m_debugServer.start();
-
-		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
 	}
 	
 	public void setProcess(IProcess p) 
 	{
-		fProcess = p;
+		m_processHandle = p;
 	}
 	
 	public IProcess getProcess()
 	{
-		return fProcess;
+		return m_processHandle;
 	}
 
 	public IThread[] getThreads() throws DebugException 
 	{
-		return fThreads;
+		return m_allThreads;
 	}
 	
 	/* (non-Javadoc)
@@ -118,19 +130,19 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public String getName() throws DebugException 
 	{
-		if (fName == null) 
+		if (m_programName == null) 
 		{
 			try 
 			{
-				fName = getLaunch().getLaunchConfiguration().getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
+				m_programName = getLaunch().getLaunchConfiguration().getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
 			} 
 			catch (CoreException e) 
 			{
-				fName = "";
+				m_programName = "";
 			}
 		}
 		
-		return fName;
+		return m_programName;
 	}
 	
 	/* (non-Javadoc)
@@ -159,7 +171,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public ILaunch getLaunch() 
 	{
-		return fLaunch;
+		return m_launchHandle;
 	}
 	
 	/* (non-Javadoc)
@@ -208,7 +220,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public boolean isSuspended()
 	{
-		return fSuspended;
+		return m_isSuspended;
 	}
 	
 	/* (non-Javadoc)
@@ -228,8 +240,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	private void resumed(int detail) 
 	{
-		fSuspended = false;
-		fThread.fireResumeEvent(detail);
+		m_isSuspended = false;
+		m_threadHandle.fireResumeEvent(detail);
 	}
 	
 	/**
@@ -239,8 +251,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	private void suspended(int detail) 
 	{
-		fSuspended = true;
-		fThread.fireSuspendEvent(detail);
+		m_isSuspended = true;
+		m_threadHandle.fireSuspendEvent(detail);
 	}	
 	
 	/* (non-Javadoc)
@@ -284,15 +296,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			try 
 			{
-				if (breakpoint.isEnabled()) 
-				{
-					ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
-					
-					int    lineNum = lineBr.getLineNumber();
-					String srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
-					
-					m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
-				}
+				ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
+				
+				int    lineNum = lineBr.getLineNumber();
+				String srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+				
+				m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
 			} 
 			catch (CoreException e) 
 			{
@@ -309,6 +318,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			try 
 			{
+				boolean b = breakpoint.isRegistered();
+				boolean c = breakpoint.isPersisted();
 				if (breakpoint.isEnabled()) 
 				{
 					breakpointAdded(breakpoint);
@@ -341,15 +352,15 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	public void stepOver()
 	{
-		cleanState();
-		fThread.setStepping(true);
+//		cleanState();
+//		fThread.setStepping(true);
 		m_debugServer.debugStepOver();
 	}
 	
 	public void stepInto()
 	{
-		cleanState();
-		fThread.setStepping(true);
+//		cleanState();
+//		fThread.setStepping(true);
 		m_debugServer.debugStepInto();
 	}
 	
@@ -377,7 +388,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return null;
 	}
 	
-	static String prepareResNameForDebugger(String resName)
+	static private String prepareResNameForDebugger(String resName)
 	{
 		resName = resName.replace('\\', '/');
 		String[] segments = resName.split("app/");
@@ -402,6 +413,16 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		}
 	}
 	
+	private void installDeferredWatchs()
+	{
+		IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions(RhogenConstants.debugModelId);
+		
+		for (int i = 0; i < watchs.length; i++)
+		{
+			expressionAdded(watchs[i]);
+		}
+	}
+	
 	/**
 	 * Returns the current stack frames in the target.
 	 * 
@@ -411,27 +432,14 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	protected IStackFrame[] getStackFrames() throws DebugException 
 	{
 		StackData stackData = new StackData(m_debugServer.debugGetFile(), m_debugServer.debugGetLine());
+		//ConsoleHelper.consoleAppPrint("file="+m_debugServer.debugGetFile()+" line="+m_debugServer.debugGetLine());
+		
+		stackData.m_currVariables = m_debugServer.debugWatchList();
 		
 		IStackFrame[] theFrames = new IStackFrame[1];
-		theFrames[0] = new RhogenStackFrame(fThread, stackData, 0);
-
-		
+		theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
 		
 		return theFrames;
-	}
-	
-	/**
-	 * Returns the current value of the given variable.
-	 * 
-	 * @param variable
-	 * @return variable value
-	 * @throws DebugException if the request fails
-	 */
-	protected IValue getVariableValue(RhogenVariable variable) throws DebugException 
-	{
-		m_debugServer.debugEvaluate(variable.getName());
-		
-		return new RhogenValue(this, "");
 	}
 	
 	@Override
@@ -441,7 +449,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			cleanState();
 			fireCreationEvent();
-			installDeferredBreakpoints();
+			installDeferredBreakpoints();			
 			resume();
 		}  	
 		catch (DebugException e) 
@@ -450,68 +458,46 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 
 	@Override
-	public void breakpoint(String file, int lineNumber, String className, String method)
+	public void stopped(DebugState state, String file, int line, String className, String method)
 	{
 		cleanState();
 		
-		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(RhogenConstants.debugModelId);
-	
-		for (int i = 0; i < breakpoints.length; i++) 
+		installDeferredWatchs();
+		
+		if (state == DebugState.BREAKPOINT)
 		{
-			IBreakpoint breakpoint = breakpoints[i];
-
-			if (breakpoint instanceof ScriptLineBreakpoint)
+			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(RhogenConstants.debugModelId);
+		
+			for (int i = 0; i < breakpoints.length; i++) 
 			{
-				ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
-				String resPath = prepareResNameForDebugger(lineBreakpoint.getResourcePath().toOSString());
-				
-				try 
+				IBreakpoint breakpoint = breakpoints[i];
+	
+				if (breakpoint instanceof ScriptLineBreakpoint)
 				{
-					if (lineBreakpoint.getLineNumber() == lineNumber && resPath.equals(file))
+					ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
+					String resPath = prepareResNameForDebugger(lineBreakpoint.getResourcePath().toOSString());
+					
+					try 
 					{
-						fThread.setBreakpoints(new IBreakpoint[]{breakpoint});
-						break;
+						if (lineBreakpoint.getLineNumber() == line && resPath.equals(file))
+						{
+							m_threadHandle.setBreakpoints(new IBreakpoint[]{breakpoint});
+							break;
+						}
+					}
+					catch (CoreException e) 
+					{
 					}
 				}
-				catch (CoreException e) 
-				{
-				}
 			}
+			
+			suspended(DebugEvent.BREAKPOINT);
 		}
-		
-		DebugPlugin.getDefault().getExpressionManager().removeExpressions(DebugPlugin.getDefault().getExpressionManager().getExpressions());
-		
-		List<DebugVariableType> varsType = new ArrayList<DebugVariableType>();
-		
-		varsType.add(DebugVariableType.LOCAL);
-	
-		if (className.length() != 0 && method.length() != 0)
+		else if (state == DebugState.STOPPED_OVER)
 		{
-			varsType.add(DebugVariableType.INSTANCE);
-		}
-
-		if (className.length() != 0)
-		{
-			varsType.add(DebugVariableType.CLASS);
-		}
-
-		varsType.add(DebugVariableType.GLOBAL);
-		
-		DebugVariableType[] vars = new DebugVariableType[varsType.size()];
-		
-		vars = varsType.toArray(vars);
-		
-		m_debugServer.debugGetVariables(vars);
-		
-		suspended(DebugEvent.BREAKPOINT);
-	}
-
-	@Override
-	public void step(String file, int line, String className, String method)
-	{
-//		cleanState();
-//        fThread.setStepping(true);
-//        resumed(DebugEvent.STEP_OVER);
+			m_threadHandle.setStepping(true);
+			suspended(DebugEvent.STEP_OVER);
+		}		
 	}
 
 	@Override
@@ -522,9 +508,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void exited() 
 	{
-		fTerminated = true;
-		fSuspended = false;
+		m_isTerminated = true;
+		m_isSuspended = false;
+		
 		DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(this);
+		DebugPlugin.getDefault().getExpressionManager().removeExpressionListener(this);
+		
 		fireTerminateEvent();
 		m_debugServer.shutdown();
 	}
@@ -533,57 +522,45 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	public void resumed() 
 	{
 		cleanState();
-		fSuspended = false;
+		m_isSuspended = false;
 		resumed(DebugEvent.CLIENT_REQUEST);
 	}
 
 	void cleanState()
 	{
-		fThread.setBreakpoints(null);
-		fThread.setStepping(false);
+		m_threadHandle.setBreakpoints(null);
+		m_threadHandle.setStepping(false);
 	}
 	
 	@Override
 	public void evaluation(boolean valid, String code, String value) 
 	{
-//		try 
-//		{
-//			IStackFrame[] frames = fThread.getStackFrames();
-//			
-//			for(int i=0; i<frames.length; ++i)
-//			{
-//				IStackFrame frame = frames[i];
-//				
-//				IVariable[] stackVars = frame.getVariables();
-//				
-//				for (int v=0; v<stackVars.length; ++v)
-//				{
-//					IVariable currVar = stackVars[v];
-//					
-//					if (currVar instanceof RhogenVariable)
-//					{
-//						if (currVar.getName().equals(code))
-//						{
-//							RhogenVariable rhoVar = (RhogenVariable) currVar;
-//						
-//							RhogenValue rhoValue = (RhogenValue) rhoVar.getValue();
-//							rhoValue.setValue(value);
-//						}
-//					}
-//				}
-//			}
-//		}
-//		catch (DebugException e)
-//		{
-//			e.printStackTrace();
-//		}
-	}
-
-	@Override
-	public void watch(DebugVariableType type, String variable, String value) 
-	{
-		IValue val = new RhogenValue(this, value);
-		DebugPlugin.getDefault().getExpressionManager().addExpression(new RhogenExpression(this, fLaunch, variable, val));
+		IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
+		
+		IExpression[] modelExps = expManager.getExpressions(RhogenConstants.debugModelId);
+		
+		for (IExpression currExp : modelExps)
+		{
+			String s = currExp.getExpressionText();
+			
+			if (currExp.getExpressionText().equals(code))
+			{
+				if (currExp instanceof WatchExpression)
+				{
+					try 
+					{
+						IValue watchVal = new RhogenValue(this, value);
+						WatchExpression watchExp  = (WatchExpression)currExp;
+						Thread.sleep(200); //HOTFIX 
+						watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
+					} 
+					catch (InterruptedException e) 
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		}	
 	}
 
 	@Override
@@ -596,5 +573,31 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	public void watchEOL(DebugVariableType type) 
 	{
 		// TODO Auto-generated method stub
-	}	
+	}
+
+	@Override
+	public void expressionAdded(IExpression expression)
+	{
+		String expText = expression.getExpressionText();
+		m_debugServer.debugEvaluate(expText);
+	}
+
+	@Override
+	public void expressionRemoved(IExpression expression) 
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void expressionChanged(IExpression expression) 
+	{
+		String expText = expression.getExpressionText();
+		m_debugServer.debugEvaluate(expText);
+	}
+
+	@Override
+	public void watch(DebugVariableType type, String variable, String value) {
+		// TODO Auto-generated method stub
+		
+	}
 }

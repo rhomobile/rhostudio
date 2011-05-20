@@ -20,10 +20,10 @@ import org.eclipse.debug.core.model.IVariable;
  */
 public class RhogenVariable extends RhogenDebugElement implements IVariable 
 {
-	
 	// name & stack frmae
-	private String fName;
-	private RhogenStackFrame fFrame;
+	private String 			 m_varName    = null;
+	private RhogenStackFrame m_stackFrame = null;
+	private IValue           m_varValue   = null;
 	
 	/**
 	 * Constructs a variable contained in the given stack frame
@@ -35,8 +35,9 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	public RhogenVariable(RhogenStackFrame frame, String name) 
 	{
 		super((RhogenDebugTarget) frame.getDebugTarget());
-		fFrame = frame;
-		fName = name;
+		m_stackFrame = frame;
+		m_varName = name;
+		m_varValue = null;
 	}
 	
 	/* (non-Javadoc)
@@ -44,7 +45,7 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 */
 	public IValue getValue() throws DebugException 
 	{
-		return ((RhogenDebugTarget)getDebugTarget()).getVariableValue(this);
+		return m_varValue;
 	}
 	
 	/* (non-Javadoc)
@@ -52,7 +53,7 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 */
 	public String getName() throws DebugException 
 	{
-		return fName;
+		return m_varName;
 	}
 	
 	/* (non-Javadoc)
@@ -85,6 +86,7 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 */
 	public void setValue(IValue value) throws DebugException 
 	{
+		m_varValue = value;
 	}
 	
 	/* (non-Javadoc)
@@ -118,6 +120,6 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 */
 	protected RhogenStackFrame getStackFrame() 
 	{
-		return fFrame;
+		return m_stackFrame;
 	}
 }
