@@ -44,6 +44,11 @@ public enum DebugState {
 	 */
 	SUSPENDED,
 	/**
+	 * Rhodes application is resuming after stop (breakpoint,
+	 * 'step' or 'suspend' command).
+	 */
+	RESUMING,
+	/**
 	 * Rhodes application is exited (terminated).
 	 */
 	EXITED;
@@ -71,6 +76,7 @@ public enum DebugState {
 	 * <code>"stopped (over)"</code> for {@link DebugState#STOPPED_OVER},
 	 * <code>"stopped (return)"</code> for {@link DebugState#STOPPED_RETURN},
 	 * <code>"suspended"</code> for {@link DebugState#SUSPENDED},
+	 * <code>"resuming"</code> for {@link DebugState#RESUMING},
 	 * <code>"terminated"</code> for {@link DebugState#EXITED}.
 	 */
 	public static String getName(DebugState state) {
@@ -83,6 +89,7 @@ public enum DebugState {
 		case STOPPED_OVER: return "stopped (over)";
 		case STOPPED_RETURN: return "stopped (return)";
 		case SUSPENDED: return "suspended";
+		case RESUMING: return "resuming";
 		default: return "terminated";
 		}
 	}

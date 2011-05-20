@@ -3,6 +3,7 @@ package rhogenwizard.debugger;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Vector;
 
 public class DebugProtocol {
 	private DebugServer debugServer;
@@ -12,6 +13,12 @@ public class DebugProtocol {
 	private int linePosition = 0;
 	private String classPosition = "";
 	private String methodPosition = "";
+	private boolean watchProcessing = false;
+	private DebugVariableType waitForEOL;
+	private Thread waitingThread;
+	private Vector<DebugVariable> watchList = null;
+	private DebugVariableType lastWatchEOL;
+	private boolean wasWatchEOL = false;
 	
 	public DebugProtocol (DebugServer server, IDebugCallback callback) {
 		this.debugServer = server;
@@ -77,7 +84,7 @@ public class DebugProtocol {
 			String val = "";
 			int val_idx = var.indexOf(':');
 			if (val_idx>=0) {
-				val = var.substring(val_idx+1); // .replace("\\n", "\n");
+				val = var.substring(val_idx+1);
 				try {
 					var = URLDecoder.decode(var.substring(0,val_idx), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
@@ -91,36 +98,51 @@ public class DebugProtocol {
 			String val = "";
 			int val_idx = var.indexOf(':');
 			if (val_idx>=0) {
-				val = var.substring(val_idx+1); // .replace("\\n", "\n");
+				val = var.substring(val_idx+1);
 				var = var.substring(0,val_idx);
 			}
-			debugCallback.watch(vt, var, val);
+			if (this.watchProcessing)
+				watchPrivate(vt, var, val);
+			else
+				debugCallback.watch(vt, var, val);
 		} else if (cmd.startsWith("VSTART:")) {
-			debugCallback.watchBOL(DebugVariableType.variableTypeById(cmd.charAt(7)));
+			DebugVariableType type = DebugVariableType.variableTypeById(cmd.charAt(7));
+			if (this.watchProcessing)
+				watchBOLPrivate(type);
+			else
+				debugCallback.watchBOL(type);
 		} else if (cmd.startsWith("VEND:")) {
-			debugCallback.watchEOL(DebugVariableType.variableTypeById(cmd.charAt(5)));
+			DebugVariableType type = DebugVariableType.variableTypeById(cmd.charAt(5));
+			if (this.watchProcessing)
+				watchEOLPrivate(type);
+			else
+				debugCallback.watchEOL(type);
 		} else {
 			debugCallback.unknown(cmd);
 		}
 	}
 
-	public void stepOver() {
-		this.state = DebugState.RUNNING;
+	public void stepOver() throws DebugServerException {
+		checkDebugState();
+		this.state = DebugState.RESUMING;
 		debugServer.send("STEPOVER");
 	}
 
-	public void stepInto() {
-		this.state = DebugState.RUNNING;
+	public void stepInto() throws DebugServerException {
+		checkDebugState();
+		this.state = DebugState.RESUMING;
 		debugServer.send("STEPINTO");
 	}
 
-	public void stepReturn() {
-		this.state = DebugState.RUNNING;
+	public void stepReturn() throws DebugServerException {
+		checkDebugState();
+		this.state = DebugState.RESUMING;
 		debugServer.send("STEPRET");
 	}
 	
-	public void resume() {
-		this.state = DebugState.RUNNING;
+	public void resume() throws DebugServerException {
+		checkDebugState();
+		this.state = DebugState.RESUMING;
 		debugServer.send("CONT");
 	}
 	
@@ -140,33 +162,92 @@ public class DebugProtocol {
 		debugServer.send(skip?"DISABLE":"ENABLE");
 	}
 	
-	public void evaluate(String expression) {
+	public void evaluate(String expression) throws DebugServerException {
+		checkDebugState();
 		try {
 			expression = URLEncoder.encode(expression, "UTF-8");
 		} catch (UnsupportedEncodingException e) {}
 		debugServer.send("EVL:"+expression);
 	}
 
-	public void getVariables(DebugVariableType[] types) {
+	public void getVariables(DebugVariableType[] types) throws DebugServerException {
+		checkDebugState();
 		for (DebugVariableType t: types) {
-			switch (t) {
-			case GLOBAL:
-				debugServer.send("GVARS"); break;
-			case CLASS:
-				debugServer.send("CVARS"); break;
-			case INSTANCE:
-				debugServer.send("IVARS"); break;
-			default:
-				debugServer.send("LVARS");
-			}
+			getVariablesPrivate(t);
 		}
 	}
 
-	public void suspend() {
+	private void getVariablesPrivate(DebugVariableType type) {
+		switch (type) {
+		case GLOBAL:
+			debugServer.send("GVARS"); break;
+		case CLASS:
+			debugServer.send("CVARS"); break;
+		case INSTANCE:
+			debugServer.send("IVARS"); break;
+		default:
+			debugServer.send("LVARS");
+		}
+	}
+
+	public Vector<DebugVariable> getWatchList() {
+		if (DebugState.paused(this.state)) {
+			this.waitForEOL = DebugVariableType.LOCAL;
+			this.watchProcessing = true;
+			this.watchList = new Vector<DebugVariable>();
+			this.waitingThread = Thread.currentThread();
+			this.wasWatchEOL = false;
+			// by default get the global and local variables only
+			getVariablesPrivate(DebugVariableType.GLOBAL);
+			getVariablesPrivate(DebugVariableType.LOCAL);
+			// if class is defined, get the class and instance variables as well
+			if (this.classPosition.length() > 0) {
+				this.waitForEOL = DebugVariableType.INSTANCE;
+				getVariablesPrivate(DebugVariableType.CLASS);
+				getVariablesPrivate(DebugVariableType.INSTANCE);
+			}
+			do {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) { }
+			} while (!(this.wasWatchEOL && (this.lastWatchEOL==this.waitForEOL)));
+			this.watchProcessing = false;
+			return this.watchList;
+		}
+		return null;
+	}
+	
+	private void watchBOLPrivate(DebugVariableType type) { 
+		// nothing to do 
+	}
+
+	private void watchEOLPrivate(DebugVariableType type) {
+		this.wasWatchEOL = true;
+		this.lastWatchEOL = type;
+		if (this.waitForEOL==type)
+			this.waitingThread.interrupt();
+	}
+
+	private void watchPrivate(DebugVariableType type, String variable, String value) {
+		this.watchList.add(new DebugVariable(type, variable, value));
+	}
+
+	public void suspend() throws DebugServerException {
+		checkDebugState();
 		debugServer.send("SUSP");
 	}
 
-	public void terminate() {
+	public void terminate() throws DebugServerException {
+		checkDebugState();
 		debugServer.send("KILL");
+	}
+	
+	private void checkDebugState() throws DebugServerException {
+		if (this.watchProcessing)
+			throw new DebugServerException("Can't interrupt the watch list processing");
+	}
+
+	public boolean isProcessing() {
+		return this.watchProcessing;
 	}
 }

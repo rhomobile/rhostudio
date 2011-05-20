@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Vector;
 
 /**
  * Rhodes Debug Server implementation.
@@ -219,24 +220,30 @@ public class DebugServer extends Thread {
 	/**
 	 * Step over the next method call (without entering it) at the currently
 	 * executing line of Ruby code.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugStepOver() {
+	public void debugStepOver() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.stepOver();
 	}
 	
 	/**
 	 * Step into the next method call at the currently executing line of Ruby code.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugStepInto() {
+	public void debugStepInto() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.stepInto();
 	}
 	
 	/**
 	 * Run until return from the current method of Ruby code.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugStepReturn() {
+	public void debugStepReturn() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.stepReturn();
 	}
@@ -245,8 +252,10 @@ public class DebugServer extends Thread {
 	 * Resume a normal execution of the Rhodes application (after the stop at
 	 * breakpoint or after {@link #debugStepInto()}, {@link #debugStepOver()}
 	 * or {@link #debugStepReturn()} method call). 
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugResume() {
+	public void debugResume() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.resume();
 	}
@@ -299,8 +308,10 @@ public class DebugServer extends Thread {
 	 * @param expression - expression to evaluate or Ruby code to execute.
 	 * Result of evaluation/execution is returned by the
 	 * {@link IDebugCallback#evaluation(boolean, String, String)} method call.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugEvaluate(String expression) {
+	public void debugEvaluate(String expression) throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.evaluate(expression);
 	}
@@ -311,8 +322,10 @@ public class DebugServer extends Thread {
 	 * method calls preceded by {@link IDebugCallback#watchBOL(DebugVariableType)}
 	 * and concluded by {@link IDebugCallback#watchEOL(DebugVariableType)} for each
 	 * type of variables.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugGetVariables() {
+	public void debugGetVariables() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.getVariables(new DebugVariableType[] {
 				DebugVariableType.GLOBAL,
@@ -329,18 +342,38 @@ public class DebugServer extends Thread {
 	 * and concluded by {@link IDebugCallback#watchEOL(DebugVariableType)} for each
 	 * type of variables.
 	 * @param types - list of variable types ({@link DebugVariableType}) to watch. 
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugGetVariables(DebugVariableType[] types) {
+	public void debugGetVariables(DebugVariableType[] types) throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.getVariables(types);
 	}
-	
+
+	/**
+	 * Get list and values of all available variables. This method waits for a debugged
+	 * application to respond and returns all variables in a single array.
+	 * This method <em>must</em> be called from the thread <em>other</em>
+	 * than the instance of {@link DebugServer}, i.e. it is <em>forbidden</em>
+	 * to call it directly from {@link IDebugCallback} methods. 
+	 * @return Returns an {@link Vector} of {@link DebugVariable} objects if application is
+	 * currently paused (see {@link DebugState#paused(DebugState)}). Otherwise returns null.
+	 */
+	public Vector<DebugVariable> debugWatchList() {
+		if (this.debugProtocol!=null)
+			return this.debugProtocol.getWatchList();
+		else
+			return null;
+	}
+
 	/**
 	 * Suspend the execution of Ruby code. The
 	 * {@link IDebugCallback#step(String, int, String, String)}
 	 * method is called when the actual stop occurs.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugSuspend() {
+	public void debugSuspend() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.suspend();
 	}
@@ -349,9 +382,20 @@ public class DebugServer extends Thread {
 	 * Terminates execution of the Rhodes application. The
 	 * {@link IDebugCallback#exited()} method is called when the actual
 	 * exit occurs.
+	 * @throws DebugServerException if the debugger is busy and cannot
+	 * respond right now.
 	 */
-	public void debugTerminate() {
+	public void debugTerminate() throws DebugServerException {
 		if (this.debugProtocol!=null)
 			this.debugProtocol.terminate();
+	}
+
+	/**
+	 * Check if the debugger is busy and cannot respond right now.
+	 * @return Returns <code>true</code> if the debugger is processing
+	 * some synchronous command (like {@link DebugServer#debugWatchList()}).
+	 */
+	public boolean debugIsProcessing() {
+		return (this.debugProtocol!=null) && this.debugProtocol.isProcessing();
 	}
 }
