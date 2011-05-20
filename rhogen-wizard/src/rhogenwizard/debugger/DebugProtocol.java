@@ -181,7 +181,8 @@ public class DebugProtocol {
 	public void getVariables(DebugVariableType[] types) throws DebugServerException {
 		checkDebugState();
 		for (DebugVariableType t: types) {
-			getVariablesPrivate(t);
+			if ((t==DebugVariableType.GLOBAL) || (t==DebugVariableType.LOCAL) || (this.classPosition.length() > 0))
+				getVariablesPrivate(t);
 		}
 	}
 
@@ -198,23 +199,17 @@ public class DebugProtocol {
 		}
 	}
 
-	public Vector<DebugVariable> getWatchList() {
+	public Vector<DebugVariable> getWatchList(DebugVariableType[] types) {
 		Vector<DebugVariable> result = null;
 		if (DebugState.paused(this.state)) {
-			this.waitForEOL = DebugVariableType.LOCAL;
+			this.waitForEOL = this.classPosition.length() > 0 ? DebugVariableType.INSTANCE : DebugVariableType.LOCAL;
 			this.watchProcessing = true;
 			this.watchList = new Vector<DebugVariable>();
 			this.waitingThread = Thread.currentThread();
 			this.wasWatchEOL = false;
-			// by default get the global and local variables only
-			getVariablesPrivate(DebugVariableType.GLOBAL);
-			getVariablesPrivate(DebugVariableType.LOCAL);
-			// if class is defined, get the class and instance variables as well
-			if (this.classPosition.length() > 0) {
-				this.waitForEOL = DebugVariableType.INSTANCE;
-				getVariablesPrivate(DebugVariableType.CLASS);
-				getVariablesPrivate(DebugVariableType.INSTANCE);
-			}
+			for (DebugVariableType t: types)
+				if ((t==DebugVariableType.GLOBAL) || (t==DebugVariableType.LOCAL) || (this.classPosition.length() > 0))
+					getVariablesPrivate(t);
 			do {
 				try {
 					Thread.sleep(1000);

@@ -361,7 +361,28 @@ public class DebugServer extends Thread {
 	 */
 	public Vector<DebugVariable> debugWatchList() {
 		if (this.debugProtocol!=null)
-			return this.debugProtocol.getWatchList();
+			return this.debugProtocol.getWatchList(new DebugVariableType[] {
+				DebugVariableType.GLOBAL,
+				DebugVariableType.LOCAL,
+				DebugVariableType.CLASS,
+				DebugVariableType.INSTANCE
+			});
+		else
+			return null;
+	}
+
+	/**
+	 * Get list and values of variables of the specified types. This method waits for
+	 * a debugged application to respond and returns all variables in a single array.
+	 * This method <em>must</em> be called from the thread <em>other</em>
+	 * than the instance of {@link DebugServer}, i.e. it is <em>forbidden</em>
+	 * to call it directly from {@link IDebugCallback} methods. 
+	 * @return Returns an {@link Vector} of {@link DebugVariable} objects if application is
+	 * currently paused (see {@link DebugState#paused(DebugState)}). Otherwise returns null.
+	 */
+	public Vector<DebugVariable> debugWatchList(DebugVariableType[] types) {
+		if (this.debugProtocol!=null)
+			return this.debugProtocol.getWatchList(types);
 		else
 			return null;
 	}
