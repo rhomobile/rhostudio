@@ -115,15 +115,16 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 							return;
 						}
 					}
-
-					ConsoleHelper.showAppConsole();
+					
 					startLogOutput(project, type);
-					setProcessFinished(true);
 				} 
 				catch (Exception e) 
 				{
 					e.printStackTrace();
 				}
+				
+				ConsoleHelper.showAppConsole();
+				setProcessFinished(true);
 			}
 		});
 		cancelingThread.start();

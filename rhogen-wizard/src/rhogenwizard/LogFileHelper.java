@@ -33,20 +33,20 @@ class AppLogAdapter implements ILogDevice
 
 public class LogFileHelper
 {
-	class BbLogFileWaiter implements Runnable
+	class LogFileWaiter implements Runnable
 	{
 		private IProject 	  m_project = null;
 		private LogFileHelper m_helper = null;
 		private String        m_logFilePath = null;
 
-		public BbLogFileWaiter(IProject project, LogFileHelper helper) throws Exception 
+		public LogFileWaiter(IProject project, LogFileHelper helper, String taskName) throws Exception 
 		{
 			m_project = project;
 			m_helper  = helper;
 			
 			if (m_project != null && m_helper != null)
 			{
-				m_logFilePath = m_helper.getLogFilePath(m_project, "run:bb:get_log");
+				m_logFilePath = m_helper.getLogFilePath(m_project, taskName);
 			}
 		}
 
@@ -64,7 +64,7 @@ public class LogFileHelper
 					
 					if (logFile.exists())
 					{			
-						m_helper.bbLog(m_project);
+						m_helper.endWaitLog(m_project);
 						return;
 					}
 				}
@@ -89,6 +89,20 @@ public class LogFileHelper
 	{
 		stopLog();
 		super.finalize();
+	}
+
+	public void endWaitLog(IProject project) throws Exception 
+	{
+		switch(m_platformName)
+		{
+		case eBb:
+			waitBbLog(project);
+			break;
+		case eEmu:
+			rhoSimLog(project);
+			break;
+			
+		}
 	}
 
 	public void configurePlatform(RhodesAdapter.EPlatformType platformName)
@@ -116,10 +130,16 @@ public class LogFileHelper
 			wpLog(project);
 			break;
 		case eEmu:
-			rhoSimLog(project);
+			waitSimLog(project);
 			break;
 			
 		}
+	}
+	
+	private void waitSimLog(IProject project) throws Exception
+	{
+		Thread waitingLog = new Thread(new LogFileWaiter(project, this, "run:rhosimulator:get_log"));
+		waitingLog.start();
 	}
 	
 	private void wpLog(IProject project) throws Exception
@@ -213,7 +233,7 @@ public class LogFileHelper
 	
 	private void waitBbLog(IProject project) throws Exception
 	{
-		Thread waitingLog = new Thread(new BbLogFileWaiter(project, this));
+		Thread waitingLog = new Thread(new LogFileWaiter(project, this, "run:bb:get_log"));
 		waitingLog.start();
 	}
 	

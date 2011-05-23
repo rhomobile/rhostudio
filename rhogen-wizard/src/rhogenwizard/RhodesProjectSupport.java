@@ -72,8 +72,6 @@ public class RhodesProjectSupport
             if (!projectInfo.existCreate)
             	path = path + File.separatorChar + projectInfo.appName;
 
-            //checkProject(newProject, path);
-            
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
 
             if (!projectInfo.isInDefaultWs)
