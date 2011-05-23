@@ -25,12 +25,14 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.ShowMessageJob;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 
@@ -172,7 +174,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 						}
 						else 
 						{
-							if (!m_ymlFile.getAndroidEmuName().equals(""))
+							String emuName = m_ymlFile.getAndroidEmuName();
+							
+							if (emuName == null || !emuName.equals(""))
 							{
 								m_ymlFile.removeAndroidEmuName();
 							}
@@ -641,6 +645,16 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		return null;
 	}
 	
+	private void showWrongDeviceMsgBox(String msg)
+	{
+		MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK);
+		messageBox.setText("Warrning");
+		messageBox.setMessage(msg);
+		messageBox.open();	
+		encodePlatformInformation(platformItems[0]);
+		m_selectPlatformCombo.select(0);	
+	}
+	
 	private void encodePlatformInformation(String selPlatform)
 	{
 		if (selPlatform.equals(platformItems[0]) || selPlatform.equals(platformItems[1]))
@@ -650,6 +664,12 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 		else if (selPlatform.equals(platformItems[2]) || selPlatform.equals(platformItems[3]))
 		{
+			if (selPlatform.contains("phone"))
+			{
+				showWrongDeviceMsgBox("For Apple platform you can't select option run on device.");
+				return;
+			}
+			
 			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
 			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformIPhone);
 		}
@@ -660,6 +680,12 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}	
 		else if (selPlatform.equals(platformItems[6]) || selPlatform.equals(platformItems[7]))
 		{
+			if (selPlatform.contains("phone"))
+			{
+				showWrongDeviceMsgBox("For Blackberry platform you can't select option run on device.");
+				return;
+			}
+			
 			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
 			m_configuration.setAttribute(RhogenLaunchDelegate.platforrmCfgAttribute, RhodesAdapter.platformBlackBerry);
 		}
