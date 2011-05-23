@@ -140,7 +140,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		catch (IOException e)
 		{
 			newProject.delete(true, monitor);
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Rhodes gem not installed. Before create application install rhodes gem (run in system console command \"gem install rhodes\")");
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes. (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 			msgJob.run(monitor);
 		}
 		catch (CheckProjectException e) 
