@@ -296,6 +296,8 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				String androidEmuName = m_ymlFile.getAndroidEmuName();
 				String iphoneVersion  = m_ymlFile.getIphoneVer();
 
+				iphoneVersion = iphoneVersion == null ? iphoneVersions[0] : iphoneVersion;
+				
 				configuration.setAttribute(RhogenLaunchDelegate.androidVersionAttribute, androidVersion);
 				configuration.setAttribute(RhogenLaunchDelegate.blackberryVersionAttribute, bbVersion);
 				configuration.setAttribute(RhogenLaunchDelegate.androidEmuNameAttribute, androidEmuName);
