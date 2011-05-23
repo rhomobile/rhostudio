@@ -112,13 +112,15 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		IProgressMonitor monitor)
 		throws CoreException 
 	{
+		IProject newProject = null;
+		
 		try 
 		{
 			monitor.beginTask("Creating " + infoHolder.appName, 2);
 			monitor.worked(1);
 			monitor.setTaskName("Opening file for editing...");
 
-			IProject newProject = RhodesProjectSupport.createProject(infoHolder);
+			newProject = RhodesProjectSupport.createProject(infoHolder);
 
 			if (!infoHolder.existCreate) 
 			{
@@ -137,7 +139,8 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
+			newProject.delete(true, monitor);
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Rhodes gem not installed. Before create application install rhodes gem (run in system console command \"gem install rhodes\")");
 			msgJob.run(monitor);
 		}
 		catch (CheckProjectException e) 
