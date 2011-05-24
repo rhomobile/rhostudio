@@ -201,23 +201,30 @@ public class DebugProtocol {
 
 	public Vector<DebugVariable> getWatchList(DebugVariableType[] types) {
 		Vector<DebugVariable> result = null;
-		if (DebugState.paused(this.state)) {
-			this.waitForEOL = this.classPosition.length() > 0 ? DebugVariableType.INSTANCE : DebugVariableType.LOCAL;
-			this.watchProcessing = true;
-			this.watchList = new Vector<DebugVariable>();
-			this.waitingThread = Thread.currentThread();
-			this.wasWatchEOL = false;
+		if (DebugState.paused(this.state) && (types.length > 0)) {
+			boolean hasSomethingToWatch = false;
 			for (DebugVariableType t: types)
-				if ((t==DebugVariableType.GLOBAL) || (t==DebugVariableType.LOCAL) || (this.classPosition.length() > 0))
-					getVariablesPrivate(t);
-			do {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) { }
-			} while (!(this.wasWatchEOL && (this.lastWatchEOL==this.waitForEOL)));
-			this.watchProcessing = false;
-			result = this.watchList;
-			this.watchList = null;
+				if ((t==DebugVariableType.GLOBAL) || (t==DebugVariableType.LOCAL) || (this.classPosition.length() > 0)) {
+					hasSomethingToWatch = true;
+					this.waitForEOL = t;
+				}
+			if (hasSomethingToWatch) {
+				this.watchProcessing = true;
+				this.watchList = new Vector<DebugVariable>();
+				this.waitingThread = Thread.currentThread();
+				this.wasWatchEOL = false;
+				for (DebugVariableType t: types)
+					if ((t==DebugVariableType.GLOBAL) || (t==DebugVariableType.LOCAL) || (this.classPosition.length() > 0))
+						getVariablesPrivate(t);
+				do {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) { }
+				} while (!(this.wasWatchEOL && (this.lastWatchEOL==this.waitForEOL)));
+				this.watchProcessing = false;
+				result = this.watchList;
+				this.watchList = null;
+			}
 		}
 		return result;
 	}
