@@ -2,10 +2,10 @@
 <feature
       id="rhostudio_feature"
       label="RhoStudio"
-      version="0.9.0.qualifier">
+      version="1.0.1.qualifier">
 
    <description>
-      Use RhoStudio-beta1 to:
+      Use RhoStudio to:
 - Generate Rhodes applications
 - Generate Rhodes Models and associated Controllers 
 and View templates
@@ -47,59 +47,154 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <url>
       <discovery label="Rhomobile official site" url="http://rhomobile.com"/>
+      <discovery label="DLTK" url="http://download.eclipse.org/technology/dltk/updates/"/>
    </url>
 
    <requires>
-      <import plugin="org.eclipse.dltk"/>
-      <import plugin="org.eclipse.dltk"/>
-      <import plugin="org.eclipse.dltk.console"/>
-      <import plugin="org.eclipse.dltk.console.ui"/>
-      <import plugin="org.eclipse.dltk.core"/>
-      <import plugin="org.eclipse.dltk.core.doc.isv"/>
-      <import plugin="org.eclipse.dltk.core.index"/>
-      <import plugin="org.eclipse.dltk.core.index.source"/>
-      <import plugin="org.eclipse.dltk.core.index.sql"/>
-      <import plugin="org.eclipse.dltk.core.index.sql.h2"/>
-      <import plugin="org.eclipse.dltk.core.source"/>
-      <import plugin="org.eclipse.dltk.debug"/>
-      <import plugin="org.eclipse.dltk.debug.ui"/>
-      <import plugin="org.eclipse.dltk.formatter"/>
-      <import plugin="org.eclipse.dltk.javascript.core"/>
-      <import plugin="org.eclipse.dltk.javascript.core.dom.support"/>
-      <import plugin="org.eclipse.dltk.javascript.debug"/>
-      <import plugin="org.eclipse.dltk.javascript.debug.ui"/>
-      <import plugin="org.eclipse.dltk.javascript.formatter"/>
-      <import plugin="org.eclipse.dltk.javascript.jdt.integration"/>
-      <import plugin="org.eclipse.dltk.javascript.jsjdtdebugger"/>
-      <import plugin="org.eclipse.dltk.javascript.launching"/>
-      <import plugin="org.eclipse.dltk.javascript.parser"/>
-      <import plugin="org.eclipse.dltk.javascript.rhino"/>
-      <import plugin="org.eclipse.dltk.javascript.rhino.dbgp"/>
-      <import plugin="org.eclipse.dltk.javascript.source"/>
-      <import plugin="org.eclipse.dltk.javascript.ui"/>
-      <import plugin="org.eclipse.dltk.launching"/>
-      <import plugin="org.eclipse.dltk.ruby"/>
-      <import plugin="org.eclipse.dltk.ruby.abstractdebugger"/>
-      <import plugin="org.eclipse.dltk.ruby.activestatedebugger"/>
-      <import plugin="org.eclipse.dltk.ruby.basicdebugger"/>
-      <import plugin="org.eclipse.dltk.ruby.core"/>
-      <import plugin="org.eclipse.dltk.ruby.debug"/>
-      <import plugin="org.eclipse.dltk.ruby.debug.ui"/>
-      <import plugin="org.eclipse.dltk.ruby.fastdebugger"/>
-      <import plugin="org.eclipse.dltk.ruby.formatter"/>
-      <import plugin="org.eclipse.dltk.ruby.launching"/>
-      <import plugin="org.eclipse.dltk.ruby.source"/>
-      <import plugin="org.eclipse.dltk.ruby.testing"/>
-      <import plugin="org.eclipse.dltk.ruby.ui"/>
-      <import plugin="org.eclipse.dltk.testing"/>
-      <import plugin="org.eclipse.dltk.ui"/>
-      <import plugin="org.eclipse.dltk.validators.core"/>
-      <import plugin="org.eclipse.dltk.validators.externalchecker"/>
-      <import plugin="org.eclipse.dltk.validators.ui"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.ui.navigator" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.debug" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.console" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.console.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.core" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.core.index" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.core.index.sql" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.core.index.sql.h2" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.debug.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.formatter" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.launching" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.rse.core" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.rse.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.abstractdebugger" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.activestatedebugger" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.basicdebugger" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.core" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.debug" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.debug.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.fastdebugger" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.formatter" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.launching" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ruby.testing" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ssh.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.testing" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.validators.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.validators.externalchecker" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.validators.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="com.ibm.icu"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.core.variables"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.core.resources" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.antlr.runtime"/>
+      <import plugin="org.eclipse.dltk.javascript.parser" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.search"/>
+      <import plugin="org.eclipse.core.expressions"/>
    </requires>
 
    <plugin
          id="com.rhomobile.rhostudio"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.core.dom.support"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.debug"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.debug.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.formatter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.jdt.integration"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.jsjdtdebugger"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.launching"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.parser"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.rhino"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.rhino.dbgp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.javascript.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
