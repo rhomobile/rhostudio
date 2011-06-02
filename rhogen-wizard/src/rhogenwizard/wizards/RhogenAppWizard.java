@@ -2,15 +2,13 @@ package rhogenwizard.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -19,21 +17,21 @@ import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
 import org.eclipse.ui.*;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.URIUtil;
-
 import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.CheckProjectException;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.CommonConstants;
+import rhogenwizard.constants.UiConstants;
 
 public class RhogenAppWizard extends Wizard implements INewWizard 
 {
+	private static final String okRhodesVersionFlag = "1";
+	
 	private RhodesAppWizardPage  m_pageApp = null;
 	private ISelection           selection = null;
 	private RhodesAdapter        m_rhogenAdapter = new RhodesAdapter();
@@ -119,9 +117,17 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			monitor.beginTask("Creating " + infoHolder.appName, 2);
 			monitor.worked(1);
 			monitor.setTaskName("Opening file for editing...");
-
+			
 			newProject = RhodesProjectSupport.createProject(infoHolder);
 
+			if (!checkRhodesVersion(CommonConstants.rhodesVersion))
+			{
+				newProject.delete(true, monitor);
+				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version. Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+				msgJob.run(monitor);
+				return;
+			}
+			
 			if (!infoHolder.existCreate) 
 			{
 				if (m_rhogenAdapter.generateApp(infoHolder) != 0)
@@ -132,7 +138,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
-			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", RhogenConstants.rhodesPerspectiveId);
+			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
 			job.run(monitor);
 			
 			monitor.worked(1);
@@ -157,6 +163,29 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	boolean checkRhodesVersion(String rhodesVer) throws Exception
+	{
+		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info");
+				
+		StringBuilder sb = new StringBuilder();
+		sb.append("--rhodes-ver=");
+		sb.append(rhodesVer);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(sb.toString());
+		
+		String cmdOutput = runHelper.run(cmdLine); 
+		
+		cmdOutput = cmdOutput.replaceAll("\\p{Cntrl}", "");
+		
+		if (cmdOutput.equals(okRhodesVersionFlag))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
