@@ -8,8 +8,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.progress.UIJob;
 
-import rhogenwizard.debugger.RhogenConstants;
-
 public class ShowPerspectiveJob extends UIJob
 {
 	String m_perspectiveId = null;

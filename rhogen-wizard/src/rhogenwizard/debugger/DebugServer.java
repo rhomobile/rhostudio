@@ -362,10 +362,10 @@ public class DebugServer extends Thread {
 	public Vector<DebugVariable> debugWatchList() {
 		if (this.debugProtocol!=null)
 			return this.debugProtocol.getWatchList(new DebugVariableType[] {
-				DebugVariableType.GLOBAL,
+					DebugVariableType.INSTANCE,
+					DebugVariableType.GLOBAL,
 				DebugVariableType.LOCAL,
 				DebugVariableType.CLASS,
-				DebugVariableType.INSTANCE
 			});
 		else
 			return null;
