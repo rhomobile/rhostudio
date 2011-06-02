@@ -2,7 +2,8 @@
 <feature
       id="rhostudio_feature"
       label="RhoStudio"
-      version="1.0.1.qualifier">
+      version="1.0.1.qualifier"
+      provider-name="RhoMobile">
 
    <description>
       Use RhoStudio to:

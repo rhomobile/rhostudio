@@ -529,12 +529,12 @@
       <plugin id="org.eclipse.emf.ecore.xmi" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.app" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.app.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.common" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="false" startLevel="2" />
       <plugin id="org.eclipse.equinox.common.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.concurrent" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.frameworkadmin" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.frameworkadmin.equinox" autoStart="false" startLevel="0" />
@@ -581,7 +581,7 @@
       <plugin id="org.eclipse.equinox.p2.publisher.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.ql" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.ql.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.repository" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.repository.source" autoStart="false" startLevel="0" />
@@ -647,7 +647,7 @@
       <plugin id="org.eclipse.mylyn.team.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.mylyn.wikitext.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.mylyn.wikitext.mediawiki.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.osgi" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.osgi.services" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rap.help" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.rap.ui.intro" autoStart="false" startLevel="0" />
