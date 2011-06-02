@@ -101,7 +101,6 @@ public class LogFileHelper
 		case eEmu:
 			rhoSimLog(project);
 			break;
-			
 		}
 	}
 
