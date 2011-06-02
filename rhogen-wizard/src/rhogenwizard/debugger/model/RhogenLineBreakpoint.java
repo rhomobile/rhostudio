@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LineBreakpoint;
 
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.DebugConstants;
 
 /**
  * PDA line breakpoint
@@ -37,7 +37,7 @@ public class RhogenLineBreakpoint extends LineBreakpoint
 		{
 			public void run(IProgressMonitor monitor) throws CoreException 
 			{
-				IMarker marker = resource.createMarker(RhogenConstants.breakpointMarkerId);
+				IMarker marker = resource.createMarker(DebugConstants.breakpointMarkerId);
 				
 				setMarker(marker);
 				
@@ -57,7 +57,7 @@ public class RhogenLineBreakpoint extends LineBreakpoint
 	 */
 	public String getModelIdentifier()
 	{
-		return RhogenConstants.debugModelId;
+		return DebugConstants.debugModelId;
 	}
 	
 	public String getResourcePath()

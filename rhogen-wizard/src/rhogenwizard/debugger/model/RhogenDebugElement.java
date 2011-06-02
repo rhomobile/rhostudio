@@ -23,7 +23,7 @@ import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 
 import rhogenwizard.RhodesAdapter;
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.DebugConstants;
 
 /**
  * Common function of PDA debug model elements
@@ -49,7 +49,7 @@ public abstract class RhogenDebugElement extends PlatformObject implements IDebu
 	 */
 	public String getModelIdentifier() 
 	{
-		return RhogenConstants.debugModelId;
+		return DebugConstants.debugModelId;
 	}
 	
 	/* (non-Javadoc)

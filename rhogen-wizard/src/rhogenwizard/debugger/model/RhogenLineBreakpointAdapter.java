@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.editors.RubyEditor;
 
 /**
@@ -42,7 +42,7 @@ public class RhogenLineBreakpointAdapter implements IToggleBreakpointsTarget
 			IResource resource = (IResource) textEditor.getEditorInput().getAdapter(IResource.class);
 			ITextSelection textSelection = (ITextSelection) selection;
 			int lineNumber = textSelection.getStartLine();
-			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(RhogenConstants.debugModelId);
+			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
 		
 			for (int i = 0; i < breakpoints.length; i++) 
 			{

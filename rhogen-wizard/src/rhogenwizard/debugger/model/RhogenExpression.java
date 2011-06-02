@@ -5,7 +5,7 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.IValue;
 
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.DebugConstants;
 
 public class RhogenExpression implements IExpression
 {
@@ -25,7 +25,7 @@ public class RhogenExpression implements IExpression
 	@Override
 	public String getModelIdentifier() 
 	{
-		return RhogenConstants.debugModelId;
+		return DebugConstants.debugModelId;
 	}
 
 	@Override

@@ -42,14 +42,14 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.swt.graphics.Resource;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.DebugServer;
 import rhogenwizard.debugger.DebugState;
 import rhogenwizard.debugger.DebugVariable;
 import rhogenwizard.debugger.DebugVariableType;
 import rhogenwizard.debugger.IDebugCallback;
-import rhogenwizard.debugger.RhogenConstants;
 import rhogenwizard.debugger.RhogenWatchExpressionResult;
-import rhogenwizard.launcher.RhogenLaunchDelegate;
 
 /**
  * PDA Debug Target
@@ -134,7 +134,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			try 
 			{
-				m_programName = getLaunch().getLaunchConfiguration().getAttribute(RhogenLaunchDelegate.projectNameCfgAttribute, "");
+				m_programName = getLaunch().getLaunchConfiguration().getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 			} 
 			catch (CoreException e) 
 			{
@@ -150,7 +150,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) 
 	{
-		if (breakpoint.getModelIdentifier().equals(RhogenConstants.debugModelId)) 
+		if (breakpoint.getModelIdentifier().equals(DebugConstants.debugModelId)) 
 		{
 			return true;
 		}
@@ -196,7 +196,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	public void terminate() throws DebugException 
 	{
 		m_debugServer.debugTerminate();	
-		exited();
 	}
 	
 	/* (non-Javadoc)
@@ -318,8 +317,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			try 
 			{
-				boolean b = breakpoint.isRegistered();
-				boolean c = breakpoint.isPersisted();
 				if (breakpoint.isEnabled()) 
 				{
 					breakpointAdded(breakpoint);
@@ -352,15 +349,15 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	public void stepOver()
 	{
-//		cleanState();
-//		fThread.setStepping(true);
+		m_threadHandle.setStepping(true);
+		resumed(DebugEvent.STEP_OVER);
 		m_debugServer.debugStepOver();
 	}
 	
 	public void stepInto()
 	{
-//		cleanState();
-//		fThread.setStepping(true);
+		m_threadHandle.setStepping(true);
+		resumed(DebugEvent.STEP_INTO);
 		m_debugServer.debugStepInto();
 	}
 	
@@ -405,7 +402,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	private void installDeferredBreakpoints()
 	{
-		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(RhogenConstants.debugModelId);
+		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
 		
 		for (int i = 0; i < breakpoints.length; i++)
 		{
@@ -415,7 +412,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	private void installDeferredWatchs()
 	{
-		IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions(RhogenConstants.debugModelId);
+		IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions(DebugConstants.debugModelId);
 		
 		for (int i = 0; i < watchs.length; i++)
 		{
@@ -466,7 +463,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		
 		if (state == DebugState.BREAKPOINT)
 		{
-			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(RhogenConstants.debugModelId);
+			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
 		
 			for (int i = 0; i < breakpoints.length; i++) 
 			{
@@ -493,10 +490,10 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 			
 			suspended(DebugEvent.BREAKPOINT);
 		}
-		else if (state == DebugState.STOPPED_OVER)
+		else if (DebugState.paused(state))
 		{
 			m_threadHandle.setStepping(true);
-			suspended(DebugEvent.STEP_OVER);
+			suspended(DebugEvent.STEP_END);
 		}		
 	}
 
@@ -537,7 +534,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
 		
-		IExpression[] modelExps = expManager.getExpressions(RhogenConstants.debugModelId);
+		IExpression[] modelExps = expManager.getExpressions(DebugConstants.debugModelId);
 		
 		for (IExpression currExp : modelExps)
 		{
@@ -596,8 +593,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 
 	@Override
-	public void watch(DebugVariableType type, String variable, String value) {
+	public void watch(DebugVariableType type, String variable, String value) 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 }

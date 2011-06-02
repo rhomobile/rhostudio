@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.DebugConstants;
 
 /**
  * Renders PDA debug elements
@@ -96,7 +96,7 @@ public class RhogenModelPresentation extends LabelProvider implements IDebugMode
 	{
 		if (element instanceof IFile || element instanceof ILineBreakpoint) 
 		{
-			return RhogenConstants.rhogenRubyEditorId; 
+			return DebugConstants.rhogenRubyEditorId; 
 		}
 		
 		return null;
