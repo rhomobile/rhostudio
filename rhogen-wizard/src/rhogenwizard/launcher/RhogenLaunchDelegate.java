@@ -1,31 +1,21 @@
 package rhogenwizard.launcher;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugEvent;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.progress.UIJob;
+import org.eclipse.dltk.debug.ui.DebugConsoleManager;
+import org.eclipse.dltk.debug.ui.ScriptDebugConsole;
 
-import rhogenwizard.AsyncStreamReader;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
@@ -33,22 +23,12 @@ import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesAdapter.EPlatformType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
-import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.debugger.RhogenConstants;
+import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
-	public static final String projectNameCfgAttribute = "project_name";
-	public static final String platforrmCfgAttribute = "platform";
-	public static final String platforrmDeviceCfgAttribute = "device";
-	public static final String androidVersionAttribute = "aversion";
-	public static final String androidEmuNameAttribute = "aemuname";
-	public static final String blackberryVersionAttribute = "bversion";
-	public static final String iphoneVersionAttribute = "ipversion";
-	public static final String isCleanAttribute = "clean";
-	public static final String prjectLogFileName = "log_filename";
-	
 	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
@@ -132,11 +112,11 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
-		m_projectName   = configuration.getAttribute(projectNameCfgAttribute, "");
-		m_platformName  = configuration.getAttribute(platforrmCfgAttribute, "");
-		m_appLogName    = configuration.getAttribute(prjectLogFileName, "");
-		m_isClean       = configuration.getAttribute(isCleanAttribute, false);
-		m_onDevice      = configuration.getAttribute(platforrmDeviceCfgAttribute, false);		
+		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
+		m_platformName  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+		m_appLogName    = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
+		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
+		m_onDevice      = configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);		
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception
@@ -148,6 +128,8 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			rhodesAdapter.cleanPlatform(project.getLocation().toOSString(), type);
 		}
 	}
+	
+	ScriptDebugConsole m_debugConsole = null;
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
@@ -178,7 +160,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		
 		if (mode.equals(ILaunchManager.DEBUG_MODE))
 		{
-			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", RhogenConstants.debugPerspectiveId);
+			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 			job.run(monitor);
 			
 			try {
@@ -196,7 +178,10 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			cleanSelectedPlatform(project, m_isClean);
 		
 			startBuildThread(project, mode, launch);
-						
+					
+			ILaunch[] launches = { launch };
+			DebugConsoleManager.getInstance().launchesAdded(launches);
+			
 			while(true)
 			{
 				try 
