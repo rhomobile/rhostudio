@@ -16,13 +16,31 @@
             name="Rhodes application"
             project="true"> 
       </wizard>
-      
+
+      <wizard
+            category="RhogenAppWizard"
+            class="rhogenwizard.wizards.RhogenSyncAppWizard"
+            icon="icons/sample16.png"
+            id="rhogenwizard.wizards.RhogenSyncAppWizard"
+            name="Rhosync application"
+            project="true"> 
+      </wizard>
+            
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.RhogenModelWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenModelWizard"
             name="Rhodes model"> 
+      </wizard>
+      
+      <wizard
+            category="RhogenAppWizard"
+            class="rhogenwizard.wizards.RhogenSourceAdapterWizard"
+            finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
+            icon="icons/sample16.png"
+            id="rhogenwizard.wizards.RhogenSourceAdapterWizard"
+            name="Rhosync Source Adapter"> 
       </wizard>
    </extension>
    
@@ -164,6 +182,12 @@
              menuGroupId="asd"
              type="new"
              wizardId="rhogenwizard.wizards.RhogenModelWizard">
+          <enablement></enablement>
+       </commonWizard>
+       <commonWizard
+             menuGroupId="asd"
+             type="new"
+             wizardId="rhogenwizard.wizards.RhogenSourceAdapterWizard">
           <enablement></enablement>
        </commonWizard>
     </extension>
