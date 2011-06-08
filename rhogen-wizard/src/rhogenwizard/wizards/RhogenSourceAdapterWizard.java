@@ -26,23 +26,33 @@ import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 
-public class RhogenAppWizard extends Wizard implements INewWizard 
+public class RhogenSourceAdapterWizard extends Wizard implements INewWizard 
 {
 	private static final String okRhodesVersionFlag = "1";
 	
-	private RhodesAppWizardPage  m_pageApp = null;
-	private ISelection           selection = null;
-	private RhodesAdapter        m_rhogenAdapter = new RhodesAdapter();
+	private RhodesSourceAdapterWizardPage m_pageApp = null;
+	private ISelection                    selection = null;
+	private RhodesAdapter                 m_rhogenAdapter = new RhodesAdapter();
+	private IProject                      m_currentProject = null;
+	private String                        m_projectLocation = null;
 	
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenAppWizard() 
+	public RhogenSourceAdapterWizard()
 	{
 		super();
 		setNeedsProgressMonitor(true);
+		
+		m_currentProject = RhodesProjectSupport.getSelectedProject();
+		
+		if (m_currentProject != null)
+		{
+			m_projectLocation = m_currentProject.getLocation().toOSString();
+		}
 	}
 	
 	/**
@@ -50,7 +60,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageApp = new RhodesAppWizardPage(selection);
+		m_pageApp = new RhodesSourceAdapterWizardPage(selection);
 		addPage(m_pageApp);
 	}
 
@@ -61,7 +71,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
-		final BuildInfoHolder holder = m_pageApp.getBuildInformation();
+		final String srcAdapterName = m_pageApp.getAdapterName();
 		
 		IRunnableWithProgress op = new IRunnableWithProgress() 
 		{
@@ -69,7 +79,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			{
 				try
 				{
-					doFinish(holder, monitor);
+					doFinish(srcAdapterName, monitor);
 				}
 				catch (CoreException e) 
 				{
@@ -106,7 +116,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 */
 	private void doFinish(
-		BuildInfoHolder infoHolder,
+		String adapterName,
 		IProgressMonitor monitor)
 		throws CoreException 
 	{
@@ -114,80 +124,36 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		
 		try 
 		{
-			monitor.beginTask("Creating " + infoHolder.appName, 2);
-			monitor.worked(1);
-			monitor.setTaskName("Opening file for editing...");
-			
-			newProject = RhodesProjectSupport.createProject(infoHolder);
-
-			if (!checkRhodesVersion(CommonConstants.rhodesVersion))
+			if (m_currentProject.isOpen())
 			{
-				newProject.delete(true, monitor);
-				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version. Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-				msgJob.run(monitor);
-				return;
-			}
-			
-			if (!infoHolder.existCreate) 
-			{
-				if (m_rhogenAdapter.generateApp(infoHolder) != 0)
+				monitor.beginTask("Creating " + m_currentProject.getName(), 2);
+				monitor.worked(1);
+				monitor.setTaskName("Opening file for editing...");
+				
+				if (m_rhogenAdapter.generateSyncAdapterApp(adapterName, m_projectLocation) != 0)
 				{
-					throw new IOException("The Rhodes SDK do not installed");
+					throw new IOException(MsgConstants.errInstallRhosync);
 				}
+	
+				m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+	
+				ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
+				job.run(monitor);
 			}
-
-			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-
-			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
-			job.run(monitor);
 			
 			monitor.worked(1);
 		} 
 		catch (IOException e)
 		{
-			newProject.delete(false, monitor);
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes. (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
 			msgJob.run(monitor);
-		}
-		catch (CheckProjectException e) 
-		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
-			msgJob.run(monitor);		
-		}
-		catch (AlredyCreatedException e)
-		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
-			msgJob.run(monitor);		
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
-	boolean checkRhodesVersion(String rhodesVer) throws Exception
-	{
-		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info");
-				
-		StringBuilder sb = new StringBuilder();
-		sb.append("--rhodes-ver=");
-		sb.append(rhodesVer);
-		
-		List<String> cmdLine = new ArrayList<String>();
-		cmdLine.add(sb.toString());
-		
-		String cmdOutput = runHelper.run(cmdLine); 
-		
-		cmdOutput = cmdOutput.replaceAll("\\p{Cntrl}", "");
-		
-		if (cmdOutput.equals(okRhodesVersionFlag))
-		{
-			return true;
-		}
-		
-		return false;
-	}
-	
+
 	/**
 	 * We will accept the selection in the workbench to see if
 	 * we can initialize from it.

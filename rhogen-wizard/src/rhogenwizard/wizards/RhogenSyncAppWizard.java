@@ -26,20 +26,21 @@ import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 
-public class RhogenAppWizard extends Wizard implements INewWizard 
+public class RhogenSyncAppWizard extends Wizard implements INewWizard 
 {
 	private static final String okRhodesVersionFlag = "1";
 	
-	private RhodesAppWizardPage  m_pageApp = null;
-	private ISelection           selection = null;
-	private RhodesAdapter        m_rhogenAdapter = new RhodesAdapter();
+	private RhodesSyncAppWizardPage m_pageApp = null;
+	private ISelection              selection = null;
+	private RhodesAdapter           m_rhogenAdapter = new RhodesAdapter();
 	
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenAppWizard() 
+	public RhogenSyncAppWizard() 
 	{
 		super();
 		setNeedsProgressMonitor(true);
@@ -50,7 +51,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageApp = new RhodesAppWizardPage(selection);
+		m_pageApp = new RhodesSyncAppWizardPage(selection);
 		addPage(m_pageApp);
 	}
 
@@ -119,20 +120,12 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			monitor.setTaskName("Opening file for editing...");
 			
 			newProject = RhodesProjectSupport.createProject(infoHolder);
-
-			if (!checkRhodesVersion(CommonConstants.rhodesVersion))
-			{
-				newProject.delete(true, monitor);
-				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version. Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-				msgJob.run(monitor);
-				return;
-			}
-			
+	
 			if (!infoHolder.existCreate) 
 			{
-				if (m_rhogenAdapter.generateApp(infoHolder) != 0)
+				if (m_rhogenAdapter.generateSyncApp(infoHolder) != 0)
 				{
-					throw new IOException("The Rhodes SDK do not installed");
+					throw new IOException(MsgConstants.errInstallRhosync);
 				}
 			}
 
@@ -146,7 +139,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		catch (IOException e)
 		{
 			newProject.delete(false, monitor);
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes. (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
 			msgJob.run(monitor);
 		}
 		catch (CheckProjectException e) 
