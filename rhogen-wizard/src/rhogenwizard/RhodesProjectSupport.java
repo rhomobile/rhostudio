@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 
 import org.eclipse.core.filesystem.URIUtil;
@@ -14,26 +13,16 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceDescription;
-import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
-
 import rhogenwizard.builder.RhogenNature;
 import rhogenwizard.buildfile.AppYmlFile;
 
@@ -41,6 +30,14 @@ public class RhodesProjectSupport
 {
     public static IProject createProject(BuildInfoHolder projectInfo) throws AlredyCreatedException, CheckProjectException 
     {
+    	IPath projectPath = (IPath) projectInfo.getProjectLocationPath();
+    	String projectFolderName = projectPath.segment(projectPath.segmentCount() - 1);
+    	
+		if (projectInfo.existCreate) 
+		{
+			projectInfo.appName = projectFolderName; 
+		}
+		
         Assert.isNotNull(projectInfo.appName);
         Assert.isTrue(projectInfo.appName.trim().length() != 0);
 
@@ -69,8 +66,9 @@ public class RhodesProjectSupport
             URI projectLocation = projectInfo.getProjectLocation();
             String path = URIUtil.toPath(projectLocation).toOSString();
             
-            if (!projectInfo.existCreate)
+            if (!projectInfo.existCreate) {
             	path = path + File.separatorChar + projectInfo.appName;
+            }
 
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
 
