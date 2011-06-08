@@ -44,11 +44,6 @@ public class RhodesAdapter
 		eEmu,
 		eUnknown
 	};
-	
-	private static final String winRhogenFileName = "rhodes.bat";
-	private static final String unixRhogenFileName = "rhodes";
-	private static final String winRakeFileName = "rake.bat";
-	private static final String unixRakeFileName = "rake";
 		
 	public static final String platformWinMobile = "wm";
 	public static final String platformAdroid = "android";
@@ -57,8 +52,9 @@ public class RhodesAdapter
 	public static final String platformWp7 = "wp";
 	public static final String platformEmu = "win32:rhosimulator";
 	
-	private String m_rhogenExe = null; 
-	private String m_rakeExe = null;
+	private String m_rhogenExe = "rhodes";
+	private String m_rhosyncExe = "rhosync"; 
+	private String m_rakeExe = "rake";	
 	private SysCommandExecutor m_executor = new SysCommandExecutor();
 	
 	public RhodesAdapter()
@@ -68,14 +64,10 @@ public class RhodesAdapter
 		
 		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
 		{
-			 m_rakeExe   = winRakeFileName;   
-			 m_rhogenExe = winRhogenFileName;
+			 m_rakeExe    = m_rakeExe + ".bat";   
+			 m_rhogenExe  = m_rhogenExe + ".bat";
+			 m_rhosyncExe = m_rhosyncExe + ".bat"; 
 		} 
-		else
-		{
-			m_rakeExe   = unixRakeFileName;
-			m_rhogenExe = unixRhogenFileName;
-		}
 	}
 	
 	public int generateApp(BuildInfoHolder holder) throws Exception
@@ -84,6 +76,30 @@ public class RhodesAdapter
 		
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rhogenExe);
+		cmdLine.add("app");
+		cmdLine.add(holder.appName);
+		
+		return m_executor.runCommand(cmdLine);
+	}
+
+	public int generateSyncAdapterApp(String workDir, String adapterName) throws Exception 
+	{
+		m_executor.setWorkingDirectory(workDir);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rhosyncExe);
+		cmdLine.add("source");
+		cmdLine.add(adapterName);
+		
+		return m_executor.runCommand(cmdLine);
+	}
+	
+	public int generateSyncApp(BuildInfoHolder holder) throws Exception
+	{
+		m_executor.setWorkingDirectory(holder.getProjectLocationPath().toOSString());
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rhosyncExe);
 		cmdLine.add("app");
 		cmdLine.add(holder.appName);
 		
