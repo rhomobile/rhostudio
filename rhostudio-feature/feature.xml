@@ -81,12 +81,6 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          optional="true"
          search-location="both"/>
 
-   <includes
-         id="org.eclipse.dltk.rse"
-         version="0.0.0"
-         optional="true"
-         search-location="both"/>
-
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
@@ -118,7 +112,6 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <import plugin="org.eclipse.emf.ecore.xmi" version="2.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.edit" version="2.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.edit.ui" version="2.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.rse.core" version="3.1.102" match="greaterOrEqual"/>
       <import plugin="org.eclipse.dltk.ui" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.dltk.debug" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.dltk.debug.ui" version="2.0.0" match="greaterOrEqual"/>
