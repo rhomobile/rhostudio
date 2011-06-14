@@ -1,5 +1,8 @@
 package rhogenwizard.launcher;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -12,7 +15,15 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.dltk.console.IScriptConsoleIO;
+import org.eclipse.dltk.console.IScriptExecResult;
+import org.eclipse.dltk.console.IScriptInterpreter;
+import org.eclipse.dltk.console.ScriptExecResult;
+import org.eclipse.dltk.console.ScriptInterpreterManager;
+import org.eclipse.dltk.console.ui.IScriptConsole;
+import org.eclipse.dltk.console.ui.ScriptConsoleManager;
 import org.eclipse.dltk.debug.ui.DebugConsoleManager;
 import org.eclipse.dltk.debug.ui.ScriptDebugConsole;
 
@@ -26,6 +37,12 @@ import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
+
+import org.eclipse.dltk.debug.ui.display.*;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.ui.console.IConsoleView;
+import org.eclipse.ui.part.IPageBookViewPage;
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -116,7 +133,8 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		m_platformName  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 		m_appLogName    = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
-		m_onDevice      = configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);		
+		m_onDevice      = false; //configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
+		//TODO -
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception
@@ -129,14 +147,14 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		}
 	}
 	
-	ScriptDebugConsole m_debugConsole = null;
-	
+	DebugConsole m_debugConsole = null;
+		
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
-	{
+	{		
 		RhogenDebugTarget target = null;
 		setProcessFinished(false); 
 		
@@ -178,10 +196,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			cleanSelectedPlatform(project, m_isClean);
 		
 			startBuildThread(project, mode, launch);
-					
-			ILaunch[] launches = { launch };
-			DebugConsoleManager.getInstance().launchesAdded(launches);
-			
+
 			while(true)
 			{
 				try 

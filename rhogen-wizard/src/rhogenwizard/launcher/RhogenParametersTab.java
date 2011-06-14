@@ -37,20 +37,15 @@ import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 
-public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigurationTab
+public class RhogenParametersTab extends  JavaLaunchTab 
 {
 	private static int    minTabSize      = 650;
-	private static String platformItems[] = {  "Android simulator", 
-									           "Android phone", 
-									           "iPhone simulator", 
-									           "iPhone phone",
-									           "Windows Mobile simulator",
-									           "Windows Mobile phone",
-									           "Blackberry simulator",
-									           "Blackberry phone",
-									           "Windows phone simulator",
-									           "Windows phone device",
-									           "Rho simulator"};
+		
+	private static String platformItems[] = {  "Android", 
+									           "iPhone", 
+									           "Windows Mobile",
+									           "Blackberry",
+									           "Windows phone" };
 	
 	private static String androidVersions[] = { "1.6",
 											    "2.1",
@@ -61,7 +56,13 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 
 	private static String iphoneVersions[] = { "iphone",
 											   "ipad" };
-																		
+															
+
+	private static String simulatorTypes[] = { ConfigurationConstants.platformRhoSim,
+		                                       ConfigurationConstants.platformSim,
+		                                       ConfigurationConstants.platformDevice };
+
+	
 	private static String bbVersions[] = {};
 	
 	Composite 	m_comp = null;
@@ -72,6 +73,8 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	Text        m_adroidEmuNameText = null;
 	Button 		m_cleanButton = null;
 	Label       m_androidEmuNameLabel = null;
+	Label       m_platformTypeLabel = null;
+	Combo       m_platformTypeCombo = null;
 	
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
@@ -130,11 +133,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				}
 			}
 		});
-		
-		if (!OSHelper.isWindows())
-		{
-			m_selectPlatformCombo.remove(m_selectPlatformCombo.getItemCount() - 1);
-		}
+		m_selectPlatformCombo.select(0);		
 			
         GridData comboAligment = new GridData();
         comboAligment.horizontalAlignment = GridData.FILL;
@@ -153,9 +152,30 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				}
 			}
 		});
-		m_selectPlatformVersionCombo.select(2);
+		m_selectPlatformVersionCombo.select(0);
 		
 		// 3 row
+		m_platformTypeLabel = SWTFactory.createLabel(namecomp, "Simulator type:", 1);
+		
+		m_platformTypeCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, simulatorTypes);
+		m_platformTypeCombo.addSelectionListener(new SelectionAdapter()
+		{	
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				if (m_configuration != null)
+				{
+					encodePlatformTypeCombo(m_platformTypeCombo.getText());
+					encodePlatformInformation(m_selectPlatformCombo.getText());
+					showApplyButton();
+				}
+			}
+		});
+		m_selectPlatformVersionCombo.select(0);
+		
+		SWTFactory.createLabel(namecomp, "", 1);
+		
+		// 4 row
 		m_androidEmuNameLabel = SWTFactory.createLabel(namecomp, "AVD name", 1);
 		
 		m_adroidEmuNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE, 1);
@@ -215,6 +235,11 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		});
 	}
 	
+	protected void encodePlatformTypeCombo(String text)
+	{
+		m_configuration.setAttribute(ConfigurationConstants.simulatorType, text);
+	}
+
 	private void showAndroidEmuName(boolean isVisible)
 	{
 		m_androidEmuNameLabel.setVisible(isVisible);
@@ -249,9 +274,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			
 			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 			String emuName            = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
-			boolean onDevice          = configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
+			String platformType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
-			if (!onDevice && selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+			if (!platformType.equals(ConfigurationConstants.platformDevice) && selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
 				showAndroidEmuName(true);
 				
@@ -310,14 +335,10 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				e.printStackTrace();
 			}
 		}
-		
-		if (!OSHelper.isWindows())
-			configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);
-		else
-			configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, (String) RhodesAdapter.platformEmu);
-		
-		configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
+				
+		configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);		
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
+		configuration.setAttribute(ConfigurationConstants.simulatorType, ConfigurationConstants.platformRhoSim);
 	}
 
 	@Override
@@ -336,7 +357,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			String selProjectName = null, selProjectPlatform = null, selAndroidEmuName = null;
 			selProjectName        = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 			selProjectPlatform    = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
-			boolean onDevice      = configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
 			boolean isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 			selAndroidEmuName     = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 			
@@ -351,8 +371,9 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 				}
 			}
 			
-			setPlatformCombo(selProjectPlatform, onDevice);
+			setPlatformCombo(selProjectPlatform);
 			setPlatformVersionCombo(configuration.getWorkingCopy());
+			setPlatfromTypeCombo(configuration.getWorkingCopy());
 			
 			m_cleanButton.setSelection(isClean);
 		}
@@ -366,6 +387,24 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		} 
 	}
 	
+	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
+	{
+		String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+		
+		if (platformType.equals(ConfigurationConstants.platformRhoSim))
+		{
+			m_platformTypeCombo.select(0);
+		}
+		else if (platformType.equals(ConfigurationConstants.platformSim))
+		{
+			m_platformTypeCombo.select(1);
+		}
+		else if (platformType.equals(ConfigurationConstants.platformDevice))
+		{
+			m_platformTypeCombo.select(2);
+		}
+	}
+	
 	private void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 
 	{
 		try
@@ -377,16 +416,14 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 			String selBlackBarryVer   = configuration.getAttribute(ConfigurationConstants.blackberryVersionAttribute, "");
 			String selAndroidEmuName  = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 			String selIphoneVer       = configuration.getAttribute(ConfigurationConstants.iphoneVersionAttribute, "");
-			boolean onDevice          = configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
-			
+			String selPlatformType    = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+
+			showVersionCombo(false);
+			showAndroidEmuName(false);
+
 			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
-				if (onDevice)
-				{
-					showVersionCombo(false);
-					showAndroidEmuName(false);
-				}
-				else
+				if (!selPlatformType.equals(ConfigurationConstants.platformDevice))
 				{
 					showAndroidVersions();
 					showVersionCombo(true);
@@ -437,11 +474,6 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 					}
 				}				
 			}
-			else
-			{
-				showVersionCombo(false);
-				showAndroidEmuName(false);
-			}
 		}
 		catch (CoreException e) 
 		{
@@ -449,7 +481,7 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 	}
 
-	private void setPlatformCombo(String selProjectPlatform, boolean onDevice)
+	private void setPlatformCombo(String selProjectPlatform)
 	{
 		int platformIdx = -1;
 		
@@ -459,28 +491,19 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 		}
 		else if (selProjectPlatform.equals(RhodesAdapter.platformIPhone))
 		{
-			platformIdx = 2;
+			platformIdx = 1;
 		}
 		else if (selProjectPlatform.equals(RhodesAdapter.platformWinMobile))
 		{
-			platformIdx = 4;
+			platformIdx = 2;
 		}
 		else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
 		{
-			platformIdx = 6;
+			platformIdx = 3;
 		}
 		else if (selProjectPlatform.equals(RhodesAdapter.platformWp7))
 		{
-			platformIdx = 8;
-		}
-		else if (selProjectPlatform.equals(RhodesAdapter.platformEmu))
-		{
-			platformIdx = 10;
-		}
-		
-		if (onDevice)
-		{
-			platformIdx += 1;
+			platformIdx = 4;
 		}
 
 		m_selectPlatformCombo.select(platformIdx);
@@ -660,51 +683,28 @@ public class RhogenParametersTab extends  JavaLaunchTab  //AbstractLaunchConfigu
 	
 	private void encodePlatformInformation(String selPlatform)
 	{
-		if (selPlatform.equals(platformItems[0]) || selPlatform.equals(platformItems[1]))
+		if (selPlatform.equals(platformItems[0]))
 		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformAdroid);
 		}
-		else if (selPlatform.equals(platformItems[2]) || selPlatform.equals(platformItems[3]))
-		{
-			if (selPlatform.contains("phone"))
-			{
-				showWrongDeviceMsgBox("For Apple platform you can't select option run on device.");
-				return;
-			}
-			
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
+		else if (selPlatform.equals(platformItems[1]))
+		{		
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformIPhone);
 		}
-		else if (selPlatform.equals(platformItems[4]) || selPlatform.equals(platformItems[5]))
+		else if (selPlatform.equals(platformItems[2]))
 		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformWinMobile);
 		}	
-		else if (selPlatform.equals(platformItems[6]) || selPlatform.equals(platformItems[7]))
-		{
-			if (selPlatform.contains("phone"))
-			{
-				showWrongDeviceMsgBox("For Blackberry platform you can't select option run on device.");
-				return;
-			}
-			
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, selPlatform.contains("phone"));
+		else if (selPlatform.equals(platformItems[3]))
+		{			
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformBlackBerry);
 		}
-		else if (selPlatform.equals(platformItems[8]))
+		else if (selPlatform.equals(platformItems[4]))
 		{
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformWp7);
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
 		}
-		else if (selPlatform.equals(platformItems[9]))
+		else if (selPlatform.equals(platformItems[5]))
 		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, true);
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformWp7);
-		}
-		else if (selPlatform.equals(platformItems[10]))
-		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, RhodesAdapter.platformEmu);			
 		}
 		
