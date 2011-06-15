@@ -39,15 +39,11 @@ public class LogFileHelper
 		private LogFileHelper m_helper = null;
 		private String        m_logFilePath = null;
 
-		public LogFileWaiter(IProject project, LogFileHelper helper, String taskName) throws Exception 
+		public LogFileWaiter(IProject project, LogFileHelper helper, String logFilePath) throws Exception 
 		{
 			m_project = project;
 			m_helper  = helper;
-			
-			if (m_project != null && m_helper != null)
-			{
-				m_logFilePath = m_helper.getLogFilePath(m_project, taskName);
-			}
+			m_logFilePath = logFilePath;
 		}
 
 		@Override
@@ -103,14 +99,11 @@ public class LogFileHelper
 			break;
 		}
 	}
-
-	public void configurePlatform(RhodesAdapter.EPlatformType platformName)
+	
+	public void startLog(RhodesAdapter.EPlatformType platformName, IProject project) throws Exception
 	{
 		m_platformName = platformName;
-	}
-	
-	public void startLog(IProject project) throws Exception
-	{
+		
 		switch(m_platformName)
 		{
 		case eWm:
@@ -137,7 +130,15 @@ public class LogFileHelper
 	
 	private void waitSimLog(IProject project) throws Exception
 	{
-		Thread waitingLog = new Thread(new LogFileWaiter(project, this, "run:rhosimulator:get_log"));
+        String logFilePath = getLogFilePath(project, "run:rhosimulator:get_log");
+		Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
+		waitingLog.start();
+	}
+	
+	private void waitBbLog(IProject project) throws Exception
+	{
+		String logFilePath = getLogFilePath(project, "run:bb:get_log");
+		Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
 		waitingLog.start();
 	}
 	
@@ -155,6 +156,36 @@ public class LogFileHelper
 	{
 		String logPath = getLogFilePath(project, "run:rhosimulator:get_log");
 		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
+	}
+	
+	private void wmLog(IProject project) throws Exception
+	{
+		String logPath = getLogFilePath(project, "run:wm:get_log");
+		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
+	}
+	
+	private void iphoneLog(IProject project) throws Exception
+	{
+		String logPath = getLogFilePath(project, "run:iphone:get_log");
+		
+		if (logPath != null)
+		{
+			asyncFileRead(logPath);
+		}
+	}
+	
+	private void bbLog(IProject project) throws Exception
+	{
+		String logPath = getLogFilePath(project,"run:bb:get_log");
+	
 		if (logPath != null)
 		{
 			asyncFileRead(logPath);
@@ -190,16 +221,6 @@ public class LogFileHelper
 		asyncFileRead(logFilePath);
 	}
 	
-	private void bbLog(IProject project) throws Exception
-	{
-		String logPath = getLogFilePath(project,"run:bb:get_log");
-	
-		if (logPath != null)
-		{
-			asyncFileRead(logPath);
-		}
-	}
-	
 	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
 		RhodesAdapter rhodesExecutor = new RhodesAdapter();
@@ -228,31 +249,5 @@ public class LogFileHelper
 		}
 		
 		return null;
-	}
-	
-	private void waitBbLog(IProject project) throws Exception
-	{
-		Thread waitingLog = new Thread(new LogFileWaiter(project, this, "run:bb:get_log"));
-		waitingLog.start();
-	}
-	
-	private void wmLog(IProject project) throws Exception
-	{
-		String logPath = getLogFilePath(project, "run:wm:get_log");
-		
-		if (logPath != null)
-		{
-			asyncFileRead(logPath);
-		}
-	}
-	
-	private void iphoneLog(IProject project) throws Exception
-	{
-		String logPath = getLogFilePath(project, "run:iphone:get_log");
-		
-		if (logPath != null)
-		{
-			asyncFileRead(logPath);
-		}
 	}
 }
