@@ -121,7 +121,7 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 	
-	public IProcess debugApp(String projectName, String workDir, EPlatformType platformType, ILaunch launch, boolean onDevice) throws Exception
+	public IProcess debugApp(String projectName, String workDir, EPlatformType platformType, ILaunch launch) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);
 		
@@ -129,11 +129,6 @@ public class RhodesAdapter
 		sb.append("run:");
 		sb.append(platformName);
 		
-		if (onDevice)
-		{
-			sb.append(":device");
-		}
-
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
@@ -146,7 +141,7 @@ public class RhodesAdapter
 		return DebugPlugin.newProcess(launch, process, projectName);
 	}
 	
-	public int buildApp(String workDir, EPlatformType platformType, boolean onDevice) throws Exception
+	public int buildAppOnSim(String workDir, EPlatformType platformType) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);
 		
@@ -154,10 +149,23 @@ public class RhodesAdapter
 		sb.append("run:");
 		sb.append(platformName);
 		
-		if (onDevice)
-		{
-			sb.append(":device");
-		}
+		m_executor.setWorkingDirectory(workDir);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		return m_executor.runCommand(cmdLine);
+	}
+
+	public int buildAppOnDevice(String workDir, EPlatformType platformType) throws Exception
+	{
+		String platformName = convertDescFromPlatform(platformType);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("run:");
+		sb.append(platformName);
+		sb.append(":device");
 		
 		m_executor.setWorkingDirectory(workDir);
 		
@@ -168,6 +176,25 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 	
+	public int buildAppOnRhoSim(String workDir, EPlatformType platformType) throws Exception
+	{
+		String platformName = convertDescFromPlatform(platformType);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("run:");
+		sb.append(platformName);
+		sb.append(":rhosimulator");
+		
+		m_executor.setWorkingDirectory(workDir);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		return m_executor.runCommand(cmdLine);
+	}
+
+
 	private String prepareModelAttributes(String modelAttr)
 	{
 		StringBuilder   sb = new StringBuilder();

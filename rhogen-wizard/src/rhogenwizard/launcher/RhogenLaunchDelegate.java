@@ -52,11 +52,11 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	private String            m_projectName = null;
 	private String            m_platformName = null;
 	private String			  m_appLogName = null; 
+	private String            m_platformType = null;
 	private boolean           m_isClean = false;
-	private boolean           m_onDevice = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	private IProcess          m_debugProcess = null;
-	
+		
 	private void setProcessFinished(boolean b)
 	{
 		m_buildFinished.set(b);
@@ -80,32 +80,28 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				{
 					ConsoleHelper.consolePrint("build started");
 					
+					prepareLogOutput(project, type);
+					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
 						if (type != RhodesAdapter.EPlatformType.eEmu)
 						{
-							if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) != 0)
-							{
-								ConsoleHelper.consolePrint("Error in build application");
-								setProcessFinished(true);
-								return;
-							}
+							setProcessFinished(true);
+							return;
 						}
-						else
-						{
-							m_debugProcess = rhodesAdapter.debugApp(m_projectName, project.getLocation().toOSString(), type, launch, m_onDevice);
+
+						m_debugProcess = debugSelectedBuildConfiguration(project, type, launch);
 							
-							if (m_debugProcess == null)
-							{
-								ConsoleHelper.consolePrint("Error in build application");
-								setProcessFinished(true);
-								return;
-							}
+						if (m_debugProcess == null)
+						{
+							ConsoleHelper.consolePrint("Error in build application");
+							setProcessFinished(true);
+							return;
 						}
 					}
 					else
 					{
-						if (rhodesAdapter.buildApp(project.getLocation().toOSString(), type, m_onDevice) != 0)
+						if (runSelectedBuildConfiguration(project, type) != 0)
 						{
 							ConsoleHelper.consolePrint("Error in build application");
 							setProcessFinished(true);
@@ -127,14 +123,43 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		cancelingThread.start();
 	}
 	
+	private String prepareLogOutput(IProject project, EPlatformType type) 
+	{
+		// TODO for optimize get_log rake task call
+		return null;
+	}
+
+	private int runSelectedBuildConfiguration(IProject currProject, EPlatformType selType) throws Exception
+	{
+		if (m_platformType.equals(ConfigurationConstants.platformDevice))
+		{
+			return rhodesAdapter.buildAppOnDevice(currProject.getLocation().toOSString(), selType);
+		}
+		else if (m_platformType.equals(ConfigurationConstants.platformSim))
+		{
+			return rhodesAdapter.buildAppOnSim(currProject.getLocation().toOSString(), selType);
+		}
+		else if (m_platformType.equals(ConfigurationConstants.platformRhoSim))
+		{
+			return rhodesAdapter.buildAppOnRhoSim(currProject.getLocation().toOSString(), selType);
+		}
+		
+		return 1;
+	}
+	
+	private IProcess debugSelectedBuildConfiguration(IProject currProject, EPlatformType selType, ILaunch launch) throws Exception
+	{
+		IProcess  debugProcess = rhodesAdapter.debugApp(currProject.getName(), currProject.getLocation().toOSString(), selType, launch);
+		return debugProcess;
+	}
+	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
 		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 		m_platformName  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 		m_appLogName    = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
-		m_onDevice      = false; //configuration.getAttribute(ConfigurationConstants.platforrmDeviceCfgAttribute, false);
-		//TODO -
+		m_platformType  = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception
@@ -173,7 +198,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		
 		if (!project.isOpen()) 
 		{
-			throw new IllegalArgumentException("Error - Project not found ");
+			throw new IllegalArgumentException("Error - Project not found");
 		}
 		
 		if (mode.equals(ILaunchManager.DEBUG_MODE))
