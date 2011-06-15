@@ -163,7 +163,7 @@ public class RhodesSyncAppWizardPage extends WizardPage
 	{		
 		setDescription("");
 		
-		m_appNameText.setText("RhodesSyncApplication1");
+		m_appNameText.setText("RhosyncApplication1");
 		
 		setControlsForDefaultPath();
 	}
