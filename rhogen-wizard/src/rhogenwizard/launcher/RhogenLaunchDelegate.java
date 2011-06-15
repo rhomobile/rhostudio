@@ -294,8 +294,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	
 	private void startLogOutput(IProject project, EPlatformType type) throws Exception
 	{
-		rhodesLogHelper.configurePlatform(type);
-		rhodesLogHelper.startLog(project);
+		rhodesLogHelper.startLog(type, project);
 	}
 }
 
