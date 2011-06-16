@@ -22,7 +22,7 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 {
 	// name & stack frmae
 	private String 			 m_varName    = null;
-	private RhogenStackFrame m_stackFrame = null;
+	private RhogenDebugTarget m_stackFrame = null;
 	private IValue           m_varValue   = null;
 	
 	/**
@@ -32,9 +32,9 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 * @param frame owning stack frame
 	 * @param name variable name
 	 */
-	public RhogenVariable(RhogenStackFrame frame, String name) 
+	public RhogenVariable(RhogenDebugTarget frame, String name) 
 	{
-		super((RhogenDebugTarget) frame.getDebugTarget());
+		super(frame);
 		m_stackFrame = frame;
 		m_varName = name;
 		m_varValue = null;
@@ -117,9 +117,10 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 * Returns the stack frame owning this variable.
 	 * 
 	 * @return the stack frame owning this variable
+	 * @throws DebugException 
 	 */
-	protected RhogenStackFrame getStackFrame() 
+	protected RhogenStackFrame getStackFrame() throws DebugException 
 	{
-		return m_stackFrame;
+		return (RhogenStackFrame) m_stackFrame.getStackFrames()[0];
 	}
 }

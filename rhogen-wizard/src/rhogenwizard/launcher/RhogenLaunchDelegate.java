@@ -84,12 +84,6 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
-						if (type != RhodesAdapter.EPlatformType.eEmu)
-						{
-							setProcessFinished(true);
-							return;
-						}
-
 						m_debugProcess = debugSelectedBuildConfiguration(project, type, launch);
 							
 						if (m_debugProcess == null)
@@ -256,9 +250,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		
 		monitor.done();
 		
-		final EPlatformType plType = RhodesAdapter.convertPlatformFromDesc(m_platformName);
-		
-		if (mode.equals(ILaunchManager.DEBUG_MODE) && plType == RhodesAdapter.EPlatformType.eEmu)
+		if (mode.equals(ILaunchManager.DEBUG_MODE))
 		{
 			target.setProcess(m_debugProcess);
 			launch.addDebugTarget(target);

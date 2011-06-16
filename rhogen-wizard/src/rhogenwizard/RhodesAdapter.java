@@ -128,6 +128,7 @@ public class RhodesAdapter
 		StringBuilder sb = new StringBuilder();
 		sb.append("run:");
 		sb.append(platformName);
+		sb.append(":rhosimulator");
 		
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);

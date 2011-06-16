@@ -11,6 +11,8 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
+import java.util.StringTokenizer;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
@@ -20,12 +22,99 @@ import org.eclipse.debug.core.model.IVariable;
  */
 public class RhogenValue extends RhogenDebugElement implements IValue 
 {	
-	private String fValue;
+	private String  m_currValue    = null;
+	private boolean m_hasVariables = false;
+	private IVariable[] m_childsVariables = null;
+	
+	public RhogenValue(RhogenDebugTarget target, String value, boolean a)
+	{
+		super(target);
+		m_currValue = value;		
+	}
 	
 	public RhogenValue(RhogenDebugTarget target, String value) 
 	{
 		super(target);
-		fValue = value;
+		m_currValue = value;
+		
+		String trimValue = value.replaceAll(" ", "");
+		
+		if (trimValue.startsWith("{"))
+		{
+			parseObject(target, trimValue);
+		}		
+		else if (trimValue.startsWith("["))
+		{
+			parseList(target, trimValue);
+		}
+	}
+	
+	private void parseList(RhogenDebugTarget target, String s)
+	{
+		String prepareValue = s.subSequence(1, s.length() - 1).toString();
+		StringTokenizer st = new StringTokenizer(prepareValue, ",");
+
+		m_childsVariables = new RhogenVariable[st.countTokens()];
+		m_hasVariables    = true;
+		
+		int idx=0;
+		while (st.hasMoreTokens()) 
+	    {
+			try 
+			{				
+				Integer intConverter = new Integer(idx);
+				m_childsVariables[idx] = new RhogenVariable(target, intConverter.toString());
+				m_childsVariables[idx].setValue(new RhogenValue(target, st.nextToken(), false));				
+			}
+			catch (DebugException e) 
+			{
+				m_childsVariables = null;
+				m_hasVariables    = false;
+			    e.printStackTrace();
+			}
+			
+			idx++;
+	    }
+	}
+	
+	private void parseObject(RhogenDebugTarget target, String s)
+	{
+		String prepareValue = s.subSequence(1, s.length() - 1).toString();
+		StringTokenizer st = new StringTokenizer(prepareValue, ",");
+		
+		if (st.countTokens() < 1)
+			return;
+		
+		m_childsVariables = new RhogenVariable[st.countTokens()];
+		m_hasVariables  = true;
+		
+		int idx=0;
+		while (st.hasMoreTokens()) 
+	    {
+			try 
+			{				
+				String[] stValueToken = st.nextToken().split("=>");
+				
+				if (stValueToken.length > 1)
+				{
+					m_childsVariables[idx] = new RhogenVariable(target, stValueToken[0]);
+					m_childsVariables[idx].setValue(new RhogenValue(target, stValueToken[1], false));
+				}
+				else
+				{
+					m_childsVariables[idx] = new RhogenVariable(target, stValueToken[0]);
+					m_childsVariables[idx].setValue(new RhogenValue(target, "null", false));
+				}
+			}
+			catch (DebugException e) 
+			{
+				m_childsVariables = null;
+				m_hasVariables    = false;
+			    e.printStackTrace();
+			}
+			
+			idx++;
+	    }
 	}
 	
 	/* (non-Javadoc)
@@ -35,7 +124,7 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 	{
 		try 
 		{
-			Integer.parseInt(fValue);
+			Integer.parseInt(m_currValue);
 		} 
 		catch (NumberFormatException e) 
 		{
@@ -50,7 +139,7 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 	 */
 	public String getValueString() throws DebugException 
 	{
-		return fValue;
+		return m_currValue;
 	}
 	
 	/* (non-Javadoc)
@@ -66,7 +155,10 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 	 */
 	public IVariable[] getVariables() throws DebugException 
 	{
-		return new IVariable[0];
+		if (m_hasVariables)
+			return m_childsVariables;
+		else
+			return new IVariable[0];
 	}
 	
 	/* (non-Javadoc)
@@ -74,11 +166,11 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 	 */
 	public boolean hasVariables() throws DebugException 
 	{
-		return false;
+		return m_hasVariables;
 	}
 	
 	public void setValue(String newValue)
 	{
-		fValue = newValue;
+		m_currValue = newValue;
 	}
 }

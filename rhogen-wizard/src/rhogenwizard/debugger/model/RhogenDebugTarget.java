@@ -45,6 +45,7 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.DebugServer;
+import rhogenwizard.debugger.DebugServerException;
 import rhogenwizard.debugger.DebugState;
 import rhogenwizard.debugger.DebugVariable;
 import rhogenwizard.debugger.DebugVariableType;
@@ -354,6 +355,13 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		m_debugServer.debugStepOver();
 	}
 	
+	public void stepReturn() 
+	{
+		m_threadHandle.setStepping(true);
+		resumed(DebugEvent.STEP_RETURN);
+		m_debugServer.debugStepReturn();
+	}
+	
 	public void stepInto()
 	{
 		m_threadHandle.setStepping(true);
@@ -429,12 +437,20 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	protected IStackFrame[] getStackFrames() throws DebugException 
 	{
 		StackData stackData = new StackData(m_debugServer.debugGetFile(), m_debugServer.debugGetLine());
-		//ConsoleHelper.consoleAppPrint("file="+m_debugServer.debugGetFile()+" line="+m_debugServer.debugGetLine());
-		
-		stackData.m_currVariables = m_debugServer.debugWatchList();
 		
 		IStackFrame[] theFrames = new IStackFrame[1];
-		theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
+		
+		for (int i=0; i<3; ++i)
+		{	
+			try
+			{
+				stackData.m_currVariables = m_debugServer.debugWatchList();
+				theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
+				break;
+			}
+			catch(DebugServerException e) {
+			}
+		}
 		
 		return theFrames;
 	}

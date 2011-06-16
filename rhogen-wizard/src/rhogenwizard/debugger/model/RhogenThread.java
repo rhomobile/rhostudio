@@ -192,7 +192,8 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public boolean canStepReturn() 
 	{
-		return false;
+		//return false;
+		return isSuspended();
 	}
 	
 	/* (non-Javadoc)
@@ -224,6 +225,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public void stepReturn() throws DebugException 
 	{
+		((RhogenDebugTarget)getDebugTarget()).stepReturn();
 	}
 	
 	/* (non-Javadoc)
