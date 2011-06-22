@@ -1,0 +1,2 @@
+jarsigner.exe -keystore ./mykeys/.keystore -storepass 123456 -keypass 123456 c:/android/rhodes-plugins-ws-clean/out/plugins/com.rhomobile.rhostudio_1.0.1.201106081632.jar pluginsigner
+jarsigner.exe -keystore ./mykeys/.keystore -storepass 123456 -keypass 123456 c:/android/rhodes-plugins-ws-clean/out/features/rhostudio_feature_1.0.1.201106081632.jar pluginsigner
