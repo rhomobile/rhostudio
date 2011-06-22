@@ -160,7 +160,7 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 	
 	boolean checkRhodesVersion(String rhodesVer) throws Exception
 	{
-		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info");
+		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info", false);
 				
 		StringBuilder sb = new StringBuilder();
 		sb.append("--rhodes-ver=");

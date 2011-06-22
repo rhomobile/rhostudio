@@ -120,13 +120,13 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			
 			newProject = RhodesProjectSupport.createProject(infoHolder);
 
-			if (!checkRhodesVersion(CommonConstants.rhodesVersion))
-			{
-				newProject.delete(true, monitor);
-				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version. Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-				msgJob.run(monitor);
-				return;
-			}
+//			if (!checkRhodesVersion(CommonConstants.rhodesVersion))
+//			{
+//				newProject.delete(true, monitor);
+//				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version. Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+//				msgJob.run(monitor);
+//				return;
+//			}
 			
 			if (!infoHolder.existCreate) 
 			{
@@ -167,7 +167,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	
 	boolean checkRhodesVersion(String rhodesVer) throws Exception
 	{
-		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info");
+		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info", false);
 				
 		StringBuilder sb = new StringBuilder();
 		sb.append("--rhodes-ver=");

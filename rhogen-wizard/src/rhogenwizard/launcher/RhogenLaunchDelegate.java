@@ -2,6 +2,7 @@ package rhogenwizard.launcher;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -32,6 +33,7 @@ import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesAdapter.EPlatformType;
+import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -165,9 +167,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			rhodesAdapter.cleanPlatform(project.getLocation().toOSString(), type);
 		}
 	}
-	
-	DebugConsole m_debugConsole = null;
-		
+			
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -182,6 +182,12 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		ConsoleHelper.cleanBuildConsole();
 		
 		setupConfigAttributes(configuration);
+		
+		// stop blackberry simulator
+		if (OSHelper.isWindows() && m_platformType.equals(RhodesAdapter.platformBlackBerry))
+		{
+			RunExeHelper.killBbSimulator();
+		}
 
 		if (m_projectName == null || m_projectName.length() == 0 || m_platformName == null || m_platformName.length() == 0) 
 		{
@@ -200,12 +206,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 			job.run(monitor);
 			
-			try {
-				OSHelper.killProcess("rhosimulator");
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			RunExeHelper.killRhoSimulator();
 			
 			target = new RhogenDebugTarget(launch, null);
 		}
