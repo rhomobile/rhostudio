@@ -92,7 +92,7 @@ public class LogFileHelper
 		switch(m_platformName)
 		{
 		case eBb:
-			waitBbLog(project);
+			bbLog(project);
 			break;
 		case eEmu:
 			rhoSimLog(project);
@@ -131,25 +131,25 @@ public class LogFileHelper
 	private void waitSimLog(IProject project) throws Exception
 	{
         String logFilePath = getLogFilePath(project, "run:rhosimulator:get_log");
-		Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
+        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
 		waitingLog.start();
 	}
 	
 	private void waitBbLog(IProject project) throws Exception
 	{
-		String logFilePath = getLogFilePath(project, "run:bb:get_log");
-		Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
-		waitingLog.start();
+        String logFilePath = getLogFilePath(project, "run:bb:get_log");
+        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
+        waitingLog.start();
 	}
 	
 	private void wpLog(IProject project) throws Exception
 	{
-		String logPath = getLogFilePath(project, "run:wp:get_log");
+        String logPath = getLogFilePath(project, "run:wp:get_log");
 		
-		if (logPath != null)
-		{
-			asyncFileRead(logPath);
-		}
+        if (logPath != null)
+        {
+             asyncFileRead(logPath);
+        }
 	}
 
 	private void rhoSimLog(IProject project) throws Exception
