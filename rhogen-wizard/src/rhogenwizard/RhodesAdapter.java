@@ -42,6 +42,7 @@ public class RhodesAdapter
 		eIPhone,
 		eWp7,
 		eEmu,
+		eRsync,
 		eUnknown
 	};
 		
@@ -51,6 +52,7 @@ public class RhodesAdapter
 	public static final String platformIPhone = "iphone";
 	public static final String platformWp7 = "wp";
 	public static final String platformEmu = "win32:rhosimulator";
+	public static final String platformRsync = "";
 	
 	private String m_rhogenExe = "rhodes";
 	private String m_rhosyncExe = "rhosync"; 
@@ -176,7 +178,7 @@ public class RhodesAdapter
 		
 		return m_executor.runCommand(cmdLine);
 	}
-	
+		
 	public int buildAppOnRhoSim(String workDir, EPlatformType platformType) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);
@@ -195,6 +197,19 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 
+	public int buildRhosyncApp(String workDir) throws Exception
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("rhosync:start");
+		
+		m_executor.setWorkingDirectory(workDir);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		return m_executor.runCommand(cmdLine);
+	}
 
 	private String prepareModelAttributes(String modelAttr)
 	{
@@ -245,6 +260,10 @@ public class RhodesAdapter
 		{
 			return EPlatformType.eEmu;
 		}
+		else if (plDesc.equals(platformRsync))
+		{
+			return EPlatformType.eRsync;
+		}
 		
 		return EPlatformType.eUnknown;
 	}
@@ -263,6 +282,8 @@ public class RhodesAdapter
 			return platformIPhone;
 		case eWp7:
 			return platformWp7;
+		case eRsync:
+			return platformRsync;
 		case eEmu:
 			return platformEmu;
 		}

@@ -130,7 +130,7 @@ public class RhogenSourceAdapterWizard extends Wizard implements INewWizard
 				monitor.worked(1);
 				monitor.setTaskName("Opening file for editing...");
 				
-				if (m_rhogenAdapter.generateSyncAdapterApp(adapterName, m_projectLocation) != 0)
+				if (m_rhogenAdapter.generateSyncAdapterApp(m_projectLocation, adapterName) != 0)
 				{
 					throw new IOException(MsgConstants.errInstallRhosync);
 				}

@@ -13,9 +13,11 @@ package rhogenwizard.debugger.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.ConsoleHandler;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -101,6 +103,13 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		
 		m_debugServer = new DebugServer(this);
 		m_debugServer.start();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable 
+	{
+		exited();
+		super.finalize();
 	}
 	
 	public void setProcess(IProcess p) 
@@ -314,6 +323,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) 
 	{
+		ScriptLineBreakpoint bp = (ScriptLineBreakpoint)breakpoint;
+		IMarker a = delta.getMarker();
+		String b = null;
+		Map m = null;
+		try {
+			b =a.getType();
+			m = a.getAttributes();
+		} catch (CoreException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		if (supportsBreakpoint(breakpoint)) 
 		{
 			try 
@@ -332,7 +352,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 			}
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.IDisconnect#canDisconnect()
 	 */
