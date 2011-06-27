@@ -334,7 +334,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 
 			SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
 			m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
-			m_androidEmuNameLabel.setText("Simulator name");
+			m_androidEmuNameLabel.setText("Simulator name:");
 		} 
 		catch (FileNotFoundException e) 
 		{
