@@ -12,8 +12,4 @@ public class ConfigurationConstants
 	public static final String prjectLogFileName = "log_filename";
 	public static final String simulatorType = "type_symulator";
 
-	/* platforms types */
-	public static final String platformRhoSim = "RhoSimulator";
-	public static final String platformSim    = "Simulator";
-	public static final String platformDevice = "Device";
 }

@@ -38,12 +38,14 @@ public class LogFileHelper
 		private IProject 	  m_project = null;
 		private LogFileHelper m_helper = null;
 		private String        m_logFilePath = null;
-
-		public LogFileWaiter(IProject project, LogFileHelper helper, String logFilePath) throws Exception 
+		private RunType       m_type = null;
+		
+		public LogFileWaiter(IProject project, LogFileHelper helper, String logFilePath, RunType type) throws Exception 
 		{
 			m_project = project;
 			m_helper  = helper;
 			m_logFilePath = logFilePath;
+			m_type = type;
 		}
 
 		@Override
@@ -60,7 +62,7 @@ public class LogFileHelper
 					
 					if (logFile.exists())
 					{			
-						m_helper.endWaitLog(m_project);
+						m_helper.endWaitLog(m_project, m_type);
 						return;
 					}
 				}
@@ -87,58 +89,65 @@ public class LogFileHelper
 		super.finalize();
 	}
 
-	public void endWaitLog(IProject project) throws Exception 
+	public void endWaitLog(IProject project, RunType type) throws Exception 
 	{
-		switch(m_platformName)
+		if (type.equals(RunType.ERunType.eRhoEmulator))
 		{
-		case eBb:
-			bbLog(project);
-			break;
-		case eEmu:
 			rhoSimLog(project);
-			break;
+		}
+		else
+		{
+			switch(m_platformName)
+			{
+			case eBb:
+				bbLog(project);
+				break;
+			}
 		}
 	}
 	
-	public void startLog(RhodesAdapter.EPlatformType platformName, IProject project) throws Exception
+	public void startLog(RhodesAdapter.EPlatformType platformName, IProject project, RunType runType) throws Exception
 	{
 		m_platformName = platformName;
 		
-		switch(m_platformName)
+		if ( runType.equals(RunType.ERunType.eRhoEmulator))
 		{
-		case eWm:
-			wmLog(project);
-			break;
-		case eAndroid:
-			adnroidLog(project);
-			break;
-		case eBb:
-			waitBbLog(project);
-			break;
-		case eIPhone:
-			iphoneLog(project);
-			break;
-		case eWp7:
-			wpLog(project);
-			break;
-		case eEmu:
-			waitSimLog(project);
-			break;
-			
+			waitSimLog(project, runType);
+		}
+		else
+		{
+			switch(m_platformName)
+			{
+			case eWm:
+				wmLog(project);
+				break;
+			case eAndroid:
+				adnroidLog(project);
+				break;
+			case eBb:
+				waitBbLog(project, runType);
+				break;
+			case eIPhone:
+				iphoneLog(project);
+				break;
+			case eWp7:
+				wpLog(project);
+				break;
+			}
 		}
 	}
 	
-	private void waitSimLog(IProject project) throws Exception
+	private void waitSimLog(IProject project, RunType type) throws Exception
 	{
         String logFilePath = getLogFilePath(project, "run:rhosimulator:get_log");
-        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
+        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath, type));
 		waitingLog.start();
 	}
 	
-	private void waitBbLog(IProject project) throws Exception
+	private void waitBbLog(IProject project, RunType type) throws Exception
 	{
         String logFilePath = getLogFilePath(project, "run:bb:get_log");
-        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath));
+        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath, type));
         waitingLog.start();
 	}
 	

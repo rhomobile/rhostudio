@@ -34,6 +34,7 @@ import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesAdapter.EPlatformType;
 import rhogenwizard.RunExeHelper;
+import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -240,7 +241,8 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 	
 	private void startLogOutput(IProject project, EPlatformType type) throws Exception
 	{
-		rhodesLogHelper.startLog(type, project);
+		RunType runType = new RunType(RunType.ERunType.eEmulator);
+		rhodesLogHelper.startLog(type, project, runType);
 	}
 }
 

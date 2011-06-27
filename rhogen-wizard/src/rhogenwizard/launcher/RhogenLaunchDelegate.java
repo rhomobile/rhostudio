@@ -34,6 +34,7 @@ import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesAdapter.EPlatformType;
 import rhogenwizard.RunExeHelper;
+import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -105,7 +106,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 						}
 					}
 					
-					startLogOutput(project, type);
+					startLogOutput(project, type, new RunType(m_platformType));
 				} 
 				catch (Exception e) 
 				{
@@ -127,15 +128,15 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 
 	private int runSelectedBuildConfiguration(IProject currProject, EPlatformType selType) throws Exception
 	{
-		if (m_platformType.equals(ConfigurationConstants.platformDevice))
+		if (m_platformType.equals(RunType.platformDevice))
 		{
 			return rhodesAdapter.buildAppOnDevice(currProject.getLocation().toOSString(), selType);
 		}
-		else if (m_platformType.equals(ConfigurationConstants.platformSim))
+		else if (m_platformType.equals(RunType.platformSim))
 		{
 			return rhodesAdapter.buildAppOnSim(currProject.getLocation().toOSString(), selType);
 		}
-		else if (m_platformType.equals(ConfigurationConstants.platformRhoSim))
+		else if (m_platformType.equals(RunType.platformRhoSim))
 		{
 			return rhodesAdapter.buildAppOnRhoSim(currProject.getLocation().toOSString(), selType);
 		}
@@ -285,9 +286,9 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	{
 	}
 	
-	private void startLogOutput(IProject project, EPlatformType type) throws Exception
+	private void startLogOutput(IProject project, EPlatformType type, RunType runType) throws Exception
 	{
-		rhodesLogHelper.startLog(type, project);
+		rhodesLogHelper.startLog(type, project, runType);
 	}
 }
 

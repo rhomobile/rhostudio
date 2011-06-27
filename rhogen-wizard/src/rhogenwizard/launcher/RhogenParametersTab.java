@@ -32,6 +32,7 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.RunType;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
@@ -58,9 +59,9 @@ public class RhogenParametersTab extends  JavaLaunchTab
 											   "ipad" };
 															
 
-	private static String simulatorTypes[] = { ConfigurationConstants.platformRhoSim,
-		                                       ConfigurationConstants.platformSim,
-		                                       ConfigurationConstants.platformDevice };
+	private static String simulatorTypes[] = { RunType.platformRhoSim,
+		                                       RunType.platformSim,
+		                                       RunType.platformDevice };
 
 	
 	private static String bbVersions[] = {};
@@ -305,7 +306,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			String emuName            = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 			String platformType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
-			if (!platformType.equals(ConfigurationConstants.platformDevice) && selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+			if (!platformType.equals(RunType.platformDevice) && selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
 				showAndroidEmuName(true);
 				
@@ -314,8 +315,6 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			}
 			else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
 			{
-				
-				
 				showAndroidEmuName(true);
 				showBbEmuName();
 			}
@@ -335,7 +334,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 
 			SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
 			m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
-			m_androidEmuNameLabel.setText("Bb emulator");
+			m_androidEmuNameLabel.setText("Simulator name");
 		} 
 		catch (FileNotFoundException e) 
 		{
@@ -392,7 +391,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				
 		configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);		
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
-		configuration.setAttribute(ConfigurationConstants.simulatorType, ConfigurationConstants.platformRhoSim);
+		configuration.setAttribute(ConfigurationConstants.simulatorType, RunType.platformRhoSim);
 	}
 
 	@Override
@@ -450,15 +449,15 @@ public class RhogenParametersTab extends  JavaLaunchTab
 	{
 		String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		
-		if (platformType.equals(ConfigurationConstants.platformRhoSim))
+		if (platformType.equals(RunType.platformRhoSim))
 		{
 			m_platformTypeCombo.select(0);
 		}
-		else if (platformType.equals(ConfigurationConstants.platformSim))
+		else if (platformType.equals(RunType.platformSim))
 		{
 			m_platformTypeCombo.select(1);
 		}
-		else if (platformType.equals(ConfigurationConstants.platformDevice))
+		else if (platformType.equals(RunType.platformDevice))
 		{
 			m_platformTypeCombo.select(2);
 		}
@@ -482,7 +481,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 
 			if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
 			{
-				if (!selPlatformType.equals(ConfigurationConstants.platformDevice))
+				if (!selPlatformType.equals(RunType.platformDevice))
 				{
 					showAndroidVersions();
 					showVersionCombo(true);
@@ -649,19 +648,24 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			{
 				m_configuration.setAttribute(ConfigurationConstants.androidVersionAttribute, selVersion);
 				m_ymlFile.setAndroidVer(selVersion);
+				m_ymlFile.save();
 			}
 			else if (type == RhodesAdapter.EPlatformType.eBb)
 			{
 				m_configuration.setAttribute(ConfigurationConstants.blackberryVersionAttribute, selVersion);
 				m_ymlFile.setBbVer(selVersion);
+				m_ymlFile.save();
+				
+				showBbEmuName();
 			}
 			else if (type == RhodesAdapter.EPlatformType.eIPhone)
 			{
 				m_configuration.setAttribute(ConfigurationConstants.iphoneVersionAttribute, selVersion);
 				m_ymlFile.setIphoneVer(selVersion);
+				m_ymlFile.save();
 			}
 			
-			m_ymlFile.save();
+			
 		}
 		catch(CoreException e)
 		{

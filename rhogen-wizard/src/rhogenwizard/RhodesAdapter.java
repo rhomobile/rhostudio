@@ -41,11 +41,10 @@ public class RhodesAdapter
 		eBb,
 		eIPhone,
 		eWp7,
-		eEmu,
 		eRsync,
 		eUnknown
 	};
-		
+	
 	public static final String platformWinMobile = "wm";
 	public static final String platformAdroid = "android";
 	public static final String platformBlackBerry = "bb";
@@ -256,10 +255,6 @@ public class RhodesAdapter
 		{
 			return EPlatformType.eWp7;
 		}
-		else if (plDesc.equals(platformEmu))
-		{
-			return EPlatformType.eEmu;
-		}
 		else if (plDesc.equals(platformRsync))
 		{
 			return EPlatformType.eRsync;
@@ -284,8 +279,6 @@ public class RhodesAdapter
 			return platformWp7;
 		case eRsync:
 			return platformRsync;
-		case eEmu:
-			return platformEmu;
 		}
 
 		return null;
