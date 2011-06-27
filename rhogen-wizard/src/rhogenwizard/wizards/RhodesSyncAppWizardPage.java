@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
@@ -114,6 +115,7 @@ public class RhodesSyncAppWizardPage extends WizardPage
 
 		m_appFolderText = new Text(composite, SWT.BORDER | SWT.SINGLE);
 		m_appFolderText.setLayoutData(textAligment);
+		m_appFolderText.setEditable(false);
 		m_appFolderText.addModifyListener(new ModifyListener() 
 		{
 			public void modifyText(ModifyEvent e) 
@@ -176,6 +178,19 @@ public class RhodesSyncAppWizardPage extends WizardPage
 	{
 		DirectoryDialog appDirDialog = new DirectoryDialog(getShell());		
 		m_selectAppDir = appDirDialog.open();
+
+		File placeFolder = new File(m_selectAppDir);
+		
+		if (!placeFolder.isDirectory())
+		{
+			MessageBox msg = new MessageBox(getShell(), ERROR);
+			msg.setMessage("Invalid directory");
+			msg.setText("Selected item is not directory.");
+			msg.open();
+			return;
+		}
+		
+		m_appNameText.setText(placeFolder.getName());
 		m_appFolderText.setText(m_selectAppDir);
 	}
 	

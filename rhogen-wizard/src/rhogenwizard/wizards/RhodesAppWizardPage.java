@@ -185,7 +185,7 @@ public class RhodesAppWizardPage extends WizardPage
 		{
 			MessageBox msg = new MessageBox(getShell(), ERROR);
 			msg.setMessage("Invalid directory");
-			msg.setText("Selectted item is not directory.");
+			msg.setText("Selected item is not directory.");
 			msg.open();
 			return;
 		}
