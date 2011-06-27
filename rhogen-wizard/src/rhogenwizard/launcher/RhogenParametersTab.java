@@ -183,33 +183,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 		{
 			public void modifyText(ModifyEvent e) 
 			{
-				if (m_configuration != null && m_ymlFile != null)
-				{
-					try 
-					{
-						m_configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, m_adroidEmuNameText.getText());
-						
-						if (!m_adroidEmuNameText.getText().equals(""))
-						{
-							m_ymlFile.setAndroidEmuName(m_adroidEmuNameText.getText());
-						}
-						else 
-						{
-							String emuName = m_ymlFile.getAndroidEmuName();
-							
-							if (emuName == null || !emuName.equals(""))
-							{
-								m_ymlFile.removeAndroidEmuName();
-							}
-						}
-						
-						m_ymlFile.save();
-						showApplyButton();
-					} 
-					catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
-				}
+				encodeEmuNameText(m_adroidEmuNameText.getText());
 			}
 		});
 		
@@ -233,6 +207,61 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				}
 			}
 		});
+	}
+	
+	private void encodeEmuNameText(String emuName)
+	{
+		if (m_configuration != null && m_ymlFile != null)
+		{
+			try 
+			{
+				String selProjectPlatform = m_configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+				
+				if (selProjectPlatform.equals(RhodesAdapter.platformAdroid))
+				{
+					m_configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, emuName);
+					
+					if (!emuName.equals(""))
+					{
+						m_ymlFile.setAndroidEmuName(emuName);
+					}
+					else 
+					{				
+						if (emuName == null || !emuName.equals(""))
+						{
+							m_ymlFile.removeAndroidEmuName();
+						}
+					}
+					
+					m_ymlFile.save();
+					showApplyButton();
+				}
+				else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
+				{
+					String sdkPath = m_ymlFile.getSdkConfigPath();
+					String bbVer   = m_ymlFile.getBlackberryVer();
+					
+					Integer simVer = new Integer(emuName);
+					
+					SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
+					sdkFile.setBbSimPort(bbVer, simVer);
+					sdkFile.save();
+					showApplyButton();
+				}
+			} 
+			catch (NumberFormatException e)
+			{
+				e.printStackTrace();
+			}
+			catch (FileNotFoundException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (CoreException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	protected void encodePlatformTypeCombo(String text)
@@ -280,10 +309,35 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			{
 				showAndroidEmuName(true);
 				
+				m_androidEmuNameLabel.setText("AVD name");
 				m_adroidEmuNameText.setText(emuName);
+			}
+			else if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry))
+			{
+				
+				
+				showAndroidEmuName(true);
+				showBbEmuName();
 			}
 		}
 		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void showBbEmuName()
+	{
+		try 
+		{
+			String sdkPath = m_ymlFile.getSdkConfigPath();
+			String bbVer = m_ymlFile.getBlackberryVer();
+
+			SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
+			m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
+			m_androidEmuNameLabel.setText("Bb emulator");
+		} 
+		catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
 		}
@@ -365,9 +419,14 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
 				m_appNameText.setText(selProjectName);
 				m_adroidEmuNameText.setText(selAndroidEmuName);
-				
+
 				if (m_selProject.isOpen()) {
 					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+				}
+
+				if (selProjectPlatform.equals(RhodesAdapter.platformBlackBerry) && m_ymlFile != null)
+				{
+					showBbEmuName();
 				}
 			}
 			
@@ -446,6 +505,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			{
 				List<String> bbVersions = showBbVersions();
 				showVersionCombo(true);
+				showAndroidEmuName(true);
 				
 				for (int idx=0; idx < bbVersions.size(); idx++)
 				{
