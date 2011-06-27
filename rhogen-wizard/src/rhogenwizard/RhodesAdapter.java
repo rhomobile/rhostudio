@@ -122,6 +122,23 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 	
+	public IProcess debugSyncApp(String projectName, String workDir, ILaunch launch) throws Exception
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("rhosync:start");
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		String[] commandLine = new String[cmdLine.size()];
+		commandLine = cmdLine.toArray(commandLine);
+		
+		Process process = DebugPlugin.exec(commandLine, new File(workDir));
+
+		return DebugPlugin.newProcess(launch, process, projectName);
+	}
+	
 	public IProcess debugApp(String projectName, String workDir, EPlatformType platformType, ILaunch launch) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);

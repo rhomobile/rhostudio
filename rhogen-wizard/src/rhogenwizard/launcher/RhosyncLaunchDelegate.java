@@ -120,8 +120,8 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception
 	{
-		//IProcess  debugProcess = rhodesAdapter.debugApp(currProject.getName(), currProject.getLocation().toOSString(), selType, launch);
-		return null;//debugProcess;
+		IProcess  debugProcess = rhodesAdapter.debugSyncApp(currProject.getName(), currProject.getLocation().toOSString(), launch);
+		return debugProcess;
 	}
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
@@ -135,7 +135,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{	
-		//RhogenDebugTarget target = null;
+		RhogenDebugTarget target = null;
 		setProcessFinished(false); 
 		
 		rhodesLogHelper.stopLog();
@@ -155,19 +155,19 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 		{
 			throw new IllegalArgumentException("Error - Project not found");
 		}
-		
-//		if (mode.equals(ILaunchManager.DEBUG_MODE))
-//		{
-//			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-//			job.run(monitor);
-//			
-//			RunExeHelper.killRhoSimulator();
-//			
-//			target = new RhogenDebugTarget(launch, null);
-//		}
-		
+
 		try
 		{
+			if (mode.equals(ILaunchManager.DEBUG_MODE))
+			{
+				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
+				job.run(monitor);
+				
+				OSHelper.killProcess("ruby");
+				
+				target = new RhogenDebugTarget(launch, null);
+			}
+		
 			startBuildThread(project, mode, launch);
 
 			while(true)
@@ -203,13 +203,12 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 		}
 		
 		monitor.done();
-/*		
+
 		if (mode.equals(ILaunchManager.DEBUG_MODE))
 		{
 			target.setProcess(m_debugProcess);
 			launch.addDebugTarget(target);
 		}
-		*/
 	}
 
 	@Override

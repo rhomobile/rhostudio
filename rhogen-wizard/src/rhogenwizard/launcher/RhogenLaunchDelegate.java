@@ -49,6 +49,8 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
+	private static final int sleepWaitChangeConsole = 1000;
+	
 	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
@@ -256,6 +258,14 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		{
 			target.setProcess(m_debugProcess);
 			launch.addDebugTarget(target);
+			
+			try 
+			{
+				Thread.sleep(sleepWaitChangeConsole);
+				ConsoleHelper.showAppConsole();
+			}
+			catch (InterruptedException e) {
+			}
 		}
 	}
 
