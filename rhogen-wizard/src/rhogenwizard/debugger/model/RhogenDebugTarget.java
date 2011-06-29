@@ -11,6 +11,11 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +64,12 @@ import rhogenwizard.debugger.RhogenWatchExpressionResult;
  */
 public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
 {
+	public enum EDebugPlatfrom
+	{
+		eRhodes,
+		eRhosync
+	}
+	
 	// associated system process (VM)
 	private IProcess m_processHandle;
 	
@@ -78,12 +89,15 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	private RhogenThread m_threadHandle;
 	private IThread[]    m_allThreads;
 	
+	EDebugPlatfrom       m_debugType = EDebugPlatfrom.eRhodes;
+	
 	private static DebugServer m_debugServer = null;
 
-	public RhogenDebugTarget(ILaunch launch, IProcess process) throws CoreException 
+	public RhogenDebugTarget(ILaunch launch, IProcess process, EDebugPlatfrom debugType) throws CoreException 
 	{
 		super(null);
 		
+		m_debugType     = debugType;
 		m_launchHandle  = launch;
 		fTarget         = this;
 		m_processHandle = process;
@@ -102,7 +116,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		DebugPlugin.getDefault().getExpressionManager().addExpressionListener(this);
 		
 		m_debugServer = new DebugServer(this);
-		m_debugServer.start();
+		m_debugServer.start();		
+		m_debugServer.debugSkipBreakpoints(false);
 	}
 	
 	@Override
@@ -270,6 +285,30 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	public void suspend() throws DebugException 
 	{
 	}
+
+	
+	private String prepareResNameForSyncDebugger(String srcName)
+	{
+		srcName = srcName.replace('\\', '/');
+		srcName = srcName.substring(1, srcName.length());
+		String[] srcPath = srcName.split("/");
+		
+		if (srcPath.length < 1)
+			return "";
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("/");
+		
+		for (int i=1; i<srcPath.length; ++i)
+		{
+			sb.append(srcPath[i]);
+		
+			if (i+1 < srcPath.length)
+				sb.append('/');
+		}
+		
+		return sb.toString();
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.IBreakpointListener#breakpointAdded(org.eclipse.debug.core.model.IBreakpoint)
@@ -285,8 +324,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 					ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 					
 					int    lineNum = lineBr.getLineNumber();
-					String srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+					String srcFile = null;
 					
+					if (m_debugType == EDebugPlatfrom.eRhosync)
+					{
+						srcFile = prepareResNameForSyncDebugger(lineBr.getResourcePath().toOSString());
+					}
+					else 
+					{
+						srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+					}
+					 										
 					m_debugServer.debugBreakpoint(srcFile, lineNum);
 				}
 			} 
@@ -308,7 +356,16 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 				
 				int    lineNum = lineBr.getLineNumber();
-				String srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+				String srcFile = null;
+				
+				if (m_debugType == EDebugPlatfrom.eRhosync)
+				{
+					srcFile = prepareResNameForSyncDebugger(lineBr.getResourcePath().toOSString());
+				}
+				else 
+				{
+					srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+				}
 				
 				m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
 			} 
@@ -323,17 +380,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) 
 	{
-		ScriptLineBreakpoint bp = (ScriptLineBreakpoint)breakpoint;
-		IMarker a = delta.getMarker();
-		String b = null;
-		Map m = null;
-		try {
-			b =a.getType();
-			m = a.getAttributes();
-		} catch (CoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		if (supportsBreakpoint(breakpoint)) 
 		{
 			try 
@@ -464,7 +510,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{	
 			try
 			{
-				stackData.m_currVariables = m_debugServer.debugWatchList();
+				//stackData.m_currVariables = m_debugServer.debugWatchList();
 				theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
 				break;
 			}
@@ -508,8 +554,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				if (breakpoint instanceof ScriptLineBreakpoint)
 				{
 					ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
-					String resPath = prepareResNameForDebugger(lineBreakpoint.getResourcePath().toOSString());
+					String resPath = null;
 					
+					if (m_debugType == EDebugPlatfrom.eRhosync)
+					{
+						resPath = prepareResNameForSyncDebugger(lineBreakpoint.getResourcePath().toOSString());
+					}
+					else 
+					{
+						resPath = prepareResNameForDebugger(lineBreakpoint.getResourcePath().toOSString());
+					}
+										
 					try 
 					{
 						if (lineBreakpoint.getLineNumber() == line && resPath.equals(file))

@@ -211,7 +211,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			
 			RunExeHelper.killRhoSimulator();
 			
-			target = new RhogenDebugTarget(launch, null);
+			target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhodes);
 		}
 		
 		try

@@ -124,13 +124,33 @@
 	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
 	    </launchConfigurationTypeImage>
 	</extension>
-	 
+
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+	    <launchConfigurationTypeImage
+	        icon="icons/sample16.png"
+	        configTypeID="rhogenwizard.launcher.rhosyncApp"
+	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
+	    </launchConfigurationTypeImage>
+	</extension>
+		 
    	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
            delegate="rhogenwizard.launcher.RhogenLaunchDelegate"
            id="rhogenwizard.launcher.rhodesApp"
            modes="run, debug"
            name="Rhodes Application"
+           public="true"
+           sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
+           sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
+	    </launchConfigurationType>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+           delegate="rhogenwizard.launcher.RhosyncLaunchDelegate"
+           id="rhogenwizard.launcher.rhosyncApp"
+           modes="run, debug"
+           name="Rhosync Application"
            public="true"
            sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
@@ -145,6 +165,14 @@
     	</launchConfigurationTabGroup>
 	</extension>
 
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    	<launchConfigurationTabGroup
+        	type="rhogenwizard.launcher.rhosyncApp"
+        	class="rhogenwizard.launcher.RhosyncTabGroup"
+        	id="rhogenwizard.launcher.rhosyncApp">
+    	</launchConfigurationTabGroup>
+	</extension>
+	
     <extension point="org.eclipse.ui.preferencePages">
       <page
             name="Rhomobile"
@@ -225,21 +253,6 @@
       </product>
    </extension>
    
-   
-
-   <!--
-      <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
-      <launchConfigurationType
-            sourceLocatorId="org.eclipse.debug.examples.core.sourceLookupDirector.pda"
-            name="Push Down Automata"
-            sourcePathComputerId="org.eclipse.debug.examples.core.sourcePathComputer.pda"
-            delegate="org.eclipse.debug.examples.core.pda.launching.PDALaunchDelegate"
-            modes="run, debug"
-            id="org.eclipse.debug.examples.core.launchConfigurationType.pda">
-      </launchConfigurationType>
-   </extension>
-   -->
    <extension
          point="org.eclipse.debug.core.sourceLocators">
       <sourceLocator

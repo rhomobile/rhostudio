@@ -76,6 +76,10 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 			{
 				try 
 				{
+//					OSHelper.setEnvVariable("RHOHOST", "127.0.0.1");
+//					OSHelper.setEnvVariable("RHOPORT", "9000");
+//					OSHelper.setEnvVariable("RHOAPP", project.getLocation().toOSString());
+					
 					ConsoleHelper.consolePrint("build started");
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
@@ -165,7 +169,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 				
 				OSHelper.killProcess("ruby");
 				
-				target = new RhogenDebugTarget(launch, null);
+				target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhosync);
 			}
 		
 			startBuildThread(project, mode, launch);

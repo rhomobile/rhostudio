@@ -78,14 +78,6 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 				}
 			}
 		}
-		
-//		RhogenVariable stackVar = new RhogenVariable((RhogenDebugTarget) this.getDebugTarget(), "test");		
-//		try {
-//			stackVar.setValue(new RhogenValue(fTarget, "{'a', 'b'}"));
-//		} catch (DebugException e)
-//		{
-//		}		
-//		m_variablesList.add(stackVar);
 	}
 	
 	public void addVariables(IVariable variable)
