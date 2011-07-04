@@ -24,6 +24,7 @@ import java.util.logging.ConsoleHandler;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -49,6 +50,8 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.swt.graphics.Resource;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.OSHelper;
+import rhogenwizard.RhodesAdapter;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.DebugServer;
@@ -220,7 +223,14 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public void terminate() throws DebugException 
 	{
-		m_debugServer.debugTerminate();	
+		try
+		{
+			m_debugServer.debugTerminate();
+			m_processHandle.terminate();
+		}
+		catch(DebugServerException e)
+		{
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -510,7 +520,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{	
 			try
 			{
-				//stackData.m_currVariables = m_debugServer.debugWatchList();
+				stackData.m_currVariables = m_debugServer.debugWatchList();
 				theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
 				break;
 			}
@@ -603,7 +613,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		DebugPlugin.getDefault().getExpressionManager().removeExpressionListener(this);
 		
 		fireTerminateEvent();
-		m_debugServer.shutdown();
+		
+		try {
+			m_debugServer.shutdown();
+		}
+		catch(DebugServerException e) {
+		}
 	}
 
 	@Override

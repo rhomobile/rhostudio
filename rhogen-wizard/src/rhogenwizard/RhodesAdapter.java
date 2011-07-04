@@ -125,9 +125,20 @@ public class RhodesAdapter
 	public IProcess debugSyncApp(String projectName, String workDir, ILaunch launch) throws Exception
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("rhosync:start");
+		sb.append("redis:start");
+		
+		m_executor.setWorkingDirectory(workDir);
 		
 		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		m_executor.runCommand(cmdLine);
+		
+		sb = new StringBuilder();
+		sb.append("rhosync:start");
+		
+		cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		
@@ -151,7 +162,9 @@ public class RhodesAdapter
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
-		
+		cmdLine.add("rho_debug_port=9000");
+		cmdLine.add("rho_reload_app_changes=0");
+
 		String[] commandLine = new String[cmdLine.size()];
 		commandLine = cmdLine.toArray(commandLine);
 		
@@ -209,6 +222,8 @@ public class RhodesAdapter
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
+		cmdLine.add("rho_debug_port=9000");
+		cmdLine.add("rho_reload_app_changes=0");
 		
 		return m_executor.runCommand(cmdLine);
 	}
@@ -216,11 +231,20 @@ public class RhodesAdapter
 	public int buildRhosyncApp(String workDir) throws Exception
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("rhosync:start");
+		sb.append("redis:start");
 		
 		m_executor.setWorkingDirectory(workDir);
 		
 		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		m_executor.runCommand(cmdLine);
+		
+		sb = new StringBuilder();
+		sb.append("rhosync:start");
+		
+		cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		
