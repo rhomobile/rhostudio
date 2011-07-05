@@ -138,7 +138,7 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			newProject.delete(false, monitor);
+			newProject.delete(false, false, monitor);
 			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
 			msgJob.run(monitor);
 		}
@@ -156,29 +156,6 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	boolean checkRhodesVersion(String rhodesVer) throws Exception
-	{
-		RunExeHelper runHelper = new RunExeHelper("get-rhodes-info", false);
-				
-		StringBuilder sb = new StringBuilder();
-		sb.append("--rhodes-ver=");
-		sb.append(rhodesVer);
-		
-		List<String> cmdLine = new ArrayList<String>();
-		cmdLine.add(sb.toString());
-		
-		String cmdOutput = runHelper.run(cmdLine); 
-		
-		cmdOutput = cmdOutput.replaceAll("\\p{Cntrl}", "");
-		
-		if (cmdOutput.equals(okRhodesVersionFlag))
-		{
-			return true;
-		}
-		
-		return false;
 	}
 	
 	/**

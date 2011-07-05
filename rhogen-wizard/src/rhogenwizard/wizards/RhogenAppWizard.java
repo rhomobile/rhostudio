@@ -122,8 +122,9 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 
 			if (!checkRhodesVersion(CommonConstants.rhodesVersion))
 			{
-				newProject.delete(true, monitor);
-				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version. Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+				newProject.delete(false, false, monitor);
+				ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version, need rhodes version equal or greater " 
+						+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 				msgJob.run(monitor);
 				return;
 			}
@@ -145,8 +146,9 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			newProject.delete(false, monitor);
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes. (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+			newProject.delete(false, false, monitor);
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes, need rhodes version equal or greater " 
+					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 			msgJob.run(monitor);
 		}
 		catch (CheckProjectException e) 
