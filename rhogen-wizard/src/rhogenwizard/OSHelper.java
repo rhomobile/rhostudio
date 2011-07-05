@@ -17,7 +17,7 @@ public class OSHelper extends OSValidator
 		
 		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
 		{
-			cmdLine.add("taskkill");
+			cmdLine.add("taskkill.exe");
 			cmdLine.add("/F");
 			cmdLine.add("/IM");
 			cmdLine.add(wndName);

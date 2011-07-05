@@ -74,13 +74,13 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 	
 	// associated system process (VM)
-	private IProcess m_processHandle;
+	private IProcess m_processHandle = null;
 	
 	// containing launch object
-	private ILaunch m_launchHandle;
+	private ILaunch m_launchHandle = null;
 	
 	// program name
-	private String m_programName;
+	private String m_programName = null;
 	
 	// suspend state
 	private boolean m_isSuspended = true;
@@ -89,8 +89,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	private boolean m_isTerminated = false;
 	
 	// threads
-	private RhogenThread m_threadHandle;
-	private IThread[]    m_allThreads;
+	private RhogenThread m_threadHandle = null;
+	private IThread[]    m_allThreads = null;
 	
 	EDebugPlatfrom       m_debugType = EDebugPlatfrom.eRhodes;
 	
@@ -226,10 +226,21 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		try
 		{
 			m_debugServer.debugTerminate();
-			m_processHandle.terminate();
+
+			if (m_debugType == EDebugPlatfrom.eRhosync)
+			{
+				OSHelper.killProcess("ruby");
+			}
+			else 
+			{
+				m_processHandle.terminate();
+			}
 		}
-		catch(DebugServerException e)
-		{
+		catch(DebugServerException e) {
+			e.printStackTrace();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -612,8 +623,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(this);
 		DebugPlugin.getDefault().getExpressionManager().removeExpressionListener(this);
 		
-		fireTerminateEvent();
-		
+		fireTerminateEvent();		
+			
 		try {
 			m_debugServer.shutdown();
 		}
