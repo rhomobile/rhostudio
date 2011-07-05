@@ -9,6 +9,7 @@ public class ConfigurationConstants
 	public static final String blackberryVersionAttribute = "bversion";
 	public static final String iphoneVersionAttribute = "ipversion";
 	public static final String isCleanAttribute = "clean";
+	public static final String isReloadCodeAttribute = "rebuild";
 	public static final String prjectLogFileName = "log_filename";
 	public static final String simulatorType = "type_symulator";
 

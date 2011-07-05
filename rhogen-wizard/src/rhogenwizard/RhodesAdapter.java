@@ -208,7 +208,7 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 		
-	public int buildAppOnRhoSim(String workDir, EPlatformType platformType) throws Exception
+	public int buildAppOnRhoSim(String workDir, EPlatformType platformType, boolean isReloadCode) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);
 		
@@ -223,7 +223,11 @@ public class RhodesAdapter
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		cmdLine.add("rho_debug_port=9000");
-		cmdLine.add("rho_reload_app_changes=0");
+		
+		if (isReloadCode)
+			cmdLine.add("rho_reload_app_changes=1");
+		else
+			cmdLine.add("rho_reload_app_changes=0");
 		
 		return m_executor.runCommand(cmdLine);
 	}

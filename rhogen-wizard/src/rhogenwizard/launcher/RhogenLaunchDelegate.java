@@ -59,6 +59,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	private String			  m_appLogName = null; 
 	private String            m_platformType = null;
 	private boolean           m_isClean = false;
+	private boolean           m_isReloadCode = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	private IProcess          m_debugProcess = null;
 		
@@ -84,8 +85,6 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 				try 
 				{
 					ConsoleHelper.consolePrint("build started");
-					
-					prepareLogOutput(project, type);
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
@@ -121,12 +120,6 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		});
 		cancelingThread.start();
 	}
-	
-	private String prepareLogOutput(IProject project, EPlatformType type) 
-	{
-		// TODO for optimize get_log rake task call
-		return null;
-	}
 
 	private int runSelectedBuildConfiguration(IProject currProject, EPlatformType selType) throws Exception
 	{
@@ -140,7 +133,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		}
 		else if (m_platformType.equals(RunType.platformRhoSim))
 		{
-			return rhodesAdapter.buildAppOnRhoSim(currProject.getLocation().toOSString(), selType);
+			return rhodesAdapter.buildAppOnRhoSim(currProject.getLocation().toOSString(), selType, m_isReloadCode);
 		}
 		
 		return 1;
@@ -159,6 +152,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		m_appLogName    = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 		m_platformType  = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception

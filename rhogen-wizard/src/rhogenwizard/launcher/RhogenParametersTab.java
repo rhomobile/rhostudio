@@ -76,6 +76,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 	Label       m_androidEmuNameLabel = null;
 	Label       m_platformTypeLabel = null;
 	Combo       m_platformTypeCombo = null;
+	Button      m_reloadButton = null;
 	
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
@@ -208,6 +209,23 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				}
 			}
 		});
+		
+		// 5 row
+		m_reloadButton = new Button(composite, SWT.CHECK);
+		m_reloadButton.setText("Reload application code");
+		m_reloadButton.setSelection(false);
+		m_reloadButton.setLayoutData(checkBoxAligment);
+		m_reloadButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (m_configuration != null)
+				{
+					m_configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, m_reloadButton.getSelection());
+					showApplyButton();
+				}
+			}
+		});
 	}
 	
 	private void encodeEmuNameText(String emuName)
@@ -267,6 +285,8 @@ public class RhogenParametersTab extends  JavaLaunchTab
 	
 	protected void encodePlatformTypeCombo(String text)
 	{
+		m_reloadButton.setVisible(text.equals(RunType.platformRhoSim));
+		
 		m_configuration.setAttribute(ConfigurationConstants.simulatorType, text);
 	}
 
@@ -391,6 +411,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				
 		configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, (String) RhodesAdapter.platformAdroid);		
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
+		configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, false);		
 		configuration.setAttribute(ConfigurationConstants.simulatorType, RunType.platformRhoSim);
 	}
 
@@ -411,6 +432,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			selProjectName        = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 			selProjectPlatform    = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 			boolean isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
+			boolean isRebuild     = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 			selAndroidEmuName     = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 			
 			if (selProjectName != "")
@@ -434,6 +456,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			setPlatfromTypeCombo(configuration.getWorkingCopy());
 			
 			m_cleanButton.setSelection(isClean);
+			m_reloadButton.setSelection(isRebuild);
 		}
 		catch (CoreException e) 
 		{
@@ -664,8 +687,6 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				m_ymlFile.setIphoneVer(selVersion);
 				m_ymlFile.save();
 			}
-			
-			
 		}
 		catch(CoreException e)
 		{
@@ -718,7 +739,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			
 			List<String> bbVers = sdkYmlFile.getBbVersions();
 			
-			for (String s: bbVers) 
+			for (String s : bbVers) 
 			{
 				m_selectPlatformVersionCombo.add(s);
 			}
