@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -441,7 +442,8 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				m_appNameText.setText(selProjectName);
 				m_adroidEmuNameText.setText(selAndroidEmuName);
 
-				if (m_selProject.isOpen()) {
+				if (m_selProject.isOpen()) 
+				{
 					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
 				}
 
@@ -470,19 +472,29 @@ public class RhogenParametersTab extends  JavaLaunchTab
 	
 	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
 	{
-		String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
-		
-		if (platformType.equals(RunType.platformRhoSim))
+		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
 		{
+			m_platformTypeCombo.setEnabled(false);
 			m_platformTypeCombo.select(0);
 		}
-		else if (platformType.equals(RunType.platformSim))
+		else
 		{
-			m_platformTypeCombo.select(1);
-		}
-		else if (platformType.equals(RunType.platformDevice))
-		{
-			m_platformTypeCombo.select(2);
+			String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+			
+			m_platformTypeCombo.setEnabled(true);
+			
+			if (platformType.equals(RunType.platformRhoSim))
+			{
+				m_platformTypeCombo.select(0);
+			}
+			else if (platformType.equals(RunType.platformSim))
+			{
+				m_platformTypeCombo.select(1);
+			}
+			else if (platformType.equals(RunType.platformDevice))
+			{
+				m_platformTypeCombo.select(2);
+			}
 		}
 	}
 	
@@ -494,8 +506,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 		
 			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 			String selAndroidVer      = configuration.getAttribute(ConfigurationConstants.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
-			String selBlackBarryVer   = configuration.getAttribute(ConfigurationConstants.blackberryVersionAttribute, "");
-			String selAndroidEmuName  = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
+			String selBlackBarryVer   = configuration.getAttribute(ConfigurationConstants.blackberryVersionAttribute, "");			
 			String selIphoneVer       = configuration.getAttribute(ConfigurationConstants.iphoneVersionAttribute, "");
 			String selPlatformType    = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 
