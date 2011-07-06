@@ -141,7 +141,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, EPlatformType selType, ILaunch launch) throws Exception
 	{
-		IProcess  debugProcess = rhodesAdapter.debugApp(currProject.getName(), currProject.getLocation().toOSString(), selType, launch);
+		IProcess  debugProcess = rhodesAdapter.debugApp(currProject.getName(), currProject.getLocation().toOSString(), selType, launch, m_isReloadCode);
 		return debugProcess;
 	}
 	

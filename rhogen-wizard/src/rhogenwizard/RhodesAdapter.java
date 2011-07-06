@@ -150,7 +150,7 @@ public class RhodesAdapter
 		return DebugPlugin.newProcess(launch, process, projectName);
 	}
 	
-	public IProcess debugApp(String projectName, String workDir, EPlatformType platformType, ILaunch launch) throws Exception
+	public IProcess debugApp(String projectName, String workDir, EPlatformType platformType, ILaunch launch, boolean isReloadCode) throws Exception
 	{
 		String platformName = convertDescFromPlatform(platformType);
 		
@@ -163,8 +163,12 @@ public class RhodesAdapter
 		cmdLine.add(m_rakeExe);
 		cmdLine.add(sb.toString());
 		cmdLine.add("rho_debug_port=9000");
-		cmdLine.add("rho_reload_app_changes=0");
-
+		
+		if (isReloadCode)
+			cmdLine.add("rho_reload_app_changes=1");
+		else
+			cmdLine.add("rho_reload_app_changes=0");
+		
 		String[] commandLine = new String[cmdLine.size()];
 		commandLine = cmdLine.toArray(commandLine);
 		
