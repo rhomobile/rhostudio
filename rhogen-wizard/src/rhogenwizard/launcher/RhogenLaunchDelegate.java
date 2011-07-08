@@ -203,7 +203,14 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 			job.run(monitor);
 			
-			RunExeHelper.killRhoSimulator();
+			try 
+			{
+				OSHelper.killProcess("rhosimulator");
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
 			
 			target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhodes);
 		}
