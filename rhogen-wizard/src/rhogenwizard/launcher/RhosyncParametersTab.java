@@ -142,6 +142,9 @@ public class RhosyncParametersTab extends  JavaLaunchTab
 			
 			String selProjectName = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 			
+			if (selProjectName == null || selProjectName.length() == 0)
+				return;
+			
 			m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);	
 			
 			m_appNameText.setText(selProjectName);
