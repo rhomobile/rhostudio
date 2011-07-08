@@ -60,20 +60,4 @@ public class RunExeHelper
 			e.printStackTrace();
 		}
 	}
-	
-	static public void killRhoSimulator()
-	{
-		try 
-		{
-			RunExeHelper hlpKillTask = new RunExeHelper("tasklist", true);
-			List<String> params = new ArrayList<String>();
-			params.add("/IM");
-			params.add("rhosimulator.exe");
-			hlpKillTask.run(params);
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}		
-	}
 }
