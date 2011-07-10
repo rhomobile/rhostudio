@@ -271,28 +271,6 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	}
 
 	@Override
-	protected IProject[] getBuildOrder(ILaunchConfiguration configuration, String mode) throws CoreException 
-	{
-		if (m_projectName != null) 
-		{
-			m_projectName = m_projectName.trim();
-			
-			if (m_projectName.length() > 0) 
-			{
-				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-
-				project.setSessionProperty(RhogenBuilder.getPlatformQualifier(), m_platformName);
-				
-				IProject[] findProjects = { project };
-				
-				return findProjects;
-			}
-		}
-
-		return null;
-	}
-
-	@Override
 	public void handleDebugEvents(DebugEvent[] events) 
 	{
 	}

@@ -123,6 +123,8 @@ public class DebugServer extends Thread {
 			}
 		} catch (IOException ioe) {
 		}
+		catch (NullPointerException e) {
+		}
 	}
 
 	/**
