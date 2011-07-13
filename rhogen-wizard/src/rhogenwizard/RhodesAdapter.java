@@ -156,8 +156,8 @@ public class RhodesAdapter
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("run:");
-		sb.append(platformName);
-		sb.append(":rhosimulator");
+		//sb.append(platformName);
+		sb.append(":rhosimulator_debug");
 		
 		List<String> cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
@@ -201,7 +201,11 @@ public class RhodesAdapter
 		StringBuilder sb = new StringBuilder();
 		sb.append("run:");
 		sb.append(platformName);
-		sb.append(":device");
+		
+		if (platformType == EPlatformType.eIPhone)
+			sb.append(":production");
+		else
+			sb.append(":device");
 		
 		m_executor.setWorkingDirectory(workDir);
 		
