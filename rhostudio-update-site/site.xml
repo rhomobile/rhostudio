@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/rhostudio_feature_1.1.0.201107090039.jar" id="rhostudio_feature" version="1.1.0.201107090039">
+      <category name="new_category_1"/>
+   </feature>
+   <category-def name="new_category_1" label="RhoStudio"/>
+</site>
