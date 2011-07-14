@@ -535,7 +535,14 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
 				break;
 			}
-			catch(DebugServerException e) {
+			catch(DebugServerException e) 
+			{
+				try {
+					Thread.sleep(200);
+				}
+				catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 		
