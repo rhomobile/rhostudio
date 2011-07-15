@@ -311,7 +311,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	public void suspend() throws DebugException 
 	{
 	}
-
 	
 	private String prepareResNameForSyncDebugger(String srcName)
 	{
@@ -531,6 +530,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	protected IStackFrame[] getStackFrames() throws DebugException 
 	{
+		waitDebugProcessing();
+		
 		StackData stackData = new StackData(m_debugServer.debugGetFile(), m_debugServer.debugGetLine());
 		
 		IStackFrame[] theFrames = new IStackFrame[1];
@@ -575,6 +576,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void stopped(DebugState state, String file, int line, String className, String method)
 	{
+		waitDebugProcessing();
+		
 		cleanState();
 		
 		installDeferredWatchs();
