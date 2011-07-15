@@ -11,6 +11,10 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.debug.core.DebugException;
@@ -77,23 +81,134 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 	    }
 	}
 	
+	private Map<String, String> findSubObjects(String parentObject)
+	{
+		Map<String, String> outList = new HashMap<String, String>();
+		
+		char[] dstBuffer = new char[parentObject.length()];		
+		parentObject.getChars(0, parentObject.length(), dstBuffer, 0);
+		
+		StringBuilder sb = new StringBuilder();
+		boolean isObject = false;
+		String name = null;
+		
+		for (int i=0; i<dstBuffer.length; ++i)
+		{
+			if (dstBuffer[i] == '{') 
+			{
+				StringBuilder nameBuilder = new StringBuilder();
+								
+				for (int j=i-3; j>0; j--)
+				{
+					if (dstBuffer[j] == ',')
+						break;
+					
+					nameBuilder.append(dstBuffer[j]);
+				}
+					
+				name = nameBuilder.reverse().toString();
+				
+				isObject = true;
+				sb       = new StringBuilder();
+			}
+			else if (dstBuffer[i] == '}') 
+			{
+				isObject = false;
+				sb.append('}');
+				
+				outList.put(name, sb.toString());
+			}
+			
+			if (isObject)
+				sb.append(dstBuffer[i]);			
+		}
+		
+		return outList;
+	}
+	
+	String removeSubObjects(Map<String, String> subObjects, String parentObject)
+	{
+		for (String objString : subObjects.values())
+		{
+			parentObject = parentObject.replace(objString, "");
+		}
+
+		return parentObject;
+	}
+	
+	List<String> splitSubVariables(String parentObject)
+	{
+		List<String> out = new ArrayList<String>();
+		StringTokenizer st = new StringTokenizer(parentObject, ",");
+		StringBuilder sb = new StringBuilder() ;  
+		
+		while (st.hasMoreTokens()) 
+	    {
+			String tokenString = st.nextToken();
+			
+			sb.append(tokenString);
+			
+			char[] dstBuffer = new char[tokenString.length()];		
+			tokenString.getChars(0, tokenString.length(), dstBuffer, 0);		
+						
+			if (dstBuffer[tokenString.length() - 1] == '\"')
+			{
+				out.add(sb.toString());
+				sb = new StringBuilder();
+			}
+			else
+			{
+				String s = new String(sb.toString());
+				
+				String[] ss = s.split("=>");
+				
+				if (ss.length > 1)
+				{
+					try
+					{
+						Integer i = new Integer(ss[1]);
+						out.add(sb.toString());
+						sb = new StringBuilder();						
+					}
+					catch (NumberFormatException  e) {
+					}
+				}
+				else 
+				{
+					out.add(sb.toString());
+					sb = new StringBuilder();										
+				}
+			}
+	    }
+		
+		return out;
+	}
+
 	private void parseObject(RhogenDebugTarget target, String s)
 	{
 		String prepareValue = s.subSequence(1, s.length() - 1).toString();
-		StringTokenizer st = new StringTokenizer(prepareValue, ",");
 		
-		if (st.countTokens() < 1)
+		Map<String, String> subObjects = findSubObjects(prepareValue);
+		
+		if (subObjects.size() != 0)
+		{
+			prepareValue = removeSubObjects(subObjects, prepareValue);
+		}
+		
+		List<String> splitTokens = splitSubVariables(prepareValue);
+
+		if (splitTokens.size() == 0)
 			return;
-		
-		m_childsVariables = new RhogenVariable[st.countTokens()];
+
+		m_childsVariables = new RhogenVariable[splitTokens.size()];		
 		m_hasVariables  = true;
 		
 		int idx=0;
-		while (st.hasMoreTokens()) 
-	    {
+		for (String string : splitTokens) 
+		{
 			try 
 			{				
-				String[] stValueToken = st.nextToken().split("=>");
+				String[] stValueToken = string.split("=>");
 				
 				if (stValueToken.length > 1)
 				{
@@ -102,8 +217,14 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 				}
 				else
 				{
+					String value = subObjects.get(stValueToken[0]);
+					
 					m_childsVariables[idx] = new RhogenVariable(target, stValueToken[0]);
-					m_childsVariables[idx].setValue(new RhogenValue(target, "null", false));
+					
+					if (value != null)
+						m_childsVariables[idx].setValue(new RhogenValue(target, value));
+					else
+						m_childsVariables[idx].setValue(new RhogenValue(target, "", false));
 				}
 			}
 			catch (DebugException e) 
