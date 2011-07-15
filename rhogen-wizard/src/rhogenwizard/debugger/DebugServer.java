@@ -156,6 +156,8 @@ public class DebugServer extends Thread {
 			outToClient.flush();
 		} catch (IOException ioe) {
 		}
+		catch (NullPointerException e) {			
+		}
 	}
 
 	/**
