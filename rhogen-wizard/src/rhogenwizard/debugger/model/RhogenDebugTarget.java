@@ -258,6 +258,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return !isTerminated() && !isSuspended();
 	}
 	
+	private void waitDebugProcessing()
+	{
+		while (m_debugServer.debugIsProcessing()) {
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ISuspendResume#isSuspended()
 	 */
@@ -271,6 +277,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public void resume() throws DebugException 
 	{
+		waitDebugProcessing();
 		cleanState();
 		resumed(DebugEvent.CLIENT_REQUEST);
 		m_debugServer.debugResume();
@@ -435,6 +442,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	public void stepOver()
 	{
+		waitDebugProcessing();
 		m_threadHandle.setStepping(true);
 		resumed(DebugEvent.STEP_OVER);
 		m_debugServer.debugStepOver();
@@ -442,6 +450,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	public void stepReturn() 
 	{
+		waitDebugProcessing();
 		m_threadHandle.setStepping(true);
 		resumed(DebugEvent.STEP_RETURN);
 		m_debugServer.debugStepReturn();
@@ -449,6 +458,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	public void stepInto()
 	{
+		waitDebugProcessing();
 		m_threadHandle.setStepping(true);
 		resumed(DebugEvent.STEP_INTO);
 		m_debugServer.debugStepInto();
