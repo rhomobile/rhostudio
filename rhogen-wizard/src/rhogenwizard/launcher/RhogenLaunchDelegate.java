@@ -258,15 +258,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		if (mode.equals(ILaunchManager.DEBUG_MODE))
 		{
 			target.setProcess(m_debugProcess);
-			launch.addDebugTarget(target);
-			
-			try 
-			{
-				Thread.sleep(sleepWaitChangeConsole);
-				ConsoleHelper.showAppConsole();
-			}
-			catch (InterruptedException e) {
-			}
+			launch.addDebugTarget(target);			
 		}
 	}
 
