@@ -66,6 +66,7 @@ public class ConsoleHelper
 
    public static void consoleAppPrint(String msg)
    {
+	   showAppConsole();
 	   getConsoleAppStream().println(msg);
    }
 
@@ -81,6 +82,7 @@ public class ConsoleHelper
 	   
 	   MessageConsole myConsole = findConsole(appConsoleName);
 	   conMan.showConsoleView(myConsole);
+	   conMan.refresh(myConsole);
    }
    
    public static void cleanAppConsole()
