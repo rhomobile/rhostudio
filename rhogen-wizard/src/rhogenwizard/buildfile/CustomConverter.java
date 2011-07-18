@@ -1,12 +1,28 @@
 package rhogenwizard.buildfile;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.yaml.snakeyaml.Yaml;
 
 public class CustomConverter extends AbstractStructureConverter 
 {
-
+	private static final String shiftLevel       = "  "; 
+	private static final String crCode           = "\n";
+	private static final char   rubyCommentsCode = '#';
+	
+	Map<String, String> m_commentsStorage = new HashMap<String, String>();   
+	
 	@Override
 	public String convertStructure() 
 	{
@@ -24,6 +40,32 @@ public class CustomConverter extends AbstractStructureConverter
 	        saveSelector(sb, "", key.toString(), val);
 	    }
 	    
+	    return addComments(sb.toString());
+	}
+	
+	private String addComments(String rawYmlData)
+	{
+	    StringTokenizer st = new StringTokenizer(rawYmlData, crCode);
+	    StringBuilder   sb = new StringBuilder();
+	    
+	    while (st.hasMoreTokens())
+	    {
+	    	String tokenString = st.nextToken();
+	    	
+	    	String trimString = tokenString.trim();
+	    	
+	    	String comments = m_commentsStorage.get(trimString); 
+	    		
+	    	if (comments != null)
+	    	{
+	    		sb.append(comments);
+	    		sb.append(crCode);
+	    	}
+	    	
+	    	sb.append(tokenString);
+	    	sb.append(crCode);
+	    }
+
 	    return sb.toString();
 	}
 	
@@ -72,10 +114,6 @@ public class CustomConverter extends AbstractStructureConverter
 						sb.append(itemValue.toString());
 					}
 				}
-				else
-				{
-					sb.append("");
-				}
 			}
 			else
 			{
@@ -83,21 +121,22 @@ public class CustomConverter extends AbstractStructureConverter
 			}
 		}
 		
-		sb.append("\n");
+		sb.append(crCode);
 	}
 	
 	private void saveList(StringBuilder sb, String prefix, String name, List l)
 	{
 		sb.append(prefix);
 		sb.append(name);
-		sb.append(": \n");
+		sb.append(":");
+		sb.append(crCode);
 		
 		for (int i=0; i<l.size(); ++i)
 		{
 			Object val = l.get(i);
 
 			sb.append(prefix);
-			sb.append("  - ");
+			sb.append(shiftLevel + "- ");
 			
 			String renderVal = val.toString();
 			
@@ -122,7 +161,7 @@ public class CustomConverter extends AbstractStructureConverter
 				sb.append("");
 			}	
 			
-			sb.append("\n");		
+			sb.append(crCode);		
 		}
 	}
 	
@@ -132,7 +171,8 @@ public class CustomConverter extends AbstractStructureConverter
 		{
 			sb.append(prefix);
 			sb.append(name);
-			sb.append(":\n");
+			sb.append(":");
+			sb.append(crCode);
 		}
 		
 	    Iterator it = m.entrySet().iterator();
@@ -144,7 +184,58 @@ public class CustomConverter extends AbstractStructureConverter
 	        Object key = (Object) pairs.getKey();
 	        Object val = pairs.getValue();
 	        
-	        saveSelector(sb, prefix + "  ", key.toString(), val);
+	        saveSelector(sb, prefix + shiftLevel, key.toString(), val);
 	    }
+	}
+
+	private void fillCommentsMap(String filePath)
+	{
+		try
+		{
+		  	FileInputStream fStream = new FileInputStream(filePath);
+		  	DataInputStream in      = new DataInputStream(fStream);
+		  	BufferedReader  br      = new BufferedReader(new InputStreamReader(in));
+		  	String commentLine = null, strLine = null;
+		  	
+		  	while((strLine = br.readLine()) != null)
+		  	{
+		  		strLine = strLine.trim();
+		  		
+		  		if (strLine.length() != 0)
+		  		{
+			  		if (strLine.charAt(0) == rubyCommentsCode)
+			  		{
+			  			commentLine = strLine;
+			  			continue;
+			  		}
+			  		
+		  			if (commentLine != null)
+		  			{	
+		  				m_commentsStorage.put(strLine, commentLine);
+		  				commentLine = null;
+		  			}
+		  		}
+		  	}
+		  	
+		  	br.close();
+		  	in.close();
+		  	fStream.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public Map getDataStorage(String filePath) throws FileNotFoundException 
+	{
+		File       ymlFile = new File(filePath);
+		Yaml       yaml    = new Yaml();		
+		FileReader fr      = new FileReader(ymlFile);
+
+		fillCommentsMap(filePath);
+		
+		return (Map) yaml.load(fr);		
 	}
 }

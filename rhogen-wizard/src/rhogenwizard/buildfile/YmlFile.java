@@ -18,11 +18,9 @@ public class YmlFile
 {
 	private static boolean SNAKE_YAML_SAVE = false;
 	
-	private String m_filePath = null;
-	private Map m_dataStorage = null;
-	
-	public YmlFile()
-	{}
+	private String              m_filePath = null;
+	private Map                 m_dataStorage = null;
+	private IStructureConverter m_dataConverter = new CustomConverter();
 	
 	public YmlFile(String ymlFileName) throws FileNotFoundException
 	{
@@ -30,14 +28,14 @@ public class YmlFile
 		File ymlFile = new File(ymlFileName);
 		
 		if (ymlFile.exists()) {
-			load(ymlFile);
+			load(ymlFileName);
 		}
 	}
 	
 	public YmlFile(File ymlFile) throws FileNotFoundException
 	{
 		m_filePath = ymlFile.getAbsolutePath();
-		load(ymlFile);
+		load(m_filePath);
 	}
 	
 	public String getPath()
@@ -45,18 +43,9 @@ public class YmlFile
 		return m_filePath;
 	}
 	
-	private void load(File ymlFile) throws FileNotFoundException
+	private void load(String ymlFilePath) throws FileNotFoundException
 	{
-		final Yaml yaml = new Yaml();
-		FileReader fr = new FileReader(ymlFile);
-		
-		m_dataStorage = (Map) yaml.load(fr);
-	}
-	
-	public void fromString(String ymlFiledata)
-	{
-		final Yaml yaml = new Yaml();
-		m_dataStorage = (Map) yaml.load(ymlFiledata);
+		m_dataStorage = m_dataConverter.getDataStorage(ymlFilePath);
 	}
 	
 	public String get(String sectionName, String paramName)
@@ -223,9 +212,8 @@ public class YmlFile
 				File outFile = new File(m_filePath);
 				FileOutputStream os = new FileOutputStream(outFile);
 
-				IStructureConverter converter = new CustomConverter();
-				converter.applyDataStirage(m_dataStorage);
-				dataString = converter.convertStructure();
+				m_dataConverter.applyDataStorage(m_dataStorage);
+				dataString = m_dataConverter.convertStructure();
 				
 			    os.write(dataString.getBytes());
 			}

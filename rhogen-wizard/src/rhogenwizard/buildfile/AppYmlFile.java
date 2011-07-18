@@ -30,17 +30,6 @@ public class AppYmlFile extends YmlFile
 		File buildFile = new File(buildFilePath);
 		return buildFile.exists();
 	}
-
-	public static AppYmlFile createFromString(String data) 
-	{
-		AppYmlFile ymlFile = new AppYmlFile();
-		ymlFile.fromString(data);
-		return ymlFile;
-	}
-
-	public AppYmlFile() 
-	{		
-	}
 	
 	public AppYmlFile(String ymlFileName) throws FileNotFoundException 
 	{
