@@ -20,6 +20,7 @@ class AppLogAdapter implements ILogDevice
 	{
 		if (null != m_consoleStream)
 		{
+			ConsoleHelper.showAppConsole();
 			m_consoleStream.println(prepareString(str));
 		}
 	}
