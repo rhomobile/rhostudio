@@ -48,6 +48,8 @@ public class RhogenDirectoryFieldEditor extends StringButtonFieldEditor
 			return null;
 		}
 
+        this.store();
+        
         return d.getAbsolutePath();
     }
 
@@ -63,21 +65,26 @@ public class RhogenDirectoryFieldEditor extends StringButtonFieldEditor
 			return true;
 		}
         File file = new File(fileName);
-        return true; //file.isDirectory();
+        return true;
     }
 
     private File getDirectory(File startingDirectory) 
     {
-
         DirectoryDialog fileDialog = new DirectoryDialog(getShell(), SWT.OPEN | SWT.SHEET);
-        if (startingDirectory != null) {
+        
+        if (startingDirectory != null) 
+        {
 			fileDialog.setFilterPath(startingDirectory.getPath());
 		}
-        else if (filterPath != null) {
+        else if (filterPath != null) 
+        {
         	fileDialog.setFilterPath(filterPath.getPath());
         }
+        
         String dir = fileDialog.open();
-        if (dir != null) {
+      
+        if (dir != null) 
+        {
             dir = dir.trim();
             if (dir.length() > 0) {
 				return new File(dir);

@@ -11,6 +11,8 @@ import rhogenwizard.buildfile.YmlFile;
 
 public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {
+	PreferenceInitializer m_pInit = null;
+	
 	public RhogenPreferencePageWm() 
 	{
 		super(GRID);
@@ -25,7 +27,7 @@ public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements
 
 		try 
 		{
-			PreferenceInitializer.getInstance().savePreferences();
+			m_pInit.savePreferences();
 		} 
 		catch (Exception e) 
 		{
@@ -52,6 +54,6 @@ public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements
 	 */
 	public void init(IWorkbench workbench) 
 	{
-		PreferenceInitializer pInit = PreferenceInitializer.getInstance();
+		m_pInit = PreferenceInitializer.getInstance();
 	}	
 }
