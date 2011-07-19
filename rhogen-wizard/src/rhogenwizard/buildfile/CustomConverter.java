@@ -156,10 +156,6 @@ public class CustomConverter extends AbstractStructureConverter
 					sb.append(val.toString());
 				}
 			}
-			else
-			{
-				sb.append("");
-			}	
 			
 			sb.append(crCode);		
 		}
@@ -195,26 +191,27 @@ public class CustomConverter extends AbstractStructureConverter
 		  	FileInputStream fStream = new FileInputStream(filePath);
 		  	DataInputStream in      = new DataInputStream(fStream);
 		  	BufferedReader  br      = new BufferedReader(new InputStreamReader(in));
-		  	String commentLine = null, strLine = null;
+		  	String          strLine = null;
+		  	StringBuilder   commentsBuilder = new StringBuilder(); 
 		  	
 		  	while((strLine = br.readLine()) != null)
 		  	{
-		  		strLine = strLine.trim();
+		  		String trimLine = strLine.trim();
 		  		
-		  		if (strLine.length() != 0)
+		  		if (trimLine.length() != 0)
 		  		{
-			  		if (strLine.charAt(0) == rubyCommentsCode)
+			  		if (trimLine.charAt(0) == rubyCommentsCode)
 			  		{
-			  			commentLine = strLine;
+			  			commentsBuilder.append(strLine);
 			  			continue;
 			  		}
-			  		
-		  			if (commentLine != null)
-		  			{	
-		  				m_commentsStorage.put(strLine, commentLine);
-		  				commentLine = null;
-		  			}
 		  		}
+		  		
+	  			if (commentsBuilder.length() != 0)
+	  			{	
+	  				m_commentsStorage.put(strLine, commentsBuilder.toString());
+	  				commentsBuilder = new StringBuilder();
+	  			}
 		  	}
 		  	
 		  	br.close();
