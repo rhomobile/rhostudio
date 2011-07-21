@@ -11,6 +11,7 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
+import java.beans.Expression;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -35,6 +36,7 @@ import org.eclipse.debug.core.IExpressionListener;
 import org.eclipse.debug.core.IExpressionManager;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.IMemoryBlock;
@@ -43,7 +45,10 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.core.model.IWatchExpressionDelegate;
+import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
+import org.eclipse.debug.internal.core.ExpressionManager;
 import org.eclipse.debug.internal.core.WatchExpression;
 import org.eclipse.dltk.internal.debug.core.model.NoWatchExpressionResult;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
@@ -60,6 +65,7 @@ import rhogenwizard.debugger.DebugState;
 import rhogenwizard.debugger.DebugVariable;
 import rhogenwizard.debugger.DebugVariableType;
 import rhogenwizard.debugger.IDebugCallback;
+import rhogenwizard.debugger.RhogenWatchExpression;
 import rhogenwizard.debugger.RhogenWatchExpressionResult;
 
 /**
@@ -117,7 +123,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 
 		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
 		DebugPlugin.getDefault().getExpressionManager().addExpressionListener(this);
-		
+
 		m_debugServer = new DebugServer(this);
 		m_debugServer.start();		
 		m_debugServer.debugSkipBreakpoints(false);
@@ -279,7 +285,9 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		waitDebugProcessing();
 		cleanState();
+		waitDebugProcessing();
 		resumed(DebugEvent.CLIENT_REQUEST);
+		waitDebugProcessing();
 		m_debugServer.debugResume();
 	}
 	
@@ -290,6 +298,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	private void resumed(int detail) 
 	{
+		waitDebugProcessing();
 		m_isSuspended = false;
 		m_threadHandle.fireResumeEvent(detail);
 	}
@@ -301,6 +310,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	private void suspended(int detail) 
 	{
+		waitDebugProcessing();
 		m_isSuspended = true;
 		m_threadHandle.fireSuspendEvent(detail);
 	}	
@@ -443,7 +453,9 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		waitDebugProcessing();
 		m_threadHandle.setStepping(true);
+		waitDebugProcessing();
 		resumed(DebugEvent.STEP_OVER);
+		waitDebugProcessing();
 		m_debugServer.debugStepOver();
 	}
 	
@@ -451,15 +463,19 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		waitDebugProcessing();
 		m_threadHandle.setStepping(true);
+		waitDebugProcessing();
 		resumed(DebugEvent.STEP_RETURN);
+		waitDebugProcessing();
 		m_debugServer.debugStepReturn();
 	}
 	
 	public void stepInto()
 	{
-		waitDebugProcessing();
+		waitDebugProcessing();		
 		m_threadHandle.setStepping(true);
+		waitDebugProcessing();
 		resumed(DebugEvent.STEP_INTO);
+		waitDebugProcessing();
 		m_debugServer.debugStepInto();
 	}
 	
@@ -514,11 +530,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	
 	private void installDeferredWatchs()
 	{
-		IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions(DebugConstants.debugModelId);
+		IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions();
 		
-		for (int i = 0; i < watchs.length; i++)
+		for (IExpression exp : watchs) 
 		{
-			expressionAdded(watchs[i]);
+			waitDebugProcessing();
+			m_debugServer.debugEvaluate(exp.getExpressionText());
 		}
 	}
 	
@@ -549,9 +566,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				try {
 					Thread.sleep(200);
 				}
-				catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+				catch (InterruptedException e1) {}
 			}
 		}
 		
@@ -582,12 +597,16 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		
 		installDeferredWatchs();
 		
+		waitDebugProcessing();
+		
 		if (state == DebugState.BREAKPOINT)
 		{
 			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
 		
 			for (int i = 0; i < breakpoints.length; i++) 
 			{
+				waitDebugProcessing();
+				
 				IBreakpoint breakpoint = breakpoints[i];
 	
 				if (breakpoint instanceof ScriptLineBreakpoint)
@@ -653,8 +672,10 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void resumed() 
 	{
+		waitDebugProcessing();
 		cleanState();
 		m_isSuspended = false;
+		waitDebugProcessing();
 		resumed(DebugEvent.CLIENT_REQUEST);
 	}
 
@@ -665,31 +686,48 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 	
 	@Override
-	public void evaluation(boolean valid, String code, String value) 
+	synchronized public void evaluation(boolean valid, String code, String value) 
 	{
+		ConsoleHelper.consoleAppPrint("start");
+		
 		IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
 		
-		IExpression[] modelExps = expManager.getExpressions(DebugConstants.debugModelId);
+		IExpression[] modelExps = expManager.getExpressions();
+		
+		//ConsoleHelper.consoleAppPrint("start for, items = " + modelExps.toString()) ;
 		
 		for (IExpression currExp : modelExps)
 		{
+			//ConsoleHelper.consoleAppPrint("find for 1");
+			
 			String s = currExp.getExpressionText();
+			
+			//ConsoleHelper.consoleAppPrint("find for = " + s);
 			
 			if (currExp.getExpressionText().equals(code))
 			{
-				if (currExp instanceof WatchExpression)
+				//ConsoleHelper.consoleAppPrint("find it");
+				
+				if (currExp instanceof RhogenWatchExpression)
 				{
-					try 
-					{
+					//ConsoleHelper.consoleAppPrint("start 1");
+//					try 
+//					{
+						//waitDebugProcessing();
+						
 						IValue watchVal = new RhogenValue(this, value);
-						WatchExpression watchExp  = (WatchExpression)currExp;
-						Thread.sleep(200); //HOTFIX 
+						//Thread.sleep(1200); //HOTFIX
+						RhogenWatchExpression watchExp  = (RhogenWatchExpression)currExp;
+						//Thread.sleep(1200); //HOTFIX 
 						watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
-					} 
-					catch (InterruptedException e) 
-					{
-						e.printStackTrace();
-					}
+						//Thread.sleep(1200); //HOTFIX
+						
+						//ConsoleHelper.consoleAppPrint("start 2");
+//					} 
+//					catch (InterruptedException e) 
+//					{
+//						e.printStackTrace();
+//					}
 				}
 			}
 		}	
@@ -710,8 +748,16 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void expressionAdded(IExpression expression)
 	{
+		IExpressionManager m = DebugPlugin.getDefault().getExpressionManager();
+		waitDebugProcessing();
 		String expText = expression.getExpressionText();
-		m_debugServer.debugEvaluate(expText);
+		
+		if (!(expression instanceof RhogenWatchExpression))
+		{
+			m.removeExpression(expression);
+			m.addExpression(new RhogenWatchExpression(expText));
+			m_debugServer.debugEvaluate(expText);	
+		}	
 	}
 
 	@Override
@@ -723,8 +769,10 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void expressionChanged(IExpression expression) 
 	{
-		String expText = expression.getExpressionText();
-		m_debugServer.debugEvaluate(expText);
+//		waitDebugProcessing();
+//		String expText = expression.getExpressionText();
+//		expression = new RhogenWatchExpression(expText);
+//		m_debugServer.debugEvaluate(expText);
 	}
 
 	@Override

@@ -21,9 +21,9 @@ import org.eclipse.debug.core.model.IVariable;
 public class RhogenVariable extends RhogenDebugElement implements IVariable 
 {
 	// name & stack frmae
-	private String 			 m_varName    = null;
+	private String 			  m_varName    = null;
 	private RhogenDebugTarget m_stackFrame = null;
-	private IValue           m_varValue   = null;
+	private IValue            m_varValue   = null;
 	
 	/**
 	 * Constructs a variable contained in the given stack frame
