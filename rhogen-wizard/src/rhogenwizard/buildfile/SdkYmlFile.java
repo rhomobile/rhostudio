@@ -134,7 +134,7 @@ public class SdkYmlFile extends YmlFile
 			{
 				Map mapItem = (Map)item;
 				
-				if (mapItem.get("mds") != null)
+				if (mapItem.keySet().contains("mds"))
 				{
 					versions.add(s.toString());
 				}
