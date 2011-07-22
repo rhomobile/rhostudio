@@ -37,7 +37,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		{
 			if (m_initPref != null)
 			{
-					m_initPref.initFromFirstProject();
+				m_initPref.initFromFirstProject();
 				
 				return m_initPref;
 			}
@@ -196,15 +196,22 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		{
 			m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			
-			AppYmlFile appYmlFile = AppYmlFile.createFromProject(m_currProject);
-			m_currRhodesPath  = appYmlFile.getSdkConfigPath();
-			
-			m_ymlFile = new SdkYmlFile(m_currRhodesPath );
-			
-			m_bbVers       = m_ymlFile.getBbVersions();
-			m_defaultBbVer = m_bbVers.get(0);
-			
-			initializeDefaultPreferences();
+			if (m_currProject.isOpen())
+			{
+				AppYmlFile appYmlFile = AppYmlFile.createFromProject(m_currProject);
+				m_currRhodesPath  = appYmlFile.getSdkConfigPath();
+				
+				m_ymlFile = new SdkYmlFile(m_currRhodesPath );
+				
+				m_bbVers       = m_ymlFile.getBbVersions();
+				
+				if (m_bbVers.size() == 0)
+					m_defaultBbVer = "";
+				else
+					m_defaultBbVer = m_bbVers.get(0);
+				
+				initializeDefaultPreferences();
+			}
 		} 
 		catch (FileNotFoundException e) 
 		{
