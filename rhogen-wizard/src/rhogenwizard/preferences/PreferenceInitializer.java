@@ -153,7 +153,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				m_ymlFile.setAndroidSdkPath(sdkPath);
 				m_ymlFile.setBbJdkPath(bbVersionName, bbJdkPath);
 				m_ymlFile.setBbMdsPath(bbVersionName, bbMdsPath);
-				m_ymlFile.setBbSimPort(bbVersionName, new Integer(bbSim));
+				
+				if (bbSim.length() != 0)
+					m_ymlFile.setBbSimPort(bbVersionName, new Integer(bbSim));
+				else
+					m_ymlFile.setBbSimPort(bbVersionName, 0);
 				
 				m_ymlFile.save();
 			}			
