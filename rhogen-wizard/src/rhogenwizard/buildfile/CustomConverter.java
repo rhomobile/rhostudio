@@ -212,7 +212,7 @@ public class CustomConverter extends AbstractStructureConverter
 			  				int startChar = trimLine.indexOf("#");
 			  				
 			  				if (startChar > 0) {
-			  					m_commentsStorage.put(trimLine.substring(0, startChar).trim(), trimLine.substring(startChar, trimLine.length() - 1).trim());
+			  					m_commentsStorage.put(trimLine.substring(0, startChar).trim(), trimLine.substring(startChar, trimLine.length() - 1));
 			  					continue;
 			  				}
 			  			}
