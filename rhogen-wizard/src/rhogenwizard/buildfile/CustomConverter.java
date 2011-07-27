@@ -59,7 +59,6 @@ public class CustomConverter extends AbstractStructureConverter
 	    	if (comments != null)
 	    	{
 	    		sb.append(comments);
-	    		sb.append(crCode);
 	    	}
 	    	
 	    	sb.append(tokenString);
@@ -202,7 +201,8 @@ public class CustomConverter extends AbstractStructureConverter
 		  		{
 			  		if (trimLine.charAt(0) == rubyCommentsCode)
 			  		{
-			  			commentsBuilder.append(strLine);
+			  			commentsBuilder.append(trimLine);
+			  			commentsBuilder.append(crCode);
 			  			continue;
 			  		}
 			  		else
@@ -212,7 +212,7 @@ public class CustomConverter extends AbstractStructureConverter
 			  				int startChar = trimLine.indexOf("#");
 			  				
 			  				if (startChar > 0) {
-			  					m_commentsStorage.put(trimLine.substring(0, startChar).trim(), trimLine.substring(startChar, trimLine.length() - 1).trim());
+			  					m_commentsStorage.put(trimLine.substring(0, startChar).trim(), trimLine.substring(startChar, trimLine.length() - 1) + crCode);
 			  					continue;
 			  				}
 			  			}
@@ -221,7 +221,7 @@ public class CustomConverter extends AbstractStructureConverter
 		  		
 	  			if (commentsBuilder.length() != 0)
 	  			{	
-	  				m_commentsStorage.put(strLine, commentsBuilder.toString());
+	  				m_commentsStorage.put(trimLine, commentsBuilder.toString());
 	  				commentsBuilder = new StringBuilder();
 	  			}
 		  	}
