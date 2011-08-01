@@ -43,6 +43,11 @@ public class YmlFile
 		return m_filePath;
 	}
 	
+	public Map getData()
+	{
+		return m_dataStorage;
+	}
+	
 	private void load(String ymlFilePath) throws FileNotFoundException
 	{
 		m_dataStorage = m_dataConverter.getDataStorage(ymlFilePath);

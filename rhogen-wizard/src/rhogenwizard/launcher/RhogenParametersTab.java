@@ -392,19 +392,21 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			try 
 			{
 				m_ymlFile = AppYmlFile.createFromProject(m_selProject);
-			
-				String androidVersion = m_ymlFile.getAndroidVer();
-				String bbVersion      = m_ymlFile.getBlackberryVer();
-				String androidEmuName = m_ymlFile.getAndroidEmuName();
-				String iphoneVersion  = m_ymlFile.getIphoneVer();
-
-				iphoneVersion = iphoneVersion == null ? iphoneVersions[0] : iphoneVersion;
 				
-				configuration.setAttribute(ConfigurationConstants.androidVersionAttribute, androidVersion);
-				configuration.setAttribute(ConfigurationConstants.blackberryVersionAttribute, bbVersion);
-				configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, androidEmuName);
-				configuration.setAttribute(ConfigurationConstants.iphoneVersionAttribute, iphoneVersion);
-				
+				if (m_ymlFile != null)
+				{
+					String androidVersion = m_ymlFile.getAndroidVer();
+					String bbVersion      = m_ymlFile.getBlackberryVer();
+					String androidEmuName = m_ymlFile.getAndroidEmuName();
+					String iphoneVersion  = m_ymlFile.getIphoneVer();
+	
+					iphoneVersion = iphoneVersion == null ? iphoneVersions[0] : iphoneVersion;
+					
+					configuration.setAttribute(ConfigurationConstants.androidVersionAttribute, androidVersion);
+					configuration.setAttribute(ConfigurationConstants.blackberryVersionAttribute, bbVersion);
+					configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, androidEmuName);
+					configuration.setAttribute(ConfigurationConstants.iphoneVersionAttribute, iphoneVersion);
+				}
 			} 
 			catch (FileNotFoundException e)
 			{

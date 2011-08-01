@@ -18,7 +18,12 @@ public class AppYmlFile extends YmlFile
 			String projectPath = project.getLocation().toOSString();
 			String projectFullPath = projectPath + "/" + configFileName; 
 			
-			return new AppYmlFile(projectFullPath);
+			AppYmlFile ymlFile = new AppYmlFile(projectFullPath);
+			
+			if (ymlFile.getData() == null)
+				return null;
+			
+			return ymlFile;
 		}
 		
 		return null;
