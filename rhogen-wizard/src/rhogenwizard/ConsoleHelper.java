@@ -75,6 +75,16 @@ public class ConsoleHelper
 	   getConsoleMsgStream().println(msg);
    }
    
+   public static void showBuildConsole()
+   {
+	   ConsolePlugin   plugin = ConsolePlugin.getDefault();
+	   IConsoleManager conMan = plugin.getConsoleManager();
+	   
+	   MessageConsole myConsole = findConsole(buildConsoleName);
+	   conMan.showConsoleView(myConsole);
+	   conMan.refresh(myConsole);
+   }
+   
    public static void showAppConsole()
    {
 	   ConsolePlugin   plugin = ConsolePlugin.getDefault();

@@ -177,6 +177,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		rhodesLogHelper.stopLog();
 		
 		ConsoleHelper.cleanBuildConsole();
+		ConsoleHelper.showBuildConsole();
 		
 		setupConfigAttributes(configuration);
 		
