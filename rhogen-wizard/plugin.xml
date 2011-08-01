@@ -239,7 +239,7 @@
           </property>
           <property
                 name="windowImages"
-                value="icons/sample16.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
+                value="icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
           </property>
           <property
                 name="startupForegroundColor"
@@ -363,8 +363,7 @@
       </factory>
    </extension>
    
-      <extension
-         point="org.eclipse.ui.contexts">
+   <extension point="org.eclipse.ui.contexts">
       <context
             name="Debugging PDA"
             description="Debugging PDA"
@@ -372,5 +371,12 @@
             parentId="org.eclipse.debug.ui.debugging">
       </context>
    </extension>
+   
+   <extension point="org.eclipse.debug.core.watchExpressionDelegates">
+     <watchExpressionDelegate
+           debugModel="org.eclipse.dltk.debug.rubyModel"
+           delegateClass="rhogenwizard.debugger.RhogenWatchExpressionDelegate">
+     </watchExpressionDelegate>
+    </extension>
    
 </plugin>
