@@ -20,6 +20,7 @@ import org.eclipse.ui.*;
 import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.CheckProjectException;
+import rhogenwizard.OSHelper;
 import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.RunExeHelper;
@@ -117,17 +118,30 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 		{
 			monitor.beginTask("Creating " + infoHolder.appName, 2);
 			monitor.worked(1);
-			monitor.setTaskName("Opening file for editing...");
+			monitor.setTaskName("Create project...");
 			
 			newProject = RhodesProjectSupport.createProject(infoHolder);
 	
 			if (!infoHolder.existCreate) 
 			{
+				monitor.setTaskName("Generate application...");
+				
 				if (m_rhogenAdapter.generateSyncApp(infoHolder) != 0)
 				{
 					throw new IOException(MsgConstants.errInstallRhosync);
 				}
 			}
+			
+			// install dtach
+			if (OSHelper.isWindows() == false)
+			{
+				monitor.setTaskName("Install dtach...");
+				m_rhogenAdapter.runRakeTask(infoHolder.appDir, "dtach:install");
+			}
+			
+			// install redis server
+			monitor.setTaskName("Install redis...");
+			m_rhogenAdapter.runRakeTask(infoHolder.appDir, "redis:install");
 
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 

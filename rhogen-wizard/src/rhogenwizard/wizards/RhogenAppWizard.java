@@ -116,12 +116,14 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 		{
 			monitor.beginTask("Creating " + infoHolder.appName, 2);
 			monitor.worked(1);
-			monitor.setTaskName("Opening file for editing...");
+			monitor.setTaskName("Create project...");
 			
 			newProject = RhodesProjectSupport.createProject(infoHolder);
 
 			if (CommonConstants.checkRhodesVersion)
 			{
+				monitor.setTaskName("Check Rhodes version...");
+				
 				try
 				{
 					checkRhodesVersion(CommonConstants.rhodesVersion);
@@ -138,6 +140,8 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 			
 			if (!infoHolder.existCreate) 
 			{
+				monitor.setTaskName("Generate application...");
+				
 				if (m_rhogenAdapter.generateApp(infoHolder) != 0)
 				{
 					throw new IOException("The Rhodes SDK do not installed");
