@@ -132,19 +132,21 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 				}
 			}
 			
+			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+			
 			// install dtach
 			if (OSHelper.isWindows() == false)
 			{
 				monitor.setTaskName("Install dtach...");
-				m_rhogenAdapter.runRakeTask(infoHolder.appDir, "dtach:install");
+				monitor.worked(1);
+				m_rhogenAdapter.runRakeTask(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName, "dtach:install");
+				
+				// install redis server
+				monitor.setTaskName("Install redis...");
+				monitor.worked(1);
+				m_rhogenAdapter.runRakeTask(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName, "redis:install");
 			}
 			
-			// install redis server
-			monitor.setTaskName("Install redis...");
-			m_rhogenAdapter.runRakeTask(infoHolder.appDir, "redis:install");
-
-			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
 			job.run(monitor);
 			
