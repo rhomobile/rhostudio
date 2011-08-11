@@ -191,11 +191,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		
 		for(IProject p : projects)
 		{
-			File cfgFile = getAppSdkCongigPath(p);
-			
-			if (cfgFile.exists())
+			if (p.isOpen())
 			{
-				namesList.add(p.getName());
+				File cfgFile = getAppSdkCongigPath(p);
+				
+				if (cfgFile.exists())
+				{
+					namesList.add(p.getName());
+				}
 			}
 		}
 			
