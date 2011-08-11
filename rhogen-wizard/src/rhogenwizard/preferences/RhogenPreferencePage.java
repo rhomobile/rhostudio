@@ -8,8 +8,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
@@ -46,10 +48,10 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 	
 		if (projNames == null || projNames.size() == 0)
 		{
-			MessageBox mb = new MessageBox(getShell(), SWT.ICON_WARNING);
-			mb.setText("Warning");
-			mb.setMessage("Create one or more rhodes project.");
-			mb.open();
+			MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK); 
+			messageBox.setText("Error");
+			messageBox.setMessage("IRhodes location is undefined. Please, open/create at least one Rhodes Application project");
+			messageBox.open();				
 			
 			return null;
 		}
