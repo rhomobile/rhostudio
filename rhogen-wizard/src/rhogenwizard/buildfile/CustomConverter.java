@@ -21,7 +21,7 @@ public class CustomConverter extends AbstractStructureConverter
 	private static final String crCode           = "\n";
 	private static final char   rubyCommentsCode = '#';
 	
-	Map<String, String> m_commentsStorage = new HashMap<String, String>();   
+	Map<Integer, String> m_commentsStorage = new HashMap<Integer, String>();   
 	
 	@Override
 	public String convertStructure() 
@@ -48,13 +48,12 @@ public class CustomConverter extends AbstractStructureConverter
 	    StringTokenizer st = new StringTokenizer(rawYmlData, crCode);
 	    StringBuilder   sb = new StringBuilder();
 	    
+	    int lineNum = 0;
 	    while (st.hasMoreTokens())
 	    {
 	    	String tokenString = st.nextToken();
 	    	
-	    	String trimString = tokenString.trim();
-	    	
-	    	String comments = m_commentsStorage.get(trimString); 
+	    	String comments = m_commentsStorage.get(new Integer(lineNum)); 
 	    		
 	    	if (comments != null)
 	    	{
@@ -63,6 +62,8 @@ public class CustomConverter extends AbstractStructureConverter
 	    	
 	    	sb.append(tokenString);
 	    	sb.append(crCode);
+	    	
+	    	lineNum++;
 	    }
 
 	    return sb.toString();
@@ -193,6 +194,7 @@ public class CustomConverter extends AbstractStructureConverter
 		  	String          strLine = null;
 		  	StringBuilder   commentsBuilder = new StringBuilder(); 
 		  	
+		  	int lineNum = 0;
 		  	while((strLine = br.readLine()) != null)
 		  	{
 		  		String trimLine = strLine.trim();
@@ -212,7 +214,7 @@ public class CustomConverter extends AbstractStructureConverter
 			  				int startChar = trimLine.indexOf("#");
 			  				
 			  				if (startChar > 0) {
-			  					m_commentsStorage.put(trimLine.substring(0, startChar).trim(), trimLine.substring(startChar, trimLine.length() - 1) + crCode);
+			  					m_commentsStorage.put(/*trimLine.substring(0, startChar).trim()*/new Integer(lineNum), trimLine.substring(startChar, trimLine.length() - 1) + crCode);
 			  					continue;
 			  				}
 			  			}
@@ -221,9 +223,11 @@ public class CustomConverter extends AbstractStructureConverter
 		  		
 	  			if (commentsBuilder.length() != 0)
 	  			{	
-	  				m_commentsStorage.put(trimLine, commentsBuilder.toString());
+	  				m_commentsStorage.put(new Integer(lineNum), commentsBuilder.toString());
 	  				commentsBuilder = new StringBuilder();
 	  			}
+	  			
+	  			++lineNum;
 		  	}
 		  	
 		  	br.close();
