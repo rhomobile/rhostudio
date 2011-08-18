@@ -134,9 +134,9 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 			
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 			
-			// install dtach
 			if (OSHelper.isWindows() == false)
 			{
+				// install dtach
 				monitor.setTaskName("Install dtach...");
 				monitor.worked(1);
 				m_rhogenAdapter.runRakeTask(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName, "dtach:install");
