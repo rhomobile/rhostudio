@@ -202,6 +202,11 @@ public class RhodesAdapter
 		
 		if (platformType == EPlatformType.eIPhone)
 			sb.append(":production");
+		else if (platformType == EPlatformType.eBb) // FIX for bb
+		{
+			sb = new StringBuilder();
+			sb.append("device:bb:production");
+		}
 		else
 			sb.append(":device");
 		
