@@ -17,9 +17,10 @@ import org.yaml.snakeyaml.Yaml;
 
 public class CustomConverter extends AbstractStructureConverter 
 {
-	private static final String shiftLevel       = "  "; 
-	private static final String crCode           = "\n";
-	private static final char   rubyCommentsCode = '#';
+	private static final String shiftLevel          = "  "; 
+	private static final String crCode              = "\n";
+	private static final char   rubyCommentsCode    = '#';
+	private static final String rubyCommentsCodeStr = "#";
 	
 	Map<Integer, String> m_commentsStorage = new HashMap<Integer, String>();   
 	
@@ -209,12 +210,12 @@ public class CustomConverter extends AbstractStructureConverter
 			  		}
 			  		else
 			  		{
-			  			if (trimLine.contains("#"))
+			  			if (trimLine.contains(rubyCommentsCodeStr))
 			  			{
-			  				int startChar = trimLine.indexOf("#");
+			  				int startChar = trimLine.indexOf(rubyCommentsCodeStr);
 			  				
 			  				if (startChar > 0) {
-			  					m_commentsStorage.put(/*trimLine.substring(0, startChar).trim()*/new Integer(lineNum), trimLine.substring(startChar, trimLine.length() - 1) + crCode);
+			  					m_commentsStorage.put(new Integer(lineNum), trimLine.substring(startChar, trimLine.length() - 1) + crCode);
 			  					continue;
 			  				}
 			  			}
