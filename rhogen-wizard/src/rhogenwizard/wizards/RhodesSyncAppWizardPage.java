@@ -49,7 +49,7 @@ public class RhodesSyncAppWizardPage extends WizardPage
 	public RhodesSyncAppWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
-		setTitle("Rhosync application generator wizard");
+		setTitle("Rhoconnect application generator wizard");
 		setDescription("Desc wizar");
 	}
 	
@@ -165,7 +165,7 @@ public class RhodesSyncAppWizardPage extends WizardPage
 	{		
 		setDescription("");
 		
-		m_appNameText.setText("RhosyncApplication1");
+		m_appNameText.setText("RhoconnectApplication1");
 		
 		setControlsForDefaultPath();
 	}

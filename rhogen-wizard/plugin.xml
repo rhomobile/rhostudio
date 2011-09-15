@@ -22,7 +22,7 @@
             class="rhogenwizard.wizards.RhogenSyncAppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSyncAppWizard"
-            name="Rhosync application"
+            name="Rhoconnect application"
             project="true"> 
       </wizard>
             
@@ -40,7 +40,7 @@
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSourceAdapterWizard"
-            name="Rhosync Source Adapter"> 
+            name="Rhoconnect Source Adapter"> 
       </wizard>
    </extension>
    

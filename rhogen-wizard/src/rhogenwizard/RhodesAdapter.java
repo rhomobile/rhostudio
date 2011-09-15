@@ -54,7 +54,7 @@ public class RhodesAdapter
 	public static final String platformRsync = "";
 	
 	private String m_rhogenExe = "rhodes";
-	private String m_rhosyncExe = "rhosync"; 
+	private String m_rhosyncExe = "rhoconnect"; 
 	private String m_rakeExe = "rake";	
 	private SysCommandExecutor m_executor = new SysCommandExecutor();
 	
