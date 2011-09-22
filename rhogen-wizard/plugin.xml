@@ -150,7 +150,7 @@
            delegate="rhogenwizard.launcher.RhosyncLaunchDelegate"
            id="rhogenwizard.launcher.rhosyncApp"
            modes="run, debug"
-           name="Rhosync Application"
+           name="Rhoconnect Application"
            public="true"
            sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
