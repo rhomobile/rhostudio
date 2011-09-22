@@ -293,7 +293,11 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 	 */
 	protected void createPages() 
 	{
-		createPage0();
+		if (getFileName().equals(AppYmlFile.configFileName))
+		{
+			createPage0();
+		}
+		
 		createPage1();
 	}
 	
@@ -357,6 +361,11 @@ public class RhodesEditor extends MultiPageEditorPart implements IResourceChange
 		
 		try 
 		{	
+			if (!getFileName().equals(AppYmlFile.configFileName))
+			{
+				newPageIndex = 1;
+			}
+			
 			if (newPageIndex == 0)
 			{
 				m_editor.doSave(null);
