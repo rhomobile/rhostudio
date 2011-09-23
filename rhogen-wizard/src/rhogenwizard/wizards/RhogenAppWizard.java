@@ -32,9 +32,9 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 {
 	private static final String okRhodesVersionFlag = "1";
 	
-	private RhodesAppWizardPage  m_pageApp = null;
-	private ISelection           selection = null;
-	private RhodesAdapter        m_rhogenAdapter = new RhodesAdapter();
+	private AppWizardPage  m_pageApp = null;
+	private ISelection     selection = null;
+	private RhodesAdapter  m_rhogenAdapter = new RhodesAdapter();
 	
 	/**
 	 * Constructor for SampleNewWizard.
@@ -50,7 +50,7 @@ public class RhogenAppWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageApp = new RhodesAppWizardPage(selection);
+		m_pageApp = new AppWizardPage(selection);
 		addPage(m_pageApp);
 	}
 

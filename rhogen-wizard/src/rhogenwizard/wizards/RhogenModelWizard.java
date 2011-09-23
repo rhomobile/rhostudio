@@ -91,11 +91,11 @@ class ModelCreationJob extends UIJob
 
 public class RhogenModelWizard extends Wizard implements INewWizard 
 {
-	private RhodesModelWizardPage m_pageModel = null;
-	private ISelection            m_selection = null;
-	private RhodesAdapter         m_rhogenAdapter = new RhodesAdapter();
-	private String 	              m_projectLocation = null;
-	private IProject			  m_currentProject = null;
+	private ModelWizardPage m_pageModel = null;
+	private ISelection      m_selection = null;
+	private RhodesAdapter   m_rhogenAdapter = new RhodesAdapter();
+	private String 	        m_projectLocation = null;
+	private IProject		m_currentProject = null;
 	
 	public RhogenModelWizard()
 	{
@@ -127,7 +127,7 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageModel = new RhodesModelWizardPage(m_selection);
+		m_pageModel = new ModelWizardPage(m_selection);
 		addPage(m_pageModel);
 	}
 
@@ -219,7 +219,8 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	 * we can initialize from it.
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
+	public void init(IWorkbench workbench, IStructuredSelection selection) 
+	{
 		this.m_selection = selection;
 	}
 }
