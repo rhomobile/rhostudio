@@ -136,7 +136,7 @@ public class RhodesAdapter
 		m_executor.runCommand(cmdLine);
 		
 		sb = new StringBuilder();
-		sb.append("rhosync:start");
+		sb.append("rhoconnect:start");
 		
 		cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
@@ -257,7 +257,7 @@ public class RhodesAdapter
 		m_executor.runCommand(cmdLine);
 		
 		sb = new StringBuilder();
-		sb.append("rhosync:start");
+		sb.append("rhoconnect:start");
 		
 		cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
