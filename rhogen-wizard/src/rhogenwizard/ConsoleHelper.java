@@ -10,8 +10,8 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class ConsoleHelper
 {
-	private static final String appConsoleName = "Rhodes application console";
-	private static final String buildConsoleName = "Rhodes build console";
+	private static final String appConsoleName = "Rhomobile application console";
+	private static final String buildConsoleName = "Rhomobile build console";
 	
 	private static MessageConsole msgConsole = null;
 	private static MessageConsole appConsole = null;
