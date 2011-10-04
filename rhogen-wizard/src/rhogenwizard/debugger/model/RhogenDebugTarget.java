@@ -563,7 +563,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 			}
 			catch(DebugServerException e) 
 			{
-				try {
+				try 
+				{
 					Thread.sleep(200);
 				}
 				catch (InterruptedException e1) {}
@@ -693,41 +694,18 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
 		
 		IExpression[] modelExps = expManager.getExpressions();
-		
-		//ConsoleHelper.consoleAppPrint("start for, items = " + modelExps.toString()) ;
-		
+			
 		for (IExpression currExp : modelExps)
 		{
-			//ConsoleHelper.consoleAppPrint("find for 1");
-			
 			String s = currExp.getExpressionText();
-			
-			//ConsoleHelper.consoleAppPrint("find for = " + s);
 			
 			if (currExp.getExpressionText().equals(code))
 			{
-				//ConsoleHelper.consoleAppPrint("find it");
-				
 				if (currExp instanceof RhogenWatchExpression)
 				{
-					//ConsoleHelper.consoleAppPrint("start 1");
-//					try 
-//					{
-						//waitDebugProcessing();
-						
-						IValue watchVal = new RhogenValue(this, value);
-						//Thread.sleep(1200); //HOTFIX
-						RhogenWatchExpression watchExp  = (RhogenWatchExpression)currExp;
-						//Thread.sleep(1200); //HOTFIX 
-						watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
-						//Thread.sleep(1200); //HOTFIX
-						
-						//ConsoleHelper.consoleAppPrint("start 2");
-//					} 
-//					catch (InterruptedException e) 
-//					{
-//						e.printStackTrace();
-//					}
+					IValue watchVal = new RhogenValue(this, value);
+					RhogenWatchExpression watchExp  = (RhogenWatchExpression)currExp;
+					watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
 				}
 			}
 		}	
