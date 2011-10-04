@@ -44,32 +44,6 @@
       </wizard>
    </extension>
    
-   <extension point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IProject"
-            id="rhogenwizard.contribution1">
-            
-         <menu
-               icon="icons/sample16.png"
-               id="rhogen-model.menumodel"
-               label="Rhomobile"
-               path="additions">
-            <separator
-                  name="group1">
-            </separator>
-         </menu>
-         
-         <action
-               class="rhogenwizard.actions.NewModelAction"
-               enablesFor="1"
-               icon="icons/sample16.png"
-               id="rhogen-model.newAction"
-               label="Rhodes model"
-               menubarPath="rhogen-model.menumodel/group1">
-         </action>
-      </objectContribution>
-   </extension>
-   
    <extension point="org.eclipse.ui.editors">
       <editor
             class="rhogenwizard.editors.RhodesEditor"
