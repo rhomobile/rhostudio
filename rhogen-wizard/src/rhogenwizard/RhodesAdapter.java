@@ -125,7 +125,7 @@ public class RhodesAdapter
 	public IProcess debugSyncApp(String projectName, String workDir, ILaunch launch) throws Exception
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("redis:start");
+		sb.append("redis:startbg");
 		
 		m_executor.setWorkingDirectory(workDir);
 		
@@ -246,7 +246,7 @@ public class RhodesAdapter
 	public int buildRhosyncApp(String workDir) throws Exception
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("redis:start");
+		sb.append("redis:startbg");
 		
 		m_executor.setWorkingDirectory(workDir);
 		
