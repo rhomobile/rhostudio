@@ -132,8 +132,8 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 				}
 			}
 			
-//			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-//			
+			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+			
 //			if (OSHelper.isWindows() == false)
 //			{
 //				// install dtach

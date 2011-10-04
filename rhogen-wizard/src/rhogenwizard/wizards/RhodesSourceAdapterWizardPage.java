@@ -65,22 +65,6 @@ public class RhodesSourceAdapterWizardPage extends WizardPage
 			}
 		});
 
-		// for fill 3 columns
-//		label = new Label(container, SWT.NULL); 
-//		label.setText("");
-//		
-//		// second row
-//		label = new Label(container, SWT.NULL);
-//		label.setText("&Model attributes:");
-//
-//		m_modelParams = new Text(container, SWT.BORDER | SWT.SINGLE);
-//		m_modelParams.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		m_modelParams.addModifyListener(new ModifyListener() {
-//			public void modifyText(ModifyEvent e) {
-//				dialogChanged();
-//			}
-//		});
-		
 		initialize();
 		dialogChanged();
 		setControl(container);
@@ -103,12 +87,6 @@ public class RhodesSourceAdapterWizardPage extends WizardPage
 			updateStatus("Adapter name must be specified");
 			return;
 		}
-			
-//		if (getModelParams().length() == 0) {
-//			updateStatus("Model attributes must be specified. Sample: list of one or\n" +
-//					"   more string attributes (i.e. name,industry,progress), NO spaces between attributes");
-//			return;
-//		}
 
 		updateStatus(null);
 	}
