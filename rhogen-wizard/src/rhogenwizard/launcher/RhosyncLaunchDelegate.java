@@ -109,7 +109,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 					e.printStackTrace();
 				}
 				
-				//ConsoleHelper.showAppConsole();
+				ConsoleHelper.showAppConsole();
 				setProcessFinished(true);
 			}
 		});
@@ -144,6 +144,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 		rhodesLogHelper.stopLog();
 		
 		ConsoleHelper.cleanBuildConsole();
+		ConsoleHelper.showBuildConsole();
 		
 		setupConfigAttributes(configuration);
 
@@ -161,12 +162,12 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 
 		try
 		{
+			OSHelper.killProcess("ruby");
+			
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{
 				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 				job.run(monitor);
-				
-				OSHelper.killProcess("ruby");
 				
 				target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhosync);
 			}
