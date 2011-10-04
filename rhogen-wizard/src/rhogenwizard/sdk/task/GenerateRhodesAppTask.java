@@ -10,25 +10,17 @@ import javax.naming.directory.InvalidAttributesException;
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 
-public class GenerateRhodesAppTask implements RunTask 
+public class GenerateRhodesAppTask extends RhodesTask 
 {	
 	public static final String taskTag = "rhodes-gen";
 	public static final String appName = "appname";
-	
-	private String              m_rhogenExe  = "rhodes";
+		
 	private Map<String, String> m_taskParams = null;
-	private Map<String, String> m_taskResult = new HashMap<String, String>();
-	private SysCommandExecutor  m_executor   = new SysCommandExecutor();
+	private Map<String, String> m_taskResult = new HashMap<String, String>();	
 	
 	public GenerateRhodesAppTask()
 	{
-//		m_executor.setOutputLogDevice(new RhodesLogAdapter());
-//		m_executor.setErrorLogDevice(new RhodesLogAdapter());
-		
-		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
-		{
-			 m_rhogenExe  = m_rhogenExe + ".bat";
-		} 
+		super();
 	}
 	
 	@Override
