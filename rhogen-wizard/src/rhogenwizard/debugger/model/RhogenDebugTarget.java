@@ -322,7 +322,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 	}
 	
-	private String prepareResNameForSyncDebugger(String srcName)
+	static private String prepareResNameForSyncDebugger(String srcName)
 	{
 		srcName = srcName.replace('\\', '/');
 		srcName = srcName.substring(1, srcName.length());
@@ -367,7 +367,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 					}
 					else 
 					{
-						srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+						srcFile = prepareResNameForRhodesDebugger(lineBr.getResourcePath().toOSString());
 					}
 					 										
 					m_debugServer.debugBreakpoint(srcFile, lineNum);
@@ -399,7 +399,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				}
 				else 
 				{
-					srcFile = prepareResNameForDebugger(lineBr.getResourcePath().toOSString());
+					srcFile = prepareResNameForRhodesDebugger(lineBr.getResourcePath().toOSString());
 				}
 				
 				m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
@@ -503,7 +503,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return null;
 	}
 	
-	static private String prepareResNameForDebugger(String resName)
+	static private String prepareResNameForRhodesDebugger(String resName)
 	{
 		resName = resName.replace('\\', '/');
 		String[] segments = resName.split("app/");
@@ -621,7 +621,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 					}
 					else 
 					{
-						resPath = prepareResNameForDebugger(lineBreakpoint.getResourcePath().toOSString());
+						resPath = prepareResNameForRhodesDebugger(lineBreakpoint.getResourcePath().toOSString());
 					}
 										
 					try 
