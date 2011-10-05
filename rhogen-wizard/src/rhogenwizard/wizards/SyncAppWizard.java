@@ -30,7 +30,7 @@ import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 
-public class RhogenSyncAppWizard extends Wizard implements INewWizard 
+public class SyncAppWizard extends Wizard implements INewWizard 
 {
 	private static final String okRhodesVersionFlag = "1";
 	
@@ -41,7 +41,7 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenSyncAppWizard() 
+	public SyncAppWizard() 
 	{
 		super();
 		setNeedsProgressMonitor(true);
@@ -130,23 +130,12 @@ public class RhogenSyncAppWizard extends Wizard implements INewWizard
 				{
 					throw new IOException(MsgConstants.errInstallRhosync);
 				}
+				
+				m_rhogenAdapter.runBundler(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName);
 			}
 			
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-			
-//			if (OSHelper.isWindows() == false)
-//			{
-//				// install dtach
-//				monitor.setTaskName("Install dtach...");
-//				monitor.worked(1);
-//				m_rhogenAdapter.runRakeTask(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName, "dtach:install");
-//				
-//				// install redis server
-//				monitor.setTaskName("Install redis...");
-//				monitor.worked(1);
-//				m_rhogenAdapter.runRakeTask(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName, "redis:install");
-//			}
-			
+						
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
 			job.run(monitor);
 			
