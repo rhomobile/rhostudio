@@ -136,7 +136,7 @@ public class RhodesAdapter
 		m_executor.runCommand(cmdLine);
 		
 		sb = new StringBuilder();
-		sb.append("rhoconnect:startbg");
+		sb.append("rhoconnect:startdebug");
 		
 		cmdLine = new ArrayList<String>();
 		cmdLine.add(m_rakeExe);
@@ -353,6 +353,19 @@ public class RhodesAdapter
 		return m_executor.getCommandOutput();
 	}
 
+	public String runBundler(String workDir) throws Exception
+	{
+		m_executor.setWorkingDirectory(workDir);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add("bundler");
+		cmdLine.add("install");
+		
+		m_executor.runCommand(cmdLine);
+		
+		return m_executor.getCommandOutput();
+	}
+	
 	public void cleanApp(String workDir) throws Exception 
 	{
 		String cleanCmd = "clean:";
