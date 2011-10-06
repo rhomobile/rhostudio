@@ -358,7 +358,7 @@ public class RhodesAdapter
 		m_executor.setWorkingDirectory(workDir);
 		
 		List<String> cmdLine = new ArrayList<String>();
-		cmdLine.add("bundler");
+		cmdLine.add("bundle");
 		cmdLine.add("install");
 		
 		m_executor.runCommand(cmdLine);
