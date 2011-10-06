@@ -19,7 +19,7 @@
 
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhogenSyncAppWizard"
+            class="rhogenwizard.wizards.SyncAppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSyncAppWizard"
             name="Rhoconnect application"
