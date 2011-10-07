@@ -162,8 +162,8 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 
 		try
 		{
-			OSHelper.killProcess("ruby");
-			OSHelper.killProcess("redis");
+			//OSHelper.killProcess("ruby");
+			//OSHelper.killProcess("redis");
 			
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{

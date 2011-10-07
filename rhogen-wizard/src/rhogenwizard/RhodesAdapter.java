@@ -52,11 +52,13 @@ public class RhodesAdapter
 	public static final String platformWp7 = "wp";
 	public static final String platformEmu = "win32:rhosimulator";
 	public static final String platformRsync = "";
+  
+	private static String prevRunningRhoconnectApp = ""; 
 	
 	private String m_rhogenExe = "rhodes";
 	private String m_rhosyncExe = "rhoconnect"; 
 	private String m_rakeExe = "rake";	
-	private SysCommandExecutor m_executor = new SysCommandExecutor();
+	private SysCommandExecutor m_executor = new SysCommandExecutor();	
 	
 	public RhodesAdapter()
 	{
@@ -122,8 +124,40 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 	
+	private void stopSyncApp() throws Exception
+	{
+		if (prevRunningRhoconnectApp.length() == 0)
+			return;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("rhoconnect:stop");
+		
+		m_executor.setWorkingDirectory(prevRunningRhoconnectApp);
+		
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		m_executor.runCommand(cmdLine);
+		
+		sb = new StringBuilder();
+		sb.append("redis:stop");
+		
+		m_executor.setWorkingDirectory(prevRunningRhoconnectApp);
+		
+		cmdLine.clear();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(sb.toString());
+		
+		m_executor.runCommand(cmdLine);
+	}
+	
 	public IProcess debugSyncApp(String projectName, String workDir, ILaunch launch) throws Exception
 	{
+		stopSyncApp();
+		
+		prevRunningRhoconnectApp = workDir;
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("redis:startbg");
 		
@@ -245,6 +279,10 @@ public class RhodesAdapter
 
 	public int buildRhosyncApp(String workDir) throws Exception
 	{
+		stopSyncApp();
+		
+		prevRunningRhoconnectApp = workDir;
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("redis:startbg");
 		
