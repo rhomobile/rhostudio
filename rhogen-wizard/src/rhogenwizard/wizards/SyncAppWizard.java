@@ -130,8 +130,6 @@ public class SyncAppWizard extends Wizard implements INewWizard
 				{
 					throw new IOException(MsgConstants.errInstallRhosync);
 				}
-				
-				m_rhogenAdapter.runBundler(infoHolder.getProjectLocationPath().toOSString() + File.separator + infoHolder.appName);
 			}
 			
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
