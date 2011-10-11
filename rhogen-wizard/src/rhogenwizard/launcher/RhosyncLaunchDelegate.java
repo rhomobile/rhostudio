@@ -75,10 +75,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 			public void run() 
 			{
 				try 
-				{
-					OSHelper.setEnvVariable("RHOHOST", "127.0.0.1");
-					OSHelper.setEnvVariable("RHOPORT", "9000");
-					
+				{				
 					ConsoleHelper.consolePrint("build started");
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
