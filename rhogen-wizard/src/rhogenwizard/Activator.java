@@ -42,8 +42,11 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception 
 	{
+		RhodesAdapter rhodesAdapter = new RhodesAdapter();
+		rhodesAdapter.stopSyncApp();
+
 		plugin = null;
-		super.stop(context);
+		super.stop(context);		
 	}
 
 	/**

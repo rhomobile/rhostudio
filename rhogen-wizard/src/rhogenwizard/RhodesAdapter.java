@@ -7,10 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.console.MessageConsoleStream;
+
+import rhogenwizard.constants.ConfigurationConstants;
 
 class RhodesLogAdapter implements ILogDevice
 {
@@ -52,8 +56,6 @@ public class RhodesAdapter
 	public static final String platformWp7 = "wp";
 	public static final String platformEmu = "win32:rhosimulator";
 	public static final String platformRsync = "";
-  
-	private static String prevRunningRhoconnectApp = ""; 
 	
 	private String m_rhogenExe = "rhodes";
 	private String m_rhosyncExe = "rhoconnect"; 
@@ -124,11 +126,14 @@ public class RhodesAdapter
 		return m_executor.runCommand(cmdLine);
 	}
 	
-	private void stopSyncApp() throws Exception
+	public void stopSyncApp() throws Exception
 	{
-		if (prevRunningRhoconnectApp.length() == 0)
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		String prevRunningRhoconnectApp = store.getString(ConfigurationConstants.lastSyncRunApp);
+
+		if (prevRunningRhoconnectApp == null || prevRunningRhoconnectApp.length() == 0)
 			return;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("rhoconnect:stop");
 		
@@ -156,8 +161,9 @@ public class RhodesAdapter
 	{
 		stopSyncApp();
 		
-		prevRunningRhoconnectApp = workDir;
-		
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+	    store.setValue(ConfigurationConstants.lastSyncRunApp, workDir);
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("redis:startbg");
 		
@@ -281,7 +287,8 @@ public class RhodesAdapter
 	{
 		stopSyncApp();
 		
-		prevRunningRhoconnectApp = workDir;
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+	    store.setValue(ConfigurationConstants.lastSyncRunApp, workDir);
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("redis:startbg");
