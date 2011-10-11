@@ -12,5 +12,5 @@ public class ConfigurationConstants
 	public static final String isReloadCodeAttribute = "rebuild";
 	public static final String prjectLogFileName = "log_filename";
 	public static final String simulatorType = "type_symulator";
-
+	public static final String lastSyncRunApp = "sync_app";
 }
