@@ -6,6 +6,11 @@ import java.util.List;
 
 public class OSHelper extends OSValidator
 {
+	public static void killScriptProcess(String processName) throws Exception
+	{
+		killProcess(processName, processName + ".bat"); 
+	}
+	
 	public static void killProcess(String processName) throws Exception
 	{
 		killProcess(processName, processName + ".exe"); 
@@ -56,26 +61,5 @@ public class OSHelper extends OSValidator
 		}
 		
 		rootFolder.delete();
-	}
-	
-	public static void setEnvVariable(String envName, String envValue) throws Exception
-	{
-		List<String> cmdLine = new ArrayList<String>();
-		
-		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
-		{
-			System.setProperty(envName, envValue);
-			
-//			cmdLine.add("set.exe");
-//			cmdLine.add(envName + "=" + envValue);
-		}
-		else
-		{
-			cmdLine.add("export");
-			cmdLine.add(envName + "=" + envValue);
-		}
-		
-//		SysCommandExecutor executor = new SysCommandExecutor();
-//		executor.runCommand(cmdLine);
 	}
 }
