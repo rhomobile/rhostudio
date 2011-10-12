@@ -233,12 +233,13 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 			m_debugServer.debugTerminate();
 
-			OSHelper.killProcess("ruby");
-			
-			if (m_debugType != EDebugPlatfrom.eRhosync)
+			if (m_debugType == EDebugPlatfrom.eRhosync)
 			{
-				m_processHandle.terminate();
+				RhodesAdapter adapter = new RhodesAdapter();
+				adapter.stopSyncApp();
 			}
+			
+			m_processHandle.terminate();
 		}
 		catch(DebugServerException e) {
 			e.printStackTrace();
