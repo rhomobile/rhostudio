@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<feature url="features/rhostudio_feature_1.0.1.qualifier.jar"
-		id="rhostudio_feature" version="1.0.1.qualifier">
-		<category name="Rhomobile" />
-	</feature>
-	<category-def name="Rhomobile" label="Rhomobile" />
+   <feature url="features/rhostudio_feature_1.1.0.qualifier.jar" id="rhostudio_feature" version="1.1.0.qualifier">
+      <category name="Rhomobile"/>
+   </feature>
+   <category-def name="Rhomobile" label="Rhomobile"/>
 </site>
