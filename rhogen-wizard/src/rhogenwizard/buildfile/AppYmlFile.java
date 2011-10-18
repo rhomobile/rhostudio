@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 
+import rhogenwizard.RunExeHelper;
+
 public class AppYmlFile extends YmlFile 
 {
 	public static final String configFileName = "build.yml"; 
@@ -58,7 +60,14 @@ public class AppYmlFile extends YmlFile
 	
 	public String getSdkPath()
 	{
-		return super.getString("sdk");
+		String sdkPath = (String) super.get("sdk");
+		
+		if (sdkPath == null)
+		{
+			sdkPath = RunExeHelper.getSdkInfo();
+		}
+		
+		return sdkPath; 
 	}
 	
 	public void setAppLog(String appLog)

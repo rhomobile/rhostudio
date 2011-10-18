@@ -45,7 +45,7 @@ public class RunExeHelper
 		return m_executor.getCommandOutput();
 	}
 	
-	static public void killBbSimulator()
+	static public RunExeHelper killBbSimulator()
 	{
 		try 
 		{
@@ -54,10 +54,32 @@ public class RunExeHelper
 			params.add("/IM");
 			params.add("fledge.exe");
 			hlpKillTask.run(params);
+			return hlpKillTask;
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
+		
+		return null;
+	}
+	
+	static public String getSdkInfo()
+	{
+		try 
+		{
+			RunExeHelper hlpKillTask = new RunExeHelper("get-rhodes-info", false);
+			List<String> params = new ArrayList<String>();
+			params.add("--rhodes-path");
+			String out = hlpKillTask.run(params);
+			out = out.replaceAll("\\p{Cntrl}", "");  		
+			return out;
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return null;		
 	}
 }
