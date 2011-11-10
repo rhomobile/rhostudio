@@ -1,4 +1,4 @@
-package rhogenwizard.debugger;
+package rhogenwizard.debugger.backend;
 
 /**
  * Ruby variable type:

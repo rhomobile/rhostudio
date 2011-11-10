@@ -28,7 +28,7 @@ import rhogenwizard.BuildInfoHolder;
  * OR with the extension that matches the expected one (mpe).
  */
 
-public class RhodesSyncAppWizardPage extends WizardPage 
+public class RhoconnectAppWizardPage extends WizardPage 
 {
 	private static final int labelWidht = 120;
 	private static final int textWidht = 300;
@@ -46,7 +46,7 @@ public class RhodesSyncAppWizardPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public RhodesSyncAppWizardPage(ISelection selection) 
+	public RhoconnectAppWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
 		setTitle("Rhoconnect application generator wizard");

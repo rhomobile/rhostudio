@@ -3,16 +3,15 @@ package rhogenwizard.sdk.task;
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 
-public abstract class RhoConnectTask implements RunTask 
+public abstract class RhoconnectTask extends RakeTask 
 {
-	protected String             m_rhoExe   = "rhoconnect";
-	protected SysCommandExecutor m_executor = new SysCommandExecutor();
+	protected String m_rhoConnectExe = "rhoconnect";
 
-	public RhoConnectTask() 
+	public RhoconnectTask() 
 	{		
 		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
 		{
-			m_rhoExe = m_rhoExe + ".bat";
+			m_rhoConnectExe = m_rhoConnectExe + ".bat";
 		} 
 	}
 }

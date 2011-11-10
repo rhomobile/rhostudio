@@ -12,7 +12,7 @@ import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 
-import rhogenwizard.wizards.RhogenModelWizard;
+import rhogenwizard.wizards.ModelWizard;
 
 public class NewModelAction implements IObjectActionDelegate 
 {
@@ -43,7 +43,7 @@ public class NewModelAction implements IObjectActionDelegate
 	{
 		if (null != m_currentProject)
 		{
-			RhogenModelWizard wizard = new RhogenModelWizard(m_currentProject);
+			ModelWizard wizard = new ModelWizard(m_currentProject);
 			
 			WizardDialog dialog = new WizardDialog(m_shell, wizard);
 			dialog.create();

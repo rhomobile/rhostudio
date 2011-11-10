@@ -1,4 +1,4 @@
-package rhogenwizard.debugger;
+package rhogenwizard.debugger.backend;
 
 /**
  * Possible debug states of the Rhodes application:

@@ -10,6 +10,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import rhogenwizard.buildfile.AppYmlFile;
+import rhogenwizard.sdk.task.RakeAdapter;
 
 class AppLogAdapter implements ILogDevice
 {
@@ -77,11 +78,11 @@ public class LogFileHelper
 	
 	/* ----------------------------------------------------------------- */
 	
-	private RhodesAdapter.EPlatformType m_platformName = null;
-	private AsyncStreamReader 			m_appLogReader = null;
-	private InputStream       			m_logFileStream = null;
-	private StringBuffer     			m_logOutput = null;
-	private AppLogAdapter               m_logAdapter = new AppLogAdapter();
+	private PlatformType       m_platformName = null;
+	private AsyncStreamReader  m_appLogReader = null;
+	private InputStream        m_logFileStream = null;
+	private StringBuffer       m_logOutput = null;
+	private AppLogAdapter      m_logAdapter = new AppLogAdapter();
 
 	@Override
 	protected void finalize() throws Throwable 
@@ -92,7 +93,7 @@ public class LogFileHelper
 
 	public void endWaitLog(IProject project, RunType type) throws Exception 
 	{
-		if (type.equals(RunType.ERunType.eRhoEmulator))
+		if (type.equals(RunType.eRhoEmulator))
 		{
 			rhoSimLog(project);
 		}
@@ -107,11 +108,11 @@ public class LogFileHelper
 		}
 	}
 	
-	public void startLog(RhodesAdapter.EPlatformType platformName, IProject project, RunType runType) throws Exception
+	public void startLog(PlatformType platformName, IProject project, RunType runType) throws Exception
 	{
 		m_platformName = platformName;
 		
-		if ( runType.equals(RunType.ERunType.eRhoEmulator))
+		if ( runType.equals(RunType.eRhoEmulator))
 		{
 			waitSimLog(project, runType);
 		}
@@ -233,9 +234,9 @@ public class LogFileHelper
 	
 	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
-		RhodesAdapter rhodesExecutor = new RhodesAdapter();
+		RakeAdapter rakeCmdAdapter = new RakeAdapter();
 		
-		String output = rhodesExecutor.runRakeTask(project.getLocation().toOSString(), taskName);
+		String output = rakeCmdAdapter.runRakeTask(project.getLocation().toOSString(), taskName);
 		
 		StringTokenizer st = new StringTokenizer(output, "\n");
 		

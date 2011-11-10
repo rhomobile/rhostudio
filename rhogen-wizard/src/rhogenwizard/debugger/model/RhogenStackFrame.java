@@ -21,7 +21,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 
-import rhogenwizard.debugger.DebugVariable;
+import rhogenwizard.debugger.backend.DebugVariable;
 
 public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame 
 {

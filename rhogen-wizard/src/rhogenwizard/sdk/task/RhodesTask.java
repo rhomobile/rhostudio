@@ -1,22 +1,19 @@
 package rhogenwizard.sdk.task;
 
-import rhogenwizard.OSValidator;
-import rhogenwizard.SysCommandExecutor;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class RhodesTask implements RunTask 
+import rhogenwizard.OSValidator;
+
+public abstract class RhodesTask extends RakeTask 
 {
-	protected String             m_rhogenExe  = "rhodes";
-	protected SysCommandExecutor m_executor   = new SysCommandExecutor();
-	
-	public RhodesTask()
-	{
-//		m_executor.setOutputLogDevice(new RhodesLogAdapter());
-//		m_executor.setErrorLogDevice(new RhodesLogAdapter());
+	protected String m_rhogenExe = "rhodes";
 		
+	public RhodesTask()
+	{		
 		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
 		{
 			 m_rhogenExe  = m_rhogenExe + ".bat";
 		} 
 	}
-	
 }

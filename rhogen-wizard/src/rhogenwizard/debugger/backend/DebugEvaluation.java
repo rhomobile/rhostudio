@@ -1,4 +1,4 @@
-package rhogenwizard.debugger;
+package rhogenwizard.debugger.backend;
 
 /**
  * The result of evaluation of Ruby expression or execution of Ruby code.  

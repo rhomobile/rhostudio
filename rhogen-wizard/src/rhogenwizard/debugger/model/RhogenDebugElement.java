@@ -22,7 +22,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.constants.DebugConstants;
 
 /**

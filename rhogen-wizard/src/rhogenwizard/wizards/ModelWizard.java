@@ -12,7 +12,11 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.core.resources.*;
@@ -22,26 +26,26 @@ import org.eclipse.ui.progress.UIJob;
 
 import rhogenwizard.Activator;
 import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.sdk.facade.RhoTaskHolder;
+import rhogenwizard.sdk.helper.TaskResultConverter;
+import rhogenwizard.sdk.task.GenerateRhodesAppTask;
+import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 
 class ModelCreationJob extends UIJob 
 {
 	String m_modelName = null;
 	String m_modelParams = null;
 	String m_projectLocation = null;
-	RhodesAdapter m_rhogenAdapter = null;
 	IProject m_currentProject = null;
 	
 	public ModelCreationJob(String name
 							, String projectLocation
 							, String modelName
 							, String modelParams
-							, RhodesAdapter rhogenAdapter
 							, IProject currentProject) 
 	{
 		super(name);
-		m_rhogenAdapter   = rhogenAdapter;
 		m_modelName       = modelName;
 		m_modelParams     = modelParams;
 		m_projectLocation = projectLocation;
@@ -73,7 +77,19 @@ class ModelCreationJob extends UIJob
 		
 		try
 		{
-			m_rhogenAdapter.generateModel(m_projectLocation, m_modelName, m_modelParams);
+			Map<String, Object> params = new HashMap<String, Object>();
+			
+			params.put(GenerateRhodesModelTask.modelName, m_modelName);
+			params.put(GenerateRhodesModelTask.workDir, m_projectLocation);
+			params.put(GenerateRhodesModelTask.modelFields, m_modelParams);
+			
+			Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.taskTag, params);
+			
+			if (TaskResultConverter.getResultIntCode(results) != 0)
+			{
+				throw new IOException("The Rhodes SDK do not installed");
+			}
+			
 			m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		}
 		catch (CoreException e) 
@@ -89,15 +105,14 @@ class ModelCreationJob extends UIJob
 	}
 }
 
-public class RhogenModelWizard extends Wizard implements INewWizard 
+public class ModelWizard extends Wizard implements INewWizard 
 {
 	private ModelWizardPage m_pageModel = null;
 	private ISelection      m_selection = null;
-	private RhodesAdapter   m_rhogenAdapter = new RhodesAdapter();
 	private String 	        m_projectLocation = null;
 	private IProject		m_currentProject = null;
 	
-	public RhogenModelWizard()
+	public ModelWizard()
 	{
 		super();
 		setNeedsProgressMonitor(true);
@@ -113,7 +128,7 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenModelWizard(IProject currentProject) 
+	public ModelWizard(IProject currentProject) 
 	{
 		super();
 		setNeedsProgressMonitor(true);
@@ -198,7 +213,7 @@ public class RhogenModelWizard extends Wizard implements INewWizard
 			if (null != m_projectLocation)
 			{
 				ModelCreationJob modelJob = new ModelCreationJob("create model", m_projectLocation, 
-						modelName, modelParams, m_rhogenAdapter, m_currentProject);
+						modelName, modelParams, m_currentProject);
 				modelJob.run(monitor);
 			}
 			else

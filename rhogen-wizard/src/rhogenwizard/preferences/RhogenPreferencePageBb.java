@@ -17,7 +17,7 @@ import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 
 
-public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements IWorkbenchPreferencePage, IItemAddedNotifier
+public class RhogenPreferencePageBb extends BasePreferencePage implements IItemAddedNotifier
 {
 	private static final String newVersionLabel = "New version";
 	
@@ -99,6 +99,8 @@ public class RhogenPreferencePageBb extends FieldEditorPreferencePage implements
 
 	public void createFieldEditors() 
 	{
+		checkRhodesSdk();
+		
 		m_selectCombo = new RhogenComboFieldEditor(PreferenceConstants.BB_VERSION, 
 				"Blackberry version:", prepareComboItems(), getFieldEditorParent(), this);
 		

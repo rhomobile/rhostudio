@@ -1,25 +1,11 @@
 package rhogenwizard.preferences;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.eclipse.jface.preference.*;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
-
 import rhogenwizard.Activator;
-import rhogenwizard.ConsoleHelper;
-import rhogenwizard.buildfile.SdkYmlAdapter;
-import rhogenwizard.buildfile.SdkYmlFile;
-import rhogenwizard.buildfile.YmlFile;
 
-public class RhogenPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
+public class RhogenPreferencePage extends BasePreferencePage 
 {
 	PreferenceInitializer		   m_pInit = null;
 	private RhogenComboFieldEditor m_selectCombo = null;
@@ -41,20 +27,19 @@ public class RhogenPreferencePage extends FieldEditorPreferencePage implements I
 
 	private String[][] prepareComboItems()
 	{
-		List<String> projNames;
+		checkRhodesSdk();
+		
+		List<String> projNames = PreferenceInitializer.getInstance().getRhodesProjects();
 
-		projNames = PreferenceInitializer.getInstance().getRhodesProjects();
-
-	
-		if (projNames == null || projNames.size() == 0)
-		{
-			MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK); 
-			messageBox.setText("Error");
-			messageBox.setMessage("IRhodes location is undefined. Please, open/create at least one Rhodes Application project");
-			messageBox.open();				
-			
-			return null;
-		}
+//		if (projNames == null || projNames.size() == 0)
+//		{
+//			MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK); 
+//			messageBox.setText("Error");
+//			messageBox.setMessage(MsgConstants.errNotFoundRhodesSdk);
+//			messageBox.open();				
+//			
+//			return null;
+//		}
 		
 		String[][] comboItems = new String[projNames.size()][];
 		

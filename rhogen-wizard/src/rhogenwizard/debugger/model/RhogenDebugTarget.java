@@ -56,17 +56,16 @@ import org.eclipse.swt.graphics.Resource;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
-import rhogenwizard.debugger.DebugServer;
-import rhogenwizard.debugger.DebugServerException;
-import rhogenwizard.debugger.DebugState;
-import rhogenwizard.debugger.DebugVariable;
-import rhogenwizard.debugger.DebugVariableType;
-import rhogenwizard.debugger.IDebugCallback;
 import rhogenwizard.debugger.RhogenWatchExpression;
 import rhogenwizard.debugger.RhogenWatchExpressionResult;
+import rhogenwizard.debugger.backend.DebugServer;
+import rhogenwizard.debugger.backend.DebugServerException;
+import rhogenwizard.debugger.backend.DebugState;
+import rhogenwizard.debugger.backend.DebugVariableType;
+import rhogenwizard.debugger.backend.IDebugCallback;
+import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
 
 /**
  * PDA Debug Target
@@ -235,7 +234,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 
 			if (m_debugType == EDebugPlatfrom.eRhosync)
 			{
-				RhodesAdapter adapter = new RhodesAdapter();
+				StopRhoconnectAppAdapter adapter = new StopRhoconnectAppAdapter();
 				adapter.stopSyncApp();
 			}
 			
@@ -591,6 +590,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	}
 
 	@Override
+
 	public void stopped(DebugState state, String file, int line, String className, String method)
 	{
 		waitDebugProcessing();

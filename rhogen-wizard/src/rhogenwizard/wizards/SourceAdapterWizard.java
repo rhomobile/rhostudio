@@ -7,8 +7,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -17,34 +17,38 @@ import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
 import org.eclipse.ui.*;
-import rhogenwizard.AlredyCreatedException;
-import rhogenwizard.BuildInfoHolder;
-import rhogenwizard.CheckProjectException;
-import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
-import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
+import rhogenwizard.sdk.facade.RhoTaskHolder;
+import rhogenwizard.sdk.helper.TaskResultConverter;
+import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
 
-public class SyncAppWizard extends Wizard implements INewWizard 
+public class SourceAdapterWizard extends Wizard implements INewWizard 
 {
 	private static final String okRhodesVersionFlag = "1";
 	
-	private RhodesSyncAppWizardPage m_pageApp = null;
+	private SourceAdapterWizardPage m_pageApp = null;
 	private ISelection              selection = null;
-	private RhodesAdapter           m_rhogenAdapter = new RhodesAdapter();
+	private IProject                m_currentProject = null;
+	private String                  m_projectLocation = null;
 	
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public SyncAppWizard() 
+	public SourceAdapterWizard()
 	{
 		super();
 		setNeedsProgressMonitor(true);
+		
+		m_currentProject = RhodesProjectSupport.getSelectedProject();
+		
+		if (m_currentProject != null)
+		{
+			m_projectLocation = m_currentProject.getLocation().toOSString();
+		}
 	}
 	
 	/**
@@ -52,7 +56,7 @@ public class SyncAppWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageApp = new RhodesSyncAppWizardPage(selection);
+		m_pageApp = new SourceAdapterWizardPage(selection);
 		addPage(m_pageApp);
 	}
 
@@ -63,7 +67,7 @@ public class SyncAppWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
-		final BuildInfoHolder holder = m_pageApp.getBuildInformation();
+		final String srcAdapterName = m_pageApp.getAdapterName();
 		
 		IRunnableWithProgress op = new IRunnableWithProgress() 
 		{
@@ -71,7 +75,7 @@ public class SyncAppWizard extends Wizard implements INewWizard
 			{
 				try
 				{
-					doFinish(holder, monitor);
+					doFinish(srcAdapterName, monitor);
 				}
 				catch (CoreException e) 
 				{
@@ -108,7 +112,7 @@ public class SyncAppWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 */
 	private void doFinish(
-		BuildInfoHolder infoHolder,
+		String adapterName,
 		IProgressMonitor monitor)
 		throws CoreException 
 	{
@@ -116,51 +120,43 @@ public class SyncAppWizard extends Wizard implements INewWizard
 		
 		try 
 		{
-			monitor.beginTask("Creating " + infoHolder.appName, 2);
-			monitor.worked(1);
-			monitor.setTaskName("Create project...");
-			
-			newProject = RhodesProjectSupport.createProject(infoHolder);
-	
-			if (!infoHolder.existCreate) 
+			if (m_currentProject.isOpen())
 			{
-				monitor.setTaskName("Generate application...");
+				monitor.beginTask("Creating " + m_currentProject.getName(), 2);
+				monitor.worked(1);
+				monitor.setTaskName("Opening file for editing...");
 				
-				if (m_rhogenAdapter.generateSyncApp(infoHolder) != 0)
+				Map<String, Object> params = new HashMap<String, Object>();
+				
+				params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
+				params.put(GenerateRhoconnectAdapterTask.workDir, m_projectLocation);
+				
+				Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.taskTag, params);
+				
+				if (TaskResultConverter.getResultIntCode(results) != 0)
 				{
-					throw new IOException(MsgConstants.errInstallRhosync);
+					throw new IOException("The Rhodes SDK do not installed");
 				}
+	
+				m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+	
+				ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
+				job.run(monitor);
 			}
-			
-			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-						
-			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
-			job.run(monitor);
 			
 			monitor.worked(1);
 		} 
 		catch (IOException e)
 		{
-			newProject.delete(false, false, monitor);
 			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
 			msgJob.run(monitor);
-		}
-		catch (CheckProjectException e) 
-		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
-			msgJob.run(monitor);		
-		}
-		catch (AlredyCreatedException e)
-		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
-			msgJob.run(monitor);		
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * We will accept the selection in the workbench to see if
 	 * we can initialize from it.

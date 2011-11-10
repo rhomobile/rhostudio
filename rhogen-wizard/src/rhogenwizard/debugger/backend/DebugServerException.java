@@ -1,4 +1,4 @@
-package rhogenwizard.debugger;
+package rhogenwizard.debugger.backend;
 
 /**
  * This type of ecxeption is thrown when one of application execution control

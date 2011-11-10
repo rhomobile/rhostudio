@@ -26,7 +26,7 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.BuildInfoHolder;
 
-public class RhodesSourceAdapterWizardPage extends WizardPage 
+public class SourceAdapterWizardPage extends WizardPage 
 {
 	private Text       m_modelName   = null;
 	private Text       m_modelParams = null;
@@ -37,7 +37,7 @@ public class RhodesSourceAdapterWizardPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public RhodesSourceAdapterWizardPage(ISelection selection) 
+	public SourceAdapterWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
 		setTitle("Source adapter information");

@@ -9,7 +9,7 @@ import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
 
-public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
+public class RhogenPreferencePageWm extends BasePreferencePage 
 {
 	PreferenceInitializer m_pInit = null;
 	
@@ -45,6 +45,8 @@ public class RhogenPreferencePageWm extends FieldEditorPreferencePage implements
 	 */
 	public void createFieldEditors() 
 	{
+		checkRhodesSdk();
+		
 		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.CAB_WIZARD_PATH, 
 				"&Cab wizard path:", getFieldEditorParent()));
 	}

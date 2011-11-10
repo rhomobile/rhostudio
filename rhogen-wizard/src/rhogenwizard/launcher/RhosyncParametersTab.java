@@ -1,9 +1,5 @@
 package rhogenwizard.launcher;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -25,16 +21,10 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
-import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
-import rhogenwizard.ShowMessageJob;
-import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 
 public class RhosyncParametersTab extends  JavaLaunchTab 

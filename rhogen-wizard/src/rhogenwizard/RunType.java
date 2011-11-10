@@ -1,21 +1,18 @@
 package rhogenwizard;
 
-public class RunType 
+public enum RunType 
 {
+	eUnknow,
+	eDevice,
+	eEmulator,
+	eRhoEmulator;
+
 	/* platforms types */
 	public static final String platformRhoSim = "RhoSimulator";
 	public static final String platformSim    = "Simulator";
 	public static final String platformDevice = "Device";
-
-	public enum ERunType
-	{
-		eDevice,
-		eEmulator,
-		eRhoEmulator
-	};
 	
-	private ERunType m_type = ERunType.eRhoEmulator;
-	
+/*	
 	public RunType(ERunType newType)
 	{
 		m_type = newType;
@@ -52,25 +49,43 @@ public class RunType
 			m_type = ERunType.eDevice;
 		}
 	}
-
+*/
 	@Override
 	public String toString()
 	{
-		switch(m_type)
+		switch(this)
 		{
 		case eDevice:
-			return platformDevice;
+			return platformDevice.toLowerCase();
 		case eEmulator:
-			return platformSim;
+			return platformSim.toLowerCase();
 		case eRhoEmulator:
-			return platformRhoSim;
+			return platformRhoSim.toLowerCase();
 		}
 		
 		return "";
 	}
-
-	public ERunType getType() 
+	
+	public static RunType fromString(String newType)
 	{
-		return m_type;
+		if (platformRhoSim.equals(newType))
+		{
+			return RunType.eRhoEmulator;
+		}
+		else if (platformSim.equals(newType))
+		{
+			return RunType.eEmulator;
+		}
+		else if (platformDevice.equals(newType))
+		{
+			return RunType.eDevice;
+		}
+		
+		return eUnknow;
 	}
+//
+//	public ERunType getType() 
+//	{
+//		return m_type;
+//	}
 }

@@ -7,8 +7,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -20,7 +20,6 @@ import org.eclipse.ui.*;
 import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.CheckProjectException;
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
@@ -28,31 +27,22 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
+import rhogenwizard.sdk.facade.RhoTaskHolder;
+import rhogenwizard.sdk.helper.TaskResultConverter;
+import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 
-public class RhogenSourceAdapterWizard extends Wizard implements INewWizard 
+public class RhodesAppWizard extends Wizard implements INewWizard 
 {
-	private static final String okRhodesVersionFlag = "1";
-	
-	private RhodesSourceAdapterWizardPage m_pageApp = null;
-	private ISelection                    selection = null;
-	private RhodesAdapter                 m_rhogenAdapter = new RhodesAdapter();
-	private IProject                      m_currentProject = null;
-	private String                        m_projectLocation = null;
+	private AppWizardPage  m_pageApp = null;
+	private ISelection     selection = null;
 	
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhogenSourceAdapterWizard()
+	public RhodesAppWizard() 
 	{
 		super();
 		setNeedsProgressMonitor(true);
-		
-		m_currentProject = RhodesProjectSupport.getSelectedProject();
-		
-		if (m_currentProject != null)
-		{
-			m_projectLocation = m_currentProject.getLocation().toOSString();
-		}
 	}
 	
 	/**
@@ -60,7 +50,7 @@ public class RhogenSourceAdapterWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageApp = new RhodesSourceAdapterWizardPage(selection);
+		m_pageApp = new AppWizardPage(selection);
 		addPage(m_pageApp);
 	}
 
@@ -71,7 +61,7 @@ public class RhogenSourceAdapterWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
-		final String srcAdapterName = m_pageApp.getAdapterName();
+		final BuildInfoHolder holder = m_pageApp.getBuildInformation();
 		
 		IRunnableWithProgress op = new IRunnableWithProgress() 
 		{
@@ -79,7 +69,7 @@ public class RhogenSourceAdapterWizard extends Wizard implements INewWizard
 			{
 				try
 				{
-					doFinish(srcAdapterName, monitor);
+					doFinish(holder, monitor);
 				}
 				catch (CoreException e) 
 				{
@@ -116,7 +106,7 @@ public class RhogenSourceAdapterWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 */
 	private void doFinish(
-		String adapterName,
+		BuildInfoHolder infoHolder,
 		IProgressMonitor monitor)
 		throws CoreException 
 	{
@@ -124,36 +114,80 @@ public class RhogenSourceAdapterWizard extends Wizard implements INewWizard
 		
 		try 
 		{
-			if (m_currentProject.isOpen())
+			monitor.beginTask("Creating " + infoHolder.appName, 2);
+			monitor.worked(1);
+			monitor.setTaskName("Create project...");
+			
+			newProject = RhodesProjectSupport.createProject(infoHolder);
+
+			if (CommonConstants.checkRhodesVersion)
 			{
-				monitor.beginTask("Creating " + m_currentProject.getName(), 2);
-				monitor.worked(1);
-				monitor.setTaskName("Opening file for editing...");
+				monitor.setTaskName("Check Rhodes version...");
 				
-				if (m_rhogenAdapter.generateSyncAdapterApp(m_projectLocation, adapterName) != 0)
+				try
 				{
-					throw new IOException(MsgConstants.errInstallRhosync);
+					if (!RunExeHelper.checkRhodesVersion(CommonConstants.rhodesVersion))
+					{
+						throw new IOException();
+					}
 				}
-	
-				m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-	
-				ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
-				job.run(monitor);
+				catch (IOException e)
+				{
+					newProject.delete(false, false, monitor);
+					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version, need rhodes version equal or greater " 
+							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
+					msgJob.run(monitor);
+					return;					
+				}
 			}
+			
+			if (!infoHolder.existCreate) 
+			{
+				monitor.setTaskName("Generate application...");
+				
+				Map<String, Object> params = new HashMap<String, Object>();
+	
+				params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
+				params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+				
+				Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.taskTag, params);
+				
+				if (TaskResultConverter.getResultIntCode(results) != 0)
+				{
+					throw new IOException(MsgConstants.errInstallRhodes);
+				}
+			}
+
+			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+
+			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
+			job.run(monitor);
 			
 			monitor.worked(1);
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
+			newProject.delete(false, false, monitor);
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes, need rhodes version equal or greater " 
+					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 			msgJob.run(monitor);
+		}
+		catch (CheckProjectException e) 
+		{
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
+			msgJob.run(monitor);		
+		}
+		catch (AlredyCreatedException e)
+		{
+			ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
+			msgJob.run(monitor);		
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * We will accept the selection in the workbench to see if
 	 * we can initialize from it.

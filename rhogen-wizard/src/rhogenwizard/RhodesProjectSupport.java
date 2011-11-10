@@ -32,11 +32,6 @@ public class RhodesProjectSupport
     {
     	IPath projectPath = (IPath) projectInfo.getProjectLocationPath();
     	String projectFolderName = projectPath.segment(projectPath.segmentCount() - 1);
-    	
-		if (projectInfo.existCreate) 
-		{
-			projectInfo.appName = projectFolderName; 
-		}
 		
         Assert.isNotNull(projectInfo.appName);
         Assert.isTrue(projectInfo.appName.trim().length() != 0);

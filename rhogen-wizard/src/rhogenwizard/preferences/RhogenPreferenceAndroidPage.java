@@ -12,7 +12,7 @@ import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
 
-public class RhogenPreferenceAndroidPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
+public class RhogenPreferenceAndroidPage extends BasePreferencePage 
 {
 	PreferenceInitializer m_pInit = null;
 	
@@ -39,6 +39,8 @@ public class RhogenPreferenceAndroidPage extends FieldEditorPreferencePage imple
 	 */
 	public void createFieldEditors() 
 	{
+		checkRhodesSdk();
+		
 		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.ANDROID_SDK_PATH, 
 				"&Android SDK:", getFieldEditorParent()));
 		

@@ -1,9 +1,7 @@
 package rhogenwizard.debugger.model;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import rhogenwizard.debugger.DebugVariable;
+import rhogenwizard.debugger.backend.DebugVariable;
 
 public class StackData
 {

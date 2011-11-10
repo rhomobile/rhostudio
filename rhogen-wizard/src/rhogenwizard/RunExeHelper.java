@@ -3,6 +3,8 @@ package rhogenwizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import rhogenwizard.constants.CommonConstants;
+
 public class RunExeHelper 
 {
 	String 			   m_exeName = null; 
@@ -81,5 +83,37 @@ public class RunExeHelper
 		}
 		
 		return null;		
+	}
+	
+	static public boolean checkRhodesVersion(String sdkVer)
+	{
+		try 
+		{
+			RunExeHelper runHelper = new RunExeHelper("get-rhodes-info", false);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("--rhodes-ver=");
+			sb.append(sdkVer);
+			
+			List<String> cmdLine = new ArrayList<String>();
+			cmdLine.add(sb.toString());
+			
+			String cmdOutput = runHelper.run(cmdLine); 
+			
+			cmdOutput = cmdOutput.replaceAll("\\p{Cntrl}", "");
+			
+			if (cmdOutput.equals(CommonConstants.okRhodesVersionFlag))
+			{
+				return true;
+			}
+			
+			return false;
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return false;		
 	}
 }

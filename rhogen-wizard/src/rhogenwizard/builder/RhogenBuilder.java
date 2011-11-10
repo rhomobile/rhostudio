@@ -1,5 +1,6 @@
 package rhogenwizard.builder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -8,16 +9,13 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.jface.dialogs.MessageDialog;
-
-import rhogenwizard.RhodesAdapter;
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.sdk.facade.RhoTaskHolder;
+import rhogenwizard.sdk.task.CleanAllPlatfromTask;
 
 public class RhogenBuilder extends IncrementalProjectBuilder 
 {
 	public  static final String BUILDER_ID = "rhogenwizard.builder.RhogenBuilder";
-
-	private RhodesAdapter m_rhodeAdapter = new RhodesAdapter();
 
 	/*
 	 * (non-Javadoc)
@@ -45,7 +43,12 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 		try 
 		{
 			ConsoleHelper.consolePrint("Clean project started");
-			m_rhodeAdapter.cleanApp(getProject().getLocation().toOSString());
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put(CleanAllPlatfromTask.workDir, getProject().getLocation().toOSString());
+
+			RhoTaskHolder.getInstance().runTask(CleanAllPlatfromTask.taskTag, params);
+			
 			ConsoleHelper.consolePrint("Clean application cancelled");
 		} 
 		catch (Exception e) 

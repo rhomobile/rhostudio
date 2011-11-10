@@ -1,4 +1,4 @@
-package rhogenwizard.debugger;
+package rhogenwizard.debugger.backend;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

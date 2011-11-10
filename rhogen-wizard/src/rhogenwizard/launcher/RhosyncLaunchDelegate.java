@@ -1,9 +1,7 @@
 package rhogenwizard.launcher;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -16,40 +14,23 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.dltk.console.IScriptConsoleIO;
-import org.eclipse.dltk.console.IScriptExecResult;
-import org.eclipse.dltk.console.IScriptInterpreter;
-import org.eclipse.dltk.console.ScriptExecResult;
-import org.eclipse.dltk.console.ScriptInterpreterManager;
-import org.eclipse.dltk.console.ui.IScriptConsole;
-import org.eclipse.dltk.console.ui.ScriptConsoleManager;
-import org.eclipse.dltk.debug.ui.DebugConsoleManager;
-import org.eclipse.dltk.debug.ui.ScriptDebugConsole;
-
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesAdapter;
-import rhogenwizard.RhodesAdapter.EPlatformType;
-import rhogenwizard.RunExeHelper;
+import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-
-import org.eclipse.dltk.debug.ui.display.*;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.ui.console.IConsoleView;
-import org.eclipse.ui.part.IPageBookViewPage;
+import rhogenwizard.sdk.facade.RhoTaskHolder;
+import rhogenwizard.sdk.helper.TaskResultConverter;
+import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 
 public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
-	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	private String            m_projectName = null;
@@ -99,7 +80,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 						}
 					}
 					
-					startLogOutput(project, EPlatformType.eRsync);
+					startLogOutput(project, PlatformType.eRsync);
 				} 
 				catch (Exception e) 
 				{
@@ -115,13 +96,20 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 
 	private int runSelectedBuildConfiguration(IProject currProject) throws Exception
 	{
-		return rhodesAdapter.buildRhosyncApp(currProject.getLocation().toOSString());
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put(RunDebugRhodesAppTask.workDir, currProject.getLocation().toOSString());
+		
+		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.taskTag, params);
+				
+		return TaskResultConverter.getResultIntCode(results);		
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception
 	{
-		IProcess  debugProcess = rhodesAdapter.debugSyncApp(currProject.getName(), currProject.getLocation().toOSString(), launch);
-		return debugProcess;
+//		IProcess  debugProcess = rhodesAdapter.debugSyncApp(currProject.getName(), currProject.getLocation().toOSString(), launch);
+//		return debugProcess;
+		return null;
 	}
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
@@ -241,10 +229,9 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 	{
 	}
 	
-	private void startLogOutput(IProject project, EPlatformType type) throws Exception
+	private void startLogOutput(IProject project, PlatformType type) throws Exception
 	{
-		RunType runType = new RunType(RunType.ERunType.eEmulator);
-		rhodesLogHelper.startLog(type, project, runType);
+		rhodesLogHelper.startLog(type, project, RunType.eEmulator);
 	}
 }
 

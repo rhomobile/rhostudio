@@ -1,4 +1,4 @@
-package rhogenwizard.debugger;
+package rhogenwizard.debugger.backend;
 
 /**
  * Interface of an object class to handle the events from the debugger extension

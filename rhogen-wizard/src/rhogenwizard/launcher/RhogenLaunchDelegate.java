@@ -1,9 +1,7 @@
 package rhogenwizard.launcher;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -16,46 +14,31 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.dltk.console.IScriptConsoleIO;
-import org.eclipse.dltk.console.IScriptExecResult;
-import org.eclipse.dltk.console.IScriptInterpreter;
-import org.eclipse.dltk.console.ScriptExecResult;
-import org.eclipse.dltk.console.ScriptInterpreterManager;
-import org.eclipse.dltk.console.ui.IScriptConsole;
-import org.eclipse.dltk.console.ui.ScriptConsoleManager;
-import org.eclipse.dltk.debug.ui.DebugConsoleManager;
-import org.eclipse.dltk.debug.ui.ScriptDebugConsole;
-
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesAdapter;
-import rhogenwizard.RhodesAdapter.EPlatformType;
+import rhogenwizard.PlatformType;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-
-import org.eclipse.dltk.debug.ui.display.*;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.ui.console.IConsoleView;
-import org.eclipse.ui.part.IPageBookViewPage;
+import rhogenwizard.sdk.facade.RhoTaskHolder;
+import rhogenwizard.sdk.helper.TaskResultConverter;
+import rhogenwizard.sdk.task.CleanPlatformTask;
+import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
+import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
 
 public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
 	private static final int sleepWaitChangeConsole = 1000;
 	
-	private static RhodesAdapter rhodesAdapter = new RhodesAdapter();
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	private String            m_projectName = null;
-	private String            m_platformName = null;
+	private String            m_runType     = null;
 	private String			  m_appLogName = null; 
 	private String            m_platformType = null;
 	private boolean           m_isClean = false;
@@ -75,7 +58,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 
 	public void startBuildThread(final IProject project, final String mode, final ILaunch launch)
 	{
-		final EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
+		final RunType type = RunType.fromString(m_runType);
 		
 		Thread cancelingThread = new Thread(new Runnable() 
 		{	
@@ -107,7 +90,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 						}
 					}
 					
-					startLogOutput(project, type, new RunType(m_platformType));
+					startLogOutput(project, PlatformType.fromString(m_platformType), type);
 				} 
 				catch (Exception e) 
 				{
@@ -121,47 +104,58 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		cancelingThread.start();
 	}
 
-	private int runSelectedBuildConfiguration(IProject currProject, EPlatformType selType) throws Exception
+	private int runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
-		if (m_platformType.equals(RunType.platformDevice))
-		{
-			return rhodesAdapter.buildAppOnDevice(currProject.getLocation().toOSString(), selType);
-		}
-		else if (m_platformType.equals(RunType.platformSim))
-		{
-			return rhodesAdapter.buildAppOnSim(currProject.getLocation().toOSString(), selType);
-		}
-		else if (m_platformType.equals(RunType.platformRhoSim))
-		{
-			return rhodesAdapter.buildAppOnRhoSim(currProject.getLocation().toOSString(), selType, m_isReloadCode);
-		}
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put(RunReleaseRhodesAppTask.workDir, currProject.getLocation().toOSString());
+		params.put(RunReleaseRhodesAppTask.runType, selType);
+		params.put(RunReleaseRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
+		params.put(RunReleaseRhodesAppTask.reloadCode, m_isReloadCode);
+		params.put(RunReleaseRhodesAppTask.debugPort, new Integer(9000));
 		
-		return 1;
+		Map results = RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.taskTag, params);
+				
+		return TaskResultConverter.getResultIntCode(results);
 	}
 	
-	private IProcess debugSelectedBuildConfiguration(IProject currProject, EPlatformType selType, ILaunch launch) throws Exception
+	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		IProcess  debugProcess = rhodesAdapter.debugApp(currProject.getName(), currProject.getLocation().toOSString(), selType, launch, m_isReloadCode);
-		return debugProcess;
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put(RunDebugRhodesAppTask.workDir, currProject.getLocation().toOSString());
+		params.put(RunDebugRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
+		params.put(RunDebugRhodesAppTask.reloadCode, m_isReloadCode);
+		params.put(RunDebugRhodesAppTask.debugPort, new Integer(9000));
+		params.put(RunDebugRhodesAppTask.launchObj, launch);
+		
+		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.taskTag, params);
+				
+		return TaskResultConverter.getResultLaunchObj(results);
 	}
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
-		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-		m_platformName  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
-		m_appLogName    = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
-		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
-		m_platformType  = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
-		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
+		m_projectName  = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
+		m_platformType = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+		m_appLogName   = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
+		m_isClean      = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
+		m_runType      = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+		m_isReloadCode = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception
 	{
 		if (isClean) 
 		{
-			final EPlatformType type = RhodesAdapter.convertPlatformFromDesc(m_platformName);
 			ConsoleHelper.consolePrint("Clean started");
-			rhodesAdapter.cleanPlatform(project.getLocation().toOSString(), type);
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			params.put(CleanPlatformTask.workDir, project.getLocation().toOSString());
+			params.put(CleanPlatformTask.platformType, PlatformType.fromString(m_platformType));
+
+			RhoTaskHolder.getInstance().runTask(CleanPlatformTask.taskTag, params);
 		}
 	}
 			
@@ -181,13 +175,15 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		
 		setupConfigAttributes(configuration);
 		
+		PlatformType currPlType = PlatformType.fromString(m_platformType);
+		
 		// stop blackberry simulator
-		if (OSHelper.isWindows() && m_platformType.equals(RhodesAdapter.platformBlackBerry))
+		if (OSHelper.isWindows() && currPlType == PlatformType.eBb)
 		{
 			RunExeHelper.killBbSimulator();
 		}
 
-		if (m_projectName == null || m_projectName.length() == 0 || m_platformName == null || m_platformName.length() == 0) 
+		if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
 		{
 			throw new IllegalArgumentException("Error - Platform and project name should be assigned");
 		}
@@ -268,7 +264,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	{
 	}
 	
-	private void startLogOutput(IProject project, EPlatformType type, RunType runType) throws Exception
+	private void startLogOutput(IProject project, PlatformType type, RunType runType) throws Exception
 	{
 		rhodesLogHelper.startLog(type, project, runType);
 	}

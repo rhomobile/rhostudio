@@ -1,59 +1,51 @@
 package rhogenwizard.sdk.task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import rhogenwizard.OSValidator;
-import rhogenwizard.SysCommandExecutor;
+public class GenerateRhoconnectAppTask extends RhoconnectTask
+{
+	public static final String taskTag = "rhoconnect-app-gen";
+	public static final String appName = "app-name";
 
-public class GenerateRhodesAppTask extends RhodesTask 
-{	
-	public static final String taskTag = "rhodes-app-gen";
-	public static final String appName = "appname";
-
-	public GenerateRhodesAppTask()
+	@Override
+	public String getTag() 
 	{
-		super();
+		return taskTag;
 	}
-	
+
 	@Override
 	public void run() 
 	{
+		m_taskResult.clear();
+		
 		try 
-		{
-			m_taskResult.clear();
-			
+		{			
 			if (m_taskParams == null || m_taskParams.size() == 0)
-				throw new InvalidAttributesException("parameters data is invalid [GenerateRhodesAppTask]");		
+				throw new InvalidAttributesException("parameters data is invalid [GenerateRhoconnectAppTask]");		
 			
 			String workDir = (String) m_taskParams.get(this.workDir);
 			String appName = (String) m_taskParams.get(this.appName);
-			
+								
 			m_executor.setWorkingDirectory(workDir);
 			
 			List<String> cmdLine = new ArrayList<String>();
-			cmdLine.add(m_rhogenExe);
+			cmdLine.add(m_rhoConnectExe);
 			cmdLine.add("app");
 			cmdLine.add(appName);
-	
+			
 			int res = m_executor.runCommand(cmdLine);
 			
-			Integer resCode = new Integer(res);  
-			m_taskResult.put(resTag, resCode);
-		} 
+			Integer resCode = new Integer(res);
+			
+			m_taskResult.put(resTag, resCode);		
+		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public String getTag() 
-	{		
-		return taskTag;
 	}
 }
