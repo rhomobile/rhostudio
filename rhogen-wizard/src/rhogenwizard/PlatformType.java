@@ -41,27 +41,27 @@ public enum PlatformType
 	
 	public static PlatformType fromString(String newPlatform)
 	{
-		if (newPlatform.equals(platformWinMobile))
+		if (newPlatform.toLowerCase().equals(platformWinMobile))
 		{
 			return PlatformType.eWm;
 		}
-		else if (newPlatform.equals(platformAdroid))
+		else if (newPlatform.toLowerCase().equals(platformAdroid))
 		{
 			return PlatformType.eAndroid;
 		}
-		else if (newPlatform.equals(platformBlackBerry))
+		else if (newPlatform.toLowerCase().equals(platformBlackBerry))
 		{
 			return PlatformType.eBb;
 		}
-		else if (newPlatform.equals(platformIPhone))
+		else if (newPlatform.toLowerCase().equals(platformIPhone))
 		{
 			return PlatformType.eIPhone;
 		}
-		else if (newPlatform.equals(platformWp7))
+		else if (newPlatform.toLowerCase().equals(platformWp7))
 		{
 			return PlatformType.eWp7;
 		}
-		else if (newPlatform.equals(platformRsync))
+		else if (newPlatform.toLowerCase().equals(platformRsync))
 		{
 			return PlatformType.eRsync;
 		}
