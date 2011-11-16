@@ -19,7 +19,7 @@ public class CleanPlatformTask extends RakeTask
 		try 
 		{
 			if (m_taskParams == null || m_taskParams.size() == 0)
-				throw new InvalidAttributesException("parameters data is invalid [RunDebugRhoconnectAppTask]");		
+				throw new InvalidAttributesException("parameters data is invalid [CleanPlatformTask]");		
 			
 			String workDir      = (String) m_taskParams.get(this.workDir);
 			String platformType = (String) m_taskParams.get(this.platformType);
