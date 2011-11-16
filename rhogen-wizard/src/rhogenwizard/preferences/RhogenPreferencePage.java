@@ -30,16 +30,6 @@ public class RhogenPreferencePage extends BasePreferencePage
 		checkRhodesSdk();
 		
 		List<String> projNames = PreferenceInitializer.getInstance().getRhodesProjects();
-
-//		if (projNames == null || projNames.size() == 0)
-//		{
-//			MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK); 
-//			messageBox.setText("Error");
-//			messageBox.setMessage(MsgConstants.errNotFoundRhodesSdk);
-//			messageBox.open();				
-//			
-//			return null;
-//		}
 		
 		String[][] comboItems = new String[projNames.size()][];
 		
