@@ -1,5 +1,6 @@
 package rhogenwizard;
 
+import java.io.File;
 import java.net.URI;
 
 import org.eclipse.core.filesystem.URIUtil;
@@ -60,6 +61,20 @@ public class BuildInfoHolder
 			sb.append(" " + generalAttributesFlasg[4]);
 		
 		return sb.toString();
+	}
+	
+	public String getProjectLocationFullPath()
+	{
+		if (isInDefaultWs)
+		{
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceRoot root = workspace.getRoot();
+			IPath location = root.getLocation();
+						
+			return location.toOSString() + File.separator + appName;
+		}
+		
+		return appDir + File.separator + appName;
 	}
 	
 	public IPath getProjectLocationPath()
