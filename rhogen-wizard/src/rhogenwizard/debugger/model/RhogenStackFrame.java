@@ -29,7 +29,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	private String       m_name = null;
 	private int          fPC;
 	private String       m_fileName = null;
-	private int             fId;
+	private int             m_id;
 	private List<IVariable> m_variablesList;
 	
 	/**
@@ -44,7 +44,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	{
 		super((RhogenDebugTarget) thread.getDebugTarget());
 		
-		fId     = id;
+		m_id     = id;
 		fThread = thread;
 		init(stackData);
 	}
@@ -282,7 +282,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 			{
 				return sf.getSourceName().equals(getSourceName()) &&
 					sf.getLineNumber() == getLineNumber() &&
-					sf.fId == fId;
+					sf.m_id == m_id;
 			} 
 			catch (DebugException e) 
 			{
@@ -296,7 +296,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public int hashCode() 
 	{
-		return getSourceName().hashCode() + fId;
+		return getSourceName().hashCode() + m_id;
 	}
 	
 	/**
@@ -306,6 +306,6 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	protected int getIdentifier() 
 	{
-		return fId;
+		return m_id;
 	}
 }
