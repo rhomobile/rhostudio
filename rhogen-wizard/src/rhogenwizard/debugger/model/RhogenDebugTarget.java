@@ -212,7 +212,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public boolean canTerminate() 
 	{
-		return getProcess().canTerminate();
+		return m_processHandle.canTerminate();
 	}
 	
 	/* (non-Javadoc)
@@ -220,7 +220,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public boolean isTerminated() 
 	{
-		return getProcess().isTerminated();
+		return m_processHandle.isTerminated();
 	}
 	
 	/* (non-Javadoc)
@@ -322,7 +322,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 	}
 	
-	static private String prepareResNameForSyncDebugger(String srcName)
+	static private String prepareResNameForRhoconnectDebugger(String srcName)
 	{
 		srcName = srcName.replace('\\', '/');
 		srcName = srcName.substring(1, srcName.length());
@@ -363,7 +363,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 					
 					if (m_debugType == EDebugPlatfrom.eRhosync)
 					{
-						srcFile = prepareResNameForSyncDebugger(lineBr.getResourcePath().toOSString());
+						srcFile = prepareResNameForRhoconnectDebugger(lineBr.getResourcePath().toOSString());
 					}
 					else 
 					{
@@ -395,7 +395,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				
 				if (m_debugType == EDebugPlatfrom.eRhosync)
 				{
-					srcFile = prepareResNameForSyncDebugger(lineBr.getResourcePath().toOSString());
+					srcFile = prepareResNameForRhoconnectDebugger(lineBr.getResourcePath().toOSString());
 				}
 				else 
 				{
@@ -618,7 +618,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 					
 					if (m_debugType == EDebugPlatfrom.eRhosync)
 					{
-						resPath = prepareResNameForSyncDebugger(lineBreakpoint.getResourcePath().toOSString());
+						resPath = prepareResNameForRhoconnectDebugger(lineBreakpoint.getResourcePath().toOSString());
 					}
 					else 
 					{

@@ -45,12 +45,21 @@ public class RhogenSourcePathComputerDelegate implements ISourcePathComputerDele
 		
 		if (m_projectName != null)
 		{
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember("/" + m_projectName + "/build.yml");
-		
-			if (resource != null) 
-			{
-				IContainer container = resource.getParent();
+			IResource resourceRhodes     = ResourcesPlugin.getWorkspace().getRoot().findMember("/" + m_projectName + "/build.yml");
+			IResource resourceRhoconnect = ResourcesPlugin.getWorkspace().getRoot().findMember("/" + m_projectName + "/config.ru");
+			IContainer container = null;
 			
+			if (resourceRhodes != null) 
+			{
+				container = resourceRhodes.getParent();			
+			}
+			else if (resourceRhoconnect != null)
+			{
+				container = resourceRhoconnect.getParent();
+			}
+			
+			if (container != null)
+			{
 				if (container.getType() == IResource.PROJECT) 
 				{
 					sourceContainer = new ProjectSourceContainer((IProject)container, false);
