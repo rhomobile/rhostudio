@@ -27,7 +27,12 @@ import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
+import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
+import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
+import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
+import rhogenwizard.sdk.task.RunRhoconnectAppTask;
+import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
 
 public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -98,18 +103,24 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 
-		params.put(RunDebugRhodesAppTask.workDir, currProject.getLocation().toOSString());
+		params.put(RunReleaseRhoconnectAppTask.workDir, currProject.getLocation().toOSString());
 		
-		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.taskTag, params);
+		Map results = RhoTaskHolder.getInstance().runTask(RunReleaseRhoconnectAppTask.taskTag, params);
 				
 		return TaskResultConverter.getResultIntCode(results);		
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception
 	{
-//		IProcess  debugProcess = rhodesAdapter.debugSyncApp(currProject.getName(), currProject.getLocation().toOSString(), launch);
-//		return debugProcess;
-		return null;
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put(RunDebugRhoconnectAppTask.workDir, currProject.getLocation().toOSString());
+		params.put(RunDebugRhoconnectAppTask.appName, currProject.getName());
+		params.put(RunDebugRhoconnectAppTask.launchObj, launch);
+		
+		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhoconnectAppTask.taskTag, params);
+				
+		return TaskResultConverter.getResultLaunchObj(results);
 	}
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
@@ -146,10 +157,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 		}
 
 		try
-		{
-			//OSHelper.killProcess("ruby");
-			//OSHelper.killProcess("redis");
-			
+		{		
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{
 				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
@@ -166,8 +174,7 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 			    {
 					if (monitor.isCanceled()) 
 				    {
-						OSHelper.killProcess("ruby");
-						OSHelper.killProcess("redis");
+						StopRhoconnectAppAdapter.stopRhoconnectApp();
 						return;
 				    }
 					
