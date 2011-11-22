@@ -47,7 +47,8 @@ public class RhogenParametersTab extends  JavaLaunchTab
 									           "iPhone", 
 									           "Windows Mobile",
 									           "Blackberry",
-									           "Windows phone" };
+									           "Windows phone",
+									           "Symbian" };
 	
 	private static String androidVersions[] = { "1.6",
 											    "2.1",
@@ -803,6 +804,10 @@ public class RhogenParametersTab extends  JavaLaunchTab
 		else if (selPlatform.equals(platformItems[4]))
 		{
 			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.platformWp7);
+		}
+		else if (selPlatform.equals(platformItems[5]))
+		{
+			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.platformSymbian);
 		}
 		
 		setPlatformVersionCombo(m_configuration);

@@ -7,6 +7,7 @@ public enum PlatformType
 	eBb,
 	eIPhone,
 	eWp7,
+	eSymbian,
 	eRsync,
 	eUnknown;
 
@@ -15,6 +16,7 @@ public enum PlatformType
 	public static final String platformBlackBerry = "bb";
 	public static final String platformIPhone     = "iphone";
 	public static final String platformWp7        = "wp";
+	public static final String platformSymbian    = "symbian";
 	public static final String platformRsync      = "";
 		
 	@Override
@@ -32,6 +34,8 @@ public enum PlatformType
 			return platformIPhone;
 		case eWp7:
 			return platformWp7;
+		case eSymbian:
+			return platformSymbian;
 		case eRsync:
 			return platformRsync;
 		}
@@ -65,7 +69,11 @@ public enum PlatformType
 		{
 			return PlatformType.eRsync;
 		}
-		
+		else if (newPlatform.toLowerCase().equals(platformSymbian))
+		{
+			return PlatformType.eSymbian;
+		}
+				
 		return PlatformType.eUnknown;		
 	}
 }
