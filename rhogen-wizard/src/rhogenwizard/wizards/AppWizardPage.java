@@ -30,6 +30,7 @@ import rhogenwizard.BuildInfoHolder;
 
 public class AppWizardPage extends WizardPage 
 {
+	private static final String projNameTemplate = "RhodesApplication";
 	private static final int labelWidht = 120;
 	private static final int textWidht = 300;
 	
@@ -165,7 +166,23 @@ public class AppWizardPage extends WizardPage
 	{		
 		setDescription("");
 		
-		m_appNameText.setText("RhodesApplication1");
+		StringBuilder nameProj = new StringBuilder();
+		
+		for (int i=1; i<100; ++i)
+		{
+			nameProj.delete(0, nameProj.length());
+			nameProj.append(projNameTemplate);
+			nameProj.append(i);
+		
+			m_appNameText.setText(nameProj.toString());
+			
+			BuildInfoHolder holder = getBuildInformation();
+			
+			File projFolder = new File(holder.getProjectLocationFullPath());
+			
+			if (!projFolder.exists())
+				break;
+		}
 		
 		setControlsForDefaultPath();
 	}
