@@ -10,7 +10,7 @@
       
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhogenAppWizard"
+            class="rhogenwizard.wizards.RhodesAppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenWizard"
             name="Rhodes application"
@@ -19,7 +19,7 @@
 
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.SyncAppWizard"
+            class="rhogenwizard.wizards.RhoconnectAppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSyncAppWizard"
             name="Rhoconnect application"
@@ -28,7 +28,7 @@
             
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhogenModelWizard"
+            class="rhogenwizard.wizards.ModelWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenModelWizard"
             name="Rhodes model"> 
@@ -36,7 +36,7 @@
       
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhogenSourceAdapterWizard"
+            class="rhogenwizard.wizards.SourceAdapterWizard"
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSourceAdapterWizard"
@@ -46,7 +46,7 @@
    
    <extension point="org.eclipse.ui.editors">
       <editor
-            class="rhogenwizard.editors.RhodesEditor"
+            class="rhogenwizard.editors.YmlFileEditor"
             extensions="yml"
             filenames="rhobuild"
             icon="icons/sample16.png"
