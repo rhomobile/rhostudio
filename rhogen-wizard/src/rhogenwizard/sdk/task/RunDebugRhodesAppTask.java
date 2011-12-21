@@ -39,7 +39,9 @@ public class RunDebugRhodesAppTask extends RhodesTask
 			ILaunch      launch       = (ILaunch) m_taskParams.get(this.launchObj);
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("run:rhosimulator_debug");
+			sb.append("run:");
+			sb.append(platformType.toString());
+			sb.append(":rhosimulator_debug");
 			
 			List<String> cmdLine = new ArrayList<String>();
 			cmdLine.add(m_rakeExe);
