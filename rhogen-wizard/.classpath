@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Android/rhodes-plugins/rhogen-wizard/libs"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/snakeyaml-1.8.jar"/>
-	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.dltk.ruby.ui_2.0.0.v20100524-0038.jar" sourcepath="/org.eclipse.dltk.ruby.ui/src.zip"/>
-	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.dltk.ui_2.0.0.v20100909-1720.jar" sourcepath="/org.eclipse.dltk.ui/src.zip"/>
-	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.dltk.debug_2.0.0.v20091110-1532.jar" sourcepath="/org.eclipse.dltk.debug/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.debug/org.eclipse.dltk.debug_2.0.0.v20091110-1532.jar" sourcepath="/org.eclipse.dltk.debug/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.ruby.ui/org.eclipse.dltk.ruby.ui_2.0.0.v20100524-0038.jar" sourcepath="/org.eclipse.dltk.ruby.ui/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.ui/org.eclipse.dltk.ui_2.0.0.v20100603-0936.jar" sourcepath="/org.eclipse.dltk.ui/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.debug.ui/org.eclipse.dltk.debug.ui_2.0.0.v20100115-2213.jar" sourcepath="/org.eclipse.dltk.debug.ui/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.console/org.eclipse.dltk.console_1.0.0.v20090730-1127.jar" sourcepath="/org.eclipse.dltk.console/src.zip"/>
+	<classpathentry kind="lib" path="/org.eclipse.dltk.console.ui/org.eclipse.dltk.console.ui_2.0.0.v20091203-1154.jar" sourcepath="/org.eclipse.dltk.console.ui/src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
