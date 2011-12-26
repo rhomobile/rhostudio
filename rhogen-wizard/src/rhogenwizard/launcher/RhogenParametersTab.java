@@ -604,6 +604,10 @@ public class RhogenParametersTab extends  JavaLaunchTab
 		{
 			platformIdx = 4;
 		}
+		else if (selProjectPlatform.equals(PlatformType.platformSymbian))
+		{
+			platformIdx = 5;
+		}
 
 		m_selectPlatformCombo.select(platformIdx);
 	}

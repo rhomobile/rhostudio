@@ -47,11 +47,6 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 				else
 					sb.append(":device");
 			}
-			else
-			{
-				sb.append(":");
-				sb.append(runType.toString());
-			}
 			
 			m_executor.setWorkingDirectory(workDir);
 			
