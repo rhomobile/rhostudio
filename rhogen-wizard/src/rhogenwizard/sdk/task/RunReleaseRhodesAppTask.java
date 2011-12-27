@@ -47,6 +47,10 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 				else
 					sb.append(":device");
 			}
+			else if (runType == RunType.eRhoEmulator)
+			{
+				sb.append(":rhosimulator");
+			}
 			
 			m_executor.setWorkingDirectory(workDir);
 			
