@@ -79,7 +79,7 @@ public class RhogenPreferencePage extends BasePreferencePage
 //		});
 //		addField(m_selectCombo);
 		
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.JAVA_PATH, 
+		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.javaPath, 
 				"&Java path:", getFieldEditorParent()));
 	}
 

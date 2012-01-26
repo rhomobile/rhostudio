@@ -106,6 +106,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 				
 				String cabWizPath     = m_ymlFile.getCabWizPath() != null ? m_ymlFile.getCabWizPath() : "";
+				String vcbuildPath    = m_ymlFile.getVcBuildPath() != null ? m_ymlFile.getVcBuildPath() : "";
 				String androidSdkPath = m_ymlFile.getAndroidSdkPath() != null ? m_ymlFile.getAndroidSdkPath() : "";
 				String androidNdkPath = m_ymlFile.getAndroidNdkPath() != null ? m_ymlFile.getAndroidNdkPath() : "";
 				String javaPath       = m_ymlFile.getJavaPath() != null ? m_ymlFile.getJavaPath() : "";
@@ -113,23 +114,25 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String bbMdsPath      = m_ymlFile.getBbMdsPath(m_defaultBbVer) != null ? m_ymlFile.getBbMdsPath(m_defaultBbVer) : "";
 				String bbSimPort      = m_ymlFile.getBbSimPort(m_defaultBbVer) != null ? m_ymlFile.getBbSimPort(m_defaultBbVer) : "";
 			
-				store.setDefault(PreferenceConstants.BB_VERSION_NAME, m_defaultBbVer);
-				store.setDefault(PreferenceConstants.BB_JDK_PATH, bbJdkPath);
-				store.setDefault(PreferenceConstants.BB_MDS_PATH, bbMdsPath);
-				store.setDefault(PreferenceConstants.BB_SIM, bbSimPort);
-				store.setDefault(PreferenceConstants.JAVA_PATH, javaPath);
-				store.setDefault(PreferenceConstants.ANDROID_SDK_PATH, androidSdkPath);
-				store.setDefault(PreferenceConstants.ANDROID_NDK_PATH, androidNdkPath);
-				store.setDefault(PreferenceConstants.CAB_WIZARD_PATH, cabWizPath);
-				
-				store.setValue(PreferenceConstants.BB_VERSION_NAME, m_defaultBbVer);
-				store.setValue(PreferenceConstants.BB_JDK_PATH, bbJdkPath);
-				store.setValue(PreferenceConstants.BB_MDS_PATH, bbMdsPath);
-				store.setValue(PreferenceConstants.BB_SIM, bbSimPort);
-				store.setValue(PreferenceConstants.JAVA_PATH, javaPath);
-				store.setValue(PreferenceConstants.ANDROID_SDK_PATH, androidSdkPath);
-				store.setValue(PreferenceConstants.ANDROID_NDK_PATH, androidNdkPath);
-				store.setValue(PreferenceConstants.CAB_WIZARD_PATH, cabWizPath);
+				store.setDefault(PreferenceConstants.bbVersionName, m_defaultBbVer);
+				store.setDefault(PreferenceConstants.bbJdkPath, bbJdkPath);
+				store.setDefault(PreferenceConstants.bbMdsPath, bbMdsPath);
+				store.setDefault(PreferenceConstants.bbSim, bbSimPort);
+				store.setDefault(PreferenceConstants.javaPath, javaPath);
+				store.setDefault(PreferenceConstants.androidSdkParh, androidSdkPath);
+				store.setDefault(PreferenceConstants.androidNdkPath, androidNdkPath);
+				store.setDefault(PreferenceConstants.cabWizardPath, cabWizPath);
+				store.setDefault(PreferenceConstants.vcBuildPath, vcbuildPath);
+
+				store.setValue(PreferenceConstants.bbVersionName, m_defaultBbVer);
+				store.setValue(PreferenceConstants.bbJdkPath, bbJdkPath);
+				store.setValue(PreferenceConstants.bbMdsPath, bbMdsPath);
+				store.setValue(PreferenceConstants.bbSim, bbSimPort);
+				store.setValue(PreferenceConstants.javaPath, javaPath);
+				store.setValue(PreferenceConstants.androidSdkParh, androidSdkPath);
+				store.setValue(PreferenceConstants.androidNdkPath, androidNdkPath);
+				store.setValue(PreferenceConstants.cabWizardPath, cabWizPath);
+				store.setValue(PreferenceConstants.vcBuildPath, vcbuildPath);
 			}			
 		} 
 		catch (Exception e) 
@@ -146,17 +149,19 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 			{
 				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 				
-				String cabWizPath    = store.getString(PreferenceConstants.CAB_WIZARD_PATH);
-				String javaPath      = store.getString(PreferenceConstants.JAVA_PATH);
-				String sdkPath       = store.getString(PreferenceConstants.ANDROID_SDK_PATH);
-				String ndkPath       = store.getString(PreferenceConstants.ANDROID_NDK_PATH);
-				String bbVersionName = store.getString(PreferenceConstants.BB_VERSION_NAME);
-				String bbJdkPath     = store.getString(PreferenceConstants.BB_JDK_PATH);
-				String bbMdsPath     = store.getString(PreferenceConstants.BB_MDS_PATH);
-				String bbSim         = store.getString(PreferenceConstants.BB_SIM);
+				String cabWizPath    = store.getString(PreferenceConstants.cabWizardPath);
+				String vcbuildPath   = store.getString(PreferenceConstants.vcBuildPath);
+				String javaPath      = store.getString(PreferenceConstants.javaPath);
+				String sdkPath       = store.getString(PreferenceConstants.androidSdkParh);
+				String ndkPath       = store.getString(PreferenceConstants.androidNdkPath);
+				String bbVersionName = store.getString(PreferenceConstants.bbVersionName);
+				String bbJdkPath     = store.getString(PreferenceConstants.bbJdkPath);
+				String bbMdsPath     = store.getString(PreferenceConstants.bbMdsPath);
+				String bbSim         = store.getString(PreferenceConstants.bbSim);
 				
 				m_ymlFile.setJavaPath(javaPath);
 				m_ymlFile.setCabWizPath(cabWizPath);
+				m_ymlFile.setVcBuildPath(vcbuildPath);
 				m_ymlFile.setAndroidNdkPath(ndkPath);
 				m_ymlFile.setAndroidSdkPath(sdkPath);
 				m_ymlFile.setBbJdkPath(bbVersionName, bbJdkPath);

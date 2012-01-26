@@ -53,10 +53,10 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 			String bbMdsPath     = m_mdsDir.getStringValue();
 			String bbSimPort     = m_simPort.getStringValue();
 			
-			getPreferenceStore().setValue(PreferenceConstants.BB_VERSION_NAME, bbVersionName);
-			getPreferenceStore().setValue(PreferenceConstants.BB_JDK_PATH, bbJdkPath);
-			getPreferenceStore().setValue(PreferenceConstants.BB_MDS_PATH, bbMdsPath);
-			getPreferenceStore().setValue(PreferenceConstants.BB_SIM, bbSimPort);
+			getPreferenceStore().setValue(PreferenceConstants.bbVersionName, bbVersionName);
+			getPreferenceStore().setValue(PreferenceConstants.bbJdkPath, bbJdkPath);
+			getPreferenceStore().setValue(PreferenceConstants.bbMdsPath, bbMdsPath);
+			getPreferenceStore().setValue(PreferenceConstants.bbSim, bbSimPort);
 
 			m_pInit.savePreferences();
 			
@@ -101,7 +101,7 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 	{
 		checkRhodesSdk();
 		
-		m_selectCombo = new RhogenComboFieldEditor(PreferenceConstants.BB_VERSION, 
+		m_selectCombo = new RhogenComboFieldEditor(PreferenceConstants.bbVersion, 
 				"Blackberry version:", prepareComboItems(), getFieldEditorParent(), this);
 		
 		m_selectCombo.setSelectionListener(new SelectionAdapter() 
@@ -135,15 +135,15 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 		
 		addField(m_selectCombo);
 		
-		m_jdkDir = new RhogenDirectoryFieldEditor(PreferenceConstants.BB_JDK_PATH, 
+		m_jdkDir = new RhogenDirectoryFieldEditor(PreferenceConstants.bbJdkPath, 
 				"&Blackbery JDE path:", getFieldEditorParent());
 		addField(m_jdkDir);
 		
-		m_mdsDir = new RhogenDirectoryFieldEditor(PreferenceConstants.BB_MDS_PATH, 
+		m_mdsDir = new RhogenDirectoryFieldEditor(PreferenceConstants.bbMdsPath, 
 				"&Blackbery MDS path:", getFieldEditorParent());
 		addField(m_mdsDir);
 		
-		m_simPort =  new StringFieldEditor(PreferenceConstants.BB_SIM, 
+		m_simPort =  new StringFieldEditor(PreferenceConstants.bbSim, 
 				"Simulator device:", getFieldEditorParent());
 		addField(m_simPort);
 	}

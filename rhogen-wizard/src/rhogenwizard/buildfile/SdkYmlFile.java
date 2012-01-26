@@ -67,6 +67,16 @@ public class SdkYmlFile extends YmlFile
 		super.set("env", "paths", "cabwiz", (Object)newCabWizPath);
 	}
 
+	public String getVcBuildPath()
+	{
+		return super.get("env", "paths", "vcbuild");
+	}
+	
+	public void setVcBuildPath(String newVcBuildPath)
+	{
+		super.set("env", "paths", "vcbuild", (Object)newVcBuildPath);
+	}
+	
 	public String getBbJdkPath(String version)
 	{
 		return super.get("env", "paths", version, "jde");

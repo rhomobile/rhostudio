@@ -41,10 +41,10 @@ public class RhogenPreferenceAndroidPage extends BasePreferencePage
 	{
 		checkRhodesSdk();
 		
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.ANDROID_SDK_PATH, 
+		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.androidSdkParh, 
 				"&Android SDK:", getFieldEditorParent()));
 		
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.ANDROID_NDK_PATH, 
+		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.androidNdkPath, 
 				"&Android NDK:", getFieldEditorParent()));
 	}
 

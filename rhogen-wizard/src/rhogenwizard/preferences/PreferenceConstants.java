@@ -5,15 +5,16 @@ package rhogenwizard.preferences;
  */
 public class PreferenceConstants 
 {
-	public static final String BUILDFILE_PATH = "buildfilePathPreference";
-	public static final String JAVA_PATH = "javaPathPreference";
-	public static final String ANDROID_SDK_PATH = "androidSdkPathPreference";
-	public static final String ANDROID_NDK_PATH = "androidNdkPathPreference";
-	public static final String CAB_WIZARD_PATH = "cabwizPathPreference";
+	public static final String buildFilePath  = "buildfilePathPreference";
+	public static final String javaPath       = "javaPathPreference";
+	public static final String androidSdkParh = "androidSdkPathPreference";
+	public static final String androidNdkPath = "androidNdkPathPreference";
+	public static final String cabWizardPath  = "cabwizPathPreference";
+	public static final String vcBuildPath    = "vcbuildPathPreference";
 	
-	public static final String BB_VERSION = "bbVersionPreference";
-	public static final String BB_VERSION_NAME = "bbVersionPreference";
-	public static final String BB_JDK_PATH = "jdkPathPreference";
-	public static final String BB_MDS_PATH = "mdsPathPreference";
-	public static final String BB_SIM        = "bbSimPreference";
+	public static final String bbVersion     = "bbVersionPreference";
+	public static final String bbVersionName = "bbVersionPreference";
+	public static final String bbJdkPath     = "jdkPathPreference";
+	public static final String bbMdsPath     = "mdsPathPreference";
+	public static final String bbSim         = "bbSimPreference";
 }
