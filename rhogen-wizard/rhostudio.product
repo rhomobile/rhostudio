@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RhoStudio" uid="aaaa" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.9.0.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="RhoStudio" uid="aaaa" id="com.rhomobile.rhostudio.rhostudio_id" application="org.eclipse.ui.ide.workbench" version="0.9.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/RhogenWizard/icons/sample.png"/>
@@ -11,19 +11,22 @@
    </aboutInfo>
 
    <configIni use="default">
+      <macosx>/rhostudio-feature/config.ini</macosx>
+      <win32>/rhostudio-feature/config.ini</win32>
    </configIni>
 
    <launcherArgs>
+      <programArgs>--launcher.XXMaxPermSize
+256M
+-Xms40m
+-Xmx384m</programArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="/RhogenWizard/icons/sample.png" i32="/RhogenWizard/icons/sample.png" i48="/RhogenWizard/icons/sample.png" i64="/RhogenWizard/icons/sample.png" i128="/RhogenWizard/icons/sample.png"/>
 
    <splash
-      location="com.rhomobile.rhostudio"
-      startupProgressRect="0,280,455,15"
-      startupMessageRect="7,220,441,20"
-      startupForegroundColor="C8D5EA" />
+      location="com.rhomobile.rhostudio" />
    <launcher name="RhoStudio">
       <solaris/>
       <win useIco="false">
@@ -600,7 +603,6 @@
       <plugin id="com.ibm.icu.source" autoStart="false" startLevel="0" />
       <plugin id="com.jcraft.jsch" autoStart="false" startLevel="0" />
       <plugin id="com.jcraft.jsch.source" autoStart="false" startLevel="0" />
-      <plugin id="com.rhomobile.rhostudio" autoStart="false" startLevel="0" />
       <plugin id="javax.servlet" autoStart="false" startLevel="0" />
       <plugin id="javax.servlet.jsp" autoStart="false" startLevel="0" />
       <plugin id="javax.xml" autoStart="false" startLevel="0" />

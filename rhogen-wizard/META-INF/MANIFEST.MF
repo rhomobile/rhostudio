@@ -47,5 +47,6 @@ Import-Package: com.ibm.icu.text,
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/snakeyaml-1.8.jar,
  .
+Bundle-Vendor: Rhomobile Inc.
 
 

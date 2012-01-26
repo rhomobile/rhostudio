@@ -216,18 +216,6 @@
                 value="icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
           </property>
           <property
-                name="startupForegroundColor"
-                value="C8D5EA">
-          </property>
-          <property
-                name="startupMessageRect"
-                value="7,220,441,20">
-          </property>
-          <property
-                name="startupProgressRect"
-                value="0,280,455,15">
-          </property>
-          <property
                 name="preferenceCustomization"
                 value="plugin_customization.ini">
           </property>
@@ -243,45 +231,6 @@
       </perspective>
    </extension>
    
-   <extension
-         id="aaaaaa"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.ui.ide.workbench"
-            name="RhoStudio">
-         <property
-               name="appName"
-               value="RhoStudio">
-         </property>
-         
-            <property name="preferenceCustomization"
-             value="plugin_customization.ini"/>
-            <property
-                  name="aboutImage"
-                  value="icons/sample.png">
-            </property>
-            <property
-                  name="aboutText"
-                  value="Rhomobile RhoStudio">
-            </property>
-            <property
-                  name="windowImages"
-                  value="icons/sample16.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
-            </property>
-            <property
-                  name="startupForegroundColor"
-                  value="C8D5EA">
-            </property>
-            <property
-                  name="startupMessageRect"
-                  value="7,220,441,20">
-            </property>
-            <property
-                  name="startupProgressRect"
-                  value="0,280,455,15">
-            </property>
-      </product>
-   </extension>
    
    <extension
          point="org.eclipse.debug.core.sourceLocators">
