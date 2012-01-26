@@ -21,6 +21,7 @@ public class RunDebugRhodesAppTask extends RhodesTask
 	public static final String debugPort    = "debug-port"; 
 	public static final String launchObj    = "launch";
 	public static final String resProcess   = "debug-process";
+	public static final String traceFlag    = "trace";
 	
 	@Override
 	public void run() 
@@ -37,6 +38,7 @@ public class RunDebugRhodesAppTask extends RhodesTask
 			PlatformType platformType = (PlatformType) m_taskParams.get(this.platformType);
 			Boolean      isReloadCode = (Boolean) m_taskParams.get(this.reloadCode);
 			ILaunch      launch       = (ILaunch) m_taskParams.get(this.launchObj);
+			Boolean      isTrace      = (Boolean) m_taskParams.get(this.traceFlag);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("run:");
@@ -46,6 +48,11 @@ public class RunDebugRhodesAppTask extends RhodesTask
 			List<String> cmdLine = new ArrayList<String>();
 			cmdLine.add(m_rakeExe);
 			cmdLine.add(sb.toString());
+			
+			if (isTrace) {
+				cmdLine.add("--trace");
+			}
+
 			cmdLine.add("rho_debug_port=9000");
 			
 			if (isReloadCode.booleanValue())

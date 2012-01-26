@@ -82,6 +82,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 	Label       m_platformTypeLabel = null;
 	Combo       m_platformTypeCombo = null;
 	Button      m_reloadButton = null;
+	Button      m_traceButton = null;	
 	
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
@@ -227,6 +228,23 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				if (m_configuration != null)
 				{
 					m_configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, m_reloadButton.getSelection());
+					showApplyButton();
+				}
+			}
+		});
+		
+		// 6 row
+		m_traceButton = new Button(composite, SWT.CHECK);
+		m_traceButton.setText("Add --trace to command");
+		m_traceButton.setSelection(false);
+		m_traceButton.setLayoutData(checkBoxAligment);
+		m_traceButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (m_configuration != null)
+				{
+					m_configuration.setAttribute(ConfigurationConstants.isTraceAttribute, m_traceButton.getSelection());
 					showApplyButton();
 				}
 			}
@@ -418,7 +436,8 @@ public class RhogenParametersTab extends  JavaLaunchTab
 				
 		configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, (String) PlatformType.platformAdroid);		
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
-		configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, false);		
+		configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
+		configuration.setAttribute(ConfigurationConstants.isTraceAttribute, false);	
 		configuration.setAttribute(ConfigurationConstants.simulatorType, RunType.platformRhoSim);
 	}
 
@@ -440,6 +459,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			selProjectPlatform    = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 			boolean isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 			boolean isRebuild     = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
+			boolean isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
 			selAndroidEmuName     = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 			
 			if (selProjectName != "")
@@ -465,6 +485,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			
 			m_cleanButton.setSelection(isClean);
 			m_reloadButton.setSelection(isRebuild);
+			m_traceButton.setSelection(isTrace);
 		}
 		catch (CoreException e) 
 		{

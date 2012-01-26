@@ -14,7 +14,8 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 	public static final String runType      = "run-type"; // sim, rhosim, device
 	public static final String platformType = "platform-type"; // wm, wp, iphone, etc
 	public static final String reloadCode   = "reload-code";
-	public static final String debugPort    = "debug-port"; 
+	public static final String debugPort    = "debug-port";
+	public static final String traceFlag    = "trace"; 
 
 	@Override
 	public void run() 
@@ -30,6 +31,7 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 			PlatformType platformType = (PlatformType) m_taskParams.get(this.platformType);
 			RunType      runType      = (RunType) m_taskParams.get(this.runType);
 			Boolean      isReloadCode = (Boolean) m_taskParams.get(this.reloadCode);
+			Boolean      isTrace      = (Boolean) m_taskParams.get(this.traceFlag);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("run:");
@@ -57,6 +59,11 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 			List<String> cmdLine = new ArrayList<String>();
 			cmdLine.add(m_rakeExe);
 			cmdLine.add(sb.toString());
+			
+			if (isTrace)
+			{
+				cmdLine.add("--trace");
+			}
 			
 			if (runType == RunType.eRhoEmulator)
 			{

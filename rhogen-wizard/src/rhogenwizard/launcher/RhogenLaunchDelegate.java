@@ -21,9 +21,11 @@ import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
+import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
@@ -43,6 +45,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	private String            m_platformType = null;
 	private boolean           m_isClean = false;
 	private boolean           m_isReloadCode = false;
+	private boolean           m_isTrace = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	private IProcess          m_debugProcess = null;
 		
@@ -113,6 +116,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		params.put(RunReleaseRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
 		params.put(RunReleaseRhodesAppTask.reloadCode, m_isReloadCode);
 		params.put(RunReleaseRhodesAppTask.debugPort, new Integer(9000));
+		params.put(RunReleaseRhodesAppTask.traceFlag, m_isTrace);
 		
 		Map results = RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.taskTag, params);
 				
@@ -128,6 +132,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		params.put(RunDebugRhodesAppTask.reloadCode, m_isReloadCode);
 		params.put(RunDebugRhodesAppTask.debugPort, new Integer(9000));
 		params.put(RunDebugRhodesAppTask.launchObj, launch);
+		params.put(RunDebugRhodesAppTask.traceFlag, m_isTrace);
 		
 		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.taskTag, params);
 				
@@ -142,6 +147,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		m_isClean      = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 		m_runType      = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
+		m_isTrace      = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception
@@ -165,97 +171,105 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{		
-		RhogenDebugTarget target = null;
-		setProcessFinished(false); 
-		
-		rhodesLogHelper.stopLog();
-		
-		ConsoleHelper.cleanBuildConsole();
-		ConsoleHelper.showBuildConsole();
-		
-		setupConfigAttributes(configuration);
-		
-		PlatformType currPlType = PlatformType.fromString(m_platformType);
-		
-		// stop blackberry simulator
-		if (OSHelper.isWindows() && currPlType == PlatformType.eBb)
+		try
 		{
-			RunExeHelper.killBbSimulator();
-		}
-
-		if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
-		{
-			throw new IllegalArgumentException("Error - Platform and project name should be assigned");
-		}
-		
-		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-		
-		if (!project.isOpen()) 
-		{
-			throw new IllegalArgumentException("Error - Project not found");
-		}
-		
-		if (mode.equals(ILaunchManager.DEBUG_MODE))
-		{
-			ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-			job.run(monitor);
+			RhogenDebugTarget target = null;
+			setProcessFinished(false); 
 			
-			try 
+			rhodesLogHelper.stopLog();
+			
+			ConsoleHelper.cleanBuildConsole();
+			ConsoleHelper.showBuildConsole();
+			
+			setupConfigAttributes(configuration);
+			
+			PlatformType currPlType = PlatformType.fromString(m_platformType);
+			
+			// stop blackberry simulator
+			if (OSHelper.isWindows() && currPlType == PlatformType.eBb)
 			{
-				OSHelper.killProcess("rhosimulator");
+				RunExeHelper.killBbSimulator();
+			}
+	
+			if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
+			{
+				throw new IllegalArgumentException("Error - Platform and project name should be assigned");
+			}
+			
+			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
+			
+			if (!project.isOpen()) 
+			{
+				throw new IllegalArgumentException("Error - Project not found");
+			}
+			
+			if (mode.equals(ILaunchManager.DEBUG_MODE))
+			{
+				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
+				job.run(monitor);
+				
+				try 
+				{
+					OSHelper.killProcess("rhosimulator");
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+				
+				target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhodes);
+			}
+			
+			try
+			{
+				cleanSelectedPlatform(project, m_isClean);
+			
+				startBuildThread(project, mode, launch);
+	
+				while(true)
+				{
+					try 
+				    {
+						if (monitor.isCanceled()) 
+					    {
+							OSHelper.killProcess("ruby");
+							return;
+					    }
+						
+						if (getProcessFinished())
+						{
+							break;
+						}
+	
+						Thread.sleep(100);
+				    }
+				    catch (InterruptedException e) 
+				    {
+				    	e.printStackTrace();
+				    }
+				}
+			}
+			catch(IllegalArgumentException e)
+			{
+				ConsoleHelper.consolePrint(e.getMessage());
 			}
 			catch (Exception e) 
 			{
 				e.printStackTrace();
 			}
 			
-			target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhodes);
-		}
-		
-		try
-		{
-			cleanSelectedPlatform(project, m_isClean);
-		
-			startBuildThread(project, mode, launch);
-
-			while(true)
+			monitor.done();
+			
+			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{
-				try 
-			    {
-					if (monitor.isCanceled()) 
-				    {
-						OSHelper.killProcess("ruby");
-						return;
-				    }
-					
-					if (getProcessFinished())
-					{
-						break;
-					}
-
-					Thread.sleep(100);
-			    }
-			    catch (InterruptedException e) 
-			    {
-			    	e.printStackTrace();
-			    }
+				target.setProcess(m_debugProcess);
+				launch.addDebugTarget(target);			
 			}
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e) 
 		{
-			ConsoleHelper.consolePrint(e.getMessage());
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		monitor.done();
-		
-		if (mode.equals(ILaunchManager.DEBUG_MODE))
-		{
-			target.setProcess(m_debugProcess);
-			launch.addDebugTarget(target);			
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Project should be assigned in configuration");
+			msgJob.run(monitor);
 		}
 	}
 
