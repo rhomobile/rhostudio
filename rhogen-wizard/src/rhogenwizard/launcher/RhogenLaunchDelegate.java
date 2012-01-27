@@ -193,14 +193,14 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 	
 			if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
 			{
-				throw new IllegalArgumentException("Error - Platform and project name should be assigned");
+				throw new IllegalArgumentException("Platform and project name should be assigned");
 			}
 			
 			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 			
 			if (!project.isOpen()) 
 			{
-				throw new IllegalArgumentException("Error - Project not found");
+				throw new IllegalArgumentException("Project " + project.getName() + " not found");
 			}
 			
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
@@ -268,7 +268,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 		}
 		catch (IllegalArgumentException e) 
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Project should be assigned in configuration");
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
 			msgJob.run(monitor);
 		}
 	}

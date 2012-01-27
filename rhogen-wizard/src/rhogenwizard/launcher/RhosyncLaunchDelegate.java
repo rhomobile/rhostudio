@@ -20,6 +20,7 @@ import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
+import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -134,101 +135,87 @@ public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implement
 	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{	
-		RhogenDebugTarget target = null;
-		setProcessFinished(false); 
-		
-		rhodesLogHelper.stopLog();
-		
-		ConsoleHelper.cleanBuildConsole();
-		ConsoleHelper.showBuildConsole();
-		
-		setupConfigAttributes(configuration);
-
-		if (m_projectName == null || m_projectName.length() == 0) 
-		{
-			throw new IllegalArgumentException("Error - Platform and project name should be assigned");
-		}
-		
-		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-		
-		if (!project.isOpen()) 
-		{
-			throw new IllegalArgumentException("Error - Project not found");
-		}
-
 		try
-		{		
+		{
+			RhogenDebugTarget target = null;
+			setProcessFinished(false); 
+			
+			rhodesLogHelper.stopLog();
+			
+			ConsoleHelper.cleanBuildConsole();
+			ConsoleHelper.showBuildConsole();
+			
+			setupConfigAttributes(configuration);
+	
+			if (m_projectName == null || m_projectName.length() == 0) 
+			{
+				throw new IllegalArgumentException("Project should be assigned");
+			}
+			
+			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
+			
+			if (!project.isOpen()) 
+			{
+				throw new IllegalArgumentException("Project " + project.getName() + " not found");
+			}
+	
+			try
+			{		
+				if (mode.equals(ILaunchManager.DEBUG_MODE))
+				{
+					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
+					job.run(monitor);
+					
+					target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhosync);
+				}
+			
+				startBuildThread(project, mode, launch);
+	
+				while(true)
+				{
+					try 
+				    {
+						if (monitor.isCanceled()) 
+					    {
+							StopRhoconnectAppAdapter.stopRhoconnectApp();
+							return;
+					    }
+						
+						if (getProcessFinished())
+						{
+							break;
+						}
+	
+						Thread.sleep(100);
+				    }
+				    catch (InterruptedException e) 
+				    {
+				    	e.printStackTrace();
+				    }
+				}
+			}
+			catch(IllegalArgumentException e)
+			{
+				ConsoleHelper.consolePrint(e.getMessage());
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			
+			monitor.done();
+	
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{
-				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-				job.run(monitor);
-				
-				target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhosync);
-			}
-		
-			startBuildThread(project, mode, launch);
-
-			while(true)
-			{
-				try 
-			    {
-					if (monitor.isCanceled()) 
-				    {
-						StopRhoconnectAppAdapter.stopRhoconnectApp();
-						return;
-				    }
-					
-					if (getProcessFinished())
-					{
-						break;
-					}
-
-					Thread.sleep(100);
-			    }
-			    catch (InterruptedException e) 
-			    {
-			    	e.printStackTrace();
-			    }
+				target.setProcess(m_debugProcess);
+				launch.addDebugTarget(target);
 			}
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e) 
 		{
-			ConsoleHelper.consolePrint(e.getMessage());
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
+			msgJob.run(monitor);
 		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		monitor.done();
-
-		if (mode.equals(ILaunchManager.DEBUG_MODE))
-		{
-			target.setProcess(m_debugProcess);
-			launch.addDebugTarget(target);
-		}
-	}
-
-	@Override
-	protected IProject[] getBuildOrder(ILaunchConfiguration configuration, String mode) throws CoreException 
-	{
-		if (m_projectName != null) 
-		{
-			m_projectName = m_projectName.trim();
-			
-			if (m_projectName.length() > 0) 
-			{
-				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-
-				project.setSessionProperty(RhogenBuilder.getPlatformQualifier(), m_platformName);
-				
-				IProject[] findProjects = { project };
-				
-				return findProjects;
-			}
-		}
-
-		return null;
 	}
 
 	@Override
