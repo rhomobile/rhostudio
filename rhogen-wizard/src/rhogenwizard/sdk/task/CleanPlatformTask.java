@@ -2,6 +2,8 @@ package rhogenwizard.sdk.task;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import rhogenwizard.PlatformType;
+
 public class CleanPlatformTask extends RakeTask 
 {
 	public static final String taskTag      = "clean-platform";
@@ -21,8 +23,8 @@ public class CleanPlatformTask extends RakeTask
 			if (m_taskParams == null || m_taskParams.size() == 0)
 				throw new InvalidAttributesException("parameters data is invalid [CleanPlatformTask]");		
 			
-			String workDir      = (String) m_taskParams.get(this.workDir);
-			String platformType = (String) m_taskParams.get(this.platformType);
+			String       workDir      = (String) m_taskParams.get(this.workDir);
+			PlatformType platformType = (PlatformType) m_taskParams.get(this.platformType);
 
 			runRakeTask(workDir, "clean:" + platformType.toString());
 		}
