@@ -301,5 +301,29 @@
            delegateClass="rhogenwizard.debugger.RhogenWatchExpressionDelegate">
      </watchExpressionDelegate>
     </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="RhoStudio">
+         <property
+               name="windowImages"
+               value="icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
+         </property>
+         <property
+               name="aboutText"
+               value="Rhomobile RhoStudio">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/sample.png">
+         </property>
+         <property
+               name="appName"
+               value="RhoStudio">
+         </property>
+      </product>
+   </extension>
    
 </plugin>
