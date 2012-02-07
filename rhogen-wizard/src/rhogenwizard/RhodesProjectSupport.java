@@ -13,6 +13,8 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -43,6 +45,15 @@ public class RhodesProjectSupport
         return project;
     }
 
+    public static boolean isProjectLocationInWorkspace(final String projectPath)
+    {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot root = workspace.getRoot();
+		String wsPath = root.getLocation().toOSString();
+		
+		return projectPath.contains(wsPath); 
+    }
+    
     /**
      * Just do the basics: create a basic project.
      *
@@ -67,6 +78,9 @@ public class RhodesProjectSupport
 
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
 
+            if (isProjectLocationInWorkspace(path))
+            	 projectInfo.isInDefaultWs = true;
+            
             if (!projectInfo.isInDefaultWs)
             {
             	desc.setLocationURI(URIUtil.toURI(path));
