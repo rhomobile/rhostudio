@@ -49,8 +49,8 @@ public class RhogenPreferencePageWm extends BasePreferencePage
 		
 		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.cabWizardPath, 
 				"&Cab wizard path:", getFieldEditorParent()));
-		
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.vcBuildPath, 
+				
+		addField(new FileFieldEditor(PreferenceConstants.vcBuildPath, 
 				"&VS build tool path:", getFieldEditorParent()));
 	}
 
