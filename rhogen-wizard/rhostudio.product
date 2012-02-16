@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RhoStudio" uid="aaaa" id="com.rhomobile.rhostudio.rhostudio_id" application="org.eclipse.ui.ide.workbench" version="1.3.1.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="RhoStudio" uid="rhostudio_id" id="com.rhomobile.rhostudio.rhostudio_id" application="org.eclipse.ui.ide.workbench" version="1.3.1.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/RhogenWizard/icons/sample.png"/>
@@ -46,7 +46,6 @@
    </vm>
 
    <plugins>
-      <plugin id="com.google.gson"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.ibm.icu.source"/>
       <plugin id="com.jcraft.jsch"/>
@@ -597,12 +596,16 @@
       <plugin id="org.sat4j.pb"/>
    </plugins>
 
+   <features>
+      <feature id="rhostudio_feature" version="1.3.1.qualifier"/>
+   </features>
+
    <configurations>
-      <plugin id="com.google.gson" autoStart="false" startLevel="0" />
       <plugin id="com.ibm.icu" autoStart="false" startLevel="0" />
       <plugin id="com.ibm.icu.source" autoStart="false" startLevel="0" />
       <plugin id="com.jcraft.jsch" autoStart="false" startLevel="0" />
       <plugin id="com.jcraft.jsch.source" autoStart="false" startLevel="0" />
+      <plugin id="com.rhomobile.rhostudio" autoStart="false" startLevel="0" />
       <plugin id="javax.servlet" autoStart="false" startLevel="0" />
       <plugin id="javax.servlet.jsp" autoStart="false" startLevel="0" />
       <plugin id="javax.xml" autoStart="false" startLevel="0" />
@@ -804,12 +807,12 @@
       <plugin id="org.eclipse.epp.usagedata.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.app" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.app.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.common" autoStart="false" startLevel="2" />
+      <plugin id="org.eclipse.equinox.common" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.common.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.concurrent" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.ds.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.event.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.frameworkadmin" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.frameworkadmin.equinox" autoStart="false" startLevel="0" />
@@ -856,7 +859,7 @@
       <plugin id="org.eclipse.equinox.p2.publisher.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.ql" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.ql.source" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.repository" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.repository.source" autoStart="false" startLevel="0" />
@@ -976,7 +979,7 @@
       <plugin id="org.eclipse.mylyn.wikitext.twiki.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.mylyn.wikitext.twiki.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.mylyn.wikitext.ui" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.osgi" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.osgi.services" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.osgi.services.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.osgi.source" autoStart="false" startLevel="0" />
