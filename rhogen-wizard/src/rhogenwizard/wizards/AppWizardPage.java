@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import rhogenwizard.BuildInfoHolder;
-import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.project.ProjectFactory;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -230,7 +230,7 @@ public class AppWizardPage extends WizardPage
 		
 		File appFolderFile = new File(appFolder);
 		
-		if (RhodesProjectSupport.isProjectLocationInWorkspace(appFolder))
+		if (ProjectFactory.getInstance().isProjectLocationInWorkspace(appFolder))
 			m_appNameText.setEditable(false);
 		else
 			m_appNameText.setEditable(true);

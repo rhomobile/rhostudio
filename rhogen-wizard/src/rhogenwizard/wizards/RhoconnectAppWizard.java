@@ -17,14 +17,17 @@ import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
 import org.eclipse.ui.*;
-import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
-import rhogenwizard.CheckProjectException;
-import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
+import rhogenwizard.project.IRhomobileProject;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhoconnectProject;
+import rhogenwizard.project.extension.AlredyCreatedException;
+import rhogenwizard.project.extension.CheckProjectException;
+import rhogenwizard.project.extension.ProjectNotFoundExtension;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
@@ -74,6 +77,10 @@ public class RhoconnectAppWizard extends Wizard implements INewWizard
 				catch (CoreException e) 
 				{
 					throw new InvocationTargetException(e);
+				}
+				catch (ProjectNotFoundExtension e) 
+				{
+					e.printStackTrace();
 				} 
 				finally 
 				{
@@ -100,17 +107,32 @@ public class RhoconnectAppWizard extends Wizard implements INewWizard
 		return true;
 	}
 	
+	private void createProjectFiles(BuildInfoHolder infoHolder,IProgressMonitor monitor) throws IOException, Exception
+	{
+		monitor.setTaskName("Generate application...");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put(GenerateRhoconnectAppTask.appName, infoHolder.appName);
+		params.put(GenerateRhoconnectAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+		
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.taskTag, params);
+		
+		if (TaskResultConverter.getResultIntCode(results) != 0)
+		{
+			throw new IOException(MsgConstants.errInstallRhosync);
+		}			
+	}
+	
 	/**
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
+	 * @throws ProjectNotFoundExtension 
 	 */
-	private void doFinish(
-		BuildInfoHolder infoHolder,
-		IProgressMonitor monitor)
-		throws CoreException 
+	private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws CoreException, ProjectNotFoundExtension 
 	{
-		IProject newProject = null;
+		IRhomobileProject newProject = null;
 		
 		try 
 		{
@@ -118,26 +140,14 @@ public class RhoconnectAppWizard extends Wizard implements INewWizard
 			monitor.worked(1);
 			monitor.setTaskName("Create project...");
 			
-			newProject = RhodesProjectSupport.createProject(infoHolder);
+			newProject = ProjectFactory.getInstance().createProject(RhoconnectProject.class, infoHolder);
 	
 			if (!infoHolder.existCreate) 
 			{
-				monitor.setTaskName("Generate application...");
-				
-				Map<String, Object> params = new HashMap<String, Object>();
-	
-				params.put(GenerateRhoconnectAppTask.appName, infoHolder.appName);
-				params.put(GenerateRhoconnectAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
-				
-				Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.taskTag, params);
-				
-				if (TaskResultConverter.getResultIntCode(results) != 0)
-				{
-					throw new IOException(MsgConstants.errInstallRhosync);
-				}	
+				createProjectFiles(infoHolder, monitor);
 			}
 			
-			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+			newProject.refreshProject();
 						
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
 			job.run(monitor);
@@ -146,7 +156,7 @@ public class RhoconnectAppWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			newProject.delete(false, false, monitor);
+			newProject.deleteProjectFiles();
 			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
 			msgJob.run(monitor);
 		}

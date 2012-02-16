@@ -17,11 +17,13 @@ import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
 import org.eclipse.ui.*;
-import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhoconnectProject;
+import rhogenwizard.project.RhodesProject;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
@@ -31,7 +33,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 	private static final String okRhodesVersionFlag = "1";
 	
 	private SourceAdapterWizardPage m_pageApp = null;
-	private ISelection              selection = null;
+	private ISelection              m_selection = null;
 	private IProject                m_currentProject = null;
 	private String                  m_projectLocation = null;
 	
@@ -43,7 +45,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 		super();
 		setNeedsProgressMonitor(true);
 		
-		m_currentProject = RhodesProjectSupport.getSelectedProject();
+		m_currentProject = ProjectFactory.getInstance().getSelectedProject();
 		
 		if (m_currentProject != null)
 		{
@@ -56,8 +58,16 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageApp = new SourceAdapterWizardPage(selection);
-		addPage(m_pageApp);
+		if (!RhoconnectProject.checkNature(m_currentProject))
+		{
+			ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhoconnect application");
+			addPage(zeroPage);
+		}
+		else
+		{
+			m_pageApp = new SourceAdapterWizardPage(m_selection);
+			addPage(m_pageApp);
+		}
 	}
 
 	/**
@@ -67,6 +77,9 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
+		if (!RhoconnectProject.checkNature(m_currentProject))
+			return true;
+		
 		final String srcAdapterName = m_pageApp.getAdapterName();
 		
 		IRunnableWithProgress op = new IRunnableWithProgress() 
@@ -164,6 +177,6 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection)
 	{
-		this.selection = selection;
+		this.m_selection = selection;
 	}
 }

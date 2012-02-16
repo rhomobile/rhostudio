@@ -17,16 +17,19 @@ import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
 import org.eclipse.ui.*;
-import rhogenwizard.AlredyCreatedException;
 import rhogenwizard.BuildInfoHolder;
-import rhogenwizard.CheckProjectException;
-import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
+import rhogenwizard.project.IRhomobileProject;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhodesProject;
+import rhogenwizard.project.extension.AlredyCreatedException;
+import rhogenwizard.project.extension.CheckProjectException;
+import rhogenwizard.project.extension.ProjectNotFoundExtension;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
@@ -75,6 +78,10 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 				{
 					throw new InvocationTargetException(e);
 				} 
+				catch (ProjectNotFoundExtension e) 
+				{
+					e.printStackTrace();
+				} 
 				finally 
 				{
 					monitor.done();
@@ -100,17 +107,33 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 		return true;
 	}
 	
+	private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws Exception
+	{
+		monitor.setTaskName("Generate application...");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
+		params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+		
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.taskTag, params);
+		
+		if (TaskResultConverter.getResultIntCode(results) != 0)
+		{
+			throw new IOException(MsgConstants.errInstallRhodes);
+		}	
+	}
+	
 	/**
+	 * @throws ProjectNotFoundExtension 
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
+	 * @throws  
 	 */
-	private void doFinish(
-		BuildInfoHolder infoHolder,
-		IProgressMonitor monitor)
-		throws CoreException 
+	private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws CoreException, ProjectNotFoundExtension 
 	{
-		IProject newProject = null;
+		IRhomobileProject newProject = null;
 		
 		try 
 		{
@@ -118,7 +141,7 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 			monitor.worked(1);
 			monitor.setTaskName("Create project...");
 			
-			newProject = RhodesProjectSupport.createProject(infoHolder);
+			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); //RhodesProjectSupport.createProject(infoHolder);
 
 			if (CommonConstants.checkRhodesVersion)
 			{
@@ -133,7 +156,7 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 				}
 				catch (IOException e)
 				{
-					newProject.delete(false, false, monitor);
+					newProject.deleteProjectFiles();
 					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version, need rhodes version equal or greater " 
 							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 					msgJob.run(monitor);
@@ -143,22 +166,10 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 			
 			if (!infoHolder.existCreate) 
 			{
-				monitor.setTaskName("Generate application...");
-				
-				Map<String, Object> params = new HashMap<String, Object>();
-	
-				params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
-				params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
-				
-				Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.taskTag, params);
-				
-				if (TaskResultConverter.getResultIntCode(results) != 0)
-				{
-					throw new IOException(MsgConstants.errInstallRhodes);
-				}
+				createProjectFiles(infoHolder, monitor);
 			}
 
-			newProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+			newProject.refreshProject();
 
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
 			job.run(monitor);
@@ -167,15 +178,10 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			newProject.delete(false, false, monitor);
+			newProject.deleteProjectFiles();
 			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes, need rhodes version equal or greater " 
 					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 			msgJob.run(monitor);
-		}
-		catch (CheckProjectException e) 
-		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
-			msgJob.run(monitor);		
 		}
 		catch (AlredyCreatedException e)
 		{

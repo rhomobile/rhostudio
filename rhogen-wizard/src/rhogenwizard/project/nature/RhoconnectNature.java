@@ -1,4 +1,4 @@
-package rhogenwizard.builder;
+package rhogenwizard.project.nature;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -6,12 +6,15 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
-public class RhogenNature implements IProjectNature 
+import rhogenwizard.builder.RhoconnectBuilder;
+
+
+public class RhoconnectNature implements IProjectNature 
 {
 	/**
 	 * ID of this project nature
 	 */
-	public static final String NATURE_ID = "com.rhomobile.rhostudio.rhogenNature";
+	public static final String natureId = "com.rhomobile.rhostudio.rhoconnectNature";
 
 	private IProject project;
 
@@ -27,8 +30,7 @@ public class RhogenNature implements IProjectNature
 
 		for (int i = 0; i < commands.length; ++i) 
 		{
-			if (commands[i].getBuilderName().equals(RhogenBuilder.BUILDER_ID)) 
-			{
+			if (commands[i].getBuilderName().equals(RhoconnectBuilder.BUILDER_ID)) {
 				return;
 			}
 		}
@@ -36,7 +38,7 @@ public class RhogenNature implements IProjectNature
 		ICommand[] newCommands = new ICommand[commands.length + 1];
 		System.arraycopy(commands, 0, newCommands, 0, commands.length);
 		ICommand command = desc.newCommand();
-		command.setBuilderName(RhogenBuilder.BUILDER_ID);
+		command.setBuilderName(RhoconnectBuilder.BUILDER_ID);
 		newCommands[newCommands.length - 1] = command;
 		desc.setBuildSpec(newCommands);
 		
@@ -48,18 +50,19 @@ public class RhogenNature implements IProjectNature
 	 * 
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
-	public void deconfigure() throws CoreException 
+	public void deconfigure() throws CoreException
 	{
 		IProjectDescription description = getProject().getDescription();
 		ICommand[] commands = description.getBuildSpec();
-	
+		
 		for (int i = 0; i < commands.length; ++i) 
 		{
-			if (commands[i].getBuilderName().equals(RhogenBuilder.BUILDER_ID)) 
+			if (commands[i].getBuilderName().equals(RhoconnectBuilder.BUILDER_ID)) 
 			{
 				ICommand[] newCommands = new ICommand[commands.length - 1];
 				System.arraycopy(commands, 0, newCommands, 0, i);
-				System.arraycopy(commands, i + 1, newCommands, i, commands.length - i - 1);
+				System.arraycopy(commands, i + 1, newCommands, i,
+						commands.length - i - 1);
 				description.setBuildSpec(newCommands);
 				project.setDescription(description, null);			
 				return;
@@ -86,4 +89,5 @@ public class RhogenNature implements IProjectNature
 	{
 		this.project = project;
 	}
+
 }

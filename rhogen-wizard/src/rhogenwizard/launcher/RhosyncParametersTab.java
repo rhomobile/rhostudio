@@ -24,8 +24,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
-import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhoconnectProject;
+import rhogenwizard.project.RhodesProject;
+import rhogenwizard.project.nature.RhoconnectNature;
 
 public class RhosyncParametersTab extends  JavaLaunchTab 
 {
@@ -98,8 +101,8 @@ public class RhosyncParametersTab extends  JavaLaunchTab
 		
 		if (m_selProject == null)
 		{
-			m_selProject = RhodesProjectSupport.getSelectedProject();
-
+			m_selProject = ProjectFactory.getInstance().getSelectedProject();
+			
 			if (m_selProject == null)
 			{
 				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
@@ -171,7 +174,15 @@ public class RhosyncParametersTab extends  JavaLaunchTab
 				String selProjectName = ((Path) result[0]).toString();
 				selProjectName = selProjectName.replaceAll("/", "");
 				
-				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+				IProject selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+				
+				if (!RhoconnectProject.checkNature(selProject))
+				{
+					MessageDialog.openError(getShell(), "Message", "Project " + selProject.getName() + " is not rhoconnect application");
+					return;
+				}
+				
+				m_selProject = selProject;
 				m_appNameText.setText(selProjectName);
 				
 				m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());

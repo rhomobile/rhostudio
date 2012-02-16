@@ -32,12 +32,13 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
-import rhogenwizard.RhodesProjectSupport;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhodesProject;
 
 public class RhogenParametersTab extends  JavaLaunchTab 
 {
@@ -392,7 +393,7 @@ public class RhogenParametersTab extends  JavaLaunchTab
 		
 		if (m_selProject == null)
 		{
-			m_selProject = RhodesProjectSupport.getSelectedProject();
+			m_selProject = ProjectFactory.getInstance().getSelectedProject();
 
 			if (m_selProject == null)
 			{
@@ -657,10 +658,17 @@ public class RhogenParametersTab extends  JavaLaunchTab
 			if (result.length == 1) 
 			{				
 				String selProjectName = ((Path) result[0]).toString();
-				selProjectName = selProjectName.replaceAll("/", "");
+				selProjectName        = selProjectName.replaceAll("/", "");
+				IProject selProject   = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
 				
-				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
-				m_appNameText.setText(selProjectName);
+				if (!RhodesProject.checkNature(selProject))
+				{
+					MessageDialog.openError(getShell(), "Message", "Project " + selProject.getName() + " is not rhodes application");
+					return;
+				}
+				
+				m_selProject = selProject;								
+				m_appNameText.setText(selProjectName);	
 				
 				m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());
 				

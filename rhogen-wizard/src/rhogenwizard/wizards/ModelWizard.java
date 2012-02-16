@@ -26,7 +26,8 @@ import org.eclipse.ui.progress.UIJob;
 
 import rhogenwizard.Activator;
 import rhogenwizard.OSHelper;
-import rhogenwizard.RhodesProjectSupport;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhodesProject;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
@@ -117,10 +118,10 @@ public class ModelWizard extends Wizard implements INewWizard
 		super();
 		setNeedsProgressMonitor(true);
 		
-		m_currentProject = RhodesProjectSupport.getSelectedProject();
-		
+		m_currentProject = ProjectFactory.getInstance().getSelectedProject();
+
 		if (m_currentProject != null)
-		{
+		{	
 			m_projectLocation = m_currentProject.getLocation().toOSString();
 		}
 	}
@@ -142,8 +143,16 @@ public class ModelWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		m_pageModel = new ModelWizardPage(m_selection);
-		addPage(m_pageModel);
+		if (!RhodesProject.checkNature(m_currentProject))
+		{
+			ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhodes application");
+			addPage(zeroPage);
+		}
+		else
+		{
+			m_pageModel = new ModelWizardPage(m_selection);
+			addPage(m_pageModel);
+		}
 	}
 
 	/**
@@ -153,9 +162,12 @@ public class ModelWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
+		if (!RhodesProject.checkNature(m_currentProject))
+			return true;
+	
 		final String modelName   = m_pageModel.getModelName();
 		final String modelParams = m_pageModel.getModelParams();
-	
+		
 		IRunnableWithProgress op = new IRunnableWithProgress() 
 		{
 			public void run(IProgressMonitor monitor) throws InvocationTargetException 

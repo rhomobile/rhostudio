@@ -1,14 +1,12 @@
-package rhogenwizard;
+package rhogenwizard.project.extension;
 
 import org.eclipse.core.resources.IProject;
 
-public class AlredyCreatedException extends Exception 
+public class CheckProjectException extends Exception
 {
-	private static final long serialVersionUID = 2517636573612234997L;
-
 	private IProject m_project = null;
 	
-	public AlredyCreatedException(IProject project)
+	public CheckProjectException(IProject project)
 	{
 		m_project = project;
 	}
@@ -23,14 +21,14 @@ public class AlredyCreatedException extends Exception
 	public String toString() 
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("Project ");
+		sb.append("In project ");
 		
 		if (m_project != null)
 		{
 			sb.append(m_project.getName());
 		}
 		
-		sb.append(" with this name is already created.");
+		sb.append(" was encountered problem.");
 		
 		return sb.toString();
 	}
