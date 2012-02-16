@@ -78,12 +78,24 @@
       </builder>
    </extension>
    
+   <extension point="org.eclipse.core.resources.builders"
+               id="rhoconnectBuilder"
+               name="Rhoconnect Project Builder">
+      <builder
+            hasNature="true"
+            isConfigurable="false">
+         <run
+               class="rhogenwizard.builder.RhoconnectBuilder">
+         </run>
+      </builder>
+   </extension>
+      
    <extension point="org.eclipse.core.resources.natures"
-              id="rhogenNature"
+              id="rhodesNature"
               name="Rhodes Project Nature">
       <runtime>
          <run
-               class="rhogenwizard.builder.RhogenNature">
+               class="rhogenwizard.project.nature.RhodesNature">
          </run>
       </runtime>
       <builder
@@ -91,6 +103,19 @@
       </builder>
    	</extension>
  
+    <extension point="org.eclipse.core.resources.natures"
+              id="rhoconnectNature"
+              name="Rhoconnect Project Nature">
+      <runtime>
+         <run
+               class="rhogenwizard.project.nature.RhoconnectNature">
+         </run>
+      </runtime>
+      <builder
+            id="com.rhomobile.rhostudio.rhoconnectBuilder">
+      </builder>
+    </extension>
+    
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
 	        icon="icons/sample16.png"
