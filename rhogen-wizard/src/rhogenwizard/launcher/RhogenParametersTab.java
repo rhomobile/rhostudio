@@ -64,12 +64,10 @@ public class RhogenParametersTab extends  JavaLaunchTab
 
 	private static String iphoneVersions[] = { "iphone",
 											   "ipad" };
-															
 
 	private static String simulatorTypes[] = { RunType.platformRhoSim,
 		                                       RunType.platformSim,
 		                                       RunType.platformDevice };
-
 	
 	private static String bbVersions[] = {};
 	
