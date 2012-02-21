@@ -59,7 +59,8 @@ public class RhogenParametersTab extends  JavaLaunchTab
 											    "3.0",
 											    "3.1",
 											    "3.2", 
-											    "4.0" };
+											    "4.0",
+											    "4.0.3" };
 
 	private static String iphoneVersions[] = { "iphone",
 											   "ipad" };
