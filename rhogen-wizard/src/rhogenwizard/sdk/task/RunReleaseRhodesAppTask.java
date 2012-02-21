@@ -40,7 +40,10 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 			if (runType == RunType.eDevice)
 			{
 				if (platformType == PlatformType.eIPhone)
-					sb.append(":production");
+				{
+					sb = new StringBuilder();
+					sb.append("device:iphone:production");
+				}
 				else if (platformType == PlatformType.eBb) // FIX for bb
 				{
 					sb = new StringBuilder();
