@@ -27,6 +27,7 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 	private RhogenDirectoryFieldEditor 	m_mdsDir = null;
 	private StringFieldEditor 		    m_simPort = null;
 	private StringFieldEditor           m_bbVer = null;
+	private int                         m_selComboItem = 0;
 	
 	public RhogenPreferencePageBb() 
 	{
@@ -48,7 +49,7 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 
 		try 
 		{
-			String bbVersionName = m_selectCombo.getCombo().getText();
+			String bbVersionName = m_selectCombo.getCombo().getItem(m_selComboItem);
 			String bbJdkPath     = m_jdkDir.getStringValue();
 			String bbMdsPath     = m_mdsDir.getStringValue();
 			String bbSimPort     = m_simPort.getStringValue();
@@ -111,6 +112,11 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 			{
 				try 
 				{
+					// for save before change blackberry sdk
+					performOk();
+					
+					m_selComboItem = m_selectCombo.getCombo().getSelectionIndex();
+					
 					String bbVer = m_selectCombo.getCombo().getText();
 					
 					SdkYmlFile ymlFile = m_pInit.getYmlFile();
@@ -143,7 +149,7 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 				"&Blackbery MDS path:", getFieldEditorParent());
 		addField(m_mdsDir);
 		
-		m_simPort =  new StringFieldEditor(PreferenceConstants.bbSim, 
+		m_simPort = new StringFieldEditor(PreferenceConstants.bbSim, 
 				"Simulator device:", getFieldEditorParent());
 		addField(m_simPort);
 	}
