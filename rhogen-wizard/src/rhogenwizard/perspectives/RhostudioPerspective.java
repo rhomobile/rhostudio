@@ -19,6 +19,7 @@ public class RhostudioPerspective implements IPerspectiveFactory
 	public void createInitialLayout(IPageLayout factory) 
 	{
 		this.m_factory = factory;
+		
 		addViews();
 		addActionSets();
 		addNewWizardShortcuts();
@@ -28,23 +29,12 @@ public class RhostudioPerspective implements IPerspectiveFactory
 
 	private void addViews() 
 	{
-		// Creates the overall folder layout. 
-		// Note that each new Folder uses a percentage of the remaining EditorArea.	
-		IFolderLayout bottom = m_factory.createFolder(
-				"bottomRight", //NON-NLS-1
-				IPageLayout.BOTTOM,
-				0.75f,
-				m_factory.getEditorArea());
+		IFolderLayout bottom = m_factory.createFolder("bottomRight", IPageLayout.BOTTOM, 0.75f, m_factory.getEditorArea());
 		
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 		bottom.addView(IPageLayout.ID_PROGRESS_VIEW);
 
-		IFolderLayout topLeft =
-			m_factory.createFolder(
-				"topLeft", //NON-NLS-1
-				IPageLayout.LEFT,
-				0.25f,
-				m_factory.getEditorArea());
+		IFolderLayout topLeft = m_factory.createFolder("topLeft", IPageLayout.LEFT, 0.25f, m_factory.getEditorArea());
 		
 		topLeft.addView(IPageLayout.ID_PROJECT_EXPLORER);
 	}
