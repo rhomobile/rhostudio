@@ -1,9 +1,9 @@
-package rhogenwizard.builder;
+package rhogenwizard.builder.rhodes;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 
-class RhogenResourceVisitor implements IResourceVisitor 
+class ResourceVisitor implements IResourceVisitor 
 {
 	public boolean visit(IResource resource) 
 	{

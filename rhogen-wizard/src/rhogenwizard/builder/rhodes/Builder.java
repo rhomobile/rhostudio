@@ -1,4 +1,4 @@
-package rhogenwizard.builder;
+package rhogenwizard.builder.rhodes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +13,9 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.task.CleanAllPlatfromTask;
 
-public class RhogenBuilder extends IncrementalProjectBuilder 
+public class Builder extends IncrementalProjectBuilder 
 {
-	public  static final String BUILDER_ID = "rhogenwizard.builder.RhogenBuilder";
+	public  static final String BUILDER_ID = "com.rhomobile.rhostudio.rhogenBuilder";
 
 	/*
 	 * (non-Javadoc)
@@ -63,7 +63,7 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 	{
 		try 
 		{
-			getProject().accept(new RhogenResourceVisitor());
+			getProject().accept(new ResourceVisitor());
 		} 
 		catch (CoreException e) 
 		{
@@ -74,7 +74,7 @@ public class RhogenBuilder extends IncrementalProjectBuilder
 	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException 
 	{
 		// the visitor does the work.
-		delta.accept(new RhogenDeltaVisitor());
+		delta.accept(new DeltaVisitor());
 	}
 	
 	public static QualifiedName getPlatformQualifier()

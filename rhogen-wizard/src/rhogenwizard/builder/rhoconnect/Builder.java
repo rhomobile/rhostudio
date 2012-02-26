@@ -1,4 +1,4 @@
-package rhogenwizard.builder;
+package rhogenwizard.builder.rhoconnect;
 
 import java.util.Map;
 
@@ -20,7 +20,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class RhoconnectBuilder extends IncrementalProjectBuilder {
+public class Builder extends IncrementalProjectBuilder 
+{
 
 	class SampleDeltaVisitor implements IResourceDeltaVisitor {
 		/*
@@ -28,7 +29,8 @@ public class RhoconnectBuilder extends IncrementalProjectBuilder {
 		 * 
 		 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
 		 */
-		public boolean visit(IResourceDelta delta) throws CoreException {
+		public boolean visit(IResourceDelta delta) throws CoreException 
+		{
 			IResource resource = delta.getResource();
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
@@ -65,7 +67,7 @@ public class RhoconnectBuilder extends IncrementalProjectBuilder {
 		}
 
 		private void addMarker(SAXParseException e, int severity) {
-			RhoconnectBuilder.this.addMarker(file, e.getMessage(), e
+			Builder.this.addMarker(file, e.getMessage(), e
 					.getLineNumber(), severity);
 		}
 

@@ -1,11 +1,11 @@
-package rhogenwizard.builder;
+package rhogenwizard.builder.rhodes;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 
-class RhogenDeltaVisitor implements IResourceDeltaVisitor 
+class DeltaVisitor implements IResourceDeltaVisitor 
 {
 	/*
 	 * (non-Javadoc)
