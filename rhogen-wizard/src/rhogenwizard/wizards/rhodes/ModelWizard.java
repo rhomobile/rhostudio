@@ -1,4 +1,4 @@
-package rhogenwizard.wizards;
+package rhogenwizard.wizards.rhodes;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -32,12 +32,13 @@ import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
+import rhogenwizard.wizards.ZeroPage;
 
 class ModelCreationJob extends UIJob 
 {
-	String m_modelName = null;
-	String m_modelParams = null;
-	String m_projectLocation = null;
+	String   m_modelName = null;
+	String   m_modelParams = null;
+	String   m_projectLocation = null;
 	IProject m_currentProject = null;
 	
 	public ModelCreationJob(String name
@@ -143,15 +144,23 @@ public class ModelWizard extends Wizard implements INewWizard
 	 */
 	public void addPages() 
 	{
-		if (!RhodesProject.checkNature(m_currentProject))
+		if (m_currentProject != null)
 		{
-			ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhodes application");
-			addPage(zeroPage);
+			if (!RhodesProject.checkNature(m_currentProject))
+			{
+				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhodes application");
+				addPage(zeroPage);
+			}
+			else
+			{
+				m_pageModel = new ModelWizardPage(m_selection);
+				addPage(m_pageModel);
+			}
 		}
 		else
 		{
-			m_pageModel = new ModelWizardPage(m_selection);
-			addPage(m_pageModel);
+			ZeroPage zeroPage = new ZeroPage("Select rhodes project for create model");
+			addPage(zeroPage);			
 		}
 	}
 

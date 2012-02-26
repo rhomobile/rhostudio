@@ -1,4 +1,4 @@
-package rhogenwizard.wizards;
+package rhogenwizard.wizards.rhodes;
 
 import java.io.File;
 

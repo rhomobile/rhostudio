@@ -1,4 +1,4 @@
-package rhogenwizard.wizards;
+package rhogenwizard.wizards.rhoconnect;
 
 import java.io.File;
 
@@ -28,7 +28,7 @@ import rhogenwizard.BuildInfoHolder;
  * OR with the extension that matches the expected one (mpe).
  */
 
-public class RhoconnectAppWizardPage extends WizardPage 
+public class AppWizardPage extends WizardPage 
 {
 	private static final int labelWidht = 120;
 	private static final int textWidht = 300;
@@ -46,7 +46,7 @@ public class RhoconnectAppWizardPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public RhoconnectAppWizardPage(ISelection selection) 
+	public AppWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
 		setTitle("Rhoconnect application generator wizard");

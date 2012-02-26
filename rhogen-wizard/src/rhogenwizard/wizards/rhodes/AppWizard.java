@@ -1,4 +1,4 @@
-package rhogenwizard.wizards;
+package rhogenwizard.wizards.rhodes;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -34,7 +34,7 @@ import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 
-public class RhodesAppWizard extends Wizard implements INewWizard 
+public class AppWizard extends Wizard implements INewWizard 
 {
 	private AppWizardPage  m_pageApp = null;
 	private ISelection     selection = null;
@@ -42,7 +42,7 @@ public class RhodesAppWizard extends Wizard implements INewWizard
 	/**
 	 * Constructor for SampleNewWizard.
 	 */
-	public RhodesAppWizard() 
+	public AppWizard() 
 	{
 		super();
 		setNeedsProgressMonitor(true);
