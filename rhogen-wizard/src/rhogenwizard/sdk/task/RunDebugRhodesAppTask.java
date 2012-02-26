@@ -11,6 +11,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 
 import rhogenwizard.PlatformType;
+import rhogenwizard.sdk.helper.DebugConsoleAdapter;
 
 public class RunDebugRhodesAppTask extends RhodesTask
 {
@@ -23,6 +24,8 @@ public class RunDebugRhodesAppTask extends RhodesTask
 	public static final String resProcess   = "debug-process";
 	public static final String traceFlag    = "trace";
 	
+	DebugConsoleAdapter m_dbgConsoleAdapter = null;
+	
 	@Override
 	public void run() 
 	{
@@ -33,12 +36,12 @@ public class RunDebugRhodesAppTask extends RhodesTask
 			if (m_taskParams == null || m_taskParams.size() == 0)
 				throw new InvalidAttributesException("parameters data is invalid [RunDebugRhodesAppTask]");		
 			
-			String       workDir      = (String) m_taskParams.get(this.workDir);
-			String       appName      = (String) m_taskParams.get(this.appName);
-			PlatformType platformType = (PlatformType) m_taskParams.get(this.platformType);
-			Boolean      isReloadCode = (Boolean) m_taskParams.get(this.reloadCode);
-			ILaunch      launch       = (ILaunch) m_taskParams.get(this.launchObj);
-			Boolean      isTrace      = (Boolean) m_taskParams.get(this.traceFlag);
+			String       workDir      = (String) m_taskParams.get(IRunTask.workDir);
+			String       appName      = (String) m_taskParams.get(RunDebugRhodesAppTask.appName);
+			PlatformType platformType = (PlatformType) m_taskParams.get(RunDebugRhodesAppTask.platformType);
+			Boolean      isReloadCode = (Boolean) m_taskParams.get(RunDebugRhodesAppTask.reloadCode);
+			ILaunch      launch       = (ILaunch) m_taskParams.get(RunDebugRhodesAppTask.launchObj);
+			Boolean      isTrace      = (Boolean) m_taskParams.get(RunDebugRhodesAppTask.traceFlag);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("run:");
@@ -66,6 +69,8 @@ public class RunDebugRhodesAppTask extends RhodesTask
 			Process process = DebugPlugin.exec(commandLine, new File(workDir));
 
 			IProcess debugProcess = DebugPlugin.newProcess(launch, process, appName);
+			
+			m_dbgConsoleAdapter = new DebugConsoleAdapter(debugProcess);
 			
 			Integer resCode = null;
 			

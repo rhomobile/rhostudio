@@ -22,7 +22,7 @@ public class CleanAllPlatfromTask extends RakeTask
 			if (m_taskParams == null || m_taskParams.size() == 0)
 				throw new InvalidAttributesException("parameters data is invalid [CleanAllPlatfromTask]");		
 			
-			String workDir = (String) m_taskParams.get(this.workDir);
+			String workDir = (String) m_taskParams.get(IRunTask.workDir);
 
 			runRakeTask(workDir, "clean:" + PlatformType.platformAdroid);
 			runRakeTask(workDir, "clean:" + PlatformType.platformBlackBerry);

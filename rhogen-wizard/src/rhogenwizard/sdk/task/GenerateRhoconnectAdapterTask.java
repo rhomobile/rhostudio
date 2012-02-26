@@ -27,8 +27,8 @@ public class GenerateRhoconnectAdapterTask extends RhoconnectTask
 			if (m_taskParams == null || m_taskParams.size() == 0)
 				throw new InvalidAttributesException("parameters data is invalid [GenerateRhoconnectAdapterTask]");		
 			
-			String workDir    = (String) m_taskParams.get(this.workDir);
-			String sourceName = (String) m_taskParams.get(this.sourceName);
+			String workDir    = (String) m_taskParams.get(IRunTask.workDir);
+			String sourceName = (String) m_taskParams.get(GenerateRhoconnectAdapterTask.sourceName);
 								
 			m_executor.setWorkingDirectory(workDir);
 			

@@ -2,7 +2,6 @@ package rhogenwizard.sdk.helper;
 
 import java.util.Map;
 
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 
 import rhogenwizard.sdk.task.IRunTask;
