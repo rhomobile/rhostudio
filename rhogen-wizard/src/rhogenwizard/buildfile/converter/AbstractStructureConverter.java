@@ -1,6 +1,7 @@
-package rhogenwizard.buildfile;
+package rhogenwizard.buildfile.converter;
 
 import java.util.Map;
+
 
 public abstract class AbstractStructureConverter implements IStructureConverter 
 {

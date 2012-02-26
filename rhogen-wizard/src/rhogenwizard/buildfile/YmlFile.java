@@ -13,6 +13,8 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.buildfile.converter.CustomConverter;
+import rhogenwizard.buildfile.converter.IStructureConverter;
 
 public class YmlFile
 {

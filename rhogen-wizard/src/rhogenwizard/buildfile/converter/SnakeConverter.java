@@ -1,4 +1,4 @@
-package rhogenwizard.buildfile;
+package rhogenwizard.buildfile.converter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
+
 
 public class SnakeConverter extends AbstractStructureConverter
 {

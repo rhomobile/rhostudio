@@ -1,4 +1,4 @@
-package rhogenwizard.buildfile;
+package rhogenwizard.buildfile.converter;
 
 import java.io.FileNotFoundException;
 import java.util.Map;

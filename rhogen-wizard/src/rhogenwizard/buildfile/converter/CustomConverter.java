@@ -1,4 +1,4 @@
-package rhogenwizard.buildfile;
+package rhogenwizard.buildfile.converter;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.yaml.snakeyaml.Yaml;
+
 
 public class CustomConverter extends AbstractStructureConverter 
 {
