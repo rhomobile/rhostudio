@@ -41,6 +41,9 @@ public class RhodesProject extends RhomobileProject
 	
 	public static boolean checkNature(IProject otherProject) 
 	{
+		if (otherProject == null)
+			return false;
+		
 		try 
 		{
 			IProjectNature nature = otherProject.getNature(RhodesNature.natureId);

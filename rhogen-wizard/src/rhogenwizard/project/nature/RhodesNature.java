@@ -6,7 +6,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
-import rhogenwizard.builder.RhogenBuilder;
+import rhogenwizard.builder.rhodes.Builder;
 
 public class RhodesNature implements IProjectNature 
 {
@@ -29,7 +29,7 @@ public class RhodesNature implements IProjectNature
 
 		for (int i = 0; i < commands.length; ++i) 
 		{
-			if (commands[i].getBuilderName().equals(RhogenBuilder.BUILDER_ID)) 
+			if (commands[i].getBuilderName().equals(Builder.BUILDER_ID)) 
 			{
 				return;
 			}
@@ -38,7 +38,7 @@ public class RhodesNature implements IProjectNature
 		ICommand[] newCommands = new ICommand[commands.length + 1];
 		System.arraycopy(commands, 0, newCommands, 0, commands.length);
 		ICommand command = desc.newCommand();
-		command.setBuilderName(RhogenBuilder.BUILDER_ID);
+		command.setBuilderName(Builder.BUILDER_ID);
 		newCommands[newCommands.length - 1] = command;
 		desc.setBuildSpec(newCommands);
 		
@@ -57,7 +57,7 @@ public class RhodesNature implements IProjectNature
 	
 		for (int i = 0; i < commands.length; ++i) 
 		{
-			if (commands[i].getBuilderName().equals(RhogenBuilder.BUILDER_ID)) 
+			if (commands[i].getBuilderName().equals(Builder.BUILDER_ID)) 
 			{
 				ICommand[] newCommands = new ICommand[commands.length - 1];
 				System.arraycopy(commands, 0, newCommands, 0, i);
