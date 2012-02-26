@@ -15,6 +15,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
+
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
@@ -178,6 +182,8 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			
 			rhodesLogHelper.stopLog();
 			
+			setStandartConsoleOutputIsOff();
+			
 			ConsoleHelper.cleanBuildConsole();
 			ConsoleHelper.showBuildConsole();
 			
@@ -202,6 +208,8 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			{
 				throw new IllegalArgumentException("Project " + project.getName() + " not found");
 			}
+			
+			
 			
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{
@@ -271,6 +279,16 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
 			msgJob.run(monitor);
 		}
+	}
+	
+	void setStandartConsoleOutputIsOff()
+	{
+		IPreferenceStore prefs = DebugUIPlugin.getDefault().getPreferenceStore();
+		
+		prefs.setDefault(IDebugPreferenceConstants.CONSOLE_OPEN_ON_OUT, false);
+		prefs.setDefault(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
+		prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_OUT, false);
+		prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
 	}
 
 	@Override
