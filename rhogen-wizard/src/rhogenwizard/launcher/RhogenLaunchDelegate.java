@@ -207,9 +207,7 @@ public class RhogenLaunchDelegate extends LaunchConfigurationDelegate implements
 			if (!project.isOpen()) 
 			{
 				throw new IllegalArgumentException("Project " + project.getName() + " not found");
-			}
-			
-			
+			}		
 			
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{

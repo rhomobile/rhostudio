@@ -17,22 +17,17 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
-import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.builder.RhogenBuilder;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
-import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
-import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
-import rhogenwizard.sdk.task.RunRhoconnectAppTask;
 import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
 
 public class RhosyncLaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
