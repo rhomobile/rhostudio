@@ -130,6 +130,7 @@ Press Run button to build and run application. Build output will appear in the R
 
 - download latest JDK
 - download and install [Eclipse for RCP and RAP Developers](http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/heliossr2)
+- install DLTK (http://download.eclipse.org/technology/dltk/updates/)
 - clone RhoStudio sources from git repository
 - mport project into Eclipse workspace (menu item File/Import)
 - build project (menu item Project/Build). If this menu item disabled then uncheck 'build automatically' located below
