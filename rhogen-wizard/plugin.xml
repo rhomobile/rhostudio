@@ -10,7 +10,7 @@
       
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhodesAppWizard"
+            class="rhogenwizard.wizards.rhodes.AppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenWizard"
             name="Rhodes application"
@@ -19,7 +19,7 @@
 
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.RhoconnectAppWizard"
+            class="rhogenwizard.wizards.rhoconnect.AppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSyncAppWizard"
             name="Rhoconnect application"
@@ -28,7 +28,7 @@
             
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.ModelWizard"
+            class="rhogenwizard.wizards.rhodes.ModelWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenModelWizard"
             name="Rhodes model"> 
@@ -36,7 +36,7 @@
       
       <wizard
             category="RhogenAppWizard"
-            class="rhogenwizard.wizards.SourceAdapterWizard"
+            class="rhogenwizard.wizards.rhoconnect.SourceAdapterWizard"
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSourceAdapterWizard"
@@ -73,7 +73,7 @@
             hasNature="true"
             isConfigurable="false">
          <run
-               class="rhogenwizard.builder.RhogenBuilder">
+               class="rhogenwizard.builder.rhodes.Builder">
          </run>
       </builder>
    </extension>
@@ -85,7 +85,7 @@
             hasNature="true"
             isConfigurable="false">
          <run
-               class="rhogenwizard.builder.RhoconnectBuilder">
+               class="rhogenwizard.builder.rhoconnect.Builder">
          </run>
       </builder>
    </extension>
@@ -255,8 +255,7 @@
             name="RhoStudio">
       </perspective>
    </extension>
-   
-   
+      
    <extension
          point="org.eclipse.debug.core.sourceLocators">
       <sourceLocator
@@ -265,6 +264,7 @@
             id="com.rhomobile.rhostudio.sourceLookupDirector_pda">
       </sourceLocator>
    </extension>
+   
    <extension
          point="org.eclipse.debug.core.sourcePathComputers">
       <sourcePathComputer
@@ -272,6 +272,7 @@
             id="com.rhomobile.rhostudio.sourcePathComputer_pda">
       </sourcePathComputer>
    </extension>
+   
    <extension
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint
@@ -281,6 +282,7 @@
             name="PDA line breakpoint">
       </breakpoint>
    </extension>
+   
    <extension
          id="lineBreakpoint_marker"
          point="org.eclipse.core.resources.markers">
