@@ -12,7 +12,7 @@ import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 
-import rhogenwizard.wizards.ModelWizard;
+import rhogenwizard.wizards.rhodes.ModelWizard;
 
 public class NewModelAction implements IObjectActionDelegate 
 {
