@@ -66,16 +66,8 @@ class RhoconnectProcessRunner extends Thread
 
 public class RunReleaseRhoconnectAppTask extends RunRhoconnectAppTask 
 {
-	public static final String taskTag = "rhoconnect-app-release-runner";
-
 	private static RhoconnectProcessRunner rhoconnectRunner = null;
 	
-	@Override
-	public String getTag() 
-	{
-		return taskTag;
-	}
-
 	@Override
 	public void run()
 	{

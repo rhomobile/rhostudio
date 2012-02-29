@@ -23,12 +23,6 @@ public class RunDebugRhoconnectAppTask extends RunRhoconnectAppTask
 	public static final String launchObj  = "launch";
 	public static final String appName    = "app-name";
 	public static final String resProcess = "debug-process";
-	
-	@Override
-	public String getTag() 
-	{
-		return taskTag;
-	}
 
 	@Override
 	public void run() 

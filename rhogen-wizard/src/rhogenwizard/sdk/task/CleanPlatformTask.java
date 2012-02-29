@@ -11,12 +11,6 @@ public class CleanPlatformTask extends RakeTask
 	public static final String platformType = "platform-type";
 	
 	@Override
-	public String getTag() 
-	{
-		return taskTag;
-	}
-
-	@Override
 	public void run() 
 	{
 		try 

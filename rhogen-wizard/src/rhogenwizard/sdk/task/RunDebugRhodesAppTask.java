@@ -15,7 +15,6 @@ import rhogenwizard.sdk.helper.DebugConsoleAdapter;
 
 public class RunDebugRhodesAppTask extends RhodesTask
 {
-	public static final String taskTag      = "rhodes-app-debug-runner";
 	public static final String appName      = "app-name";
 	public static final String platformType = "platform-type"; // wm, wp, iphone, etc
 	public static final String reloadCode   = "reload-code";
@@ -86,11 +85,5 @@ public class RunDebugRhodesAppTask extends RhodesTask
 		{
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public String getTag() 
-	{
-		return taskTag;
 	}
 }

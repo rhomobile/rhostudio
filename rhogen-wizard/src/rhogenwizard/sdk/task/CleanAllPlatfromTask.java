@@ -8,12 +8,6 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 public class CleanAllPlatfromTask extends RakeTask 
 {
 	public static final String taskTag = "clean-all-platform";
-	
-	@Override
-	public String getTag() 
-	{
-		return taskTag;
-	}
 
 	@Override
 	public void run() 

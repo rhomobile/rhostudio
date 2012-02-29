@@ -10,14 +10,7 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhoconnectAdapterTask extends RhoconnectTask
 {
-	public static final String taskTag = "rhoconnect-adapter-gen";
 	public static final String sourceName = "source-name";
-
-	@Override
-	public String getTag() 
-	{
-		return taskTag;
-	}
 
 	@Override
 	public void run() 

@@ -9,8 +9,6 @@ public interface IRunTask extends Runnable
 	public static final String workDir = "workdir";
 	
 	//
-	String getTag();
-	//
 	void setData(Map<String, ?> data);
 	//
 	Map<String, ?> getResult();

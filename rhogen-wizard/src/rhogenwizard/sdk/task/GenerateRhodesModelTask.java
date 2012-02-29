@@ -12,7 +12,6 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhodesModelTask extends RhodesTask
 {
-	public static final String taskTag   = "rhodes-model-gen";
 	public static final String modelName = "model-name";
 	public static final String modelFields = "model-fields";
 	
@@ -79,11 +78,4 @@ public class GenerateRhodesModelTask extends RhodesTask
 			m_taskResult.put(resTag, resCode);		
 		}
 	}
-
-	@Override
-	public String getTag() 
-	{		
-		return taskTag;
-	}
-
 }

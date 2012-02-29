@@ -13,7 +13,6 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhodesAppTask extends RhodesTask 
 {	
-	public static final String taskTag = "rhodes-app-gen";
 	public static final String appName = "appname";
 
 	public GenerateRhodesAppTask()
@@ -51,11 +50,5 @@ public class GenerateRhodesAppTask extends RhodesTask
 			Integer resCode = new Integer(TaskResultConverter.failCode);  
 			m_taskResult.put(resTag, resCode);		
 		}
-	}
-
-	@Override
-	public String getTag() 
-	{		
-		return taskTag;
 	}
 }

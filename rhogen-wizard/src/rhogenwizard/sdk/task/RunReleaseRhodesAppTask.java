@@ -11,7 +11,6 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunReleaseRhodesAppTask extends RhodesTask
 {
-	public static final String taskTag      = "rhodes-app-release-runner";
 	public static final String runType      = "run-type"; // sim, rhosim, device
 	public static final String platformType = "platform-type"; // wm, wp, iphone, etc
 	public static final String reloadCode   = "reload-code";
@@ -89,11 +88,5 @@ public class RunReleaseRhodesAppTask extends RhodesTask
 			Integer resCode = new Integer(TaskResultConverter.failCode);  
 			m_taskResult.put(resTag, resCode);		
 		}
-	}
-
-	@Override
-	public String getTag() 
-	{
-		return taskTag;
 	}
 }
