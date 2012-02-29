@@ -8,6 +8,8 @@ import java.util.StringTokenizer;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import rhogenwizard.sdk.helper.TaskResultConverter;
+
 public class GenerateRhodesModelTask extends RhodesTask
 {
 	public static final String taskTag   = "rhodes-model-gen";
@@ -73,7 +75,8 @@ public class GenerateRhodesModelTask extends RhodesTask
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);		
 		}
 	}
 

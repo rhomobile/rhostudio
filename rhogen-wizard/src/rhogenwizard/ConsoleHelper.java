@@ -50,14 +50,14 @@ public class ConsoleHelper
 	   	return out;
 	}
    
-   public static MessageConsoleStream  getConsoleMsgStream()
+   public static MessageConsoleStream  getBuildConsoleStream()
    {
 	   MessageConsole myConsole = findConsole(buildConsoleName);
 	   MessageConsoleStream out = myConsole.newMessageStream();
 	   return out;
    }
 
-   public static MessageConsoleStream  getConsoleAppStream()
+   public static MessageConsoleStream  getAppsConsoleStream()
    {
 	   MessageConsole myConsole = findConsole(appConsoleName);
 	   MessageConsoleStream out = myConsole.newMessageStream();
@@ -67,12 +67,12 @@ public class ConsoleHelper
    public static void consoleAppPrint(String msg)
    {
 	   showAppConsole();
-	   getConsoleAppStream().println(msg);
+	   getAppsConsoleStream().println(msg);
    }
 
-   public static void consolePrint(String msg)
+   public static void consoleBuildPrint(String msg)
    {
-	   getConsoleMsgStream().println(msg);
+	   getBuildConsoleStream().println(msg);
    }
    
    public static void showBuildConsole()

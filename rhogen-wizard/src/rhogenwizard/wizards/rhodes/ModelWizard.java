@@ -85,7 +85,7 @@ class ModelCreationJob extends UIJob
 			params.put(GenerateRhodesModelTask.workDir, m_projectLocation);
 			params.put(GenerateRhodesModelTask.modelFields, m_modelParams);
 			
-			Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.taskTag, params);
+			Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
 			
 			if (TaskResultConverter.getResultIntCode(results) != 0)
 			{

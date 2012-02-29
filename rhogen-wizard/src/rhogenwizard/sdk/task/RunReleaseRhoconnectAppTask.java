@@ -8,11 +8,67 @@ import javax.naming.directory.InvalidAttributesException;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
+import rhogenwizard.ConsoleHelper;
+import rhogenwizard.OSValidator;
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.sdk.helper.ConsoleAppAdapter;
+import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
+import rhogenwizard.sdk.helper.TaskResultConverter;
+
+class RhoconnectProcessRunner extends Thread
+{
+	private String m_rakeExe = "rake";
+	private String m_cmd     = null;
+	private String m_workDir = null;
+	
+	private SysCommandExecutor m_executor = new SysCommandExecutor();
+	
+	public RhoconnectProcessRunner(final String command, final String workDir)
+	{
+		m_workDir = workDir;
+		m_cmd     = command;
+		
+		m_executor.setOutputLogDevice(new ConsoleAppAdapter());
+		m_executor.setErrorLogDevice(new ConsoleAppAdapter());
+		
+		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
+		{
+			m_rakeExe = m_rakeExe + ".bat";   
+		} 
+	}
+
+	@Override
+	public void run() 
+	{
+		if (m_workDir == null)
+			return;
+		
+		ConsoleHelper.showAppConsole();
+		
+		List<String>  cmdLine = new ArrayList<String>();
+		
+		cmdLine = new ArrayList<String>();
+		cmdLine.add(m_rakeExe);
+		cmdLine.add(m_cmd);
+		
+		try 
+		{
+			m_executor.setWorkingDirectory(m_workDir);
+			int res = m_executor.runCommand(cmdLine);
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+}
 
 public class RunReleaseRhoconnectAppTask extends RunRhoconnectAppTask 
 {
 	public static final String taskTag = "rhoconnect-app-release-runner";
+
+	private static RhoconnectProcessRunner rhoconnectRunner = null;
 	
 	@Override
 	public String getTag() 
@@ -48,21 +104,16 @@ public class RunReleaseRhoconnectAppTask extends RunRhoconnectAppTask
 			
 			m_executor.runCommand(cmdLine);
 			
-			sb = new StringBuilder();
-			sb.append("rhoconnect:startbg");
+			rhoconnectRunner = new RhoconnectProcessRunner("rhoconnect:start", workDir);			
+			rhoconnectRunner.start();
 			
-			cmdLine = new ArrayList<String>();
-			cmdLine.add(m_rakeExe);
-			cmdLine.add(sb.toString());
-			
-			int res = m_executor.runCommand(cmdLine);
-			
-			Integer resCode = new Integer(res);  
+			Integer resCode = new Integer(TaskResultConverter.okCode);  
 			m_taskResult.put(resTag, resCode);		
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);		
 		}
 	}
 }

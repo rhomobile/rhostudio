@@ -116,7 +116,7 @@ public class AppWizard extends Wizard implements INewWizard
 		params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
 		params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
 		
-		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.taskTag, params);
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		
 		if (TaskResultConverter.getResultIntCode(results) != 0)
 		{

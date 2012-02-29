@@ -3,6 +3,7 @@ package rhogenwizard.sdk.task;
 import javax.naming.directory.InvalidAttributesException;
 
 import rhogenwizard.PlatformType;
+import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class CleanPlatformTask extends RakeTask 
 {
@@ -30,7 +31,8 @@ public class CleanPlatformTask extends RakeTask
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);
 		}
 	}
 }

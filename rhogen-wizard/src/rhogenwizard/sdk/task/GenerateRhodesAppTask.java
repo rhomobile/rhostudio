@@ -9,6 +9,7 @@ import javax.naming.directory.InvalidAttributesException;
 
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhodesAppTask extends RhodesTask 
 {	
@@ -47,7 +48,8 @@ public class GenerateRhodesAppTask extends RhodesTask
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);		
 		}
 	}
 

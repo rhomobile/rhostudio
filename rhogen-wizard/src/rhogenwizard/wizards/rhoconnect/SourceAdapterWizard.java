@@ -153,7 +153,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 				params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
 				params.put(GenerateRhoconnectAdapterTask.workDir, m_projectLocation);
 				
-				Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.taskTag, params);
+				Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.class, params);
 				
 				if (TaskResultConverter.getResultIntCode(results) != 0)
 				{

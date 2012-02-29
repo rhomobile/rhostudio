@@ -13,6 +13,8 @@ public interface IProjectFactory
 	//
 	IRhomobileProject createProject(Class projectTag, BuildInfoHolder projectInfo) throws CoreException, ProjectNotFoundExtension, AlredyCreatedException, BadProjectTagException;
 	//
+	IRhomobileProject convertFromProject(IProject project);
+	//
 	IProject getSelectedProject();
 	//
 	boolean isProjectLocationInWorkspace(final String projectPath);

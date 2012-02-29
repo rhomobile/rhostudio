@@ -134,7 +134,7 @@
 		 
    	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
-           delegate="rhogenwizard.launcher.RhogenLaunchDelegate"
+           delegate="rhogenwizard.launcher.rhodes.LaunchDelegate"
            id="rhogenwizard.launcher.rhodesApp"
            modes="run, debug"
            name="Rhodes Application"
@@ -146,7 +146,7 @@
 	
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
-           delegate="rhogenwizard.launcher.RhosyncLaunchDelegate"
+           delegate="rhogenwizard.launcher.rhoconnect.LaunchDelegate"
            id="rhogenwizard.launcher.rhosyncApp"
            modes="run, debug"
            name="Rhoconnect Application"
@@ -159,7 +159,7 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     	<launchConfigurationTabGroup
         	type="rhogenwizard.launcher.rhodesApp"
-        	class="rhogenwizard.launcher.RhogenTabGroup"
+        	class="rhogenwizard.launcher.rhodes.TabGroup"
         	id="rhogenwizard.launcher.rhodesApp">
     	</launchConfigurationTabGroup>
 	</extension>
@@ -167,7 +167,7 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     	<launchConfigurationTabGroup
         	type="rhogenwizard.launcher.rhosyncApp"
-        	class="rhogenwizard.launcher.RhosyncTabGroup"
+        	class="rhogenwizard.launcher.rhoconnect.TabGroup"
         	id="rhogenwizard.launcher.rhosyncApp">
     	</launchConfigurationTabGroup>
 	</extension>

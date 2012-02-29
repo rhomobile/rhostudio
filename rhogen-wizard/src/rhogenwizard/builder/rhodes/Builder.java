@@ -42,14 +42,14 @@ public class Builder extends IncrementalProjectBuilder
 	{
 		try 
 		{
-			ConsoleHelper.consolePrint("Clean project started");
+			ConsoleHelper.consoleBuildPrint("Clean project started");
 
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put(CleanAllPlatfromTask.workDir, getProject().getLocation().toOSString());
 
-			RhoTaskHolder.getInstance().runTask(CleanAllPlatfromTask.taskTag, params);
+			RhoTaskHolder.getInstance().runTask(CleanAllPlatfromTask.class, params);
 			
-			ConsoleHelper.consolePrint("Clean application cancelled");
+			ConsoleHelper.consoleBuildPrint("Clean application cancelled");
 		} 
 		catch (Exception e) 
 		{

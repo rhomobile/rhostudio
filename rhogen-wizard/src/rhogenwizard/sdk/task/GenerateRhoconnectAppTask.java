@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import rhogenwizard.sdk.helper.TaskResultConverter;
+
 public class GenerateRhoconnectAppTask extends RhoconnectTask
 {
 	public static final String taskTag = "rhoconnect-app-gen";
@@ -45,7 +47,8 @@ public class GenerateRhoconnectAppTask extends RhoconnectTask
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);		
 		}
 	}
 }

@@ -14,6 +14,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import rhogenwizard.Activator;
 import rhogenwizard.PlatformType;
 import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunDebugRhoconnectAppTask extends RunRhoconnectAppTask
 {
@@ -83,7 +84,8 @@ public class RunDebugRhoconnectAppTask extends RunRhoconnectAppTask
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);		
 		}
 	}
 }

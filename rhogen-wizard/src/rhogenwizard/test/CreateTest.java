@@ -65,7 +65,7 @@ public class CreateTest extends TestCase
 		params.put(GenerateRhodesAppTask.appName, appName);
 		params.put(GenerateRhodesAppTask.workDir, worspaceFolder);
 		
-		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.taskTag, params);
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		
 		try {
 			assertEquals(TaskResultConverter.getResultIntCode(results), 0);
@@ -88,7 +88,7 @@ public class CreateTest extends TestCase
 		params.put(GenerateRhodesAppTask.appName, appName);
 		params.put(GenerateRhodesAppTask.workDir, worspaceFolder);
 		
-		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.taskTag, params);
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		
 		try {
 			assertEquals(TaskResultConverter.getResultIntCode(results), 0);
@@ -106,7 +106,7 @@ public class CreateTest extends TestCase
 		params.put(GenerateRhodesModelTask.workDir, projectLoc);
 		params.put(GenerateRhodesModelTask.modelFields, "a, b, c");
 		
-		Map modelResults = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.taskTag, params);
+		Map modelResults = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
 		
 		try {
 			assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
@@ -125,7 +125,7 @@ public class CreateTest extends TestCase
 		params.put(GenerateRhoconnectAppTask.appName, appName);
 		params.put(GenerateRhoconnectAppTask.workDir, worspaceFolder);
 		
-		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.taskTag, params);
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
 		
 		try {
 			assertEquals(TaskResultConverter.getResultIntCode(results), 0);
@@ -148,7 +148,7 @@ public class CreateTest extends TestCase
 		params.put(GenerateRhoconnectAppTask.appName, appName);
 		params.put(GenerateRhoconnectAppTask.workDir, worspaceFolder);
 		
-		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.taskTag, params);
+		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
 		
 		try {
 			assertEquals(TaskResultConverter.getResultIntCode(results), 0);
@@ -162,7 +162,7 @@ public class CreateTest extends TestCase
 		params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
 		params.put(GenerateRhoconnectAdapterTask.workDir, projectLocation);
 		
-		results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.taskTag, params);
+		results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.class, params);
 
 		try {
 			assertEquals(TaskResultConverter.getResultIntCode(results), 0);

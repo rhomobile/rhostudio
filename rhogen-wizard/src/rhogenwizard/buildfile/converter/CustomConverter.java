@@ -102,19 +102,9 @@ public class CustomConverter extends AbstractStructureConverter
 
 				if (itemValue.length() != 0)
 				{
-					char firstChar = itemValue.charAt(0);
-					char lstChar   = itemValue.charAt(itemValue.length() - 1);
-					
-					if (firstChar == '*' || lstChar == '*')
-					{
-						sb.append("\"");
-						sb.append(itemValue.toString());
-						sb.append("\"");
-					}
-					else
-					{
-						sb.append(itemValue.toString());
-					}
+					sb.append("\"");
+					sb.append(itemValue.toString());
+					sb.append("\"");
 				}
 			}
 			else
@@ -215,7 +205,8 @@ public class CustomConverter extends AbstractStructureConverter
 			  			{
 			  				int startChar = trimLine.indexOf(rubyCommentsCodeStr);
 			  				
-			  				if (startChar > 0) {
+			  				if (startChar > 0) 
+			  				{
 			  					m_commentsStorage.put(new Integer(lineNum), trimLine.substring(startChar, trimLine.length() - 1) + crCode);
 			  					continue;
 			  				}

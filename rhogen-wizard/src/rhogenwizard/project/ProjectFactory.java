@@ -36,16 +36,7 @@ public class ProjectFactory implements IProjectFactory
 		
 		return (IProjectFactory) factoryInstance;
 	}
-	
-    public boolean isProjectLocationInWorkspace(final String projectPath)
-    {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot root = workspace.getRoot();
-		String wsPath = root.getLocation().toOSString();
-		
-		return projectPath.contains(wsPath); 
-    }
-    
+	    
     /**
      * Just do the basics: create a basic project.
      *
@@ -106,6 +97,15 @@ public class ProjectFactory implements IProjectFactory
     	throw new BadProjectTagException(projectTag);
     }
     
+    public boolean isProjectLocationInWorkspace(final String projectPath)
+    {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot root  = workspace.getRoot();
+		String wsPath        = root.getLocation().toOSString();
+		
+		return projectPath.contains(wsPath); 
+    }
+    
 	public IRhomobileProject createProject(Class projectTag, BuildInfoHolder projectInfo) throws CoreException, ProjectNotFoundExtension, AlredyCreatedException, BadProjectTagException
 	{
     	IPath projectPath = (IPath) projectInfo.getProjectLocationPath();
@@ -148,5 +148,12 @@ public class ProjectFactory implements IProjectFactory
 		}
 		
 		return project;	
+	}
+
+	@Override
+	public IRhomobileProject convertFromProject(IProject project) 
+	{
+		//project.getNature(natureId)
+		return null;
 	}
 }

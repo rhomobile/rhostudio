@@ -19,23 +19,23 @@ public class RhoTaskHolder
 {
 	private static RhoTaskHolder taskHolder = null;
 	
-	private Map<String, IRunTask> m_holdTasks = null;
+	private Map<Class<?>, IRunTask> m_holdTasks = null;
 	
 	public RhoTaskHolder()
 	{
-		m_holdTasks = new HashMap<String, IRunTask>();
+		m_holdTasks = new HashMap<Class<?>, IRunTask>();
 		
 		// added tasks
-		m_holdTasks.put(GenerateRhodesAppTask.taskTag, new GenerateRhodesAppTask());
-		m_holdTasks.put(GenerateRhodesModelTask.taskTag, new GenerateRhodesModelTask());
-		m_holdTasks.put(RunReleaseRhodesAppTask.taskTag, new RunReleaseRhodesAppTask());
-		m_holdTasks.put(RunDebugRhodesAppTask.taskTag, new RunDebugRhodesAppTask());
-		m_holdTasks.put(GenerateRhoconnectAppTask.taskTag, new GenerateRhoconnectAppTask());
-		m_holdTasks.put(GenerateRhoconnectAdapterTask.taskTag, new GenerateRhoconnectAdapterTask());
-		m_holdTasks.put(RunDebugRhoconnectAppTask.taskTag, new RunDebugRhoconnectAppTask());
-		m_holdTasks.put(RunReleaseRhoconnectAppTask.taskTag, new RunReleaseRhoconnectAppTask());
-		m_holdTasks.put(CleanPlatformTask.taskTag, new CleanPlatformTask());
-		m_holdTasks.put(CleanAllPlatfromTask.taskTag, new CleanAllPlatfromTask());		
+		m_holdTasks.put(GenerateRhodesAppTask.class, new GenerateRhodesAppTask());
+		m_holdTasks.put(GenerateRhodesModelTask.class, new GenerateRhodesModelTask());
+		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
+		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());
+		m_holdTasks.put(GenerateRhoconnectAppTask.class, new GenerateRhoconnectAppTask());
+		m_holdTasks.put(GenerateRhoconnectAdapterTask.class, new GenerateRhoconnectAdapterTask());
+		m_holdTasks.put(RunDebugRhoconnectAppTask.class, new RunDebugRhoconnectAppTask());
+		m_holdTasks.put(RunReleaseRhoconnectAppTask.class, new RunReleaseRhoconnectAppTask());
+		m_holdTasks.put(CleanPlatformTask.class, new CleanPlatformTask());
+		m_holdTasks.put(CleanAllPlatfromTask.class, new CleanAllPlatfromTask());		
 	}
 	
 	public static RhoTaskHolder getInstance()
@@ -48,7 +48,7 @@ public class RhoTaskHolder
 		return taskHolder;
 	}
 	
-	public Map<String, ?> runTask(String id, Map<String, Object> params)
+	public Map<String, ?> runTask(Class<?> id, Map<String, Object> params)
 	{
 		IRunTask task = m_holdTasks.get(id);
 		

@@ -9,6 +9,9 @@ import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 
 public class TaskResultConverter 
 {
+	public static int okCode   = 0;
+	public static int failCode = 1;
+	
 	public static int getResultIntCode(Map<String, ?> results) throws Exception
 	{
 		if (results == null)

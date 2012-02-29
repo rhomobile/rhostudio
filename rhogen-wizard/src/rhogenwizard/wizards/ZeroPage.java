@@ -1,18 +1,16 @@
 package rhogenwizard.wizards;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 public class ZeroPage extends WizardPage
 {
+	private final static int zeroPageWidth  = 500;
+	private final static int zeroPageHeight = 250;
+	
 	private String m_errorText = null;
 
 	/**
@@ -40,17 +38,11 @@ public class ZeroPage extends WizardPage
 		Label label = new Label(container, SWT.NULL);
 		label.setText(m_errorText);
 
-		initialize();
 		setControl(container);
+
+		getShell().setSize(ZeroPage.zeroPageWidth, ZeroPage.zeroPageHeight);
 		
 		setErrorMessage("");
 		setPageComplete(true);
-	}
-
-	/**
-	 * Tests if the current workbench selection is a suitable container to use.
-	 */
-	private void initialize() 
-	{
 	}
 }

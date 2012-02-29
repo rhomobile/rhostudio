@@ -14,7 +14,7 @@ import rhogenwizard.sdk.task.RakeAdapter;
 
 class AppLogAdapter implements ILogDevice
 {
-	MessageConsoleStream m_consoleStream = ConsoleHelper.getConsoleAppStream();
+	MessageConsoleStream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
 
 	@Override
 	public void log(String str) 

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.sdk.helper.ConsoleAdapter;
+import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
 public abstract class RakeTask implements IRunTask
 {
@@ -18,8 +18,8 @@ public abstract class RakeTask implements IRunTask
 
 	public RakeTask()
 	{
-		m_executor.setOutputLogDevice(new ConsoleAdapter());
-		m_executor.setErrorLogDevice(new ConsoleAdapter());
+		m_executor.setOutputLogDevice(new ConsoleBuildAdapter());
+		m_executor.setErrorLogDevice(new ConsoleBuildAdapter());
 		
 		if (OSValidator.OSType.WINDOWS == OSValidator.detect()) 
 		{
