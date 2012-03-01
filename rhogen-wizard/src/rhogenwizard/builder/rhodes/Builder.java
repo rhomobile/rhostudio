@@ -43,6 +43,9 @@ class SelectPlatformJob extends UIJob
 		SelectPlatformDialog selectDlg = new SelectPlatformDialog(windowShell);
 		m_selectPlatform = selectDlg.open();
 		
+		if (m_selectPlatform == PlatformType.eUnknown)
+			return new Status(NONE, Activator.PLUGIN_ID, "select platform");
+			
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(BuildPlatformTask.workDir, m_workDir);
 		params.put(BuildPlatformTask.platformType, m_selectPlatform);
@@ -62,6 +65,11 @@ public class Builder extends IncrementalProjectBuilder
 {
 	public  static final String BUILDER_ID = "com.rhomobile.rhostudio.rhogenBuilder";
 
+	public Builder()
+	{
+		super();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -69,19 +77,11 @@ public class Builder extends IncrementalProjectBuilder
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException 
-	{ 
+	{
 		fullBuild(monitor);
 		
-//		try 
-//		{
-//			SelectPlatformJob buildJob = new SelectPlatformJob("select platform", getProject().getLocation().toOSString());
-//			buildJob.run(monitor);
-//			buildJob.join();
-//		} 
-//		catch (InterruptedException e) 
-//		{
-//			e.printStackTrace();
-//		}
+		SelectPlatformJob buildJob = new SelectPlatformJob("select platform", getProject().getLocation().toOSString());
+		buildJob.run(monitor);
 		
 		return null;
 	}
@@ -121,12 +121,6 @@ public class Builder extends IncrementalProjectBuilder
 		}
 	}
 
-	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException 
-	{
-		// the visitor does the work.
-		delta.accept(new DeltaVisitor());
-	}
-	
 	private List<String> compileRubyPart()
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
