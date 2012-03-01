@@ -40,7 +40,6 @@ public class CompileRubyPartTask extends RakeTask
 	
 	public CompileRubyPartTask()
 	{
-		//m_executor.setOutputLogDevice(m_outputHolder);
 		m_executor.setErrorLogDevice(m_outputHolder);	 
 	}
 	
@@ -50,7 +49,7 @@ public class CompileRubyPartTask extends RakeTask
 		try
 		{
 			if (m_taskParams == null || m_taskParams.size() == 0)
-				throw new InvalidAttributesException("parameters data is invalid [CompileRubyFileTask]");		
+				throw new InvalidAttributesException("parameters data is invalid [CompileRubyPartTask]");		
 	
 			m_outputHolder.cleanOutput();
 			
