@@ -7,7 +7,6 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class CleanPlatformTask extends RakeTask 
 {
-	public static final String taskTag      = "clean-platform";
 	public static final String platformType = "platform-type";
 	
 	@Override

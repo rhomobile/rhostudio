@@ -12,6 +12,7 @@ import org.eclipse.debug.core.model.IProcess;
 
 import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.helper.DebugConsoleAdapter;
+import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunDebugRhodesAppTask extends RhodesTask
 {
@@ -83,7 +84,8 @@ public class RunDebugRhodesAppTask extends RhodesTask
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			Integer resCode = new Integer(TaskResultConverter.failCode);  
+			m_taskResult.put(resTag, resCode);	
 		}
 	}
 }
