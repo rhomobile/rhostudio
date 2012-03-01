@@ -4,6 +4,7 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 
 import rhogenwizard.builder.rhoconnect.Builder;
@@ -39,6 +40,9 @@ public class RhoconnectNature implements IProjectNature
 		System.arraycopy(commands, 0, newCommands, 0, commands.length);
 		ICommand command = desc.newCommand();
 		command.setBuilderName(Builder.BUILDER_ID);
+		command.setBuilding(IncrementalProjectBuilder.CLEAN_BUILD, true);
+		command.setBuilding(IncrementalProjectBuilder.FULL_BUILD, true);
+		command.setBuilding(IncrementalProjectBuilder.INCREMENTAL_BUILD, true);
 		newCommands[newCommands.length - 1] = command;
 		desc.setBuildSpec(newCommands);
 		
