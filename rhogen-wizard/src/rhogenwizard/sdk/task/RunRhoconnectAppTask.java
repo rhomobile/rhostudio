@@ -1,5 +1,6 @@
 package rhogenwizard.sdk.task;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,22 @@ public abstract class RunRhoconnectAppTask extends RhoconnectTask
 {
 	public void stopSyncApp() throws Exception
 	{
+		if (Activator.getDefault() == null)
+			return;
+		
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		
+		if (store == null)
+			return;
+		
 		String prevRunningRhoconnectApp = store.getString(ConfigurationConstants.lastSyncRunApp);
 
 		if (prevRunningRhoconnectApp == null || prevRunningRhoconnectApp.length() == 0)
+			return;
+		
+		File appFolder = new File(prevRunningRhoconnectApp);
+		
+		if (!appFolder.exists())
 			return;
 
 		StringBuilder sb = new StringBuilder();
