@@ -212,6 +212,9 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public boolean canTerminate() 
 	{
+		if (m_processHandle == null)
+			return true;
+		
 		return m_processHandle.canTerminate();
 	}
 	
@@ -220,6 +223,9 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	 */
 	public boolean isTerminated() 
 	{
+		if (m_processHandle == null)
+			return true;
+		
 		return m_processHandle.isTerminated();
 	}
 	
@@ -238,7 +244,11 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				adapter.stopSyncApp();
 			}
 			
-			m_processHandle.terminate();
+			if (m_processHandle != null)
+			{
+				m_processHandle.terminate();
+				m_processHandle = null;
+			}
 		}
 		catch(DebugServerException e) {
 			e.printStackTrace();
@@ -663,11 +673,25 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		DebugPlugin.getDefault().getExpressionManager().removeExpressionListener(this);
 		
 		fireTerminateEvent();		
-			
-		try {
+
+		if (m_processHandle != null)
+		{
+			try 
+			{
+				terminate();
+			} 
+			catch (DebugException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		try 
+		{
 			m_debugServer.shutdown();
 		}
-		catch(DebugServerException e) {
+		catch(DebugServerException e) 
+		{
 		}
 	}
 
