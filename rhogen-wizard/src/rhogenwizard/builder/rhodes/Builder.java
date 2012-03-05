@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,12 +22,12 @@ import rhogenwizard.sdk.task.BuildPlatformTask;
 import rhogenwizard.sdk.task.CleanAllPlatfromTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 
-class SelectPlatformJob extends UIJob 
+class SelectPlatformBuildJob extends UIJob 
 {
 	private PlatformType m_selectPlatform = PlatformType.eUnknown;
 	private String       m_workDir = null;
 	
-	public SelectPlatformJob(String name, String workDir) 
+	public SelectPlatformBuildJob(String name, String workDir) 
 	{
 		super(name);
 		
@@ -80,8 +79,8 @@ public class Builder extends IncrementalProjectBuilder
 	{
 		fullBuild(monitor);
 		
-		SelectPlatformJob buildJob = new SelectPlatformJob("select platform", getProject().getLocation().toOSString());
-		buildJob.run(monitor);
+//		SelectPlatformJob buildJob = new SelectPlatformJob("select platform", getProject().getLocation().toOSString());
+//		buildJob.run(monitor);
 		
 		return null;
 	}
