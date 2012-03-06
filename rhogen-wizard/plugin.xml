@@ -2,12 +2,36 @@
 <?eclipse version="3.4"?>
 <plugin>
 
+   <extension point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Rhomobile"
+            visible="true"
+            id="rhostudio.actionSet">
+         <menu
+               label="Rhomobile"
+               id="rhomobileMenu">
+            <separator
+                  name="rhomobileGroup">
+            </separator>
+         </menu>
+         
+         <action
+               label="Production build"
+               icon="icons/sample16.png"
+               class="rhogenwizard.actions.ProductionBuildAction"
+               tooltip="Build production version of application"
+               menubarPath="rhomobileMenu/rhomobileGroup"               
+               id="menu_test.actions.SampleAction">
+         </action>
+      </actionSet>
+   </extension>
+
    <extension point="org.eclipse.ui.newWizards">
       <category
             id="RhogenAppWizard"
             name="Rhomobile">
       </category>
-      
+            
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.AppWizard"

@@ -22,44 +22,6 @@ import rhogenwizard.sdk.task.BuildPlatformTask;
 import rhogenwizard.sdk.task.CleanAllPlatfromTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 
-class SelectPlatformBuildJob extends UIJob 
-{
-	private PlatformType m_selectPlatform = PlatformType.eUnknown;
-	private String       m_workDir = null;
-	
-	public SelectPlatformBuildJob(String name, String workDir) 
-	{
-		super(name);
-		
-		m_workDir = workDir;
-	}
-
-	@Override
-	public IStatus runInUIThread(IProgressMonitor monitor) 
-	{
-		Shell windowShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		
-		SelectPlatformDialog selectDlg = new SelectPlatformDialog(windowShell);
-		m_selectPlatform = selectDlg.open();
-		
-		if (m_selectPlatform == PlatformType.eUnknown)
-			return new Status(NONE, Activator.PLUGIN_ID, "select platform");
-			
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put(BuildPlatformTask.workDir, m_workDir);
-		params.put(BuildPlatformTask.platformType, m_selectPlatform);
-
-		RhoTaskHolder.getInstance().runTask(BuildPlatformTask.class, params);
-
-		return new Status(BUILD, Activator.PLUGIN_ID, "select platform");
-	}
-	
-	public PlatformType getSelectedPlatform()
-	{
-		return m_selectPlatform;
-	}
-}
-
 public class Builder extends IncrementalProjectBuilder 
 {
 	public  static final String BUILDER_ID = "com.rhomobile.rhostudio.rhogenBuilder";
@@ -78,10 +40,7 @@ public class Builder extends IncrementalProjectBuilder
 	protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException 
 	{
 		fullBuild(monitor);
-		
-//		SelectPlatformJob buildJob = new SelectPlatformJob("select platform", getProject().getLocation().toOSString());
-//		buildJob.run(monitor);
-		
+			
 		return null;
 	}
 
