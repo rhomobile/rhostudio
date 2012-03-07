@@ -21,7 +21,16 @@
                class="rhogenwizard.actions.ProductionBuildAction"
                tooltip="Build production version of application"
                menubarPath="rhomobileMenu/rhomobileGroup"               
-               id="menu_test.actions.SampleAction">
+               id="rhostudio.actions.productionBuildAction">
+         </action>
+         
+         <action
+               label="Generate spec"
+               icon="icons/sample16.png"
+               class="rhogenwizard.actions.GenerateSpecAction"
+               tooltip="Generate rhodes test framewrk files"
+               menubarPath="rhomobileMenu/rhomobileGroup"               
+               id="rhostudio.actions.generateSpecAction">
          </action>
       </actionSet>
    </extension>
