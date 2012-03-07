@@ -16,6 +16,7 @@ class ConsoleOutputHolder implements ILogDevice
 	public void log(String str) 
 	{
 		outputData.add(str);
+		str = null;
 	}
 
 	String findStringContain(String regex)

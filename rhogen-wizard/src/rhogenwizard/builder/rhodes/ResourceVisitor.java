@@ -1,9 +1,6 @@
 package rhogenwizard.builder.rhodes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
@@ -30,24 +27,19 @@ class ResourceVisitor implements IResourceVisitor
 			IFile file = (IFile) resource;
 			deleteMarkers(file);		
 
-			try {
+			try 
+			{
 				resource.refreshLocal(IResource.DEPTH_ONE, null);
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
-			if (m_compileOutput == null || m_compileOutput.size() == 0)
-				return true;
-
-			//
-			parseOutput(file);
-			
-			try {
+				if (m_compileOutput == null || m_compileOutput.size() == 0)
+					return true;
+				
+				parseOutput(file);
+				
 				resource.refreshLocal(IResource.DEPTH_ONE, null);
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} 
+			catch (CoreException e) 
+			{
 			}
 		}
 		

@@ -23,6 +23,7 @@ class AppLogAdapter implements ILogDevice
 		{
 			ConsoleHelper.showAppConsole();
 			m_consoleStream.println(prepareString(str));
+			str = null;
 		}
 	}
 	

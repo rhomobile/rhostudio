@@ -56,8 +56,9 @@ public class RhostudioPerspective implements IPerspectiveFactory
 	{
 		m_factory.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//NON-NLS-1
 		m_factory.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//NON-NLS-1
-		m_factory.addNewWizardShortcut("rhogenwizard.wizards.RhogenModelWizard");//NON-NLS-1
-		m_factory.addNewWizardShortcut("rhogenwizard.wizards.RhogenSourceAdapterWizard");//NON-NLS-1
+		m_factory.addNewWizardShortcut("rhogenwizard.wizards.ModelWizard");//NON-NLS-1
+		m_factory.addNewWizardShortcut("rhogenwizard.wizards.ExtensionWizard");//NON-NLS-1
+		m_factory.addNewWizardShortcut("rhogenwizard.wizards.SourceAdapterWizard");//NON-NLS-1
 	}
 
 	private void addViewShortcuts() 

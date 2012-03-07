@@ -15,8 +15,8 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
-import rhogenwizard.sdk.task.GenerateRhodesAppSpec;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
+import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
 
 public class GenerateSpecAction implements IWorkbenchWindowActionDelegate 
 {
@@ -41,7 +41,7 @@ public class GenerateSpecAction implements IWorkbenchWindowActionDelegate
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(GenerateRhodesAppTask.workDir, project.getLocation().toOSString());
 		
-		RhoTaskHolder.getInstance().runTask(GenerateRhodesAppSpec.class, params);
+		RhoTaskHolder.getInstance().runTask(GenerateRhodesSpecTask.class, params);
 		
 		try 
 		{

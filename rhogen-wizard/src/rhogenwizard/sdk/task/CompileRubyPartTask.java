@@ -18,6 +18,7 @@ class OutputAdapter implements ILogDevice
 	public void log(String str) 
 	{
 		m_outputStrings.add(str);
+		str = null;
 	}	
 	
 	List<String> getOutput()

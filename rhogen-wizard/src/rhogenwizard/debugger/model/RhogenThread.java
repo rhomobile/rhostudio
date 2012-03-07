@@ -101,7 +101,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public String getName() throws DebugException 
 	{
-		return "Thread[1]";
+		return "Main Ruby Thread";
 	}
 	
 	/* (non-Javadoc)

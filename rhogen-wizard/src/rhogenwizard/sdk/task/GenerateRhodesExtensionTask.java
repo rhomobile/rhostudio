@@ -7,26 +7,29 @@ import javax.naming.directory.InvalidAttributesException;
 
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class GenerateRhodesAppSpec extends RhodesTask
+public class GenerateRhodesExtensionTask extends RhodesTask 
 {
-
+	public static final String extName = "ext-name";
+	
 	@Override
 	public void run() 
 	{
-		try
+		try 
 		{
 			m_taskResult.clear();
 			
 			if (m_taskParams == null || m_taskParams.size() == 0)
-				throw new InvalidAttributesException("parameters data is invalid [GenerateRhodesAppSpec]");		
+				throw new InvalidAttributesException("parameters data is invalid [GenerateRhodesExtensionTask]");		
 			
 			String workDir = (String) m_taskParams.get(this.workDir);
+			String extName = (String) m_taskParams.get(this.extName);		
 			
 			m_executor.setWorkingDirectory(workDir);
 			
 			List<String> cmdLine = new ArrayList<String>();
 			cmdLine.add(m_rhogenExe);
-			cmdLine.add("spec");
+			cmdLine.add("extension");
+			cmdLine.add(extName);
 	
 			int res = m_executor.runCommand(cmdLine);
 			

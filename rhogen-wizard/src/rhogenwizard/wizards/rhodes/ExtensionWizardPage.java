@@ -11,18 +11,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class ModelWizardPage extends WizardPage 
+public class ExtensionWizardPage extends WizardPage 
 {
-	private Text       m_modelName   = null;
-	private Text       m_modelParams = null;
-	private ISelection m_selection   = null;
+	private Text       m_extName   = null;
+	private ISelection m_selection = null;
 
 	/**
 	 * Constructor for SampleNewWizardPage.
 	 * 
 	 * @param pageName
 	 */
-	public ModelWizardPage(ISelection selection) 
+	public ExtensionWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
 		setTitle("Model information");
@@ -40,11 +39,11 @@ public class ModelWizardPage extends WizardPage
 		
 		// first row
 		Label label = new Label(container, SWT.NULL);
-		label.setText("&Model name:");
+		label.setText("&Extension name:");
 
-		m_modelName = new Text(container, SWT.BORDER | SWT.SINGLE);
-		m_modelName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		m_modelName.addModifyListener(new ModifyListener() {
+		m_extName = new Text(container, SWT.BORDER | SWT.SINGLE);
+		m_extName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		m_extName.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				dialogChanged();
 			}
@@ -53,18 +52,6 @@ public class ModelWizardPage extends WizardPage
 		// for fill 3 columns
 		label = new Label(container, SWT.NULL); 
 		label.setText("");
-		
-		// second row
-		label = new Label(container, SWT.NULL);
-		label.setText("&Model attributes:");
-
-		m_modelParams = new Text(container, SWT.BORDER | SWT.SINGLE);
-		m_modelParams.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		m_modelParams.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
 		
 		initialize();
 		dialogChanged();
@@ -76,7 +63,7 @@ public class ModelWizardPage extends WizardPage
 	 */
 	private void initialize() 
 	{
-		m_modelName.setText("Model001");
+		m_extName.setText("Extension");
 	}
 
 	/**
@@ -84,16 +71,9 @@ public class ModelWizardPage extends WizardPage
 	 */
 	private void dialogChanged()
 	{		
-		if (getModelName().length() == 0) 
+		if (getExtName().length() == 0) 
 		{
-			updateStatus("Model name must be specified");
-			return;
-		}
-			
-		if (getModelParams().length() == 0) 
-		{
-			updateStatus("Model attributes must be specified. Sample: list of one or\n" +
-					"   more string attributes (i.e. name,industry,progress), NO spaces between attributes");
+			updateStatus("Extension name must be specified");
 			return;
 		}
 
@@ -106,13 +86,8 @@ public class ModelWizardPage extends WizardPage
 		setPageComplete(message == null);
 	}
 
-	public String getModelName() 
+	public String getExtName() 
 	{
-		return m_modelName.getText();
-	}
-	
-	public String getModelParams() 
-	{
-		return m_modelParams.getText();
-	}
+		return m_extName.getText();
+	}	
 }
