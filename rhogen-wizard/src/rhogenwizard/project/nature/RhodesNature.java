@@ -14,7 +14,7 @@ public class RhodesNature implements IProjectNature
 	/**
 	 * ID of this project nature
 	 */
-	public static final String natureId = "com.rhomobile.rhostudio.rhodesNature";
+	public static final String natureId = "com.rhomobile.rhostudio.rhogenNature";
 
 	private IProject project;
 

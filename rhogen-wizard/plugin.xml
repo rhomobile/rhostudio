@@ -124,7 +124,7 @@
    </extension>
       
    <extension point="org.eclipse.core.resources.natures"
-              id="rhodesNature"
+              id="rhogenNature"
               name="Rhodes Project Nature">
       <runtime>
          <run
