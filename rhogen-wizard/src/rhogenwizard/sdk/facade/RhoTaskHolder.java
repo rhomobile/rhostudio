@@ -9,6 +9,7 @@ import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
+import rhogenwizard.sdk.task.GenerateRhodesAppSpec;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 import rhogenwizard.sdk.task.IRunTask;
@@ -40,6 +41,7 @@ public class RhoTaskHolder
 		m_holdTasks.put(CleanAllPlatfromTask.class, new CleanAllPlatfromTask());	
 		m_holdTasks.put(CompileRubyPartTask.class, new CompileRubyPartTask());
 		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
+		m_holdTasks.put(GenerateRhodesAppSpec.class, new GenerateRhodesAppSpec());
 	}
 	
 	public static RhoTaskHolder getInstance()
