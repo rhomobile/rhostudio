@@ -14,16 +14,24 @@ import rhogenwizard.sdk.task.RakeAdapter;
 
 class AppLogAdapter implements ILogDevice
 {
-	MessageConsoleStream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
+	private static final int maxShowLines = 2*10*1000;
+	
+	private int lines = 0;
+	private MessageConsoleStream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
 
 	@Override
 	public void log(String str) 
 	{
 		if (null != m_consoleStream)
 		{
-			ConsoleHelper.showAppConsole();
+			lines++;
 			m_consoleStream.println(prepareString(str));
-			str = null;
+		}
+		
+		if (lines > maxShowLines)
+		{
+			lines = 0;
+			ConsoleHelper.cleanAppConsole();
 		}
 	}
 	
