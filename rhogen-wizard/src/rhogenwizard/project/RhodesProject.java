@@ -1,33 +1,10 @@
 package rhogenwizard.project;
 
 import java.io.File;
-import java.net.URI;
-import java.util.Map;
-
-import org.eclipse.core.resources.FileInfoMatcherDescription;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IPathVariableManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceFilterDescription;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
-import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.core.runtime.content.IContentTypeMatcher;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.project.extension.ProjectNotFoundExtension;
 import rhogenwizard.project.nature.RhodesNature;
@@ -49,7 +26,7 @@ public class RhodesProject extends RhomobileProject
 			IProjectNature nature = otherProject.getNature(RhodesNature.natureId);
 		
 			if (nature != null)
-				return true;		
+				return true;
 		} 
 		catch (CoreException e) 
 		{
