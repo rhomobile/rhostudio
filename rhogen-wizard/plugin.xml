@@ -63,8 +63,16 @@
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.ModelWizard"
             icon="icons/sample16.png"
-            id="rhogenwizard.wizards.RhogenModelWizard"
+            id="rhogenwizard.wizards.ModelWizard"
             name="Rhodes model"> 
+      </wizard>
+      
+      <wizard
+            category="RhogenAppWizard"
+            class="rhogenwizard.wizards.rhodes.ExtensionWizard"
+            icon="icons/sample16.png"
+            id="rhogenwizard.wizards.ExtensionWizard"
+            name="Rhodes extension"> 
       </wizard>
       
       <wizard
@@ -72,7 +80,7 @@
             class="rhogenwizard.wizards.rhoconnect.SourceAdapterWizard"
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/sample16.png"
-            id="rhogenwizard.wizards.RhogenSourceAdapterWizard"
+            id="rhogenwizard.wizards.SourceAdapterWizard"
             name="Rhoconnect Source Adapter"> 
       </wizard>
    </extension>
@@ -98,9 +106,9 @@
             name="Ruby Editor">
       </editor>
    </extension>
-   
+
    <extension point="org.eclipse.core.resources.builders"
-               id="rhogenBuilder"
+               id="rhogenwizard.builder.RhogenBuilder"
                name="Rhodes Project Builder">
       <builder
             hasNature="true"
@@ -132,7 +140,7 @@
          </run>
       </runtime>
       <builder
-            id="com.rhomobile.rhostudio.rhogenBuilder">
+            id="rhogenwizard.builder.RhogenBuilder">
       </builder>
    	</extension>
  
@@ -241,19 +249,27 @@
        <commonWizard
              menuGroupId="asd"
              type="new"
-             wizardId="rhogenwizard.wizards.RhogenModelWizard">
+             wizardId="rhogenwizard.wizards.ModelWizard">
           <enablement></enablement>
        </commonWizard>
+       
        <commonWizard
              menuGroupId="asd"
              type="new"
-             wizardId="rhogenwizard.wizards.RhogenSourceAdapterWizard">
+             wizardId="rhogenwizard.wizards.ExtensionWizard">
+          <enablement></enablement>
+       </commonWizard>
+       
+       <commonWizard
+             menuGroupId="asd"
+             type="new"
+             wizardId="rhogenwizard.wizards.SourceAdapterWizard">
           <enablement></enablement>
        </commonWizard>
     </extension>
-    <extension
-          id="rhostudio_id"
-          point="org.eclipse.core.runtime.products">
+    
+    <extension point="org.eclipse.core.runtime.products"
+            id="rhostudio_id">
        <product
              application="org.eclipse.ui.ide.workbench"
              name="RhoStudio">
@@ -361,6 +377,7 @@
            delegateClass="rhogenwizard.debugger.RhogenWatchExpressionDelegate">
      </watchExpressionDelegate>
     </extension>
+    
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
