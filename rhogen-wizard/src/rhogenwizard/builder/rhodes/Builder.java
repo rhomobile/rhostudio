@@ -8,23 +8,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
-
-import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
-import rhogenwizard.sdk.task.BuildPlatformTask;
 import rhogenwizard.sdk.task.CleanAllPlatfromTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 
 public class Builder extends IncrementalProjectBuilder 
 {
-	public  static final String BUILDER_ID = "com.rhomobile.rhostudio.rhogenBuilder";
+	public  static final String BUILDER_ID = "rhogenwizard.builder.RhogenBuilder";
 
 	public Builder()
 	{
