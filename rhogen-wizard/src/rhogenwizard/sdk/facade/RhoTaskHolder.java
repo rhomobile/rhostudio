@@ -23,11 +23,11 @@ public class RhoTaskHolder
 {
 	private static RhoTaskHolder taskHolder = null;
 	
-	private Map<Class<?>, IRunTask> m_holdTasks = null;
+	private Map<Class<? extends IRunTask>, IRunTask> m_holdTasks = null;
 	
 	public RhoTaskHolder()
 	{
-		m_holdTasks = new HashMap<Class<?>, IRunTask>();
+		m_holdTasks = new HashMap<Class<? extends IRunTask>, IRunTask>();
 		
 		// added tasks
 		m_holdTasks.put(GenerateRhodesAppTask.class, new GenerateRhodesAppTask());
@@ -56,7 +56,7 @@ public class RhoTaskHolder
 		return taskHolder;
 	}
 	
-	public Map<String, ?> runTask(Class<?> id, Map<String, Object> params)
+	public Map<String, ?> runTask(Class<? extends IRunTask> id, Map<String, Object> params)
 	{
 		IRunTask task = m_holdTasks.get(id);
 		
