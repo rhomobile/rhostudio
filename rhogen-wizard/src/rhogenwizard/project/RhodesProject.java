@@ -29,7 +29,7 @@ public class RhodesProject extends RhomobileProject
 			IProjectNature nature = otherProject.getNature(RhodesNature.natureId);
 		
 			if (nature != null)
-				return true;		
+				return true;
 		} 
 		catch (CoreException e) 
 		{
