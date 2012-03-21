@@ -1,6 +1,7 @@
 package rhogenwizard.launcher.rhodes;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +31,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
-import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.launcher.SpecFileHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 
@@ -88,8 +88,10 @@ public class ParametersTab extends  JavaLaunchTab
 	IProject 	m_selProject  = null;
 	String      m_selPlatformVersion = null;
 	
-	ILaunchConfigurationWorkingCopy m_configuration;
-	AppYmlFile m_ymlFile = null;
+	ILaunchConfigurationWorkingCopy m_configuration = null;
+	
+	AppYmlFile     m_ymlFile = null;
+	SpecFileHelper m_configHelper = null;
 	
 	@SuppressWarnings("restriction")
 	@Override
@@ -451,6 +453,7 @@ public class ParametersTab extends  JavaLaunchTab
 			} 
 			catch (FileNotFoundException e)
 			{
+				MessageDialog.openError(getShell(), "Error", "File build.yml not exists or corrupted. Project - " + getSelectProject().getName());
 				e.printStackTrace();
 			}
 		}
@@ -486,6 +489,10 @@ public class ParametersTab extends  JavaLaunchTab
 			if (selProjectName != "")
 			{
 				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+				m_configHelper = new SpecFileHelper(m_selProject);
+				
+				m_configHelper.changeForApp();
+				
 				m_appNameText.setText(selProjectName);
 				m_adroidEmuNameText.setText(selAndroidEmuName);
 
@@ -513,6 +520,10 @@ public class ParametersTab extends  JavaLaunchTab
 			e.printStackTrace();
 		} 
 		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
 		{
 			e.printStackTrace();
 		} 
@@ -764,6 +775,7 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 		catch (FileNotFoundException e) 
 		{
+			MessageDialog.openError(getShell(), "Error", "File build.yml not exists or corrupted. Project - " + getSelectProject().getName());
 			e.printStackTrace();
 		}
 	}
@@ -865,5 +877,15 @@ public class ParametersTab extends  JavaLaunchTab
 		
 		setPlatformVersionCombo(m_configuration);
 		setAndroidEmuName(m_configuration);
+	}
+	
+	protected SpecFileHelper getAppConfig()
+	{
+		return m_configHelper;
+	}
+	
+	protected IProject getSelectProject()
+	{
+		return m_selProject;
 	}
 }

@@ -9,7 +9,7 @@ import org.eclipse.core.resources.IProject;
 
 import rhogenwizard.RunExeHelper;
 
-public class AppYmlFile extends YmlFile 
+public final class AppYmlFile extends YmlFile 
 {
 	public static final String configFileName = "build.yml"; 
 
@@ -18,7 +18,7 @@ public class AppYmlFile extends YmlFile
 		if (project != null)
 		{
 			String projectPath = project.getLocation().toOSString();
-			String projectFullPath = projectPath + "/" + configFileName; 
+			String projectFullPath = projectPath + File.separator + configFileName; 
 			
 			AppYmlFile ymlFile = new AppYmlFile(projectFullPath);
 			
@@ -83,6 +83,16 @@ public class AppYmlFile extends YmlFile
 	public void setCapabilities(List<String> capList)
 	{
 		super.set("capabilities", capList);
+	}
+	
+	public List<String> getGeneralExtension()
+	{
+		return (List<String>)super.getObject("extensions");
+	}
+	
+	public void setGeneralExtension(List<String> extList)
+	{
+		super.set("extensions", extList);
 	}
 	
 	public List<String> getCapabilities()

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SdkYmlFile extends YmlFile 
+public final class SdkYmlFile extends YmlFile 
 {
 	public static final String configName = "rhobuild.yml";
 	
