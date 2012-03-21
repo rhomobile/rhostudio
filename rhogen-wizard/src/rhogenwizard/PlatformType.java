@@ -19,6 +19,13 @@ public enum PlatformType
 	public static final String platformSymbian    = "symbian";
 	public static final String platformRsync      = "";
 		
+	public static final String platformWinMobilePublic  = "Windows Mobile";
+	public static final String platformAdroidPublic     = "Android";
+	public static final String platformBlackBerryPublic = "BlackBerry";
+	public static final String platformIPhonePublic     = "iPhone";
+	public static final String platformWp7Public        = "Windows Phone";
+	public static final String platformSymbianPublic    = "Symbian";
+	
 	@Override
 	public String toString() 
 	{
@@ -45,23 +52,23 @@ public enum PlatformType
 	
 	public static PlatformType fromString(String newPlatform)
 	{
-		if (newPlatform.toLowerCase().equals(platformWinMobile))
+		if (newPlatform.toLowerCase().equals(platformWinMobile) || newPlatform.toLowerCase().equals(platformWinMobilePublic.toLowerCase()))
 		{
 			return PlatformType.eWm;
 		}
-		else if (newPlatform.toLowerCase().equals(platformAdroid))
+		else if (newPlatform.toLowerCase().equals(platformAdroid) || newPlatform.toLowerCase().equals(platformAdroidPublic.toLowerCase()))
 		{
 			return PlatformType.eAndroid;
 		}
-		else if (newPlatform.toLowerCase().equals(platformBlackBerry))
+		else if (newPlatform.toLowerCase().equals(platformBlackBerry) || newPlatform.toLowerCase().equals(platformBlackBerryPublic.toLowerCase()))
 		{
 			return PlatformType.eBb;
 		}
-		else if (newPlatform.toLowerCase().equals(platformIPhone))
+		else if (newPlatform.toLowerCase().equals(platformIPhone) || newPlatform.toLowerCase().equals(platformIPhonePublic.toLowerCase()))
 		{
 			return PlatformType.eIPhone;
 		}
-		else if (newPlatform.toLowerCase().equals(platformWp7))
+		else if (newPlatform.toLowerCase().equals(platformWp7) || newPlatform.toLowerCase().equals(platformWp7Public.toLowerCase()))
 		{
 			return PlatformType.eWp7;
 		}
@@ -69,7 +76,7 @@ public enum PlatformType
 		{
 			return PlatformType.eRsync;
 		}
-		else if (newPlatform.toLowerCase().equals(platformSymbian))
+		else if (newPlatform.toLowerCase().equals(platformSymbian) || newPlatform.toLowerCase().equals(platformSymbianPublic.toLowerCase()))
 		{
 			return PlatformType.eSymbian;
 		}

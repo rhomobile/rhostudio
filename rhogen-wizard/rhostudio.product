@@ -66,8 +66,8 @@
       <plugin id="org.apache.commons.lang"/>
       <plugin id="org.apache.commons.logging"/>
       <plugin id="org.apache.commons.logging.source"/>
-      <plugin id="org.apache.httpcomponents.httpclient"/>
-      <plugin id="org.apache.httpcomponents.httpcore"/>
+      <plugin id="org.apache.httpcomponents.httpclient" fragment=""/>
+      <plugin id="org.apache.httpcomponents.httpcore" fragment=""/>
       <plugin id="org.apache.jasper"/>
       <plugin id="org.apache.lucene"/>
       <plugin id="org.apache.lucene.analysis"/>
@@ -235,8 +235,8 @@
       <plugin id="org.eclipse.egit.core"/>
       <plugin id="org.eclipse.egit.core.source"/>
       <plugin id="org.eclipse.egit.doc"/>
-      <plugin id="org.eclipse.egit.github.core"/>
-      <plugin id="org.eclipse.egit.mylyn.ui"/>
+      <plugin id="org.eclipse.egit.github.core" fragment=""/>
+      <plugin id="org.eclipse.egit.mylyn.ui" fragment=""/>
       <plugin id="org.eclipse.egit.mylyn.ui.source"/>
       <plugin id="org.eclipse.egit.ui"/>
       <plugin id="org.eclipse.egit.ui.source"/>
@@ -403,9 +403,9 @@
       <plugin id="org.eclipse.mylyn.context.ui"/>
       <plugin id="org.eclipse.mylyn.discovery.core"/>
       <plugin id="org.eclipse.mylyn.discovery.ui"/>
-      <plugin id="org.eclipse.mylyn.github.core"/>
-      <plugin id="org.eclipse.mylyn.github.doc"/>
-      <plugin id="org.eclipse.mylyn.github.ui"/>
+      <plugin id="org.eclipse.mylyn.github.core" fragment=""/>
+      <plugin id="org.eclipse.mylyn.github.doc" fragment=""/>
+      <plugin id="org.eclipse.mylyn.github.ui" fragment=""/>
       <plugin id="org.eclipse.mylyn.help.ui"/>
       <plugin id="org.eclipse.mylyn.ide.ant"/>
       <plugin id="org.eclipse.mylyn.ide.ui"/>
@@ -783,8 +783,6 @@
       <plugin id="org.eclipse.egit.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.egit.core.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.egit.doc" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.egit.github.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.egit.mylyn.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.egit.mylyn.ui.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.egit.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.egit.ui.source" autoStart="false" startLevel="0" />

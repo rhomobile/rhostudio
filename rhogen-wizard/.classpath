@@ -9,6 +9,7 @@
 	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.ui/org.eclipse.dltk.ui_2.0.0.v20100603-0936.jar" sourcepath="/org.eclipse.dltk.ui/src.zip"/>
 	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.debug.ui/org.eclipse.dltk.debug.ui_2.0.0.v20100115-2213.jar" sourcepath="/org.eclipse.dltk.debug.ui/src.zip"/>
 	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.console/org.eclipse.dltk.console_1.0.0.v20090730-1127.jar" sourcepath="/org.eclipse.dltk.console/src.zip"/>
-	<classpathentry kind="lib" path="/org.eclipse.dltk.console.ui/org.eclipse.dltk.console.ui_2.0.0.v20091203-1154.jar" sourcepath="/org.eclipse.dltk.console.ui/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.dltk.console.ui/org.eclipse.dltk.console.ui_2.0.0.v20091203-1154.jar" sourcepath="/org.eclipse.dltk.console.ui/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="/org.eclipse.egit.ui/org.eclipse.egit.ui_1.3.0.201202151440-r.jar" sourcepath="/org.eclipse.egit.ui/org.eclipse.egit.ui.source_1.3.0.201202151440-r.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
