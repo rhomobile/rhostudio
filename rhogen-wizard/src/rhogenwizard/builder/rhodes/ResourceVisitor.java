@@ -9,7 +9,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 
-class ResourceVisitor implements IResourceVisitor 
+import rhogenwizard.constants.CommonConstants;
+
+class ResourceVisitor extends MarkerHelper implements IResourceVisitor 
 {
 	private static String compileMarker = "Running compileRB";
 	
@@ -22,7 +24,7 @@ class ResourceVisitor implements IResourceVisitor
 	
 	public boolean visit(IResource resource) 
 	{	
-		if (resource instanceof IFile && resource.getName().endsWith(".rb")) 
+		if (resource instanceof IFile && resource.getName().endsWith(CommonConstants.rubyFileExt)) 
 		{
 			IFile file = (IFile) resource;
 			deleteMarkers(file);		
@@ -63,37 +65,6 @@ class ResourceVisitor implements IResourceVisitor
 			{
 				addMarker(file, errMsg, (new Integer(srcLine)).intValue(), IMarker.SEVERITY_ERROR);
 			}
-		}
-	}
-	
-	private void addMarker(IFile file, String message, int lineNumber, int severity) 
-	{
-		try 
-		{
-			IMarker marker = file.createMarker(IMarker.PROBLEM);
-			marker.setAttribute(IMarker.MESSAGE, message);
-			marker.setAttribute(IMarker.SEVERITY, severity);
-			
-			if (lineNumber == -1) 
-			{
-				lineNumber = 1;
-			}
-			
-			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
-		}
-		catch (CoreException e) 
-		{
-		}
-	}
-	
-	private void deleteMarkers(IFile file) 
-	{
-		try 
-		{
-			file.deleteMarkers(IMarker.PROBLEM, false, IResource.DEPTH_ZERO);
-		}
-		catch (CoreException ce) 
-		{
 		}
 	}
 }

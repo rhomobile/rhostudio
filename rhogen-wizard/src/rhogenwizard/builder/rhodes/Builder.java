@@ -1,5 +1,7 @@
 package rhogenwizard.builder.rhodes;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
+import rhogenwizard.buildfile.AppYmlFile;
+import rhogenwizard.project.IRhomobileProject;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.extension.BadProjectTagException;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.task.CleanAllPlatfromTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
@@ -23,16 +30,11 @@ public class Builder extends IncrementalProjectBuilder
 		super();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
-	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
-	 */
 	protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException 
 	{
-		fullBuild(monitor);
-			
+		// need implement separate rake command for build ruby part without extension and other staff build 
+		//fullBuild(monitor);
+		
 		return null;
 	}
 
