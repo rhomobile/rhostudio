@@ -23,7 +23,7 @@ import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.BadProjectTagException;
 import rhogenwizard.project.extension.CheckProjectException;
-import rhogenwizard.project.extension.ProjectNotFoundExtension;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 
 public class ProjectFactory implements IProjectFactory
 {
@@ -83,7 +83,7 @@ public class ProjectFactory implements IProjectFactory
         return newProject;
     }
 
-    private IRhomobileProject createRhomobileProject(Class projectTag, IProject project) throws BadProjectTagException
+    private IRhomobileProject createRhomobileProject(Class<? extends IRhomobileProject> projectTag, IProject project) throws BadProjectTagException
     {
     	if (projectTag.equals(RhodesProject.class))
     	{
@@ -106,7 +106,8 @@ public class ProjectFactory implements IProjectFactory
 		return projectPath.contains(wsPath); 
     }
     
-	public IRhomobileProject createProject(Class projectTag, BuildInfoHolder projectInfo) throws CoreException, ProjectNotFoundExtension, AlredyCreatedException, BadProjectTagException
+	public IRhomobileProject createProject(Class<? extends IRhomobileProject> projectTag, BuildInfoHolder projectInfo) 
+		throws CoreException, ProjectNotFoundException, AlredyCreatedException, BadProjectTagException
 	{
     	IPath projectPath = (IPath) projectInfo.getProjectLocationPath();
 		
@@ -151,9 +152,17 @@ public class ProjectFactory implements IProjectFactory
 	}
 
 	@Override
-	public IRhomobileProject convertFromProject(IProject project) 
+	public IRhomobileProject convertFromProject(IProject project) throws BadProjectTagException 
 	{
-		//project.getNature(natureId)
-		return null;
+		if (RhodesProject.checkNature(project))
+		{
+			return createRhomobileProject(RhodesProject.class, project);
+		}
+		else if (RhoconnectProject.checkNature(project))
+		{
+			return createRhomobileProject(RhoconnectProject.class, project);
+		}
+
+		throw new BadProjectTagException(IProject.class);
 	}
 }

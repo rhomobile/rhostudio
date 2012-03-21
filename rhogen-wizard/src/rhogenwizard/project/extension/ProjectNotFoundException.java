@@ -1,6 +1,6 @@
 package rhogenwizard.project.extension;
 
-public class ProjectNotFoundExtension extends Exception 
+public class ProjectNotFoundException extends Exception 
 {
 	/**
 	 * 
@@ -9,7 +9,7 @@ public class ProjectNotFoundExtension extends Exception
 	
 	String m_projectName = null;
 	
-	public ProjectNotFoundExtension(final String projectName)
+	public ProjectNotFoundException(final String projectName)
 	{
 		m_projectName = projectName;
 	}

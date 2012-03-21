@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
@@ -28,8 +27,7 @@ import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
-import rhogenwizard.project.extension.CheckProjectException;
-import rhogenwizard.project.extension.ProjectNotFoundExtension;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
@@ -78,7 +76,7 @@ public class AppWizard extends Wizard implements INewWizard
 				{
 					throw new InvocationTargetException(e);
 				} 
-				catch (ProjectNotFoundExtension e) 
+				catch (ProjectNotFoundException e) 
 				{
 					e.printStackTrace();
 				} 
@@ -131,7 +129,7 @@ public class AppWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 * @throws  
 	 */
-	private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws CoreException, ProjectNotFoundExtension 
+	private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException 
 	{
 		IRhomobileProject newProject = null;
 		

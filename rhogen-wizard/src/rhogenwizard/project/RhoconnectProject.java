@@ -7,7 +7,8 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
-import rhogenwizard.project.extension.ProjectNotFoundExtension;
+import rhogenwizard.buildfile.YmlFile;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.project.nature.RhoconnectNature;
 import rhogenwizard.project.nature.RhodesNature;
 
@@ -21,10 +22,10 @@ public class RhoconnectProject extends RhomobileProject
 	}
 
 	@Override
-	public boolean checkProject() throws ProjectNotFoundExtension
+	public boolean checkProject() throws ProjectNotFoundException
 	{
 		if (m_project == null)
-    		throw new ProjectNotFoundExtension("");
+    		throw new ProjectNotFoundException("");
 
 		File projectDir = new File(m_project.getLocation().toOSString());
 		
@@ -62,7 +63,7 @@ public class RhoconnectProject extends RhomobileProject
 
 
 	@Override
-	public void addNature() throws CoreException, ProjectNotFoundExtension 
+	public void addNature() throws CoreException, ProjectNotFoundException 
 	{
 		IProjectDescription description = getProject().getDescription();
 		String[] natures = description.getNatureIds();
@@ -73,5 +74,12 @@ public class RhoconnectProject extends RhomobileProject
 		newNatures[natures.length] = RhoconnectNature.natureId;
 		description.setNatureIds(newNatures);
 		getProject().setDescription(description, null);
+	}
+
+	@Override
+	public YmlFile getSettingFile() 
+	{
+		// need implement class for .../setting/settings.yml and return instance this
+		return null;
 	}
 }

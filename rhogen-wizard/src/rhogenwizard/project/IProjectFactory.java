@@ -6,14 +6,14 @@ import org.eclipse.core.runtime.CoreException;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.BadProjectTagException;
-import rhogenwizard.project.extension.ProjectNotFoundExtension;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 
 public interface IProjectFactory 
 {
 	//
-	IRhomobileProject createProject(Class projectTag, BuildInfoHolder projectInfo) throws CoreException, ProjectNotFoundExtension, AlredyCreatedException, BadProjectTagException;
+	IRhomobileProject createProject(Class<? extends IRhomobileProject> projectTag, BuildInfoHolder projectInfo) throws CoreException, AlredyCreatedException, BadProjectTagException, ProjectNotFoundException;
 	//
-	IRhomobileProject convertFromProject(IProject project);
+	IRhomobileProject convertFromProject(IProject project) throws BadProjectTagException;
 	//
 	IProject getSelectedProject();
 	//

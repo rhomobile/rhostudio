@@ -29,7 +29,7 @@ import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
-import rhogenwizard.project.extension.ProjectNotFoundExtension;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
@@ -99,7 +99,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 				{
 					throw new InvocationTargetException(e);
 				} 
-				catch (ProjectNotFoundExtension e) 
+				catch (ProjectNotFoundException e) 
 				{
 					e.printStackTrace();
 				} 
@@ -150,7 +150,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 	 * the editor on the newly created file.
 	 * @throws  
 	 */
-	private void doFinish(final String extName, IProgressMonitor monitor) throws CoreException, ProjectNotFoundExtension 
+	private void doFinish(final String extName, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException 
 	{
 		try 
 		{

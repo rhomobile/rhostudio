@@ -3,10 +3,13 @@
  */
 package rhogenwizard.project;
 
+import java.io.FileNotFoundException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
-import rhogenwizard.project.extension.ProjectNotFoundExtension;
+import rhogenwizard.buildfile.YmlFile;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 
 /**
  * @author anton
@@ -15,17 +18,19 @@ import rhogenwizard.project.extension.ProjectNotFoundExtension;
 public interface IRhomobileProject 
 {	
 	//
-	IProject getProject() throws ProjectNotFoundExtension;
+	IProject getProject() throws ProjectNotFoundException;
 	//
-	void addNature() throws CoreException, ProjectNotFoundExtension;
+	void addNature() throws CoreException, ProjectNotFoundException;
 	//
-	boolean checkProject() throws ProjectNotFoundExtension;
+	boolean checkProject() throws ProjectNotFoundException;
 	//
-	void linkFile(String projectPath) throws CoreException, ProjectNotFoundExtension;
+	void linkFile(String projectPath) throws CoreException, ProjectNotFoundException;
 	//
-	void linkFolder(String filePath) throws CoreException, ProjectNotFoundExtension;
+	void linkFolder(String filePath) throws CoreException, ProjectNotFoundException;
 	//
-	void deleteProjectFiles() throws ProjectNotFoundExtension, CoreException;
+	void deleteProjectFiles() throws ProjectNotFoundException, CoreException;
 	//
-	void refreshProject() throws ProjectNotFoundExtension, CoreException;
+	void refreshProject() throws ProjectNotFoundException, CoreException;
+	//
+	YmlFile getSettingFile() throws ProjectNotFoundException, FileNotFoundException;
 }
