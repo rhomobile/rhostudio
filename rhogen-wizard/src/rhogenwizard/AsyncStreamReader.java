@@ -7,10 +7,12 @@ import java.io.InputStreamReader;
 
 public class AsyncStreamReader extends Thread
 {
+	private static int readFileBufferSize = 10*1000*1000;
+	
 	private StringBuffer m_buffer = null;
 	private InputStream  m_inputStream = null;
 	private String       m_threadId = null;
-	private boolean      m_stop = false;
+	private boolean      m_stopFlag = false;
 	private boolean      m_readFile = false;
 	private ILogDevice   m_logDevice = null;
 	
@@ -18,17 +20,16 @@ public class AsyncStreamReader extends Thread
 	
 	public AsyncStreamReader(boolean readFile, InputStream inputStream, StringBuffer buffer, ILogDevice logDevice, String threadId)
 	{
-		m_readFile    = readFile;
+		m_readFile = readFile;
 		m_inputStream = inputStream;
-		m_buffer      = buffer;
-		m_threadId    = threadId;
-		m_logDevice   = logDevice;
+		m_buffer = buffer;
+		m_threadId = threadId;
+		m_logDevice = logDevice;
 		
 		fNewLine = System.getProperty("line.separator");
 	}	
 	
-	public String getBuffer()
-	{		
+	public String getBuffer() {		
 		return m_buffer.toString();
 	}
 	
@@ -53,15 +54,14 @@ public class AsyncStreamReader extends Thread
 	
 	private void readFile() throws IOException, InterruptedException
 	{
-		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));
+		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream), readFileBufferSize);
 		String line = null;
 		
-		while (m_stop == false)
+		while (m_stopFlag == false)
 		{
 			if (bufOut.ready())
 			{
 				line = bufOut.readLine();
-				
 				m_buffer.append(line + fNewLine);
 				printToDisplayDevice(line);				
 			}
@@ -80,10 +80,11 @@ public class AsyncStreamReader extends Thread
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));		
 		String line = null;
 		
-		while ( (m_stop == false) && ((line = bufOut.readLine()) != null) )
+		while ( (m_stopFlag == false) && ((line = bufOut.readLine()) != null) )
 		{
 			m_buffer.append( line + fNewLine);
-			printToDisplayDevice(line);				
+			printToDisplayDevice(line);
+			line = null;
 		}		
 
 		bufOut.close();
@@ -93,7 +94,7 @@ public class AsyncStreamReader extends Thread
 	public void stopReading() 
 	{
 		printToConsole("call stoping " + m_threadId); //DEBUG
-		m_stop = true;
+		m_stopFlag = true;
 	}
 	
 	private void printToDisplayDevice(String line)

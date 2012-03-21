@@ -13,8 +13,8 @@ public class ConsoleHelper
 	private static final String appConsoleName = "Rhomobile application console";
 	private static final String buildConsoleName = "Rhomobile build console";
 	
-	private static MessageConsole msgConsole = null;
-	private static MessageConsole appConsole = null;
+	private static MessageConsoleStream appConsoleStream = null;
+	private static MessageConsoleStream buildConsoleStream = null;
 	
 	public static MessageConsole findConsole(String name) 
 	{
@@ -36,32 +36,27 @@ public class ConsoleHelper
 		
 		return myConsole;
 	}
-
-	public static OutputStream getConsoleStream()
-	{
-		if (msgConsole == null)
-		{
-			msgConsole = findConsole(buildConsoleName);
-			appConsole = findConsole(appConsoleName);
-		}
-		
-		MessageConsoleStream out = msgConsole.newMessageStream();
-		
-	   	return out;
-	}
    
    public static MessageConsoleStream  getBuildConsoleStream()
    {
-	   MessageConsole myConsole = findConsole(buildConsoleName);
-	   MessageConsoleStream out = myConsole.newMessageStream();
-	   return out;
+	   if (buildConsoleStream == null)
+	   {
+		   MessageConsole myConsole = findConsole(buildConsoleName);
+		   buildConsoleStream = myConsole.newMessageStream();
+	   }
+	   
+	   return buildConsoleStream;
    }
 
    public static MessageConsoleStream  getAppsConsoleStream()
    {
-	   MessageConsole myConsole = findConsole(appConsoleName);
-	   MessageConsoleStream out = myConsole.newMessageStream();
-	   return out;
+	   if (appConsoleStream == null)
+	   {
+		   MessageConsole myConsole = findConsole(appConsoleName);
+		   appConsoleStream = myConsole.newMessageStream();
+	   }
+	   
+	   return appConsoleStream;
    }
 
    public static void consoleAppPrint(String msg)
