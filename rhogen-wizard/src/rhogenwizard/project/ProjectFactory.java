@@ -13,6 +13,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
@@ -66,13 +68,13 @@ public class ProjectFactory implements IProjectFactory
             
             if (!projectInfo.isInDefaultWs)
             {
-            	desc.setLocationURI(URIUtil.toURI(path));
+            	desc.setLocation(new Path(path));
             }
             
-            newProject.create(desc, null);
+            newProject.create(desc, new NullProgressMonitor());
             
             if (!newProject.isOpen()) {
-                newProject.open(null);
+                newProject.open(new NullProgressMonitor());
             }
         }
         else
@@ -103,7 +105,7 @@ public class ProjectFactory implements IProjectFactory
 		IWorkspaceRoot root  = workspace.getRoot();
 		String wsPath        = root.getLocation().toOSString();
 		
-		return projectPath.contains(wsPath); 
+		return projectPath.toLowerCase().equals(wsPath.toLowerCase()); //.contains(wsPath); 
     }
     
 	public IRhomobileProject createProject(Class<? extends IRhomobileProject> projectTag, BuildInfoHolder projectInfo) 
