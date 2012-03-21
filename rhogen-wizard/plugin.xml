@@ -164,6 +164,14 @@
 	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
 	    </launchConfigurationTypeImage>
 	</extension>
+	
+	 <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="rhogenwizard.launcher.rhodesSpec"
+            icon="icons/sample16.png"
+            id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
+        </launchConfigurationTypeImage>
+    </extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
@@ -186,6 +194,18 @@
 	</extension>
 	
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+           delegate="rhogenwizard.launcher.spec.LaunchDelegate"
+           id="rhogenwizard.launcher.rhodesSpec"
+           modes="run, debug"
+           name="Rhodes application Test"
+           public="true"
+           sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
+           sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
+        </launchConfigurationType>
+    </extension>
+    
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
            delegate="rhogenwizard.launcher.rhoconnect.LaunchDelegate"
            id="rhogenwizard.launcher.rhosyncApp"
@@ -204,6 +224,14 @@
         	id="rhogenwizard.launcher.rhodesApp">
     	</launchConfigurationTabGroup>
 	</extension>
+	
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            type="rhogenwizard.launcher.rhodesSpec"
+            class="rhogenwizard.launcher.spec.TabGroup"
+            id="rhogenwizard.launcher.rhodesSpec">
+        </launchConfigurationTabGroup>
+    </extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     	<launchConfigurationTabGroup
