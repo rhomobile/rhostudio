@@ -54,13 +54,10 @@ public class CompileRubyPartTask extends RakeTask
 	
 			m_outputHolder.cleanOutput();
 			
-			String       workDir = (String) m_taskParams.get(IRunTask.workDir);
-			PlatformType plType  = (PlatformType) m_taskParams.get(platformType); 
+			String workDir = (String) m_taskParams.get(IRunTask.workDir);
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("build:");
-			sb.append(plType.toString());
-			sb.append(":rhobundle");
+			sb.append("build:bundle:rhostudio");
 			
 			List<String> cmdLine = new ArrayList<String>();
 			cmdLine.add(m_rakeExe);
