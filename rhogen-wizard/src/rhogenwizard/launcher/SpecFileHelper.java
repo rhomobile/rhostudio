@@ -11,19 +11,15 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-
 import rhogenwizard.buildfile.AppYmlFile;
 
 public class SpecFileHelper 
 {
 	private static final String startPathKey = "start_path";
-	private static final String mspecKey = "mspec";
-	private static final String fileUtilKey = "fileutils";
+	private static final String mspecKey     = "mspec";
+	private static final String fileUtilKey  = "fileutils";
 	
-	private IProject m_selProject = null;
+	private IProject   m_selProject = null;
 	private AppYmlFile m_ymlConfig = null;
 	
 	public SpecFileHelper(IProject project)
