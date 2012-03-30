@@ -24,7 +24,6 @@ import org.eclipse.ui.PlatformUI;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.BadProjectTagException;
-import rhogenwizard.project.extension.CheckProjectException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 
 public class ProjectFactory implements IProjectFactory

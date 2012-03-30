@@ -7,6 +7,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.ruby.core.RubyNature;
+
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.YmlFile;
 import rhogenwizard.project.extension.ProjectNotFoundException;
@@ -69,9 +71,11 @@ public class RhodesProject extends RhomobileProject
 		String[] natures = description.getNatureIds();
 
 		// Add the nature
-		String[] newNatures = new String[natures.length + 1];
+		String[] newNatures = new String[natures.length + 2];
 		System.arraycopy(natures, 0, newNatures, 0, natures.length);
-		newNatures[natures.length] = RhodesNature.natureId;
+		newNatures[natures.length]   = RhodesNature.natureId;		
+		newNatures[natures.length+1] = RubyNature.NATURE_ID; // set nature from dltk ruby plugin
+		
 		description.setNatureIds(newNatures);
 		getProject().setDescription(description, null);
 	}
