@@ -107,7 +107,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		
 		m_debugType     = debugType;
 		m_launchHandle  = launch;
-		fTarget         = this;
+		m_debugTarget   = this;
 		m_processHandle = process;
 
 		m_threadHandle = new RhogenThread(this);

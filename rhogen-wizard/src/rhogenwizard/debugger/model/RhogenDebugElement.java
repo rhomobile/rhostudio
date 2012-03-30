@@ -30,7 +30,7 @@ import rhogenwizard.constants.DebugConstants;
 public abstract class RhogenDebugElement extends PlatformObject implements IDebugElement
 {
 	// containing target 
-	protected RhogenDebugTarget fTarget;
+	protected RhogenDebugTarget m_debugTarget;
 	
 	/**
 	 * Constructs a new debug element contained in the given
@@ -40,7 +40,7 @@ public abstract class RhogenDebugElement extends PlatformObject implements IDebu
 	 */
 	public RhogenDebugElement(RhogenDebugTarget target) 
 	{
-		fTarget = target;
+		m_debugTarget = target;
 	}
 	
 	/* (non-Javadoc)
@@ -56,7 +56,7 @@ public abstract class RhogenDebugElement extends PlatformObject implements IDebu
 	 */
 	public IDebugTarget getDebugTarget() 
 	{
-		return fTarget;
+		return m_debugTarget;
 	}
 	
 	/* (non-Javadoc)

@@ -26,8 +26,8 @@ import org.eclipse.debug.core.model.IVariable;
  */
 public class RhogenValue extends RhogenDebugElement implements IValue 
 {	
-	private String  m_currValue    = null;
-	private boolean m_hasVariables = false;
+	private String      m_currValue    = null;
+	private boolean     m_hasVariables = false;
 	private IVariable[] m_childsVariables = null;
 	
 	public RhogenValue(RhogenDebugTarget target, String value, boolean a)

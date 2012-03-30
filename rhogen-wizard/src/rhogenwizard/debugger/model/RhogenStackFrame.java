@@ -14,7 +14,6 @@ package rhogenwizard.debugger.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -25,10 +24,10 @@ import rhogenwizard.debugger.backend.DebugVariable;
 
 public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame 
 {
-	private RhogenThread fThread = null;
-	private String       m_name = null;
-	private int          fPC;
-	private String       m_fileName = null;
+	private RhogenThread    m_currThread = null;
+	private String          m_name = null;
+	private int             m_codeLine;
+	private String          m_fileName = null;
 	private int             m_id;
 	private List<IVariable> m_variablesList;
 	
@@ -44,8 +43,8 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	{
 		super((RhogenDebugTarget) thread.getDebugTarget());
 		
-		m_id     = id;
-		fThread = thread;
+		m_id         = id;
+		m_currThread = thread;
 		init(stackData);
 	}
 	
@@ -57,7 +56,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	private void init(StackData stackData)
 	{
 		m_fileName      = stackData.m_resName; 
-		fPC             = stackData.m_codeLine; 
+		m_codeLine      = stackData.m_codeLine; 
 		m_name          = stackData.m_resName; 
 		m_variablesList = new ArrayList<IVariable>();
 		
@@ -69,7 +68,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 				{
 					RhogenVariable stackVar = new RhogenVariable((RhogenDebugTarget) this.getDebugTarget(), var.variable());
 					
-					stackVar.setValue(new RhogenValue(fTarget, var.value()));
+					stackVar.setValue(new RhogenValue(m_debugTarget, var.value()));
 					m_variablesList.add(stackVar);
 				} 
 				catch (DebugException e) 
@@ -90,7 +89,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public IThread getThread() 
 	{
-		return fThread;
+		return m_currThread;
 	}
 	
 	/* (non-Javadoc)
@@ -118,7 +117,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public int getLineNumber() throws DebugException 
 	{
-		return fPC;
+		return m_codeLine;
 	}
 	
 	/* (non-Javadoc)

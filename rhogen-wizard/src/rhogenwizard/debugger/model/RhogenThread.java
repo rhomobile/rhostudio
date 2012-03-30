@@ -25,12 +25,12 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 * Breakpoints this thread is suspended at or <code>null</code>
 	 * if none.
 	 */
-	private IBreakpoint[] fBreakpoints;
+	private IBreakpoint[] m_breakpoints;
 	
 	/**
 	 * Whether this thread is stepping
 	 */
-	private boolean fStepping = false;
+	private boolean m_isStepping = false;
 	
 	/**
 	 * Constructs a new thread for the given target
@@ -109,12 +109,12 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public IBreakpoint[] getBreakpoints() 
 	{
-		if (fBreakpoints == null) 
+		if (m_breakpoints == null) 
 		{
 			return new IBreakpoint[0];
 		}
 		
-		return fBreakpoints;
+		return m_breakpoints;
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	protected void setBreakpoints(IBreakpoint[] breakpoints) 
 	{
-		fBreakpoints = breakpoints;
+		m_breakpoints = breakpoints;
 	}
 	
 	/* (non-Javadoc)
@@ -201,7 +201,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public boolean isStepping() 
 	{
-		return fStepping;
+		return m_isStepping;
 	}
 	
 	/* (non-Javadoc)
@@ -259,6 +259,6 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	protected void setStepping(boolean stepping) 
 	{
-		fStepping = stepping;
+		m_isStepping = stepping;
 	}
 }
