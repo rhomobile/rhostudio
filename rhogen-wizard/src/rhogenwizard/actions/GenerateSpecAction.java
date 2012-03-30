@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -20,7 +21,7 @@ import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
 
 public class GenerateSpecAction implements IWorkbenchWindowActionDelegate 
 {
-	private IWorkbenchWindow window;
+	private IWorkbenchWindow m_workbenchWindow;
 	/**
 	 * The constructor.
 	 */
@@ -33,10 +34,16 @@ public class GenerateSpecAction implements IWorkbenchWindowActionDelegate
 		IProject project = ProjectFactory.getInstance().getSelectedProject();
 		
 		if (project == null)
+		{
+			MessageDialog.openError(m_workbenchWindow.getShell(), "Error", "You can generate spec files after select rhodes project.");
 			return;
+		}
 		
 		if (!RhodesProject.checkNature(project))
+		{
+			MessageDialog.openInformation(m_workbenchWindow.getShell(), "Information", "Selected item is not rhodes project.");
 			return;
+		}
 	
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(GenerateRhodesAppTask.workDir, project.getLocation().toOSString());
@@ -80,6 +87,6 @@ public class GenerateSpecAction implements IWorkbenchWindowActionDelegate
 	 */
 	public void init(IWorkbenchWindow window) 
 	{
-		this.window = window;
+		this.m_workbenchWindow = window;
 	}
 }
