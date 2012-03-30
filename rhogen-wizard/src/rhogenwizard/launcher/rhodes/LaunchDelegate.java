@@ -29,7 +29,6 @@ import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
-import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
@@ -45,7 +44,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	private String            m_projectName = null;
 	private String            m_runType     = null;
-	private String			  m_appLogName = null; 
 	private String            m_platformType = null;
 	private boolean           m_isClean = false;
 	private boolean           m_isReloadCode = false;
@@ -147,7 +145,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	{
 		m_projectName  = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 		m_platformType = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
-		m_appLogName   = configuration.getAttribute(ConfigurationConstants.prjectLogFileName, "");
 		m_isClean      = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 		m_runType      = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
