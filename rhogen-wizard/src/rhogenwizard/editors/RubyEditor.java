@@ -16,8 +16,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IDE;
 
-public class RubyEditor extends MultiPageEditorPart implements IResourceChangeListener{
-
+public class RubyEditor extends MultiPageEditorPart implements IResourceChangeListener
+{
 	/** The text editor used in page 0. */
 	private TextEditor editor;
 
