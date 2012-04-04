@@ -25,7 +25,8 @@ import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 
 public class CreateTest extends TestCase
 {
-	private static final String worspaceFolder = "c:\\android\\junitworkfiles";
+	private static final String workspaceFolder =
+		new File(System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
 
 	boolean checkCreateRhodesFile(String path)
 	{
@@ -46,14 +47,15 @@ public class CreateTest extends TestCase
 	@Before
 	public void setUp() throws Exception
 	{
-		OSHelper.deleteFolder(worspaceFolder);
+		OSHelper.deleteFolder(workspaceFolder);
 		
-		File newWsFodler = new File(worspaceFolder);
+		File newWsFodler = new File(workspaceFolder);
 		newWsFodler.mkdir();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		OSHelper.deleteFolder(workspaceFolder);
 	}
 
 	@Test
@@ -64,7 +66,7 @@ public class CreateTest extends TestCase
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put(GenerateRhodesAppTask.appName, appName);
-		params.put(GenerateRhodesAppTask.workDir, worspaceFolder);
+		params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
 		
 		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		
@@ -74,7 +76,7 @@ public class CreateTest extends TestCase
 			fail("fail on check result [test1]");
 		}
 		
-		assertEquals(checkCreateRhodesFile(worspaceFolder + File.separator + appName), true);		
+		assertEquals(checkCreateRhodesFile(workspaceFolder + File.separator + appName), true);		
     }
 
 	@Test
@@ -82,12 +84,12 @@ public class CreateTest extends TestCase
     {
 		String appName   =  "test002";
 		String modelName =  "model002";
-		String projectLoc = worspaceFolder + File.separator + appName;
+		String projectLoc = workspaceFolder + File.separator + appName;
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put(GenerateRhodesAppTask.appName, appName);
-		params.put(GenerateRhodesAppTask.workDir, worspaceFolder);
+		params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
 		
 		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		
@@ -124,7 +126,7 @@ public class CreateTest extends TestCase
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put(GenerateRhoconnectAppTask.appName, appName);
-		params.put(GenerateRhoconnectAppTask.workDir, worspaceFolder);
+		params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
 		
 		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
 		
@@ -134,7 +136,7 @@ public class CreateTest extends TestCase
 			fail("fail on check result [test3]");
 		}
 		
-		assertEquals(checkCreateRhoconnectFile(worspaceFolder + File.separator + appName), true);		
+		assertEquals(checkCreateRhoconnectFile(workspaceFolder + File.separator + appName), true);		
     }
 	
 	@Test
@@ -142,12 +144,12 @@ public class CreateTest extends TestCase
     {
 		String appName =  "test004";
 		String adapterName = "adapter001";
-		String projectLocation = worspaceFolder + File.separator + appName;
+		String projectLocation = workspaceFolder + File.separator + appName;
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put(GenerateRhoconnectAppTask.appName, appName);
-		params.put(GenerateRhoconnectAppTask.workDir, worspaceFolder);
+		params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
 		
 		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
 		
@@ -177,14 +179,14 @@ public class CreateTest extends TestCase
     {
         String appName = "test005";
         String extensionName = "extension005";
-        String projectLoc = worspaceFolder + File.separator + appName;
+        String projectLoc = workspaceFolder + File.separator + appName;
         
         // create application
         {
             Map<String, Object> params = new HashMap<String, Object>();
             
             params.put(GenerateRhodesAppTask.appName, appName);
-            params.put(GenerateRhodesAppTask.workDir, worspaceFolder);
+            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
             
             Map<String, ?> results =
                 RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
