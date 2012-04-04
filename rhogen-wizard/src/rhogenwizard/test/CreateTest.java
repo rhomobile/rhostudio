@@ -20,6 +20,7 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
+import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 
 public class CreateTest extends TestCase
@@ -169,5 +170,41 @@ public class CreateTest extends TestCase
 		} catch (Exception e) {
 			fail("fail on check result [test4]");
 		}
+    }
+
+    @Test
+    public void test5CreateRhodesExtension() throws Exception
+    {
+        String appName = "test005";
+        String extensionName = "extension005";
+        String projectLoc = worspaceFolder + File.separator + appName;
+        
+        // create application
+        {
+            Map<String, Object> params = new HashMap<String, Object>();
+            
+            params.put(GenerateRhodesAppTask.appName, appName);
+            params.put(GenerateRhodesAppTask.workDir, worspaceFolder);
+            
+            Map<String, ?> results =
+                RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
+            
+            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+            
+            assertTrue(checkCreateRhodesFile(projectLoc));
+        }
+        
+        // create extension
+        {
+            Map<String, Object> params = new HashMap<String, Object>();
+            
+            params.put(GenerateRhodesExtensionTask.extName, extensionName);
+            params.put(GenerateRhodesExtensionTask.workDir, projectLoc);
+            
+            Map<String, ?> modelResults =
+                RhoTaskHolder.getInstance().runTask(GenerateRhodesExtensionTask.class, params);
+            
+            assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
+        }
     }
 }
