@@ -112,6 +112,4 @@ public class RhoconnectCreationTest extends TestCase
             fail("fail on check result [test4]");
         }
     }
-
-
 }
