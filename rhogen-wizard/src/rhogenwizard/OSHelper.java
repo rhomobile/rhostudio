@@ -62,4 +62,14 @@ public class OSHelper extends OSValidator
 		
 		rootFolder.delete();
 	}
+
+	public static File concat(String... paths)
+    {
+        File file = new File("");
+        for (int i = 0; i < paths.length; i++)
+        {
+            file = new File(file, paths[i]);
+        }
+        return file;
+    }
 }

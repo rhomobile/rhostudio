@@ -25,10 +25,7 @@ public class RhodesCreationTest extends TestCase
 
     private boolean checkCreateRhodesFile(String path)
     {
-        String pathToBuildYml = path + File.separator + "build.yml";
-        File f = new File(pathToBuildYml);
-
-        return f.isFile();
+        return OSHelper.concat(path, "build.yml").isFile();
     }
 
     @Before
@@ -71,30 +68,39 @@ public class RhodesCreationTest extends TestCase
         String modelName = "model002";
         String projectLoc = workspaceFolder + File.separator + appName;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        // create application
+        {
+            Map<String, Object> params = new HashMap<String, Object>();
 
-        params.put(GenerateRhodesAppTask.appName, appName);
-        params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
+            params.put(GenerateRhodesAppTask.appName, appName);
+            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
 
-        Map<String, ?> results =
-                RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
+            Map<String, ?> results =
+                    RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 
-        assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
 
-        assertEquals(checkCreateRhodesFile(projectLoc), true);
+            assertEquals(checkCreateRhodesFile(projectLoc), true);
+        }
 
         // create model
-        params.clear();
-        params = new HashMap<String, Object>();
+        {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params = new HashMap<String, Object>();
 
-        params.put(GenerateRhodesModelTask.modelName, modelName);
-        params.put(GenerateRhodesModelTask.workDir, projectLoc);
-        params.put(GenerateRhodesModelTask.modelFields, "a, b, c");
+            params.put(GenerateRhodesModelTask.modelName, modelName);
+            params.put(GenerateRhodesModelTask.workDir, projectLoc);
+            params.put(GenerateRhodesModelTask.modelFields, "a, b, c");
 
-        Map<String, ?> modelResults =
-                RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
+            Map<String, ?> modelResults =
+                    RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
 
-        assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
+            assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
+
+            // TODO: why model directory is capitalized?
+            assertTrue(OSHelper.concat(projectLoc, "app", "Model002").isDirectory());
+            assertTrue(OSHelper.concat(projectLoc, "app", "test", "model002_spec.rb").isFile());
+        }
     }
 
     @Test
@@ -131,6 +137,10 @@ public class RhodesCreationTest extends TestCase
                             params);
 
             assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
+
+            // TODO: why extension directory is capitalized?
+            assertTrue(OSHelper.concat(projectLoc, "app", "Extension005Test").isDirectory());
+            assertTrue(OSHelper.concat(projectLoc, "extensions", extensionName).isDirectory());
         }
     }
 
@@ -165,6 +175,11 @@ public class RhodesCreationTest extends TestCase
                     RhoTaskHolder.getInstance().runTask(GenerateRhodesSpecTask.class, params);
 
             assertEquals(TaskResultConverter.getResultIntCode(specResults), 0);
+
+            // TODO: why extension directory is capitalized?
+            assertTrue(OSHelper.concat(projectLoc, "app", "mspec.rb").isFile());
+            assertTrue(OSHelper.concat(projectLoc, "app", "spec_runner.rb").isFile());
+            assertTrue(OSHelper.concat(projectLoc, "app", "SpecRunner").isDirectory());
         }
     }
 }
