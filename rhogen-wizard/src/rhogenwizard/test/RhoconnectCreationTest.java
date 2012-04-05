@@ -20,12 +20,9 @@ public class RhoconnectCreationTest extends TestCase
     private static final String workspaceFolder = new File(
             System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
 
-    boolean checkCreateRhoconnectFile(String path)
+    private boolean checkCreateRhoconnectFile(String path)
     {
-        String pathToBuildYml = path + File.separator + "config.ru";
-        File f = new File(pathToBuildYml);
-
-        return f.isFile();
+        return OSHelper.concat(path, "config.ru").isFile();
     }
 
     @Before
@@ -44,7 +41,7 @@ public class RhoconnectCreationTest extends TestCase
     }
 
     @Test
-    public void testCreateRhoconnectApp()
+    public void testCreateRhoconnectApp() throws Exception
     {
         String appName = "test003";
 
@@ -53,63 +50,51 @@ public class RhoconnectCreationTest extends TestCase
         params.put(GenerateRhoconnectAppTask.appName, appName);
         params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
 
-        Map results =
+        Map<String, ?> results =
                 RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
 
-        try
-        {
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
-        }
-        catch (Exception e)
-        {
-            fail("fail on check result [test3]");
-        }
+        assertEquals(TaskResultConverter.getResultIntCode(results), 0);
 
-        assertEquals(checkCreateRhoconnectFile(workspaceFolder + File.separator + appName),
-                true);
+        assertTrue(checkCreateRhoconnectFile(workspaceFolder + File.separator + appName));
     }
 
     @Test
-    public void testCreateRhoconnectSrcAdapter()
+    public void testCreateRhoconnectSrcAdapter() throws Exception
     {
         String appName = "test004";
         String adapterName = "adapter001";
         String projectLocation = workspaceFolder + File.separator + appName;
 
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        params.put(GenerateRhoconnectAppTask.appName, appName);
-        params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
-
-        Map results =
-                RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
-
-        try
+        // create application
         {
+            Map<String, Object> params = new HashMap<String, Object>();
+
+            params.put(GenerateRhoconnectAppTask.appName, appName);
+            params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
+
+            Map<String, ?> results =
+                    RhoTaskHolder.getInstance()
+                            .runTask(GenerateRhoconnectAppTask.class, params);
+
             assertEquals(TaskResultConverter.getResultIntCode(results), 0);
-        }
-        catch (Exception e)
-        {
-            fail("fail on check result [test4]");
+
+            assertTrue(checkCreateRhoconnectFile(projectLocation));
         }
 
-        assertEquals(checkCreateRhoconnectFile(projectLocation), true);
-
-        params.clear();
-        params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
-        params.put(GenerateRhoconnectAdapterTask.workDir, projectLocation);
-
-        results =
-                RhoTaskHolder.getInstance()
-                        .runTask(GenerateRhoconnectAdapterTask.class, params);
-
-        try
+        // create adapter
         {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
+            params.put(GenerateRhoconnectAdapterTask.workDir, projectLocation);
+
+            Map<String, ?> results =
+                    RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.class,
+                            params);
+
             assertEquals(TaskResultConverter.getResultIntCode(results), 0);
-        }
-        catch (Exception e)
-        {
-            fail("fail on check result [test4]");
+            assertTrue(OSHelper.concat(projectLocation, "sources", "adapter001.rb").isFile());
+            assertTrue(OSHelper
+                    .concat(projectLocation, "spec", "sources", "adapter001_spec.rb").isFile());
         }
     }
 }
