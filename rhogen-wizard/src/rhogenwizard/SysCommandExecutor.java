@@ -112,10 +112,10 @@ public class SysCommandExecutor
 		m_cmdErrorThread.start();
 	}
 	
-	private void notifyOutputAndErrorReadThreadsToStopReading()
+	private void notifyOutputAndErrorReadThreadsToStopReading() throws InterruptedException
 	{
-		m_cmdOutputThread.stopReading();
-		m_cmdErrorThread.stopReading();
+		m_cmdOutputThread.join();
+		m_cmdErrorThread.join();
 	}
 	
 	private String[] getEnvTokens()
