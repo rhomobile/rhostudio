@@ -28,6 +28,7 @@ import rhogenwizard.Activator;
 import rhogenwizard.OSHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
+import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
@@ -146,7 +147,7 @@ public class ModelWizard extends Wizard implements INewWizard
 	{
 		if (m_currentProject != null)
 		{
-			if (!RhodesProject.checkNature(m_currentProject))
+			if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
 			{
 				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhodes application");
 				addPage(zeroPage);
