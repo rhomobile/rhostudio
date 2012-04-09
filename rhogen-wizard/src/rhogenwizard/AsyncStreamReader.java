@@ -74,6 +74,9 @@ public class AsyncStreamReader extends Thread
 				{
 					Thread.sleep(waitingTimePortion);
 					timeCounter += waitingTimePortion;
+					
+					if (m_stopFlag)
+						break;
 				}
 			}
 		}
