@@ -7,7 +7,8 @@ import java.io.InputStreamReader;
 
 public class AsyncStreamReader extends Thread
 {
-	private static int readFileBufferSize = 10*1000*1000;
+	private static int maxWaitingTimeForReadFile = 500;
+	private static int waitingTimePortion = 50;
 	
 	private StringBuffer m_buffer = null;
 	private InputStream  m_inputStream = null;
@@ -54,7 +55,7 @@ public class AsyncStreamReader extends Thread
 	
 	private void readFile() throws IOException, InterruptedException
 	{
-		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream), readFileBufferSize);
+		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));
 		String line = null;
 		
 		while (m_stopFlag == false)
@@ -67,7 +68,13 @@ public class AsyncStreamReader extends Thread
 			}
 			else
 			{
-				Thread.sleep(500);
+				int timeCounter = 0;
+				
+				while(timeCounter < maxWaitingTimeForReadFile)
+				{
+					Thread.sleep(waitingTimePortion);
+					timeCounter += waitingTimePortion;
+				}
 			}
 		}
 		

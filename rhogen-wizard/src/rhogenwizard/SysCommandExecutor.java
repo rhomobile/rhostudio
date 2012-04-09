@@ -1,17 +1,15 @@
 package rhogenwizard;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.internal.runtime.Log;
-
 public class SysCommandExecutor
 {	
+	private static int waitReadingTime = 500; 
+	
 	private ILogDevice m_ouputLogDevice = null;
 	private ILogDevice m_errorLogDevice = null;
 	private String     m_workingDirectory = null;
@@ -114,8 +112,8 @@ public class SysCommandExecutor
 	
 	private void notifyOutputAndErrorReadThreadsToStopReading() throws InterruptedException
 	{
-		m_cmdOutputThread.join();
-		m_cmdErrorThread.join();
+		m_cmdOutputThread.stopReading();
+		m_cmdErrorThread.stopReading();
 	}
 	
 	private String[] getEnvTokens()
