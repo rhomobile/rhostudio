@@ -43,6 +43,51 @@ import rhogenwizard.project.RhoelementsProject;
 
 public class ParametersTab extends rhogenwizard.launcher.rhodes.ParametersTab  
 {
+	protected void selectProjectDialog()
+	{
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
+					getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, "Select project");
+			
+		if (dialog.open() == ContainerSelectionDialog.OK) 
+		{
+			Object[] result = dialog.getResult();
+			
+			if (result.length == 1) 
+			{				
+				String selProjectName = ((Path) result[0]).toString();
+				selProjectName        = selProjectName.replaceAll("/", "");
+				IProject selProject   = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+				
+				if (!RhoelementsProject.checkNature(selProject))
+				{
+					MessageDialog.openError(getShell(), "Message", "Project " + selProject.getName() + " is not rhoelements application");
+					return;
+				}
+				
+				m_selProject = selProject;								
+				m_appNameText.setText(selProjectName);	
+				
+				m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());
+				
+				try 
+				{
+					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+					setPlatformVersionCombo(m_configuration);
+				}
+				catch (FileNotFoundException e) 
+				{
+					e.printStackTrace();
+				}
+				
+				showApplyButton();
+			}
+			else
+			{
+				MessageDialog.openInformation(getShell(), "Message", "Select single project.");
+			}
+		}
+	}
+	
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) 
 	{
