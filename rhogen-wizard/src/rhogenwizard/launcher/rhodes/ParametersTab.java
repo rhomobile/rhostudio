@@ -74,7 +74,7 @@ public class ParametersTab extends  JavaLaunchTab
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Combo       m_selectPlatformVersionCombo = null;
-	Text 		m_appNameText = null;
+	protected Text 		m_appNameText = null;
 	Text 		m_appLogText = null;
 	Text        m_adroidEmuNameText = null;
 	Button 		m_cleanButton = null;
@@ -557,7 +557,7 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 	}
 	
-	private void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 
+	protected void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 
 	{
 		try
 		{
@@ -676,8 +676,8 @@ public class ParametersTab extends  JavaLaunchTab
 	{
 		return "Common setting";
 	}
-	
-	void selectProjectDialog()
+		
+	protected void selectProjectDialog()
 	{
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 					getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, "Select project");
@@ -722,7 +722,7 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 	}
 	
-	private void showApplyButton()
+	protected void showApplyButton()
 	{
 		this.setDirty(false);
 		this.getLaunchConfigurationDialog().updateButtons();		
