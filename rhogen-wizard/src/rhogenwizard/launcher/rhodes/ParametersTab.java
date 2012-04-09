@@ -51,7 +51,7 @@ public class ParametersTab extends  JavaLaunchTab
 									           "Windows phone",
 									           "Symbian" };
 	
-	private static String androidVersions[] = { "1.6",
+	protected static String androidVersions[] = { "1.6",
 											    "2.1",
 											    "2.2",
 											    "2.3.1",
@@ -62,7 +62,7 @@ public class ParametersTab extends  JavaLaunchTab
 											    "4.0",
 											    "4.0.3" };
 
-	private static String iphoneVersions[] = { "iphone",
+	protected static String iphoneVersions[] = { "iphone",
 											   "ipad" };
 
 	private static String simulatorTypes[] = { RunType.platformRhoSim,
@@ -85,12 +85,12 @@ public class ParametersTab extends  JavaLaunchTab
 	Button      m_traceButton = null;	
 	
 	String    	m_platformName = null;
-	IProject 	m_selProject  = null;
+	protected IProject 	m_selProject  = null;
 	String      m_selPlatformVersion = null;
 	
-	ILaunchConfigurationWorkingCopy m_configuration = null;
+	protected ILaunchConfigurationWorkingCopy m_configuration = null;
 	
-	AppYmlFile     m_ymlFile = null;
+	protected AppYmlFile     m_ymlFile = null;
 	SpecFileHelper m_configHelper = null;
 	
 	@SuppressWarnings("restriction")

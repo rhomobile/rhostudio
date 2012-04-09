@@ -4,11 +4,11 @@
 
    <extension point="org.eclipse.ui.actionSets">
       <actionSet
-            label="Rhomobile"
+            label="RhoMobile"
             visible="true"
             id="rhostudio.actionSet">
          <menu
-               label="Rhomobile"
+               label="RhoMobile"
                id="rhomobileMenu">
             <separator
                   name="rhomobileGroup">
@@ -35,11 +35,21 @@
       </actionSet>
    </extension>
 
+   <!-- ************************** wizards **************************************** -->
    <extension point="org.eclipse.ui.newWizards">
       <category
             id="RhogenAppWizard"
-            name="Rhomobile">
+            name="RhoMobile">
       </category>
+            
+      <wizard
+            category="RhogenAppWizard"
+            class="rhogenwizard.wizards.rhoelements.AppWizard"
+            icon="icons/sample16.png"
+            id="rhogenwizard.wizards.RhoelementsWizard"
+            name="Rhoelements application"
+            project="true"> 
+      </wizard>
             
       <wizard
             category="RhogenAppWizard"
@@ -85,6 +95,7 @@
       </wizard>
    </extension>
    
+   <!-- ************************** editors **************************************** -->
    <extension point="org.eclipse.ui.editors">
       <editor
             class="rhogenwizard.editors.YmlFileEditor"
@@ -107,6 +118,7 @@
       </editor>
    </extension>
 
+   <!-- ************************** builders **************************************** -->
    <extension point="org.eclipse.core.resources.builders"
                id="rhogenwizard.builder.RhogenBuilder"
                name="Rhodes Project Builder">
@@ -130,7 +142,20 @@
          </run>
       </builder>
    </extension>
+
+   <extension point="org.eclipse.core.resources.builders"
+               id="rhoelementsBuilder"
+               name="Rhoelements Project Builder">
+      <builder
+            hasNature="true"
+            isConfigurable="false">
+         <run
+               class="rhogenwizard.builder.rhoelements.Builder">
+         </run>
+      </builder>
+   </extension>
       
+   <!-- ************************** natures **************************************** -->
    <extension point="org.eclipse.core.resources.natures"
               id="rhogenNature"
               name="Rhodes Project Nature">
@@ -153,10 +178,24 @@
          </run>
       </runtime>
       <builder
-            id="com.rhomobile.rhostudio.rhoconnectBuilder">
+            id="rhogenwizard.builder.RhogenBuilder">
       </builder>
     </extension>
     
+    <extension point="org.eclipse.core.resources.natures"
+              id="rhoelementsNature"
+              name="Rhoelements Project Nature">
+      <runtime>
+         <run
+               class="rhogenwizard.project.nature.RhoelementsNature">
+         </run>
+      </runtime>
+      <builder
+            id="rhogenwizard.builder.RhogenBuilder">
+      </builder>
+    </extension>
+    
+    <!-- ************************** launch images **************************************** -->
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
 	        icon="icons/sample16.png"
@@ -180,6 +219,27 @@
 	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
 	    </launchConfigurationTypeImage>
 	</extension>
+
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="rhogenwizard.launcher.rhoelementsApp"
+            icon="icons/sample16.png"
+            id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
+        </launchConfigurationTypeImage>
+    </extension>
+
+    <!-- ************************** launch configuration **************************************** -->
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+           delegate="rhogenwizard.launcher.rhoelements.LaunchDelegate"
+           id="rhogenwizard.launcher.rhoelementsApp"
+           modes="run, debug"
+           name="Rhoelements Application"
+           public="true"
+           sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
+           sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
+        </launchConfigurationType>
+    </extension>
 		 
    	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
@@ -216,14 +276,23 @@
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
 	    </launchConfigurationType>
 	</extension>
-	
-	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-    	<launchConfigurationTabGroup
-        	type="rhogenwizard.launcher.rhodesApp"
-        	class="rhogenwizard.launcher.rhodes.TabGroup"
-        	id="rhogenwizard.launcher.rhodesApp">
-    	</launchConfigurationTabGroup>
-	</extension>
+
+    <!-- ************************** launch tabs groups **************************************** -->
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            type="rhogenwizard.launcher.rhoelementsApp"
+            class="rhogenwizard.launcher.rhoelements.TabGroup"
+            id="rhogenwizard.launcher.rhoelementsApp">
+        </launchConfigurationTabGroup>
+    </extension>
+
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            type="rhogenwizard.launcher.rhodesApp"
+            class="rhogenwizard.launcher.rhodes.TabGroup"
+            id="rhogenwizard.launcher.rhodesApp">
+        </launchConfigurationTabGroup>
+    </extension>
 	
     <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
         <launchConfigurationTabGroup
@@ -241,9 +310,10 @@
     	</launchConfigurationTabGroup>
 	</extension>
 	
+	<!-- ************************** pref pages **************************************** -->
     <extension point="org.eclipse.ui.preferencePages">
       <page
-            name="Rhomobile"
+            name="RhoMobile"
             class="rhogenwizard.preferences.RhogenPreferencePage"
             id="rhogenwizard.preferences.RhogenPreferencePage">
       </page>
@@ -311,7 +381,7 @@
           </property>
           <property
                 name="aboutText"
-                value="Rhomobile RhoStudio">
+                value="RhoMobile RhoStudio">
           </property>
           <property
                 name="windowImages"
@@ -418,7 +488,7 @@
          </property>
          <property
                name="aboutText"
-               value="Rhomobile RhoStudio">
+               value="RhoMobile RhoStudio">
          </property>
          <property
                name="aboutImage"

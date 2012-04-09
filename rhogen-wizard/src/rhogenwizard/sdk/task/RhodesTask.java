@@ -1,8 +1,5 @@
 package rhogenwizard.sdk.task;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import rhogenwizard.OSValidator;
 
 public abstract class RhodesTask extends RakeTask 

@@ -9,4 +9,6 @@ public class MsgConstants
 	public static final String errInstallRhodes = "The Rhodes SDK do not installed";
 	
 	public static final String errNotFoundRhodesSdk = "Rhodes location is undefined. Please, open/create at least one Rhodes Application project";
+	
+	public static final String titleRhoelementsPage = "Rhoelements application generator wizard";
 }

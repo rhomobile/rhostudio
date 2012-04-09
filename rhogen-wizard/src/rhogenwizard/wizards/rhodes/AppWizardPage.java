@@ -273,7 +273,7 @@ public class AppWizardPage extends WizardPage
 		return m_exitsCreateButton.getSelection();
 	}
 	
-	BuildInfoHolder getBuildInformation()
+	public BuildInfoHolder getBuildInformation()
 	{
 		BuildInfoHolder newInfo  = new BuildInfoHolder();
 		
