@@ -25,6 +25,7 @@ import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
+import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
@@ -56,7 +57,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 	{
 		if (m_currentProject != null)
 		{
-			if (!RhodesProject.checkNature(m_currentProject) && !RhodesProject.checkNature(m_currentProject))
+			if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
 			{
 				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhodes application");
 				addPage(zeroPage);
