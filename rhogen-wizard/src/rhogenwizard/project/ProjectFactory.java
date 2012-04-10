@@ -94,9 +94,9 @@ public class ProjectFactory implements IProjectFactory
     	{
     		return new RhoconnectProject(project);
     	}
-    	else if (projectTag.equals(RhoelementsProject.class))
+    	else if (projectTag.equals(RhodesProject.class))
     	{
-    		return new RhoelementsProject(project);
+    		return new RhodesProject(project);
     	}
     	
     	throw new BadProjectTagException(projectTag);
@@ -167,9 +167,9 @@ public class ProjectFactory implements IProjectFactory
 		{
 			return createRhomobileProject(RhoconnectProject.class, project);
 		}
-    	else if (RhoelementsProject.checkNature(project))
+    	else if (RhodesProject.checkNature(project))
     	{
-    		return createRhomobileProject(RhoelementsProject.class, project);
+    		return createRhomobileProject(RhodesProject.class, project);
     	}
 
 		throw new BadProjectTagException(IProject.class);

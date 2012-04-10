@@ -13,7 +13,7 @@ import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
-import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
+import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
@@ -45,7 +45,7 @@ public class RhoTaskHolder
 		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
 		m_holdTasks.put(GenerateRhodesSpecTask.class, new GenerateRhodesSpecTask());
 		m_holdTasks.put(GenerateRhodesExtensionTask.class, new GenerateRhodesExtensionTask());
-		m_holdTasks.put(GenerateRhoelementsAppTask.class, new GenerateRhoelementsAppTask());
+		m_holdTasks.put(GenerateRhodesAppTask.class, new GenerateRhodesAppTask());
 	}
 	
 	public static RhoTaskHolder getInstance()
