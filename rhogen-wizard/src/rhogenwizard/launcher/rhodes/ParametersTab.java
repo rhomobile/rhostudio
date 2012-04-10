@@ -39,6 +39,7 @@ import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.launcher.SpecFileHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
+import rhogenwizard.project.RhoelementsProject;
 
 public class ParametersTab extends  JavaLaunchTab 
 {
@@ -402,7 +403,7 @@ public class ParametersTab extends  JavaLaunchTab
 				
 				for (IProject project : allProjects)
 				{
-					if (RhodesProject.checkNature(project))
+					if (RhodesProject.checkNature(project) || RhoelementsProject.checkNature(project))
 					{
 						m_selProject = project;	
 					}
@@ -692,7 +693,7 @@ public class ParametersTab extends  JavaLaunchTab
 				selProjectName        = selProjectName.replaceAll("/", "");
 				IProject selProject   = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
 				
-				if (!RhodesProject.checkNature(selProject))
+				if (!RhodesProject.checkNature(selProject) || !RhoelementsProject.checkNature(selProject))
 				{
 					MessageDialog.openError(getShell(), "Message", "Project " + selProject.getName() + " is not rhodes application");
 					return;
