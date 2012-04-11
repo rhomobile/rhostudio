@@ -163,7 +163,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 				if (mode.equals(ILaunchManager.DEBUG_MODE))
 				{
 					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-					job.run(monitor);
+					job.schedule();
 					
 					target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhosync);
 				}
