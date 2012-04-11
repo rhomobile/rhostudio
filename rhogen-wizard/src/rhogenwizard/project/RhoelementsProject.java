@@ -12,7 +12,6 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.YmlFile;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.project.nature.RhodesNature;
 import rhogenwizard.project.nature.RhoelementsNature;
 
 public class RhoelementsProject extends RhomobileProject 
