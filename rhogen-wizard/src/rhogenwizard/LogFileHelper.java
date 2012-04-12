@@ -17,7 +17,7 @@ class AppLogAdapter implements ILogDevice
 	private static final int maxShowLines = 2*10*1000;
 	
 	private int                  m_currShowLines = 0;
-	private MessageConsoleStream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
+	private ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
 
 	@Override
 	public void log(String str) 

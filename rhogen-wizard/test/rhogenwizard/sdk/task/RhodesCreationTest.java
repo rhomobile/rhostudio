@@ -7,9 +7,12 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
@@ -26,6 +29,17 @@ public class RhodesCreationTest extends TestCase
     private boolean checkCreateRhodesFile(String path)
     {
         return OSHelper.concat(path, "build.yml").isFile();
+    }
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception
+    {
+        ConsoleHelper.disableConsoles();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception
+    {
     }
 
     @Before

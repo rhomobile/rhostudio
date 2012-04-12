@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
@@ -23,6 +26,17 @@ public class RhoconnectCreationTest extends TestCase
     private boolean checkCreateRhoconnectFile(String path)
     {
         return OSHelper.concat(path, "config.ru").isFile();
+    }
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception
+    {
+        ConsoleHelper.disableConsoles();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception
+    {
     }
 
     @Before
