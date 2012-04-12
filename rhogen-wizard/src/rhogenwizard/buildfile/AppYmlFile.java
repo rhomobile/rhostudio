@@ -159,4 +159,24 @@ public final class AppYmlFile extends YmlFile
 	{
 		remove("android", "emulator");
 	}
+
+	public boolean isRhoelements()
+	{
+		String appType = super.getString("app_type");
+		
+		if (appType == null)
+			return false;
+			
+		return appType.equals("rhoelements");
+	}
+
+	public void enableRhoelementsFlag()
+	{
+		super.set("app_type", "rhoelements");
+	}
+	
+	public void disableRhoelementsFlag()
+	{
+		super.set("app_type", "rhodes");
+	}
 }

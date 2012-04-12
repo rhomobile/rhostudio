@@ -149,7 +149,7 @@ public class AppWizard extends Wizard implements INewWizard
 			newProject.refreshProject();
 						
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
-			job.run(monitor);
+			job.schedule();
 			
 			monitor.worked(1);
 		} 

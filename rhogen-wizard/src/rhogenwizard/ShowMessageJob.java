@@ -33,6 +33,6 @@ public class ShowMessageJob extends UIJob
 		messageBox.setMessage(m_msgText);
 		messageBox.open();	
 		
-		return new Status(BUILD, Activator.PLUGIN_ID, "show message");
+		return Status.OK_STATUS;
 	}
 }

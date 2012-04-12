@@ -35,6 +35,6 @@ public class ShowPerspectiveJob extends UIJob
 			}
 		}
 		
-		return new Status(BUILD, Activator.PLUGIN_ID, "chnage perspective");
+		return Status.OK_STATUS;
 	}
 }

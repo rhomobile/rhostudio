@@ -163,7 +163,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 				m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 	
 				ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
-				job.run(monitor);
+				job.schedule();
 			}
 			
 			monitor.worked(1);

@@ -1,5 +1,6 @@
 package rhogenwizard.launcher.rhodes;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,6 +28,7 @@ import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
+import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
@@ -42,7 +44,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
-	private String            m_projectName = null;
+	protected String            m_projectName = null;
 	private String            m_runType     = null;
 	private String            m_platformType = null;
 	private boolean           m_isClean = false;
@@ -141,7 +143,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		return TaskResultConverter.getResultLaunchObj(results);
 	}
 	
-	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
+	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
 		m_projectName  = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
 		m_platformType = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
@@ -165,13 +167,32 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			RhoTaskHolder.getInstance().runTask(CleanPlatformTask.class, params);
 		}
 	}
-			
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
-	 */
+
 	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
-	{		
+	{
+		setupConfigAttributes(configuration);
+		
+		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
+		
+		try 
+		{
+			AppYmlFile ymlFile = AppYmlFile.createFromProject(project);			
+			ymlFile.disableRhoelementsFlag();
+			ymlFile.save();
+		}
+		catch (FileNotFoundException e) 
+		{
+			//TODO - add error messages
+			e.printStackTrace();
+		}
+		
+		launchProject(configuration, mode, launch, monitor);
+	}
+
+	@SuppressWarnings("deprecation")
+	public synchronized void launchProject(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
+	{
 		try
 		{
 			RhogenDebugTarget target = null;
@@ -209,7 +230,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 			{
 				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-				job.run(monitor);
+				job.schedule();
 				
 				try 
 				{
