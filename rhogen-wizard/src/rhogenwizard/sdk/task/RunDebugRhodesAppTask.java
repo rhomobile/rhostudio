@@ -75,9 +75,9 @@ public class RunDebugRhodesAppTask extends RhodesTask
 			Integer resCode = null;
 			
 			if (debugProcess == null)
-				resCode = new Integer(0);
-			else 
 				resCode = new Integer(1);
+			else 
+				resCode = new Integer(0);
 			
 			m_taskResult.put(resTag, resCode);
 			m_taskResult.put(resProcess, debugProcess);		
