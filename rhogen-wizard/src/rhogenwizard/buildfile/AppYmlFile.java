@@ -67,6 +67,9 @@ public final class AppYmlFile extends YmlFile
 			sdkPath = RunExeHelper.getSdkInfo();
 		}
 		
+		if (sdkPath == null)
+			sdkPath = new String();
+		
 		return sdkPath; 
 	}
 	
