@@ -47,7 +47,7 @@
             class="rhogenwizard.wizards.rhoelements.AppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhoelementsWizard"
-            name="Rhoelements application"
+            name="RhoElements application"
             project="true"> 
       </wizard>
             
@@ -65,7 +65,7 @@
             class="rhogenwizard.wizards.rhoconnect.AppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenSyncAppWizard"
-            name="Rhoconnect application"
+            name="RhoConnect application"
             project="true"> 
       </wizard>
             
@@ -91,7 +91,7 @@
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.SourceAdapterWizard"
-            name="Rhoconnect Source Adapter"> 
+            name="RhoConnect source adapter"> 
       </wizard>
    </extension>
    
@@ -133,7 +133,7 @@
    
    <extension point="org.eclipse.core.resources.builders"
                id="rhoconnectBuilder"
-               name="Rhoconnect Project Builder">
+               name="RhoConnect Project Builder">
       <builder
             hasNature="true"
             isConfigurable="false">
@@ -145,7 +145,7 @@
 
    <extension point="org.eclipse.core.resources.builders"
                id="rhoelementsBuilder"
-               name="Rhoelements Project Builder">
+               name="RhoElements Project Builder">
       <builder
             hasNature="true"
             isConfigurable="false">
@@ -171,7 +171,7 @@
  
     <extension point="org.eclipse.core.resources.natures"
               id="rhoconnectNature"
-              name="Rhoconnect Project Nature">
+              name="RhoConnect Project Nature">
       <runtime>
          <run
                class="rhogenwizard.project.nature.RhoconnectNature">
@@ -184,7 +184,7 @@
     
     <extension point="org.eclipse.core.resources.natures"
               id="rhoelementsNature"
-              name="Rhoelements Project Nature">
+              name="RhoElements Project Nature">
       <runtime>
          <run
                class="rhogenwizard.project.nature.RhoelementsNature">
@@ -263,7 +263,7 @@
            delegate="rhogenwizard.launcher.spec.LaunchDelegate"
            id="rhogenwizard.launcher.rhodesSpec"
            modes="run, debug"
-           name="Rhodes application Test"
+           name="RhoMobile application Test"
            public="true"
            sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
@@ -275,7 +275,7 @@
            delegate="rhogenwizard.launcher.rhoconnect.LaunchDelegate"
            id="rhogenwizard.launcher.rhosyncApp"
            modes="run, debug"
-           name="Rhoconnect Application"
+           name="RhoConnect Application"
            public="true"
            sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
