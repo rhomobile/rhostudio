@@ -180,45 +180,55 @@ public class RunDebugRhodesAppTaskTest
         Set<Integer> before1 = getProcessesIds(signature1);
         Set<Integer> before2 = getProcessesIds(signature2);
 
-        // create application
+        try
         {
-            Map<String, Object> params = new HashMap<String, Object>();
+            // create application
+            {
+                Map<String, Object> params = new HashMap<String, Object>();
 
-            params.put(GenerateRhodesAppTask.appName, appName);
-            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
+                params.put(GenerateRhodesAppTask.appName, appName);
+                params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
 
-            Map<String, ?> results =
+                Map<String, ?> results =
                     RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 
-            assertEquals(0, TaskResultConverter.getResultIntCode(results));
-        }
+                assertEquals(0, TaskResultConverter.getResultIntCode(results));
+            }
 
-        // write new application.rb
-        {
-            String text[] =
+            // write new application.rb
             {
-                /* 01 */"require 'rho/rhoapplication'",
-                /* 02 */"class AppApplication < Rho::RhoApplication",
-                /* 03 */"  def initialize",
-                /* 04 */"    super",
-                /* 05 */"    x = 0",
-                /* 06 */"    x = x + 1",
-                /* 07 */"  end",
-                /* 08 */"end",
-                /* 09 */""
-            };
-            String appRb = OSHelper.concat(projectLocation, "app", "application.rb").getPath();
-            writeTextFile(appRb, join("\n", text));
-        }
+                String text[] =
+                {
+                    /* 01 */"require 'rho/rhoapplication'",
+                    /* 02 */"class AppApplication < Rho::RhoApplication",
+                    /* 03 */"  def initialize",
+                    /* 04 */"    super",
+                    /* 05 */"    x = 0",
+                    /* 06 */"    x = x + 1",
+                    /* 07 */"    $y = 11",
+                    /* 08 */"    m",
+                    /* 09 */"    $y = $y + 22",
+                    /* 10 */"  end",
+                    /* 11 */"  def m",
+                    /* 12 */"    z = 0",
+                    /* 13 */"    zz = 0",
+                    /* 14 */"  end",
+                    /* 15 */"end",
+                    /* 16 */""
+                };
+                String appRb =
+                    OSHelper.concat(projectLocation, "app", "application.rb").getPath();
+                writeTextFile(appRb, join("\n", text));
+            }
 
-        // start debug server
-        DebugCallback debugCallback = new DebugCallback(m_eventQueue, m_semaphore);
-        final DebugServer debugServer = new DebugServer(debugCallback);
-        final Throwable[] exception = new Throwable[1];
-        Thread debugServerThread = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
+            // start debug server
+            DebugCallback debugCallback = new DebugCallback(m_eventQueue, m_semaphore);
+            final DebugServer debugServer = new DebugServer(debugCallback);
+            final Throwable[] exception = new Throwable[1];
+            Thread debugServerThread = new Thread(new Runnable()
+            {
+                @Override
+                public void run()
             {
                 try
                 {
@@ -229,81 +239,134 @@ public class RunDebugRhodesAppTaskTest
                     exception[0] = t;
                 }
             }
-        });
-        debugServerThread.start();
+            });
+            debugServerThread.start();
 
-        // run debug Rhodes application [android] [rhosimulator]
-        {
-            Map<String, Object> params = new HashMap<String, Object>();
+            // run debug Rhodes application [android] [rhosimulator]
+            {
+                Map<String, Object> params = new HashMap<String, Object>();
 
-            ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
+                ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
 
-            params.put(RunDebugRhodesAppTask.workDir, projectLocation);
-            params.put(RunDebugRhodesAppTask.appName, appName);
-            params.put(RunDebugRhodesAppTask.platformType, PlatformType.eAndroid);
-            params.put(RunDebugRhodesAppTask.reloadCode, false);
-            params.put(RunDebugRhodesAppTask.launchObj, launch);
-            params.put(RunDebugRhodesAppTask.traceFlag, false);
+                params.put(RunDebugRhodesAppTask.workDir, projectLocation);
+                params.put(RunDebugRhodesAppTask.appName, appName);
+                params.put(RunDebugRhodesAppTask.platformType, PlatformType.eAndroid);
+                params.put(RunDebugRhodesAppTask.reloadCode, false);
+                params.put(RunDebugRhodesAppTask.launchObj, launch);
+                params.put(RunDebugRhodesAppTask.traceFlag, false);
 
-            Map<String, ?> results =
+                Map<String, ?> results =
                     RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.class, params);
-            assertEquals(TaskResultConverter.okCode,
+                assertEquals(TaskResultConverter.okCode,
                     TaskResultConverter.getResultIntCode(results));
+            }
+
+            suspend("connected");
+
+            debugServer.debugBreakpoint("application.rb", 5);
+            debugServer.debugBreakpoint("application.rb", 6);
+            debugServer.debugRemoveBreakpoint("application.rb", 5);
+
+            pass(
+                "unknown [HOST=127.0.0.1]",
+                "unknown [PORT=9000]",
+                "unknown [DEBUG PATH=/private" + projectLocation + "/app/]",
+                "stopped [breakpoint] [application.rb] [6] [AppApplication] [initialize]");
+
+            debugServer.debugEvaluate("x");
+
+            pass("evaluation [true] [x] [0]");
+
+            debugServer.debugBreakpoint("application.rb", 7);
+            debugServer.debugResume();
+
+            pass(
+                "resumed",
+                "stopped [breakpoint] [application.rb] [7] [AppApplication] [initialize]");
+
+            debugServer.debugEvaluate("x");
+
+            pass("evaluation [true] [x] [1]");
+
+            debugServer.debugStepOver();
+
+            pass(
+                "unknown [STEPOVER start]",
+                "resumed",
+                "stopped [stopped (over)] [application.rb] [8] [AppApplication] [initialize]");
+
+            debugServer.debugEvaluate("$y");
+
+            pass("evaluation [true] [$y] [11]");
+
+            debugServer.debugBreakpoint("application.rb", 12);
+            debugServer.debugResume();
+
+            pass(
+                "resumed",
+                "stopped [breakpoint] [application.rb] [12] [AppApplication] [m]");
+
+            debugServer.debugBreakpoint("application.rb", 13);
+            debugServer.debugRemoveAllBreakpoints();
+            debugServer.debugStepReturn();
+
+            pass(
+                "resumed",
+                "stopped [stopped (return)] [application.rb] [9] [AppApplication] [initialize]");
+
+            debugServer.debugEvaluate("(1+2");
+
+            pass("evaluation [false] [(1+2] [\"/private" + projectLocation
+                + "/app/application.rb:9: syntax error, unexpected $end, expecting ')'\"]");
+
+            debugServer.debugEvaluate("\"\\\\n\"");
+
+            pass("evaluation [true] [\"\\\\n\"] [\"\\\\n\"]");
+
+            debugServer.debugEvaluate("$y\n2+2 # comment");
+
+            pass("evaluation [true] [$y\n2+2 # comment] [4]");
+
+            debugServer.debugTerminate();
+
+            pass("exited");
+
+            debugServer.shutdown();
+
+            resume();
+
+            debugServerThread.join();
+            if (exception[0] != null)
+            {
+                throw exception[0];
+            }
+
         }
-
-        suspend("connected");
-        debugServer.debugBreakpoint("application.rb", 6);
-        resume();
-
-        pass("unknown [HOST=127.0.0.1]");
-        pass("unknown [PORT=9000]");
-        pass("unknown [DEBUG PATH=/private" + projectLocation + "/app/]");
-
-        suspend("stopped [breakpoint] [application.rb] [6] [AppApplication] [initialize]");
-        debugServer.debugEvaluate("x");
-        resume();
-
-        suspend("evaluation [true] [x] [0]");
-        debugServer.debugTerminate();
-        resume();
-
-        suspend("exited");
-        debugServer.shutdown();
-        resume();
-
-        debugServerThread.join();
-        if (exception[0] != null)
+        finally
         {
-            throw exception[0];
-        }
 
-        Set<Integer> after1 = getProcessesIds(signature1);
-        Set<Integer> after2 = getProcessesIds(signature2);
+            Set<Integer> after1 = getProcessesIds(signature1);
+            Set<Integer> after2 = getProcessesIds(signature2);
 
-        Set<Integer> diff1 = new HashSet<Integer>(after1);
-        diff1.removeAll(before1);
+            Set<Integer> diff1 = new HashSet<Integer>(after1);
+            diff1.removeAll(before1);
+            for (int pid : diff1)
+            {
+                OSHelper.killProcess(pid);
+            }
 
-        assertEquals(1, diff1.size());
-
-        for (int pid : diff1)
-        {
-            OSHelper.killProcess(pid);
-        }
-
-        Set<Integer> diff2 = new HashSet<Integer>(after2);
-        diff2.removeAll(before2);
-
-        assertEquals(1, diff2.size());
-
-        for (int pid : diff2)
-        {
-            OSHelper.killProcess(pid);
+            Set<Integer> diff2 = new HashSet<Integer>(after2);
+            diff2.removeAll(before2);
+            for (int pid : diff2)
+            {
+                OSHelper.killProcess(pid);
+            }
         }
     }
 
     private void suspend(String s) throws InterruptedException
     {
-        String event = m_eventQueue.poll(1, TimeUnit.MINUTES);
+        String event = m_eventQueue.poll(10, TimeUnit.SECONDS);
         if (event == null)
         {
             fail("timeout for \"" + s + "\"");
@@ -313,13 +376,17 @@ public class RunDebugRhodesAppTaskTest
 
     private void resume()
     {
+        assertEquals(0, m_semaphore.availablePermits());
         m_semaphore.release();
     }
 
-    private void pass(String s) throws InterruptedException
+    private void pass(String... events) throws InterruptedException
     {
-        suspend(s);
-        resume();
+        for (String event : events)
+        {
+            resume();
+            suspend(event);
+        }
     }
 
     private static String join(String delimiter, String... text)
