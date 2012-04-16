@@ -186,30 +186,6 @@ public class RunReleaseRhodesAppTaskTest
                 OSHelper.killProcess(pid);
             }
         }
-
-        // // run release Rhodes application
-        // {
-        // Map<String, Object> params = new HashMap<String, Object>();
-        //
-        // for (PlatformType platformType : PlatformType.values())
-        // {
-        // for (RunType runType : RunType.values())
-        // {
-        // params.put(RunReleaseRhodesAppTask.workDir, projectLocation);
-        // params.put(RunReleaseRhodesAppTask.platformType, platformType);
-        // params.put(RunReleaseRhodesAppTask.runType, runType);
-        // params.put(RunReleaseRhodesAppTask.reloadCode, false);
-        // params.put(RunReleaseRhodesAppTask.traceFlag, false);
-        //
-        // Map<String, ?> results =
-        // RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class,
-        // params);
-        // System.out.println("running [" + platformType + "] [" + runType +
-        // "] "
-        // + TaskResultConverter.getResultIntCode(results));
-        // }
-        // }
-        // }
     }
 
     private static String getProcessesListing() throws Exception
