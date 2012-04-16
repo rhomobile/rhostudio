@@ -340,11 +340,9 @@ public class RunDebugRhodesAppTaskTest
             {
                 throw exception[0];
             }
-
         }
         finally
         {
-
             Set<Integer> after1 = getProcessesIds(signature1);
             Set<Integer> after2 = getProcessesIds(signature2);
 
@@ -447,12 +445,6 @@ public class RunDebugRhodesAppTaskTest
 
     private static String getProcessesListing() throws Exception
     {
-        // TODO: add Windows and Linux processing
-        if (!OSValidator.isMac())
-        {
-            return "";
-        }
-
         List<String> cmdLine = Arrays.asList("ps", "ax");
 
         SysCommandExecutor executor = new SysCommandExecutor();

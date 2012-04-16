@@ -190,12 +190,6 @@ public class RunReleaseRhodesAppTaskTest
 
     private static String getProcessesListing() throws Exception
     {
-        // TODO: add Windows and Linux processing
-        if (!OSValidator.isMac())
-        {
-            return "";
-        }
-
         List<String> cmdLine = Arrays.asList("ps", "ax");
 
         SysCommandExecutor executor = new SysCommandExecutor();
