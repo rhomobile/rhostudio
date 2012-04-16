@@ -12,5 +12,6 @@ public class MsgConstants
 	
 	public static final String titleRhoelementsPage = "Rhoelements application generator wizard";
 	
-	public static final String rhoelementsWarrningLicense = "Before run the application as Rhoelements application see and agree Rhoelements licence (http://edgedocs.rhomobile.com/rhoelements/moto-api-beta4#licensing)";
+	public static final String rhoelementsWarrningLicense = "Before run the application as Rhoelements application see and agree Rhoelements " +
+			"licence (http://edgedocs.rhomobile.com/rhoelements/moto-api-beta4#licensing). If you press OK button application type in build.yml will be changed to rhoelements";
 }
