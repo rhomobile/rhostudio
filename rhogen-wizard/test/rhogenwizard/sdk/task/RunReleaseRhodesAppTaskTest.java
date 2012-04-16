@@ -97,7 +97,7 @@ public class RunReleaseRhodesAppTaskTest
             params.put(RunReleaseRhodesAppTask.reloadCode, false);
             params.put(RunReleaseRhodesAppTask.traceFlag, false);
 
-            String signature = "-e logcat >> \"/private" + projectLocation + "/rholog.txt\""; 
+            String signature = "-e logcat >> \"/private" + projectLocation + "/rholog.txt\"";
 
             Set<Integer> before = getProcessesIds(signature);
 
@@ -128,7 +128,7 @@ public class RunReleaseRhodesAppTaskTest
             params.put(RunReleaseRhodesAppTask.reloadCode, false);
             params.put(RunReleaseRhodesAppTask.traceFlag, false);
 
-            String signature = "-e logcat >> \"/private" + projectLocation + "/rholog.txt\""; 
+            String signature = "-e logcat >> \"/private" + projectLocation + "/rholog.txt\"";
 
             Set<Integer> before = getProcessesIds(signature);
 
@@ -171,14 +171,15 @@ public class RunReleaseRhodesAppTaskTest
 
             Map<String, ?> results =
                     RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
-            assertEquals(0, TaskResultConverter.getResultIntCode(results));
+            assertEquals(
+                "for " + platformType, 0, TaskResultConverter.getResultIntCode(results));
 
             Set<Integer> after = getProcessesIds(signature);
 
             Set<Integer> diff = new HashSet<Integer>(after);
             diff.removeAll(before);
 
-            assertEquals(1, diff.size());
+            assertEquals("for " + platformType, 1, diff.size());
 
             for (int pid : diff)
             {
@@ -186,28 +187,29 @@ public class RunReleaseRhodesAppTaskTest
             }
         }
 
-//        // run release Rhodes application
-//        {
-//            Map<String, Object> params = new HashMap<String, Object>();
-//
-//            for (PlatformType platformType : PlatformType.values())
-//            {
-//                for (RunType runType : RunType.values())
-//                {
-//                    params.put(RunReleaseRhodesAppTask.workDir, projectLocation);
-//                    params.put(RunReleaseRhodesAppTask.platformType, platformType);
-//                    params.put(RunReleaseRhodesAppTask.runType, runType);
-//                    params.put(RunReleaseRhodesAppTask.reloadCode, false);
-//                    params.put(RunReleaseRhodesAppTask.traceFlag, false);
-//
-//                    Map<String, ?> results =
-//                            RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class,
-//                                    params);
-//                    System.out.println("running [" + platformType + "] [" + runType + "] "
-//                            + TaskResultConverter.getResultIntCode(results));
-//                }
-//            }
-//        }
+        // // run release Rhodes application
+        // {
+        // Map<String, Object> params = new HashMap<String, Object>();
+        //
+        // for (PlatformType platformType : PlatformType.values())
+        // {
+        // for (RunType runType : RunType.values())
+        // {
+        // params.put(RunReleaseRhodesAppTask.workDir, projectLocation);
+        // params.put(RunReleaseRhodesAppTask.platformType, platformType);
+        // params.put(RunReleaseRhodesAppTask.runType, runType);
+        // params.put(RunReleaseRhodesAppTask.reloadCode, false);
+        // params.put(RunReleaseRhodesAppTask.traceFlag, false);
+        //
+        // Map<String, ?> results =
+        // RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class,
+        // params);
+        // System.out.println("running [" + platformType + "] [" + runType +
+        // "] "
+        // + TaskResultConverter.getResultIntCode(results));
+        // }
+        // }
+        // }
     }
 
     private static String getProcessesListing() throws Exception

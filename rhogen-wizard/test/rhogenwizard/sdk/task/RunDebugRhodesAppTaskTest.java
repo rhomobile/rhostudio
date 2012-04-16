@@ -173,6 +173,13 @@ public class RunDebugRhodesAppTaskTest
         String appName = "app";
         String projectLocation = OSHelper.concat(workspaceFolder, appName).getPath();
 
+        String signature1 = "RhoSimulator -approot=/private" + projectLocation;
+        String signature2 =
+            "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0";
+
+        Set<Integer> before1 = getProcessesIds(signature1);
+        Set<Integer> before2 = getProcessesIds(signature2);
+
         // create application
         {
             Map<String, Object> params = new HashMap<String, Object>();
@@ -268,6 +275,29 @@ public class RunDebugRhodesAppTaskTest
         if (exception[0] != null)
         {
             throw exception[0];
+        }
+
+        Set<Integer> after1 = getProcessesIds(signature1);
+        Set<Integer> after2 = getProcessesIds(signature2);
+
+        Set<Integer> diff1 = new HashSet<Integer>(after1);
+        diff1.removeAll(before1);
+
+        assertEquals(1, diff1.size());
+
+        for (int pid : diff1)
+        {
+            OSHelper.killProcess(pid);
+        }
+
+        Set<Integer> diff2 = new HashSet<Integer>(after2);
+        diff2.removeAll(before2);
+
+        assertEquals(1, diff2.size());
+
+        for (int pid : diff2)
+        {
+            OSHelper.killProcess(pid);
         }
     }
 
