@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="feature_export" name="build">
+    <target name="feature_export">
+        <pde.exportFeatures destination="${destination}" exportSource="false" exportType="directory" features="rhostudio_feature" useJARFormat="true"/>
+    </target>
+</project>
