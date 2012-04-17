@@ -11,6 +11,7 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
+import rhogenwizard.constants.MsgConstants;
 
 public class RhogenPreferenceAndroidPage extends BasePreferencePage 
 {
@@ -20,7 +21,7 @@ public class RhogenPreferenceAndroidPage extends BasePreferencePage
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Rhodes rhobuild.yml preferences");
+		setDescription(MsgConstants.preferencesPageTitle);
 	}
 	
 	@Override

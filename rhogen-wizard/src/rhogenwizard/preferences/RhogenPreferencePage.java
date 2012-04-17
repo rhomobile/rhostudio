@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.ui.IWorkbench;
 import rhogenwizard.Activator;
+import rhogenwizard.constants.MsgConstants;
 
 public class RhogenPreferencePage extends BasePreferencePage 
 {
@@ -14,7 +15,7 @@ public class RhogenPreferencePage extends BasePreferencePage
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Rhodes rhobuild.yml preferences");
+		setDescription(MsgConstants.preferencesPageTitle);
 	}
 	
 	@Override

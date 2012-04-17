@@ -8,6 +8,7 @@ import rhogenwizard.Activator;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.buildfile.YmlFile;
+import rhogenwizard.constants.MsgConstants;
 
 public class RhogenPreferencePageWm extends BasePreferencePage 
 {
@@ -17,7 +18,7 @@ public class RhogenPreferencePageWm extends BasePreferencePage
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Rhodes rhobuild.yml preferences");
+		setDescription(MsgConstants.preferencesPageTitle);
 	}
 	
 	@Override
