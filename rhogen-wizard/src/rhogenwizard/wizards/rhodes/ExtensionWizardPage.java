@@ -24,8 +24,8 @@ public class ExtensionWizardPage extends WizardPage
 	public ExtensionWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
-		setTitle("Model information");
-		setDescription("Model create");
+		setTitle("Native extension information");
+		setDescription("Native extension create");
 		this.m_selection = selection;
 	}
 

@@ -70,7 +70,7 @@ public class SpecWizard extends Wizard implements INewWizard
 		{
 			if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
 			{
-				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not Rhodes application");
+				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not RhoMobile application");
 				addPage(zeroPage);
 			}
 			else
@@ -81,7 +81,7 @@ public class SpecWizard extends Wizard implements INewWizard
 		}
 		else
 		{
-			ZeroPage zeroPage = new ZeroPage("Select Rhodes project for create spec");
+			ZeroPage zeroPage = new ZeroPage("Select RhoMobile project for create spec");
 			addPage(zeroPage);			
 		}
 	}
@@ -142,7 +142,7 @@ public class SpecWizard extends Wizard implements INewWizard
 				
 		if (TaskResultConverter.getResultIntCode(results) != 0)
 		{
-			throw new IOException("The Rhodes SDK do not installed");
+			throw new IOException("The RhoMobile SDK do not installed");
 		}	
 	}
 	
@@ -163,7 +163,7 @@ public class SpecWizard extends Wizard implements INewWizard
 			
 			if (CommonConstants.checkRhodesVersion)
 			{
-				monitor.setTaskName("Check Rhodes version...");
+				monitor.setTaskName("Check RhoMobile version...");
 				
 				try
 				{
@@ -174,7 +174,7 @@ public class SpecWizard extends Wizard implements INewWizard
 				}
 				catch (IOException e)
 				{
-					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version, need rhodes version equal or greater " 
+					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed RhoMobile have old version, need RhoMobile version equal or greater " 
 							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 					msgJob.run(monitor);
 					return;					
@@ -190,7 +190,7 @@ public class SpecWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes, need rhodes version equal or greater " 
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find RhoMobile, need RhoMobile version equal or greater " 
 					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 			msgJob.run(monitor);
 		}

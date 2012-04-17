@@ -150,7 +150,7 @@ public class ModelWizard extends Wizard implements INewWizard
 		{
 			if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
 			{
-				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not Rhodes application");
+				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not RhoMobile application");
 				addPage(zeroPage);
 			}
 			else
@@ -161,7 +161,7 @@ public class ModelWizard extends Wizard implements INewWizard
 		}
 		else
 		{
-			ZeroPage zeroPage = new ZeroPage("Select Rhodes project for create model");
+			ZeroPage zeroPage = new ZeroPage("Select RhoMobile project for create model");
 			addPage(zeroPage);			
 		}
 	}

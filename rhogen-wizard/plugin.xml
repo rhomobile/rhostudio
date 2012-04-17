@@ -67,7 +67,7 @@
             class="rhogenwizard.wizards.rhodes.ModelWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.ModelWizard"
-            name="Rhodes model"> 
+            name="RhoMobile model"> 
       </wizard>
       
       <wizard
@@ -75,7 +75,7 @@
             class="rhogenwizard.wizards.rhodes.ExtensionWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.ExtensionWizard"
-            name="Rhodes extension"> 
+            name="RhoMobile extension"> 
       </wizard>
       
       <wizard
@@ -83,7 +83,7 @@
             class="rhogenwizard.wizards.rhodes.SpecWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.SpecWizard"
-            name="Rhodes spec"> 
+            name="RhoMobile spec"> 
       </wizard>
       
       <wizard
@@ -264,7 +264,7 @@
            delegate="rhogenwizard.launcher.spec.LaunchDelegate"
            id="rhogenwizard.launcher.rhodesSpec"
            modes="run, debug"
-           name="RhoMobile application Test"
+           name="RhoMobile application test"
            public="true"
            sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        

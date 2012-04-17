@@ -59,7 +59,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		{
 			if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
 			{
-				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhodes application");
+				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not RhoMobile application");
 				addPage(zeroPage);
 			}
 			else
@@ -70,7 +70,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		}
 		else
 		{
-			ZeroPage zeroPage = new ZeroPage("Select rhodes project for create model");
+			ZeroPage zeroPage = new ZeroPage("Select RhoMobile project for create model");
 			addPage(zeroPage);			
 		}
 	}
@@ -173,7 +173,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 				}
 				catch (IOException e)
 				{
-					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version, need rhodes version equal or greater " 
+					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed RhoMobile have old version, need RhoMobile version equal or greater " 
 							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 					msgJob.run(monitor);
 					return;					
@@ -189,7 +189,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes, need rhodes version equal or greater " 
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find RhoMobile, need rhodes version equal or greater " 
 					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
 			msgJob.run(monitor);
 		}

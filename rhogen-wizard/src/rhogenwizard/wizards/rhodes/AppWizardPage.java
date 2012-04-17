@@ -31,7 +31,7 @@ import rhogenwizard.project.ProjectFactory;
 
 public class AppWizardPage extends WizardPage 
 {
-	private static final String projNameTemplate = "RhodesApplication";
+	private static final String projNameTemplate = "RhoMobileApplication";
 	private static final int labelWidht = 120;
 	private static final int textWidht = 300;
 	
@@ -52,7 +52,7 @@ public class AppWizardPage extends WizardPage
 	public AppWizardPage(ISelection selection) 
 	{
 		super("wizardPage");
-		setTitle("Rhodes application generator wizard");
+		setTitle("RhoMobile application generator wizard");
 		setDescription("Desc wizar");
 	}
 	
@@ -139,7 +139,7 @@ public class AppWizardPage extends WizardPage
 		
 		// 5 row
 		m_rhoelementsEnableButton = new Button(composite, SWT.CHECK);
-		m_rhoelementsEnableButton.setText("Enable RhoElements application type");
+		m_rhoelementsEnableButton.setText("RhoElements application type");
 		m_rhoelementsEnableButton.setSelection(false);
 		m_rhoelementsEnableButton.setLayoutData(checkBoxAligment);
 		m_rhoelementsEnableButton.addSelectionListener(new SelectionAdapter() 
@@ -292,9 +292,9 @@ public class AppWizardPage extends WizardPage
 	{
 		BuildInfoHolder newInfo  = new BuildInfoHolder();
 		
-		newInfo.appDir        = getAppFolder();
-		newInfo.appName       = getAppName();
-		newInfo.existCreate   = getExistCreate();
+		newInfo.appDir           = getAppFolder();
+		newInfo.appName          = getAppName();
+		newInfo.existCreate      = getExistCreate();
 		newInfo.isRhoelementsApp = m_rhoelementsEnableButton.getSelection();
 		
 		if (newInfo.existCreate) {
