@@ -24,6 +24,7 @@
                id="rhostudio.actions.productionBuildAction">
          </action>
          
+         <!-- move to wizards
          <action
                label="Generate spec"
                icon="icons/sample16.png"
@@ -32,6 +33,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.generateSpecAction">
          </action>
+         -->         
       </actionSet>
    </extension>
 
@@ -41,22 +43,13 @@
             id="RhogenAppWizard"
             name="RhoMobile">
       </category>
-            
-      <wizard
-            category="RhogenAppWizard"
-            class="rhogenwizard.wizards.rhoelements.AppWizard"
-            icon="icons/sample16.png"
-            id="rhogenwizard.wizards.RhoelementsWizard"
-            name="RhoElements application"
-            project="true"> 
-      </wizard>
-            
+                 
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.AppWizard"
             icon="icons/sample16.png"
             id="rhogenwizard.wizards.RhogenWizard"
-            name="Rhodes application"
+            name="RhoMobile application"
             project="true"> 
       </wizard>
 
@@ -87,6 +80,14 @@
       
       <wizard
             category="RhogenAppWizard"
+            class="rhogenwizard.wizards.rhodes.SpecWizard"
+            icon="icons/sample16.png"
+            id="rhogenwizard.wizards.SpecWizard"
+            name="Rhodes spec"> 
+      </wizard>
+      
+      <wizard
+            category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhoconnect.SourceAdapterWizard"
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/sample16.png"
@@ -103,7 +104,7 @@
             filenames="rhobuild"
             icon="icons/sample16.png"
             id="rhogenwizard.editors.RhodesEditor"
-            name="Rhodes Editor">
+            name="RhoMobile Yaml File Editor">
       </editor>
    </extension>
    
@@ -121,7 +122,7 @@
    <!-- ************************** builders **************************************** -->
    <extension point="org.eclipse.core.resources.builders"
                id="rhogenwizard.builder.RhogenBuilder"
-               name="Rhodes Project Builder">
+               name="RhoMobile Project Builder">
       <builder
             hasNature="true"
             isConfigurable="false">
@@ -363,6 +364,13 @@
              menuGroupId="asd"
              type="new"
              wizardId="rhogenwizard.wizards.ExtensionWizard">
+          <enablement></enablement>
+       </commonWizard>
+
+       <commonWizard
+             menuGroupId="asd"
+             type="new"
+             wizardId="rhogenwizard.wizards.SpecWizard">
           <enablement></enablement>
        </commonWizard>
        
