@@ -42,6 +42,7 @@ public class AppWizardPage extends WizardPage
 	private Button     m_defaultPathButton = null;
 	private Button     m_browseButton = null;
 	private Button     m_exitsCreateButton = null;
+	private Button     m_rhoelementsEnableButton = null;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -133,6 +134,20 @@ public class AppWizardPage extends WizardPage
 			public void widgetSelected(SelectionEvent e) 
 			{
 				handleBrowse();
+			}
+		});
+		
+		// 5 row
+		m_rhoelementsEnableButton = new Button(composite, SWT.CHECK);
+		m_rhoelementsEnableButton.setText("Enable RhoElements application type");
+		m_rhoelementsEnableButton.setSelection(false);
+		m_rhoelementsEnableButton.setLayoutData(checkBoxAligment);
+		m_rhoelementsEnableButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				setControlsForDefaultPath();
+				dialogChanged();
 			}
 		});
 	}
@@ -280,6 +295,7 @@ public class AppWizardPage extends WizardPage
 		newInfo.appDir        = getAppFolder();
 		newInfo.appName       = getAppName();
 		newInfo.existCreate   = getExistCreate();
+		newInfo.isRhoelementsApp = m_rhoelementsEnableButton.getSelection();
 		
 		if (newInfo.existCreate) {
 			newInfo.isInDefaultWs = false;

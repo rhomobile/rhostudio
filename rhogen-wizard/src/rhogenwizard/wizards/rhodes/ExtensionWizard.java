@@ -82,6 +82,9 @@ public class ExtensionWizard extends Wizard implements INewWizard
 	 */
 	public boolean performFinish() 
 	{
+		if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
+			return true;
+
 		final String extName = m_pageExp.getExtName();
 		
 		IRunnableWithProgress op = new IRunnableWithProgress() 

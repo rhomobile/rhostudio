@@ -16,6 +16,7 @@ public class BuildInfoHolder
 	public String  appDir  = null;
 	public boolean existCreate = false; 	
 	public boolean isInDefaultWs = false;
+	public boolean isRhoelementsApp = false;
 	
 	public String getProjectLocationFullPath()
 	{
