@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="plugin_export" name="build">
-	<target name="plugin_export">
+    <target name="plugin_export">
         <pde.exportPlugins destination="${destination}" exportSource="false" exportType="directory" plugins="com.rhomobile.rhostudio" useJARFormat="true"/>
-	</target>
+    </target>
 </project>
