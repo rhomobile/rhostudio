@@ -173,9 +173,12 @@ public class RunDebugRhodesAppTaskTest
         String appName = "app";
         String projectLocation = OSHelper.concat(workspaceFolder, appName).getPath();
 
-        String signature1 = "RhoSimulator -approot=/private" + projectLocation;
-        String signature2 =
-            "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0";
+        String signature1 = (OSValidator.isWindows())
+        		? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
+                : "RhoSimulator -approot=/private" + projectLocation;
+        String signature2 = (OSValidator.isWindows())
+            ? "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0"
+            : "cmd /c rhodes.bat app app";
 
         Set<Integer> before1 = getProcessesIds(signature1);
         Set<Integer> before2 = getProcessesIds(signature2);
@@ -270,7 +273,9 @@ public class RunDebugRhodesAppTaskTest
             pass(
                 "unknown [HOST=127.0.0.1]",
                 "unknown [PORT=9000]",
-                "unknown [DEBUG PATH=/private" + projectLocation + "/app/]",
+                "unknown [DEBUG PATH="
+                + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "app").getPath()))
+                + "/]",
                 "stopped [breakpoint] [application.rb] [6] [AppApplication] [initialize]");
 
             debugServer.debugEvaluate("x");
@@ -316,8 +321,9 @@ public class RunDebugRhodesAppTaskTest
 
             debugServer.debugEvaluate("(1+2");
 
-            pass("evaluation [false] [(1+2] [\"/private" + projectLocation
-                + "/app/application.rb:9: syntax error, unexpected $end, expecting ')'\"]");
+            pass("evaluation [false] [(1+2] [\""
+            + prependPrivate(unixSlashes(OSHelper.concat(projectLocation, "app", "application.rb").getPath()))
+            + ":9: syntax error, unexpected $end, expecting ')'\"]");
 
             debugServer.debugEvaluate("\"\\\\n\"");
 
@@ -475,5 +481,15 @@ public class RunDebugRhodesAppTaskTest
             ids.add(Integer.parseInt(matcher.group(1)));
         }
         return ids;
+    }
+    
+    private static String prependPrivate(String path)
+    {
+    	return ((OSValidator.isWindows()) ? "" : "/private") + path;    	
+    }
+    
+    private static String unixSlashes(String path)
+    {
+    	return path.replace('\\', '/');
     }
 }
