@@ -128,10 +128,12 @@ public class RunReleaseRhodesAppTaskTest
             params.put(RunReleaseRhodesAppTask.reloadCode, false);
             params.put(RunReleaseRhodesAppTask.traceFlag, false);
 
-            String signature = "-e logcat >> \""
-            + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "rholog.txt").getPath()))
-            + "\"";
-            
+            String signature =
+                "-e logcat >> \""
+                    + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "rholog.txt")
+                        .getPath()))
+                    + "\"";
+
             Set<Integer> before = getProcessesIds(signature);
 
             Map<String, ?> results =
@@ -168,7 +170,7 @@ public class RunReleaseRhodesAppTaskTest
             params.put(RunReleaseRhodesAppTask.traceFlag, false);
 
             String signature = (OSValidator.isWindows())
-            		? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
+                    ? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
                     : "RhoSimulator -approot=/private" + projectLocation;
 
             Set<Integer> before = getProcessesIds(signature);
@@ -195,8 +197,8 @@ public class RunReleaseRhodesAppTaskTest
     private static String getProcessesListing() throws Exception
     {
         String cl = (OSValidator.isWindows())
-		? "wmic path win32_process get Commandline,Processid" 
-		: "ps ax";
+            ? "wmic path win32_process get Commandline,Processid"
+            : "ps ax";
         List<String> cmdLine = Arrays.asList(cl.split(" "));
 
         SysCommandExecutor executor = new SysCommandExecutor();
@@ -208,9 +210,9 @@ public class RunReleaseRhodesAppTaskTest
     }
 
     private static Set<Integer> getProcessesIds(String signature) throws Exception
-    {	
+    {
         Pattern pattern =
-        		Pattern.compile((OSValidator.isWindows()) ? "^.* (\\d+) *$" : "^ *(\\d+).*$");
+                Pattern.compile((OSValidator.isWindows()) ? "^.* (\\d+) *$" : "^ *(\\d+).*$");
 
         String listing = getProcessesListing();
         Set<Integer> ids = new HashSet<Integer>();
@@ -229,14 +231,14 @@ public class RunReleaseRhodesAppTaskTest
         }
         return ids;
     }
-    
+
     private static String prependPrivate(String path)
     {
-    	return ((OSValidator.isWindows()) ? "" : "/private") + path;    	
+        return ((OSValidator.isWindows()) ? "" : "/private") + path;
     }
-    
+
     private static String unixSlashes(String path)
     {
-    	return path.replace('\\', '/');
+        return path.replace('\\', '/');
     }
 }
