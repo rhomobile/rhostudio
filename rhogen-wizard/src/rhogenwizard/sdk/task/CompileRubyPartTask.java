@@ -6,8 +6,6 @@ import java.util.List;
 import javax.naming.directory.InvalidAttributesException;
 
 import rhogenwizard.ILogDevice;
-import rhogenwizard.OSValidator;
-import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 class OutputAdapter implements ILogDevice
@@ -37,10 +35,19 @@ public class CompileRubyPartTask extends RakeTask
 	public static final String platformType = "platform-type"; // wm, wp, iphone, etc
 	public static final String outStrings   = "cmd-output";
 	
+    private static ILogDevice nullLogDevice = new ILogDevice()
+    {
+        @Override
+        public void log(String str)
+        {
+        }
+    };
+	
 	private OutputAdapter m_outputHolder = new OutputAdapter();
 	
 	public CompileRubyPartTask()
 	{
+		m_executor.setOutputLogDevice(nullLogDevice);	 
 		m_executor.setErrorLogDevice(m_outputHolder);	 
 	}
 	
