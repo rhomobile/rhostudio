@@ -1,40 +1,23 @@
 package rhogenwizard.sdk.task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import javax.naming.directory.InvalidAttributesException;
 
 import rhogenwizard.ILogDevice;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
-class OutputAdapter implements ILogDevice
+public class CompileRubyPartTask extends RakeTask
 {
-	private List<String> m_outputStrings = new ArrayList<String>();
-	
-	@Override
-	public void log(String str) 
-	{
-		m_outputStrings.add(str);
-		str = null;
-	}	
-	
-	List<String> getOutput()
-	{
-		return m_outputStrings;
-	}
-	
-	public void cleanOutput()
-	{
-		m_outputStrings.clear();
-	}
-}
+    private class OutputAdapter implements ILogDevice
+    {
+        @Override
+        public void log(String str)
+        {
+            m_outputStrings.add(str);
+        }
+    }
 
-public class CompileRubyPartTask extends RakeTask  
-{
-	public static final String platformType = "platform-type"; // wm, wp, iphone, etc
-	public static final String outStrings   = "cmd-output";
-	
     private static ILogDevice nullLogDevice = new ILogDevice()
     {
         @Override
@@ -42,46 +25,41 @@ public class CompileRubyPartTask extends RakeTask
         {
         }
     };
-	
-	private OutputAdapter m_outputHolder = new OutputAdapter();
-	
-	public CompileRubyPartTask()
-	{
-		m_executor.setOutputLogDevice(nullLogDevice);	 
-		m_executor.setErrorLogDevice(m_outputHolder);	 
-	}
-	
-	@Override
-	public void run() 
-	{
-		try
-		{
-			if (m_taskParams == null || m_taskParams.size() == 0)
-				throw new InvalidAttributesException("parameters data is invalid [CompileRubyPartTask]");		
-	
-			m_outputHolder.cleanOutput();
-			
-			String workDir = (String) m_taskParams.get(IRunTask.workDir);
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append("build:bundle:rhostudio");
-			
-			List<String> cmdLine = new ArrayList<String>();
-			cmdLine.add(m_rakeExe);
-			cmdLine.add(sb.toString());
-				
-			m_executor.setWorkingDirectory(workDir);
-			
-			int res = m_executor.runCommand(cmdLine);
-			
-			Integer resCode = new Integer(res);  
-			m_taskResult.put(resTag, resCode);
-			m_taskResult.put(outStrings, m_outputHolder.getOutput());			
-		}
-		catch (Exception e) 
-		{
-			Integer resCode = new Integer(TaskResultConverter.failCode);  
-			m_taskResult.put(resTag, resCode);	
-		}
-	}
+
+    public static final String outStrings = "cmd-output";
+
+    public final List<String> m_outputStrings;
+    private final OutputAdapter m_outputHolder;
+
+    public CompileRubyPartTask()
+    {
+        m_outputStrings = new ArrayList<String>();
+        m_outputHolder = new OutputAdapter();
+        m_executor.setOutputLogDevice(nullLogDevice);
+        m_executor.setErrorLogDevice(m_outputHolder);
+    }
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            m_outputStrings.clear();
+
+            String workDir = (String) m_taskParams.get(IRunTask.workDir);
+
+            m_executor.setWorkingDirectory(workDir);
+
+            List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");
+
+            int res = m_executor.runCommand(cmdLine);
+
+            m_taskResult.put(resTag, res);
+            m_taskResult.put(outStrings, m_outputStrings);
+        }
+        catch (Exception e)
+        {
+            m_taskResult.put(resTag, TaskResultConverter.failCode);
+        }
+    }
 }
