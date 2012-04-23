@@ -173,13 +173,13 @@ public class RunDebugRhodesAppTaskTest
         String appName = "app";
         String projectLocation = OSHelper.concat(workspaceFolder, appName).getPath();
 
-        String signature1 = (OSValidator.isWindows())
+        String signature1 = OSValidator.isWindows()
                 ? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
                 : "RhoSimulator -approot=/private" + projectLocation;
         String signature2 =
-            (OSValidator.isWindows())
-                ? "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0"
-                : "cmd /c rhodes.bat app app";
+            OSValidator.isWindows()
+                ? "cmd /c rhodes.bat app app"
+                : "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0";
 
         Set<Integer> before1 = getProcessesIds(signature1);
         Set<Integer> before2 = getProcessesIds(signature2);
