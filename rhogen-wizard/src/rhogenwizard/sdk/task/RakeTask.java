@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
@@ -27,6 +28,19 @@ public abstract class RakeTask implements IRunTask
 		} 
 	}
 	
+	@Override
+	public void stop() 
+	{
+		try 
+		{
+			OSHelper.killProcess("ruby");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void setData(Map<String, ?> data) 
 	{

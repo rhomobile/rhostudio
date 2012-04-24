@@ -11,5 +11,7 @@ public interface IRunTask extends Runnable
 	//
 	void setData(Map<String, ?> data);
 	//
-	Map<String, ?> getResult();
+	void stop();
+	//
+	Map<String, ?> getResult();	
 }
