@@ -33,7 +33,7 @@ public class Builder extends IncrementalProjectBuilder
 	protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException 
 	{
 		// need implement separate rake command for build ruby part without extension and other staff build 
-		fullBuild(monitor);
+		//fullBuild(monitor);
 		
 		return null;
 	}
