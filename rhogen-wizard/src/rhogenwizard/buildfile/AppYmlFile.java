@@ -180,6 +180,6 @@ public final class AppYmlFile extends YmlFile
 	
 	public void disableRhoelementsFlag()
 	{
-		super.set("app_type", "rhodes");
+		super.remove("app_type", "rhodes");
 	}
 }
