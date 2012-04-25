@@ -1,5 +1,8 @@
 package rhogenwizard;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -17,6 +20,8 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	
+    private Set<Integer> runningProcessesIdsForRunReleaseRhodesAppTask = new HashSet<Integer>();
+
 	/**
 	 * The constructor
 	 */
@@ -44,6 +49,8 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception 
 	{
+	    killProcessesForForRunReleaseRhodesAppTask();
+
 		StopRhoconnectAppAdapter rhodesAdapter = new StopRhoconnectAppAdapter();
 		rhodesAdapter.stopSyncApp();
 
@@ -72,4 +79,15 @@ public class Activator extends AbstractUIPlugin {
 	{
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
+
+    public void storeProcessesForForRunReleaseRhodesAppTask(Set<Integer> pids)
+    {
+        runningProcessesIdsForRunReleaseRhodesAppTask = pids;
+    }
+
+    public void killProcessesForForRunReleaseRhodesAppTask() throws InterruptedException
+    {
+        OSHelper.killProcesses(runningProcessesIdsForRunReleaseRhodesAppTask);
+        runningProcessesIdsForRunReleaseRhodesAppTask = new HashSet<Integer>();
+    }
 }
