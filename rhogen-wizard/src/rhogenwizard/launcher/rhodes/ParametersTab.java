@@ -693,7 +693,7 @@ public class ParametersTab extends  JavaLaunchTab
 				selProjectName        = selProjectName.replaceAll("/", "");
 				IProject selProject   = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
 				
-				if (!RhodesProject.checkNature(selProject) || !RhoelementsProject.checkNature(selProject))
+				if (!RhodesProject.checkNature(selProject) && !RhoelementsProject.checkNature(selProject))
 				{
 					MessageDialog.openError(getShell(), "Message", "Project " + selProject.getName() + " is not rhodes application");
 					return;

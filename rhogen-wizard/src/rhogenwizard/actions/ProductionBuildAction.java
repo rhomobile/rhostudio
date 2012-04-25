@@ -17,12 +17,6 @@ import rhogenwizard.project.RhoelementsProject;
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate 
 {
 	private IWorkbenchWindow window;
-	/**
-	 * The constructor.
-	 */
-	public ProductionBuildAction() 
-	{
-	}
 
 	/**
 	 * The action has been activated. The argument of the
@@ -41,20 +35,21 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 			return;
 		}
 		
-		if (!RhodesProject.checkNature(project) || RhoelementsProject.checkNature(project))
+		if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
 		{
 			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Production build can run only for RhoMobile project");
 			msgJob.schedule();
 			return;
 		}
 		
-		Shell windowShell = window.getShell();
-		
-		SelectPlatformDialog selectDlg = new SelectPlatformDialog(windowShell);
+		SelectPlatformDialog selectDlg = new SelectPlatformDialog(window.getShell());
 		PlatformType selectPlatform = selectDlg.open();
 
-		SelectPlatformBuildJob buildJob = new SelectPlatformBuildJob("select platform", project.getLocation().toOSString(), selectPlatform);
-		buildJob.schedule();
+		if (selectPlatform != PlatformType.eUnknown)
+		{
+			SelectPlatformBuildJob buildJob = new SelectPlatformBuildJob("build production build", project.getLocation().toOSString(), selectPlatform);
+			buildJob.schedule();
+		}
 	}
 
 	/**
