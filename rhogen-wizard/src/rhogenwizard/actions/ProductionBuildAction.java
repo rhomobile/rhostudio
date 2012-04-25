@@ -1,27 +1,22 @@
 package rhogenwizard.actions;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.jface.dialogs.MessageDialog;
-
+import rhogenwizard.PlatformType;
+import rhogenwizard.ShowMessageJob;
 import rhogenwizard.builder.rhodes.SelectPlatformBuildJob;
+import rhogenwizard.builder.rhodes.SelectPlatformDialog;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
+import rhogenwizard.project.RhoelementsProject;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate 
 {
 	private IWorkbenchWindow window;
-	/**
-	 * The constructor.
-	 */
-	public ProductionBuildAction() 
-	{
-	}
 
 	/**
 	 * The action has been activated. The argument of the
@@ -34,13 +29,27 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 		IProject project = ProjectFactory.getInstance().getSelectedProject();
 		
 		if (project == null)
+		{
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Before run production build select RhoMobile project");
+			msgJob.schedule();
 			return;
+		}
 		
-		if (!RhodesProject.checkNature(project))
+		if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
+		{
+			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Production build can run only for RhoMobile project");
+			msgJob.schedule();
 			return;
-			
-		SelectPlatformBuildJob buildJob = new SelectPlatformBuildJob("select platform", project.getLocation().toOSString());
-		buildJob.run(new NullProgressMonitor());
+		}
+		
+		SelectPlatformDialog selectDlg = new SelectPlatformDialog(window.getShell());
+		PlatformType selectPlatform = selectDlg.open();
+
+		if (selectPlatform != PlatformType.eUnknown)
+		{
+			SelectPlatformBuildJob buildJob = new SelectPlatformBuildJob("build production build", project.getLocation().toOSString(), selectPlatform);
+			buildJob.schedule();
+		}
 	}
 
 	/**

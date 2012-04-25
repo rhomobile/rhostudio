@@ -5,16 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
 public abstract class RakeTask implements IRunTask
 {
-	protected String             m_rakeExe    = "rake";	
-	protected SysCommandExecutor m_executor   = new SysCommandExecutor();
-	protected Map<String, ?>     m_taskParams = null;
-	protected Map                m_taskResult = new HashMap();	
+	protected String              m_rakeExe    = "rake";
+	protected SysCommandExecutor  m_executor   = new SysCommandExecutor();
+	protected Map<String, ?>      m_taskParams = null;
+	protected Map<String, Object> m_taskResult = new HashMap<String, Object>();
 
 	public RakeTask()
 	{
@@ -27,6 +28,19 @@ public abstract class RakeTask implements IRunTask
 		} 
 	}
 	
+	@Override
+	public void stop() 
+	{
+		try 
+		{
+			OSHelper.killProcess("ruby");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void setData(Map<String, ?> data) 
 	{

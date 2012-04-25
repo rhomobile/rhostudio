@@ -175,17 +175,17 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		
 		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 		
-		try 
-		{
-			AppYmlFile ymlFile = AppYmlFile.createFromProject(project);			
-			ymlFile.disableRhoelementsFlag();
-			ymlFile.save();
-		}
-		catch (FileNotFoundException e) 
-		{
-			//TODO - add error messages
-			e.printStackTrace();
-		}
+//		try 
+//		{
+//			AppYmlFile ymlFile = AppYmlFile.createFromProject(project);			
+//			ymlFile.disableRhoelementsFlag();
+//			ymlFile.save();
+//		}
+//		catch (FileNotFoundException e) 
+//		{
+//			//TODO - add error messages
+//			e.printStackTrace();
+//		}
 		
 		launchProject(configuration, mode, launch, monitor);
 	}

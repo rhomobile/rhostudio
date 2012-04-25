@@ -33,7 +33,9 @@ public class CapabDialog extends Dialog
 		 "phone",
 		 "bluetooth",
 		 "calendar",
-		 "motorola"
+		 "non_motorola_device",
+		 "native_browser",
+		 "motorola_browser",
 	 };
 	 
 	  private Table      m_capabTable = null;

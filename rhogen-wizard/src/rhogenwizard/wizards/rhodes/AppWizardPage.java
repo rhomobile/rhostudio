@@ -68,7 +68,7 @@ public class AppWizardPage extends WizardPage
         GridData checkBoxAligment = new GridData();
         checkBoxAligment.horizontalAlignment = GridData.FILL;
         checkBoxAligment.horizontalSpan = 3;
-        
+        			
 		// 1 row
 		Label label = new Label(composite, SWT.NULL);
 		label.setText("&Project name:");
@@ -84,6 +84,19 @@ public class AppWizardPage extends WizardPage
 		
 		label = new Label(composite, SWT.NULL);
 		
+		// 0 row
+		m_rhoelementsEnableButton = new Button(composite, SWT.CHECK);
+		m_rhoelementsEnableButton.setText("Use RhoElements");
+		m_rhoelementsEnableButton.setSelection(true);
+		m_rhoelementsEnableButton.setLayoutData(checkBoxAligment);
+		m_rhoelementsEnableButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				dialogChanged();
+			}
+		});
+	
 		// 2 row
 		m_defaultPathButton = new Button(composite, SWT.CHECK);
 		m_defaultPathButton.setText("Create application in default workspace");
@@ -134,20 +147,6 @@ public class AppWizardPage extends WizardPage
 			public void widgetSelected(SelectionEvent e) 
 			{
 				handleBrowse();
-			}
-		});
-		
-		// 5 row
-		m_rhoelementsEnableButton = new Button(composite, SWT.CHECK);
-		m_rhoelementsEnableButton.setText("RhoElements application type");
-		m_rhoelementsEnableButton.setSelection(false);
-		m_rhoelementsEnableButton.setLayoutData(checkBoxAligment);
-		m_rhoelementsEnableButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-				setControlsForDefaultPath();
-				dialogChanged();
 			}
 		});
 	}
@@ -225,6 +224,7 @@ public class AppWizardPage extends WizardPage
 		
 		m_appNameText.setText(placeFolder.getName());
 		m_appFolderText.setText(m_selectAppDir);
+		m_rhoelementsEnableButton.setSelection(false);
 	}
 	
 	private void setControlsForDefaultPath()
