@@ -93,7 +93,6 @@ public class AppWizardPage extends WizardPage
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				setControlsForDefaultPath();
 				dialogChanged();
 			}
 		});
@@ -225,6 +224,7 @@ public class AppWizardPage extends WizardPage
 		
 		m_appNameText.setText(placeFolder.getName());
 		m_appFolderText.setText(m_selectAppDir);
+		m_rhoelementsEnableButton.setSelection(false);
 	}
 	
 	private void setControlsForDefaultPath()
