@@ -57,15 +57,12 @@ public class SpecFileHelper
 			
 			List<String> genExt = m_ymlConfig.getGeneralExtension();
 			
-			if (genExt != null)
-			{
-				genExt.remove(mspecKey);
-				genExt.remove(fileUtilKey);
-				
-				m_ymlConfig.setGeneralExtension(genExt);
-				
-				m_ymlConfig.save();
-			}
+			genExt.remove(mspecKey);
+			genExt.remove(fileUtilKey);
+			
+			m_ymlConfig.setGeneralExtension(genExt);
+			
+			m_ymlConfig.save();
 		}
 		catch (FileNotFoundException e) 
 		{

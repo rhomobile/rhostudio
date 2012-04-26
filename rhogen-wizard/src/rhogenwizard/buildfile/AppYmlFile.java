@@ -90,6 +90,11 @@ public final class AppYmlFile extends YmlFile
 	
 	public List<String> getGeneralExtension()
 	{
+		List<String> extList = (List<String>)super.getObject("extensions");
+		
+		if (extList == null)
+			super.set("extensions", new ArrayList<String>());
+			
 		return (List<String>)super.getObject("extensions");
 	}
 	
