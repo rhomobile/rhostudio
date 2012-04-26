@@ -158,6 +158,7 @@ public class AppWizardPage extends WizardPage
 		m_defaultPathButton.setEnabled(!enableDefPath);
 		m_browseButton.setEnabled(enableDefPath);
 		m_appFolderText.setEnabled(enableDefPath);
+		m_rhoelementsEnableButton.setEnabled(!enableDefPath);
 	}
 
 	/**
@@ -223,8 +224,7 @@ public class AppWizardPage extends WizardPage
 		}
 		
 		m_appNameText.setText(placeFolder.getName());
-		m_appFolderText.setText(m_selectAppDir);
-		m_rhoelementsEnableButton.setSelection(false);
+		m_appFolderText.setText(m_selectAppDir);		
 	}
 	
 	private void setControlsForDefaultPath()
