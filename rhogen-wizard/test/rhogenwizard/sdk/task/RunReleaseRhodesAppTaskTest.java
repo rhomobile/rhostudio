@@ -3,14 +3,10 @@ package rhogenwizard.sdk.task;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,24 +15,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.ILogDevice;
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.PlatformType;
+import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunType;
-import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunReleaseRhodesAppTaskTest
 {
-    private static ILogDevice nullLogDevice = new ILogDevice()
-    {
-        @Override
-        public void log(String str)
-        {
-        }
-    };
     private static final String workspaceFolder = new File(
             System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
 
@@ -97,25 +85,16 @@ public class RunReleaseRhodesAppTaskTest
             params.put(RunReleaseRhodesAppTask.reloadCode, false);
             params.put(RunReleaseRhodesAppTask.traceFlag, false);
 
-            String signature = "-e logcat >> \"/private" + projectLocation + "/rholog.txt\"";
-
-            Set<Integer> before = getProcessesIds(signature);
+            ProcessListViewer plv = new ProcessListViewer(
+                    "-e logcat >> \"/private" + projectLocation + "/rholog.txt\"");
 
             Map<String, ?> results =
                     RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
             assertEquals(0, TaskResultConverter.getResultIntCode(results));
 
-            Set<Integer> after = getProcessesIds(signature);
-
-            Set<Integer> diff = new HashSet<Integer>(after);
-            diff.removeAll(before);
-
+            Set<Integer> diff = plv.getNewProcesses();
             assertEquals(1, diff.size());
-
-            for (int pid : diff)
-            {
-                OSHelper.killProcess(pid);
-            }
+            OSHelper.killProcesses(diff);
         }
 
         // run release Rhodes application [android] [simulator]
@@ -128,29 +107,19 @@ public class RunReleaseRhodesAppTaskTest
             params.put(RunReleaseRhodesAppTask.reloadCode, false);
             params.put(RunReleaseRhodesAppTask.traceFlag, false);
 
-            String signature =
-                "-e logcat >> \""
-                    + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "rholog.txt")
-                        .getPath()))
-                    + "\"";
+            String signature = "-e logcat >> \""
+            + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "rholog.txt").getPath()))
+            + "\"";
 
-            Set<Integer> before = getProcessesIds(signature);
+            ProcessListViewer plv = new ProcessListViewer(signature);
 
             Map<String, ?> results =
                     RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
             assertEquals(0, TaskResultConverter.getResultIntCode(results));
 
-            Set<Integer> after = getProcessesIds(signature);
-
-            Set<Integer> diff = new HashSet<Integer>(after);
-            diff.removeAll(before);
-
+            Set<Integer> diff = plv.getNewProcesses();
             assertEquals(1, diff.size());
-
-            for (int pid : diff)
-            {
-                OSHelper.killProcess(pid);
-            }
+            OSHelper.killProcesses(diff);
         }
 
         // run release Rhodes application [*] [rhosimulator]
@@ -173,63 +142,17 @@ public class RunReleaseRhodesAppTaskTest
                     ? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
                     : "RhoSimulator -approot=/private" + projectLocation;
 
-            Set<Integer> before = getProcessesIds(signature);
+            ProcessListViewer plv = new ProcessListViewer(signature);
 
             Map<String, ?> results =
                     RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
             assertEquals(
                 "for " + platformType, 0, TaskResultConverter.getResultIntCode(results));
 
-            Set<Integer> after = getProcessesIds(signature);
-
-            Set<Integer> diff = new HashSet<Integer>(after);
-            diff.removeAll(before);
-
+            Set<Integer> diff = plv.getNewProcesses();
             assertEquals("for " + platformType, 1, diff.size());
-
-            for (int pid : diff)
-            {
-                OSHelper.killProcess(pid);
-            }
+            OSHelper.killProcesses(diff);
         }
-    }
-
-    private static String getProcessesListing() throws Exception
-    {
-        String cl = (OSValidator.isWindows())
-            ? "wmic path win32_process get Commandline,Processid"
-            : "ps ax";
-        List<String> cmdLine = Arrays.asList(cl.split(" "));
-
-        SysCommandExecutor executor = new SysCommandExecutor();
-        executor.setOutputLogDevice(nullLogDevice);
-        executor.setErrorLogDevice(nullLogDevice);
-        executor.runCommand(cmdLine);
-
-        return executor.getCommandOutput();
-    }
-
-    private static Set<Integer> getProcessesIds(String signature) throws Exception
-    {
-        Pattern pattern =
-                Pattern.compile((OSValidator.isWindows()) ? "^.* (\\d+) *$" : "^ *(\\d+).*$");
-
-        String listing = getProcessesListing();
-        Set<Integer> ids = new HashSet<Integer>();
-        for (String line : listing.split("[\n\r]+"))
-        {
-            if (!line.contains(signature))
-            {
-                continue;
-            }
-            Matcher matcher = pattern.matcher(line);
-            if (!matcher.matches())
-            {
-                continue;
-            }
-            ids.add(Integer.parseInt(matcher.group(1)));
-        }
-        return ids;
     }
 
     private static String prependPrivate(String path)

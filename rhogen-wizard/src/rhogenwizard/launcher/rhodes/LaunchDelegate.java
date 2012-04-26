@@ -1,8 +1,8 @@
 package rhogenwizard.launcher.rhodes;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -20,15 +20,16 @@ import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
+import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
@@ -89,12 +90,21 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					}
 					else
 					{
+					    Activator activator = Activator.getDefault();
+					    activator.killProcessesForForRunReleaseRhodesAppTask();
+
+					    ProcessListViewer rhosims = new ProcessListViewer(
+					            "/RhoSimulator/rhosimulator.exe -approot=\'");
+
 						if (runSelectedBuildConfiguration(project, type) != 0)
 						{
 							ConsoleHelper.consoleBuildPrint("Error in build application");
 							setProcessFinished(true);
 							return;
 						}
+
+						activator.storeProcessesForForRunReleaseRhodesAppTask(
+						        rhosims.getNewProcesses());
 					}
 					
 					startLogOutput(project, PlatformType.fromString(m_platformType), type);

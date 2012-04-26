@@ -7,17 +7,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
@@ -29,11 +23,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.ILogDevice;
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.PlatformType;
-import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.ProcessListViewer;
 import rhogenwizard.debugger.backend.DebugServer;
 import rhogenwizard.debugger.backend.DebugState;
 import rhogenwizard.debugger.backend.DebugVariableType;
@@ -128,13 +121,6 @@ public class RunDebugRhodesAppTaskTest
         }
     }
 
-    private static ILogDevice nullLogDevice = new ILogDevice()
-    {
-        @Override
-        public void log(String str)
-        {
-        }
-    };
     private static final String workspaceFolder = new File(
             System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
 
@@ -181,8 +167,8 @@ public class RunDebugRhodesAppTaskTest
                 ? "cmd /c rhodes.bat app app"
                 : "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0";
 
-        Set<Integer> before1 = getProcessesIds(signature1);
-        Set<Integer> before2 = getProcessesIds(signature2);
+        ProcessListViewer rhosimViewer = new ProcessListViewer(signature1);
+        ProcessListViewer rakeViewer = new ProcessListViewer(signature2);
 
         try
         {
@@ -352,22 +338,8 @@ public class RunDebugRhodesAppTaskTest
         }
         finally
         {
-            Set<Integer> after1 = getProcessesIds(signature1);
-            Set<Integer> after2 = getProcessesIds(signature2);
-
-            Set<Integer> diff1 = new HashSet<Integer>(after1);
-            diff1.removeAll(before1);
-            for (int pid : diff1)
-            {
-                OSHelper.killProcess(pid);
-            }
-
-            Set<Integer> diff2 = new HashSet<Integer>(after2);
-            diff2.removeAll(before2);
-            for (int pid : diff2)
-            {
-                OSHelper.killProcess(pid);
-            }
+            OSHelper.killProcesses(rhosimViewer.getNewProcesses());
+            OSHelper.killProcesses(rakeViewer.getNewProcesses());
         }
     }
 
@@ -450,40 +422,6 @@ public class RunDebugRhodesAppTaskTest
         {
             fw.close();
         }
-    }
-
-    private static String getProcessesListing() throws Exception
-    {
-        List<String> cmdLine = Arrays.asList("ps", "ax");
-
-        SysCommandExecutor executor = new SysCommandExecutor();
-        executor.setOutputLogDevice(nullLogDevice);
-        executor.setErrorLogDevice(nullLogDevice);
-        executor.runCommand(cmdLine);
-
-        return executor.getCommandOutput();
-    }
-
-    private static Set<Integer> getProcessesIds(String signature) throws Exception
-    {
-        Pattern pattern = Pattern.compile("^ *(\\d+).*");
-
-        String listing = getProcessesListing();
-        Set<Integer> ids = new HashSet<Integer>();
-        for (String line : listing.split("\n"))
-        {
-            if (!line.contains(signature))
-            {
-                continue;
-            }
-            Matcher matcher = pattern.matcher(line);
-            if (!matcher.matches())
-            {
-                continue;
-            }
-            ids.add(Integer.parseInt(matcher.group(1)));
-        }
-        return ids;
     }
 
     private static String prependPrivate(String path)
