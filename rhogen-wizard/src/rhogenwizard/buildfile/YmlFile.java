@@ -222,7 +222,8 @@ public class YmlFile
 				m_dataConverter.applyDataStorage(m_dataStorage);
 				dataString = m_dataConverter.convertStructure();
 				
-			    os.write(dataString.getBytes());
+			    os.write(dataString.getBytes());			    
+			    os.close();
 			}
 		} 
 		catch (IOException e) 
