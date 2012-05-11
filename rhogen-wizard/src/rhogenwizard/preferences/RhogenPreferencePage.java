@@ -81,7 +81,7 @@ public class RhogenPreferencePage extends BasePreferencePage
 //		addField(m_selectCombo);
 		
 		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.javaPath, 
-				"&Java path:", getFieldEditorParent()));
+				"&Java bin path:", getFieldEditorParent()));
 	}
 
 	/* (non-Javadoc)
