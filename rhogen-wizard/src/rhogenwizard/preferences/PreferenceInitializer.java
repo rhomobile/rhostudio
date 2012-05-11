@@ -52,7 +52,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 			m_initPref = new PreferenceInitializer();
 		
 			m_initPref.initFromFirstProject();
-
 		}
 		catch (Exception e) 
 		{
@@ -163,18 +162,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				m_ymlFile.setCabWizPath(cabWizPath);
 				m_ymlFile.setVcBuildPath(vcbuildPath);
 				m_ymlFile.setAndroidNdkPath(ndkPath);
-				m_ymlFile.setAndroidSdkPath(sdkPath);
+				m_ymlFile.setAndroidSdkPath(sdkPath);		
+				m_ymlFile.setBbJdkPath(bbVersionName, bbJdkPath);
+				m_ymlFile.setBbMdsPath(bbVersionName, bbMdsPath);
 				
-				if (!bbVersionName.isEmpty())
-				{
-					m_ymlFile.setBbJdkPath(bbVersionName, bbJdkPath);
-					m_ymlFile.setBbMdsPath(bbVersionName, bbMdsPath);
-					
-					if (bbSim.length() != 0)
-						m_ymlFile.setBbSimPort(bbVersionName, new Integer(bbSim));
-					else
-						m_ymlFile.setBbSimPort(bbVersionName, 0);
-				}
+				if (bbSim.length() != 0)
+					m_ymlFile.setBbSimPort(bbVersionName, new Integer(bbSim));
+				else
+					m_ymlFile.setBbSimPort(bbVersionName, 0);
 				
 				m_ymlFile.save();
 			}			

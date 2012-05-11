@@ -39,7 +39,10 @@ public class CustomConverter extends AbstractStructureConverter
 	        Object key = (Object) pairs.getKey();
 	        Object val = pairs.getValue();
 	        
-	        saveSelector(sb, "", key.toString(), val);
+	        if (key != null)
+	        {
+	        	saveSelector(sb, "", key.toString(), val);
+	        }
 	    }
 	    
 	    return addComments(sb.toString());
@@ -73,6 +76,9 @@ public class CustomConverter extends AbstractStructureConverter
 	
 	void saveSelector(StringBuilder sb, String prefix, String name, Object val)
 	{
+		if (name == null || name.isEmpty())
+			return;
+		
         if (val instanceof List)
         {
         	saveList(sb, prefix, name, (List)val);
