@@ -379,7 +379,12 @@ public class ParametersTab extends  JavaLaunchTab
 			String bbVer = m_ymlFile.getBlackberryVer();
 
 			SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
-			m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
+			
+			if (sdkFile != null && sdkFile.getBbSimPort(bbVer) != null)
+				m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
+			else
+				m_adroidEmuNameText.setText("Simulator name is not define in rhobuild.yml file");
+			
 			m_androidEmuNameLabel.setText("Simulator name:");
 		} 
 		catch (FileNotFoundException e) 

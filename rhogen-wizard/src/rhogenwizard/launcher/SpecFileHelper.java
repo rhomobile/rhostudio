@@ -73,26 +73,26 @@ public class SpecFileHelper
 	
 	public void changeForSpec() throws IOException
 	{
-		String pathToConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig.txt";
-		String pathToTmpConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig-tmp.txt";
-		
-		createFileWithNewStartPage("\'/app/SpecRunner\'", pathToConfigFile, pathToTmpConfigFile);
-		
-		renameFile(pathToTmpConfigFile, pathToConfigFile);
-		
-		addSpecExtension();
+//		String pathToConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig.txt";
+//		String pathToTmpConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig-tmp.txt";
+//		
+//		createFileWithNewStartPage("\'/app/SpecRunner\'", pathToConfigFile, pathToTmpConfigFile);
+//		
+//		renameFile(pathToTmpConfigFile, pathToConfigFile);
+//		
+//		addSpecExtension();
 	}
 	
 	public void changeForApp() throws IOException
 	{
-		String pathToConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig.txt";
-		String pathToTmpConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig-tmp.txt";
-		
-		createFileWithNewStartPage("\'/app\'", pathToConfigFile, pathToTmpConfigFile);
-		
-		renameFile(pathToTmpConfigFile, pathToConfigFile);
-		
-		removeSpecExtension();
+//		String pathToConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig.txt";
+//		String pathToTmpConfigFile = m_selProject.getLocation().toOSString() + File.separator + "rhoconfig-tmp.txt";
+//		
+//		createFileWithNewStartPage("\'/app\'", pathToConfigFile, pathToTmpConfigFile);
+//		
+//		renameFile(pathToTmpConfigFile, pathToConfigFile);
+//		
+//		removeSpecExtension();
 	}
 	
 	private void createFileWithNewStartPage(String newOptionsPath, String configFile, String tmpConfigFile) throws IOException
