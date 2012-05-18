@@ -258,7 +258,7 @@
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
 	    </launchConfigurationType>
 	</extension>
-	
+	<!--
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
            delegate="rhogenwizard.launcher.spec.LaunchDelegate"
@@ -270,7 +270,7 @@
            sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
         </launchConfigurationType>
     </extension>
-    
+    -->
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
            delegate="rhogenwizard.launcher.rhoconnect.LaunchDelegate"
