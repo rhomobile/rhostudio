@@ -62,6 +62,9 @@ public class SysCommandExecutor
         /* run command */
         Process process = runCommandHelper(commandLine);
 
+        /* close process output stream (required for WMIC on Win32) */
+        process.getOutputStream().close();
+
         /* start output and error read threads */
         startOutputAndErrorReadThreads(process.getInputStream(), process.getErrorStream());
 
