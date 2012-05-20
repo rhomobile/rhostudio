@@ -159,7 +159,7 @@ public class OSHelper extends OSValidator
         }
         catch (IOException e)
         {
-            throw new RuntimeException("impossible", e);
+            Activator.logErrorAndThrow("can not get process list", e);
         }
         return executor.getCommandOutput();
     }
