@@ -12,15 +12,15 @@ public class TaskResultConverter
 	public static int okCode   = 0;
 	public static int failCode = 1;
 	
-	public static int getResultIntCode(Map<String, ?> results) throws Exception
+	public static int getResultIntCode(Map<String, ?> results)
 	{
 		if (results == null)
-			throw new Exception("result container is null [TaskResultConverter]");
+			throw new IllegalArgumentException("result container is null [TaskResultConverter]");
 		
 		Object value = results.get(IRunTask.resTag);
 
 		if (value == null)
-			throw new Exception("return patameter is null [TaskResultConverter]");
+			throw new IllegalArgumentException("return patameter is null [TaskResultConverter]");
 
 		if (value instanceof Integer)
 		{			
@@ -29,7 +29,7 @@ public class TaskResultConverter
 			return retCode.intValue();				
 		}
 		
-		throw new Exception("invalid return parameter [TaskResultConverter]");
+		throw new IllegalArgumentException("invalid return parameter [TaskResultConverter]");
 	}
 	
 	public static IProcess getResultLaunchObj(Map<String, ?> results) throws Exception

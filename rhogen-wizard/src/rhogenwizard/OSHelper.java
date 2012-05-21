@@ -145,11 +145,6 @@ public class OSHelper extends OSValidator
 
     private static String getProcessesListing() throws InterruptedException
     {
-        // TODO: remove when bug will be fixed on XP
-        if (OSValidator.isWindows())
-        {
-            return "";
-        }
         String cl =
                 (OSValidator.isWindows()) ? "wmic path win32_process get Commandline,Processid"
                         : "ps ax";
@@ -164,7 +159,7 @@ public class OSHelper extends OSValidator
         }
         catch (IOException e)
         {
-            throw new RuntimeException("impossible", e);
+            Activator.logErrorAndThrow("can not get process list", e);
         }
         return executor.getCommandOutput();
     }

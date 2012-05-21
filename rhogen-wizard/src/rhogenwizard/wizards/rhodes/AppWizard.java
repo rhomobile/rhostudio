@@ -113,18 +113,21 @@ public class AppWizard extends Wizard implements INewWizard
 		Map<String, ?>      results = null;
 		Map<String, Object> params = new HashMap<String, Object>();
 
-		params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
-		params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
-		
 		if (infoHolder.isRhoelementsApp)
 		{
+			params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
+			params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+
 			results = RhoTaskHolder.getInstance().runTask(GenerateRhoelementsAppTask.class, params);
 		}
 		else
 		{
+			params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
+			params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+
 			results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		}
-		
+
 		if (TaskResultConverter.getResultIntCode(results) != 0)
 		{
 			throw new IOException(MsgConstants.errInstallRhodes);

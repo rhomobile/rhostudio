@@ -3,6 +3,8 @@ package rhogenwizard;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -89,5 +91,39 @@ public class Activator extends AbstractUIPlugin {
     {
         OSHelper.killProcesses(runningProcessesIdsForRunReleaseRhodesAppTask);
         runningProcessesIdsForRunReleaseRhodesAppTask = new HashSet<Integer>();
+    }
+
+    public static void logError(String msg)
+    {
+        log(IStatus.ERROR, msg);
+    }
+
+    public static void logError(String msg, Exception e)
+    {
+        log(IStatus.ERROR, msg, e);
+    }
+
+    public static void logErrorAndThrow(String msg)
+    {
+        logError(msg);
+        throw new ActivatorException(msg);
+    }
+
+    public static void logErrorAndThrow(String msg, Exception e)
+    {
+        logError(msg, e);
+        throw new ActivatorException(msg, e);
+    }
+
+    // for severity use IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL
+    private static void log(int severity, String msg)
+    {
+        plugin.getLog().log(new Status(severity, PLUGIN_ID, msg));
+    }
+
+    // for severity use IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL
+    private static void log(int severity, String msg, Exception e)
+    {
+        plugin.getLog().log(new Status(severity, PLUGIN_ID, msg, e));
     }
 }
