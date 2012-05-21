@@ -46,7 +46,7 @@ public class GenerateSpecAction implements IWorkbenchWindowActionDelegate
 		}
 	
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put(GenerateRhodesAppTask.workDir, project.getLocation().toOSString());
+		params.put(GenerateRhodesSpecTask.workDir, project.getLocation().toOSString());
 		
 		RhoTaskHolder.getInstance().runTask(GenerateRhodesSpecTask.class, params);
 		
