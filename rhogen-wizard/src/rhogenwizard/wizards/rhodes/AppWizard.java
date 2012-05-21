@@ -148,7 +148,8 @@ public class AppWizard extends Wizard implements INewWizard
 			monitor.worked(1);
 			monitor.setTaskName("Create project...");
 			
-			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); //RhodesProjectSupport.createProject(infoHolder);
+			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); 
+			newProject.linkFolder("framework", "C:\\Ruby193\\lib\\ruby\\gems\\1.9.1\\gems\\rhodes-3.3.3\\lib\\framework");
 
 			if (CommonConstants.checkRhodesVersion)
 			{
