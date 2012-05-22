@@ -31,7 +31,6 @@ public class RhoTaskHolder
 		m_holdTasks = new HashMap<Class<? extends IRunTask>, IRunTask>();
 		
 		// added tasks
-		m_holdTasks.put(GenerateRhodesAppTask.class, new GenerateRhodesAppTask());
 		m_holdTasks.put(GenerateRhodesModelTask.class, new GenerateRhodesModelTask());
 		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
 		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());

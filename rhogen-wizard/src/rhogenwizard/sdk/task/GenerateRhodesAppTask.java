@@ -1,7 +1,9 @@
 package rhogenwizard.sdk.task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -10,6 +12,14 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 public class GenerateRhodesAppTask extends RhodesTask
 {
     public static final String appName = "appname";
+
+    public GenerateRhodesAppTask(String workDir, String appName)
+    {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(GenerateRhodesAppTask.workDir, workDir);
+        params.put(GenerateRhodesAppTask.appName, appName);
+        m_taskParams = params;
+    }
 
     @Override
     public void run()
@@ -40,16 +50,19 @@ public class GenerateRhodesAppTask extends RhodesTask
         m_taskResult.put(resTag, result);
     }
 
-    public void run(IProgressMonitor monitor) throws InterruptedException
+    public Map<String, ?> run(IProgressMonitor monitor) throws InterruptedException
     {
         Thread thread = new Thread(this);
         thread.start();
-        while (thread.isAlive()) {
+        while (thread.isAlive())
+        {
             thread.join(100);
-            if (monitor.isCanceled()) {
+            if (monitor.isCanceled())
+            {
                 this.stop();
                 throw new InterruptedException();
             }
         }
+        return getResult();
     }
 }

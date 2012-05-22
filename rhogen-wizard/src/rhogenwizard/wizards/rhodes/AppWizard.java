@@ -112,10 +112,11 @@ public class AppWizard extends Wizard implements INewWizard
         monitor.setTaskName("Generate application...");
 
         Map<String, ?> results = null;
-        Map<String, Object> params = new HashMap<String, Object>();
 
         if (infoHolder.isRhoelementsApp)
         {
+            Map<String, Object> params = new HashMap<String, Object>();
+
             params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
             params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath()
                     .toOSString());
@@ -126,15 +127,10 @@ public class AppWizard extends Wizard implements INewWizard
         }
         else
         {
-            GenerateRhodesAppTask task = new GenerateRhodesAppTask();
-
-            params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
-            params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath()
-                    .toOSString());
-
-            task.setData(params);
-            task.run(monitor);
-            results = task.getResult();
+            GenerateRhodesAppTask task =
+                    new GenerateRhodesAppTask(infoHolder.getProjectLocationPath().toOSString(),
+                            infoHolder.appName);
+            results = task.run(monitor);
         }
 
         if (TaskResultConverter.getResultIntCode(results) != 0)

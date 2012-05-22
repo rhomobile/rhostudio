@@ -62,15 +62,10 @@ public class RunReleaseRhodesAppTaskTest
 
         // create application
         {
-            Map<String, Object> params = new HashMap<String, Object>();
+            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            task.run();
 
-            params.put(GenerateRhodesAppTask.appName, appName);
-            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
-
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
-
-            assertEquals(0, TaskResultConverter.getResultIntCode(results));
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
         }
 
         // run release Rhodes application [iphone] [simulator]
