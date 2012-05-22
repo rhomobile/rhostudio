@@ -8,38 +8,6 @@ import java.util.List;
 
 public class SysCommandExecutor
 {
-    public interface Command
-    {
-        public int waitFor() throws InterruptedException;
-    }
-
-    private class CommandImpl implements Command
-    {
-        private final Process m_process;
-
-        public CommandImpl(Process process)
-        {
-            m_process = process;
-        }
-
-        @Override
-        public int waitFor() throws InterruptedException
-        {
-            /* wait for command execution to terminate */
-            try
-            {
-                return m_process.waitFor();
-            }
-            finally
-            {
-                /* notify output and error read threads to stop reading */
-                notifyOutputAndErrorReadThreadsToStopReading();
-            }
-        }
-    }
-
-    private static int waitReadingTime = 500;
-
     private ILogDevice m_ouputLogDevice = null;
     private ILogDevice m_errorLogDevice = null;
     private String     m_workingDirectory = null;
@@ -82,7 +50,7 @@ public class SysCommandExecutor
         return m_cmdError.toString();
     }
 
-    public Command startCommand(List<String> commandLine) throws IOException
+    public int runCommand(List<String> commandLine) throws IOException, InterruptedException
     {
         if (m_cmdOutput != null)
         {
@@ -98,12 +66,15 @@ public class SysCommandExecutor
         /* start output and error read threads */
         startOutputAndErrorReadThreads(process.getInputStream(), process.getErrorStream());
 
-        return new CommandImpl(process);
-    }
-
-    public int runCommand(List<String> commandLine) throws IOException, InterruptedException
-    {
-        return startCommand(commandLine).waitFor();
+        try
+        {
+            return process.waitFor();
+        }
+        finally
+        {
+            /* notify output and error read threads to stop reading */
+            notifyOutputAndErrorReadThreadsToStopReading();
+        }
     }
 
     private Process runCommandHelper(List<String> commandLine) throws IOException

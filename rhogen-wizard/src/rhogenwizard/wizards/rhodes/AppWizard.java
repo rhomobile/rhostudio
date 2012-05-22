@@ -1,21 +1,21 @@
 package rhogenwizard.wizards.rhodes;
 
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jface.operation.*;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.core.runtime.CoreException;
-import java.io.*;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWizard;
 
-import org.eclipse.ui.*;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
@@ -90,7 +90,7 @@ public class AppWizard extends Wizard implements INewWizard
 		
 		try 
 		{
-			getContainer().run(true, false, op);
+			getContainer().run(true, true, op);
 		} 
 		catch (InterruptedException e) 
 		{
@@ -106,33 +106,42 @@ public class AppWizard extends Wizard implements INewWizard
 		return true;
 	}
 	
-	private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws Exception
-	{
-		monitor.setTaskName("Generate application...");
-		
-		Map<String, ?>      results = null;
-		Map<String, Object> params = new HashMap<String, Object>();
+    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor)
+            throws Exception
+    {
+        monitor.setTaskName("Generate application...");
 
-		if (infoHolder.isRhoelementsApp)
-		{
-			params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
-			params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+        Map<String, ?> results = null;
+        Map<String, Object> params = new HashMap<String, Object>();
 
-			results = RhoTaskHolder.getInstance().runTask(GenerateRhoelementsAppTask.class, params);
-		}
-		else
-		{
-			params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
-			params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+        if (infoHolder.isRhoelementsApp)
+        {
+            params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
+            params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath()
+                    .toOSString());
 
-			results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
-		}
+            results =
+                    RhoTaskHolder.getInstance().runTask(GenerateRhoelementsAppTask.class,
+                            params);
+        }
+        else
+        {
+            GenerateRhodesAppTask task = new GenerateRhodesAppTask();
 
-		if (TaskResultConverter.getResultIntCode(results) != 0)
-		{
-			throw new IOException(MsgConstants.errInstallRhodes);
-		}	
-	}
+            params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
+            params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath()
+                    .toOSString());
+
+            task.setData(params);
+            task.run(monitor);
+            results = task.getResult();
+        }
+
+        if (TaskResultConverter.getResultIntCode(results) != 0)
+        {
+            throw new IOException(MsgConstants.errInstallRhodes);
+        }
+    }
 	
 	/**
 	 * @throws ProjectNotFoundExtension 
