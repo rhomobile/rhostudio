@@ -136,7 +136,7 @@ public class SpecWizard extends Wizard implements INewWizard
 	private void createProjectFiles(IProgressMonitor monitor) throws Exception
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put(GenerateRhodesExtensionTask.workDir, m_currentProject.getLocation().toOSString());
+		params.put(GenerateRhodesSpecTask.workDir, m_currentProject.getLocation().toOSString());
 		
 		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesSpecTask.class, params);
 				
