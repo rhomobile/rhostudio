@@ -62,17 +62,12 @@ public class RhodesCreationTest extends TestCase
     {
         String appName = "test001";
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+        task.run();
 
-        params.put(GenerateRhodesAppTask.appName, appName);
-        params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
+        assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
-        Map<String, ?> results =
-                RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
-
-        assertEquals(TaskResultConverter.getResultIntCode(results), 0);
-
-        assertEquals(checkCreateRhodesFile(workspaceFolder + File.separator + appName), true);
+        assertTrue(checkCreateRhodesFile(workspaceFolder + File.separator + appName));
     }
 
     @Test
@@ -86,15 +81,12 @@ public class RhodesCreationTest extends TestCase
         {
             Map<String, Object> params = new HashMap<String, Object>();
 
-            params.put(GenerateRhodesAppTask.appName, appName);
-            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
+            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            task.run();
 
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
-
-            assertEquals(checkCreateRhodesFile(projectLoc), true);
+            assertTrue(checkCreateRhodesFile(projectLoc));
         }
 
         // create model
@@ -126,15 +118,10 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            Map<String, Object> params = new HashMap<String, Object>();
+            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            task.run();
 
-            params.put(GenerateRhodesAppTask.appName, appName);
-            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
-
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             assertTrue(checkCreateRhodesFile(projectLoc));
         }
@@ -166,15 +153,10 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            Map<String, Object> params = new HashMap<String, Object>();
+            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            task.run();
 
-            params.put(GenerateRhodesAppTask.appName, appName);
-            params.put(GenerateRhodesAppTask.workDir, workspaceFolder);
-
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             assertTrue(checkCreateRhodesFile(projectLoc));
         }

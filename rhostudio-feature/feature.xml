@@ -47,7 +47,7 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    </license>
 
    <url>
-      <discovery label="Rhomobile official site" url="http://rhomobile.com"/>
+      <discovery label="RhoMobile official site" url="http://rhomobile.com"/>
       <discovery label="DLTK" url="http://download.eclipse.org/technology/dltk/updates/"/>
    </url>
 

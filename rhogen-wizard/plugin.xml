@@ -205,6 +205,7 @@
 	    </launchConfigurationTypeImage>
 	</extension>
 	
+	<!--
 	 <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
         <launchConfigurationTypeImage
             configTypeID="rhogenwizard.launcher.rhodesSpec"
@@ -212,7 +213,8 @@
             id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
         </launchConfigurationTypeImage>
     </extension>
-
+    -->
+    
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
 	        icon="icons/sample16.png"
@@ -302,6 +304,7 @@
         </launchConfigurationTabGroup>
     </extension>
 	
+	<!--
     <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
         <launchConfigurationTabGroup
             type="rhogenwizard.launcher.rhodesSpec"
@@ -309,7 +312,8 @@
             id="rhogenwizard.launcher.rhodesSpec">
         </launchConfigurationTabGroup>
     </extension>
-
+    -->
+    
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     	<launchConfigurationTabGroup
         	type="rhogenwizard.launcher.rhosyncApp"
