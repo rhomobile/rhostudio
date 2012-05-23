@@ -62,7 +62,7 @@ public class RhodesCreationTest extends TestCase
     {
         String appName = "test001";
 
-        GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+        RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
         task.run();
 
         assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
@@ -81,7 +81,7 @@ public class RhodesCreationTest extends TestCase
         {
             Map<String, Object> params = new HashMap<String, Object>();
 
-            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
 
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
@@ -118,7 +118,7 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
 
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
@@ -153,7 +153,7 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
 
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
@@ -65,4 +67,20 @@ public abstract class RakeTask implements IRunTask
 		
 		return m_executor.getCommandOutput();
 	}
+
+    public Map<String, ?> run(IProgressMonitor monitor) throws InterruptedException
+    {
+        Thread thread = new Thread(this);
+        thread.start();
+        while (thread.isAlive())
+        {
+            thread.join(100);
+            if (monitor.isCanceled())
+            {
+                this.stop();
+                throw new InterruptedException();
+            }
+        }
+        return getResult();
+    }
 }

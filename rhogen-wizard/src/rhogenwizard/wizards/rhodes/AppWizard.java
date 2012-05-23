@@ -32,6 +32,7 @@ import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
+import rhogenwizard.sdk.task.RakeTask;
 
 public class AppWizard extends Wizard implements INewWizard 
 {
@@ -113,25 +114,20 @@ public class AppWizard extends Wizard implements INewWizard
 
         Map<String, ?> results = null;
 
+        RakeTask task;
         if (infoHolder.isRhoelementsApp)
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
-            params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath()
-                    .toOSString());
-
-            results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhoelementsAppTask.class,
-                            params);
+            task =
+                    new GenerateRhoelementsAppTask(infoHolder.getProjectLocationPath()
+                            .toOSString(), infoHolder.appName);
         }
         else
         {
-            GenerateRhodesAppTask task =
+            task =
                     new GenerateRhodesAppTask(infoHolder.getProjectLocationPath().toOSString(),
                             infoHolder.appName);
-            results = task.run(monitor);
         }
+        results = task.run(monitor);
 
         if (TaskResultConverter.getResultIntCode(results) != 0)
         {

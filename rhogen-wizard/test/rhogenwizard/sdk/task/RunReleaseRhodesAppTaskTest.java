@@ -62,7 +62,7 @@ public class RunReleaseRhodesAppTaskTest
 
         // create application
         {
-            GenerateRhodesAppTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
 
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
