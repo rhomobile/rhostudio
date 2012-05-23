@@ -1,6 +1,6 @@
 package rhogenwizard.sdk.task;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +29,7 @@ public class GenerateRhodesAppTask extends RhodesTask
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
         String appName = (String) m_taskParams.get(GenerateRhodesAppTask.appName);
 
-        List<String> cmdLine = new ArrayList<String>();
-        cmdLine.add(m_rhogenExe);
-        cmdLine.add("app");
-        cmdLine.add(appName);
+        List<String> cmdLine = Arrays.asList(m_rhogenExe, "app", appName);
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
