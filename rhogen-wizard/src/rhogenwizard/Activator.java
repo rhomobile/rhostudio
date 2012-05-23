@@ -103,6 +103,11 @@ public class Activator extends AbstractUIPlugin {
         log(IStatus.ERROR, msg, e);
     }
 
+    public static void logError(Throwable e)
+    {
+        log(IStatus.ERROR, "", e);
+    }
+
     public static void logErrorAndThrow(String msg)
     {
         logError(msg);
@@ -113,6 +118,12 @@ public class Activator extends AbstractUIPlugin {
     {
         logError(msg, e);
         throw new ActivatorException(msg, e);
+    }
+
+    public static void logErrorAndThrow(Throwable e)
+    {
+        logError(e);
+        throw new ActivatorException(e);
     }
 
     // for severity use IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL
