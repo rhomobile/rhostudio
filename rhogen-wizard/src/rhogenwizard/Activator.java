@@ -98,7 +98,7 @@ public class Activator extends AbstractUIPlugin {
         log(IStatus.ERROR, msg);
     }
 
-    public static void logError(String msg, Exception e)
+    public static void logError(String msg, Throwable e)
     {
         log(IStatus.ERROR, msg, e);
     }
@@ -109,7 +109,7 @@ public class Activator extends AbstractUIPlugin {
         throw new ActivatorException(msg);
     }
 
-    public static void logErrorAndThrow(String msg, Exception e)
+    public static void logErrorAndThrow(String msg, Throwable e)
     {
         logError(msg, e);
         throw new ActivatorException(msg, e);
@@ -122,7 +122,7 @@ public class Activator extends AbstractUIPlugin {
     }
 
     // for severity use IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL
-    private static void log(int severity, String msg, Exception e)
+    private static void log(int severity, String msg, Throwable e)
     {
         plugin.getLog().log(new Status(severity, PLUGIN_ID, msg, e));
     }
