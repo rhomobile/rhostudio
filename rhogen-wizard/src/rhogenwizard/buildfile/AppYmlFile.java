@@ -73,6 +73,13 @@ public final class AppYmlFile extends YmlFile
 		return sdkPath; 
 	}
 	
+	public String getFrameworkPath()
+	{
+		String sdkPath = getSdkPath();
+		
+		return sdkPath + File.separator + "lib" + File.separator + "framework";
+	}
+	
 	public void setAppLog(String appLog)
 	{
 		super.set("applog", appLog);

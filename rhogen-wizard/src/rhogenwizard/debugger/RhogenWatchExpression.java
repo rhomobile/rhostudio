@@ -19,7 +19,6 @@ public class RhogenWatchExpression extends WatchExpression
 	@Override
 	public void setResult(IWatchExpressionResult result) 
 	{
-		
 		super.setResult(result);
 	}
 }

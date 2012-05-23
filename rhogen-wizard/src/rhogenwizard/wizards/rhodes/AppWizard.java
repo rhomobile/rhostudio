@@ -113,18 +113,15 @@ public class AppWizard extends Wizard implements INewWizard
 		Map<String, ?>      results = null;
 		Map<String, Object> params = new HashMap<String, Object>();
 
+		params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
+		params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
+
 		if (infoHolder.isRhoelementsApp)
 		{
-			params.put(GenerateRhoelementsAppTask.appName, infoHolder.appName);
-			params.put(GenerateRhoelementsAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
-
 			results = RhoTaskHolder.getInstance().runTask(GenerateRhoelementsAppTask.class, params);
 		}
 		else
 		{
-			params.put(GenerateRhodesAppTask.appName, infoHolder.appName);
-			params.put(GenerateRhodesAppTask.workDir, infoHolder.getProjectLocationPath().toOSString());
-
 			results = RhoTaskHolder.getInstance().runTask(GenerateRhodesAppTask.class, params);
 		}
 
@@ -152,8 +149,7 @@ public class AppWizard extends Wizard implements INewWizard
 			monitor.setTaskName("Create project...");
 			
 			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); 
-			newProject.linkFolder("framework", "C:\\Ruby193\\lib\\ruby\\gems\\1.9.1\\gems\\rhodes-3.3.3\\lib\\framework");
-
+			
 			if (CommonConstants.checkRhodesVersion)
 			{
 				monitor.setTaskName("Check Rhodes version...");
@@ -180,6 +176,7 @@ public class AppWizard extends Wizard implements INewWizard
 				createProjectFiles(infoHolder, monitor);
 			}
 
+			
 			newProject.refreshProject();
 
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);

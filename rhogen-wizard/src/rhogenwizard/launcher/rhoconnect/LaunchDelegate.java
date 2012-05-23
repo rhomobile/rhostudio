@@ -21,8 +21,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.LogFileHelper;
-import rhogenwizard.PlatformType;
-import rhogenwizard.RunType;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -165,7 +163,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 					job.schedule();
 					
-					target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhosync);
+					target = new RhogenDebugTarget(launch, null, project/*RhogenDebugTarget.EDebugPlatfrom.eRhosync*/);
 				}
 			
 				startBuildThread(project, mode, launch);

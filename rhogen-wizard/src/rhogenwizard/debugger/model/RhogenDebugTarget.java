@@ -11,24 +11,9 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
-import java.beans.Expression;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-import java.util.logging.ConsoleHandler;
-
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -36,7 +21,6 @@ import org.eclipse.debug.core.IExpressionListener;
 import org.eclipse.debug.core.IExpressionManager;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.IMemoryBlock;
@@ -44,18 +28,8 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
-import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.debug.core.model.IWatchExpressionDelegate;
-import org.eclipse.debug.core.model.IWatchExpressionListener;
-import org.eclipse.debug.core.model.IWatchExpressionResult;
-import org.eclipse.debug.internal.core.ExpressionManager;
-import org.eclipse.debug.internal.core.WatchExpression;
-import org.eclipse.dltk.internal.debug.core.model.NoWatchExpressionResult;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
-import org.eclipse.swt.graphics.Resource;
-
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.OSHelper;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.RhogenWatchExpression;
@@ -65,6 +39,10 @@ import rhogenwizard.debugger.backend.DebugServerException;
 import rhogenwizard.debugger.backend.DebugState;
 import rhogenwizard.debugger.backend.DebugVariableType;
 import rhogenwizard.debugger.backend.IDebugCallback;
+import rhogenwizard.debugger.model.selector.ResourceNameSelector;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhoconnectProject;
+import rhogenwizard.project.extension.BadProjectTagException;
 import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
 
 /**
@@ -72,11 +50,7 @@ import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
  */
 public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
 {
-	public enum EDebugPlatfrom
-	{
-		eRhodes,
-		eRhosync
-	}
+	private IProject m_debugProject = null;
 	
 	// associated system process (VM)
 	private IProcess m_processHandle = null;
@@ -90,22 +64,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	// suspend state
 	private boolean m_isSuspended = true;
 	
-	// terminated state
-	private boolean m_isTerminated = false;
-	
 	// threads
 	private RhogenThread m_threadHandle = null;
 	private IThread[]    m_allThreads = null;
 	
-	EDebugPlatfrom       m_debugType = EDebugPlatfrom.eRhodes;
-	
 	private static DebugServer m_debugServer = null;
 
-	public RhogenDebugTarget(ILaunch launch, IProcess process, EDebugPlatfrom debugType) throws CoreException 
+	public RhogenDebugTarget(ILaunch launch, IProcess process, IProject debugProject) throws CoreException 
 	{
 		super(null);
 		
-		m_debugType     = debugType;
+		m_debugProject  = debugProject;
 		m_launchHandle  = launch;
 		m_debugTarget   = this;
 		m_processHandle = process;
@@ -149,18 +118,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	{
 		return m_allThreads;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugTarget#hasThreads()
-	 */
+
 	public boolean hasThreads() throws DebugException 
 	{
 		return true; // WTB Changed per bug #138600
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugTarget#getName()
-	 */
 	public String getName() throws DebugException 
 	{
 		if (m_programName == null) 
@@ -178,9 +141,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return m_programName;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugTarget#supportsBreakpoint(org.eclipse.debug.core.model.IBreakpoint)
-	 */
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) 
 	{
 		if (breakpoint.getModelIdentifier().equals(DebugConstants.debugModelId)) 
@@ -190,26 +150,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugElement#getDebugTarget()
-	 */
+
 	public IDebugTarget getDebugTarget() 
 	{
 		return this;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugElement#getLaunch()
-	 */
 	public ILaunch getLaunch() 
 	{
 		return m_launchHandle;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ITerminate#canTerminate()
-	 */
 	public boolean canTerminate() 
 	{
 		if (m_processHandle == null)
@@ -218,9 +169,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return m_processHandle.canTerminate();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ITerminate#isTerminated()
-	 */
 	public boolean isTerminated() 
 	{
 		if (m_processHandle == null)
@@ -229,16 +177,13 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		return m_processHandle.isTerminated();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ITerminate#terminate()
-	 */
 	public void terminate() throws DebugException 
 	{
 		try
 		{
 			m_debugServer.debugTerminate();
 
-			if (m_debugType == EDebugPlatfrom.eRhosync)
+			if (ProjectFactory.getInstance().typeFromProject(m_debugProject).equals(RhoconnectProject.class))
 			{
 				StopRhoconnectAppAdapter adapter = new StopRhoconnectAppAdapter();
 				adapter.stopSyncApp();
@@ -258,17 +203,11 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ISuspendResume#canResume()
-	 */
 	public boolean canResume() 
 	{
 		return !isTerminated() && isSuspended();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ISuspendResume#canSuspend()
-	 */
 	public boolean canSuspend() 
 	{
 		return !isTerminated() && !isSuspended();
@@ -280,17 +219,11 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ISuspendResume#isSuspended()
-	 */
 	public boolean isSuspended()
 	{
 		return m_isSuspended;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ISuspendResume#resume()
-	 */
 	public void resume() throws DebugException 
 	{
 		waitDebugProcessing();
@@ -324,40 +257,11 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		m_isSuspended = true;
 		m_threadHandle.fireSuspendEvent(detail);
 	}	
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ISuspendResume#suspend()
-	 */
+
 	public void suspend() throws DebugException 
 	{
 	}
-	
-	static private String prepareResNameForRhoconnectDebugger(String srcName)
-	{
-		srcName = srcName.replace('\\', '/');
-		srcName = srcName.substring(1, srcName.length());
-		String[] srcPath = srcName.split("/");
-		
-		if (srcPath.length < 1)
-			return "";
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append("/");
-		
-		for (int i=1; i<srcPath.length; ++i)
-		{
-			sb.append(srcPath[i]);
-		
-			if (i+1 < srcPath.length)
-				sb.append('/');
-		}
-		
-		return sb.toString();
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.IBreakpointListener#breakpointAdded(org.eclipse.debug.core.model.IBreakpoint)
-	 */
+
 	public void breakpointAdded(IBreakpoint breakpoint) 
 	{
 		if (supportsBreakpoint(breakpoint)) 
@@ -365,33 +269,25 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 			try 
 			{
 				if (breakpoint.isEnabled()) 
-				{
+				{					
 					ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 					
 					int    lineNum = lineBr.getLineNumber();
-					String srcFile = null;
-					
-					if (m_debugType == EDebugPlatfrom.eRhosync)
-					{
-						srcFile = prepareResNameForRhoconnectDebugger(lineBr.getResourcePath().toOSString());
-					}
-					else 
-					{
-						srcFile = prepareResNameForRhodesDebugger(lineBr.getResourcePath().toOSString());
-					}
+					String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
 					 										
 					m_debugServer.debugBreakpoint(srcFile, lineNum);
 				}
 			} 
 			catch (CoreException e) 
 			{
+			} 
+			catch (BadProjectTagException e) 
+			{
+				e.printStackTrace();
 			}
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.IBreakpointListener#breakpointRemoved(org.eclipse.debug.core.model.IBreakpoint, org.eclipse.core.resources.IMarkerDelta)
-	 */
+
 	public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) 
 	{
 		if (supportsBreakpoint(breakpoint)) 
@@ -401,28 +297,19 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 				
 				int    lineNum = lineBr.getLineNumber();
-				String srcFile = null;
-				
-				if (m_debugType == EDebugPlatfrom.eRhosync)
-				{
-					srcFile = prepareResNameForRhoconnectDebugger(lineBr.getResourcePath().toOSString());
-				}
-				else 
-				{
-					srcFile = prepareResNameForRhodesDebugger(lineBr.getResourcePath().toOSString());
-				}
+				String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
 				
 				m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
 			} 
 			catch (CoreException e) 
 			{
+			} catch (BadProjectTagException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.IBreakpointListener#breakpointChanged(org.eclipse.debug.core.model.IBreakpoint, org.eclipse.core.resources.IMarkerDelta)
-	 */
+
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) 
 	{
 		if (supportsBreakpoint(breakpoint)) 
@@ -444,17 +331,11 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDisconnect#canDisconnect()
-	 */
 	public boolean canDisconnect() 
 	{
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDisconnect#disconnect()
-	 */
 	public void disconnect() throws DebugException 
 	{
 	}
@@ -489,39 +370,19 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		m_debugServer.debugStepInto();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDisconnect#isDisconnected()
-	 */
 	public boolean isDisconnected() 
 	{
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IMemoryBlockRetrieval#supportsStorageRetrieval()
-	 */
 	public boolean supportsStorageRetrieval() 
 	{
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IMemoryBlockRetrieval#getMemoryBlock(long, long)
-	 */
 	public IMemoryBlock getMemoryBlock(long startAddress, long length) throws DebugException 
 	{
 		return null;
-	}
-	
-	static private String prepareResNameForRhodesDebugger(String resName)
-	{
-		resName = resName.replace('\\', '/');
-		String[] segments = resName.split("app/");
-		
-		if (segments.length > 1)
-			return segments[1];
-		
-		return segments[0];
 	}
 	
 	/**
@@ -622,21 +483,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 				IBreakpoint breakpoint = breakpoints[i];
 	
 				if (breakpoint instanceof ScriptLineBreakpoint)
-				{
-					ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
-					String resPath = null;
-					
-					if (m_debugType == EDebugPlatfrom.eRhosync)
-					{
-						resPath = prepareResNameForRhoconnectDebugger(lineBreakpoint.getResourcePath().toOSString());
-					}
-					else 
-					{
-						resPath = prepareResNameForRhodesDebugger(lineBreakpoint.getResourcePath().toOSString());
-					}
-										
+				{					
 					try 
 					{
+						ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
+						String resPath = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBreakpoint);
+										
 						if (lineBreakpoint.getLineNumber() == line && resPath.equals(file))
 						{
 							m_threadHandle.setBreakpoints(new IBreakpoint[]{breakpoint});
@@ -644,6 +496,9 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 						}
 					}
 					catch (CoreException e) 
+					{
+					}
+					catch (BadProjectTagException e1) 
 					{
 					}
 				}
@@ -666,7 +521,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 	@Override
 	public void exited() 
 	{
-		m_isTerminated = true;
 		m_isSuspended = false;
 		
 		DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(this);

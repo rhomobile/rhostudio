@@ -24,9 +24,9 @@ public interface IRhomobileProject
 	//
 	boolean checkProject() throws ProjectNotFoundException;
 	//
-	void linkFile(String projectPath) throws CoreException, ProjectNotFoundException;
+	public void linkFile(final String fileLinkName, final String filePath) throws CoreException, ProjectNotFoundException;
 	//
-	void linkFolder(String filePath) throws CoreException, ProjectNotFoundException;
+	public void linkFolder(final String folderLinkName, final String filePath) throws CoreException, ProjectNotFoundException;
 	//
 	void deleteProjectFiles() throws ProjectNotFoundException, CoreException;
 	//

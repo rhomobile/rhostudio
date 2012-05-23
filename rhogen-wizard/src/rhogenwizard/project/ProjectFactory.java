@@ -174,4 +174,23 @@ public class ProjectFactory implements IProjectFactory
 
 		throw new BadProjectTagException(IProject.class);
 	}
+	
+	@Override
+	public Class typeFromProject(IProject project) throws BadProjectTagException 
+	{
+		if (RhodesProject.checkNature(project))
+		{
+			return RhodesProject.class;
+		}
+		else if (RhoconnectProject.checkNature(project))
+		{
+			return RhoconnectProject.class;
+		}
+    	else if (RhoelementsProject.checkNature(project))
+    	{
+    		return RhoelementsProject.class;
+    	}
+
+		throw new BadProjectTagException(IProject.class);
+	}
 }

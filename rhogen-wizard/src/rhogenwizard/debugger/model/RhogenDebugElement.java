@@ -13,7 +13,6 @@ package rhogenwizard.debugger.model;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -43,33 +42,21 @@ public abstract class RhogenDebugElement extends PlatformObject implements IDebu
 		m_debugTarget = target;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugElement#getModelIdentifier()
-	 */
 	public String getModelIdentifier() 
 	{
 		return DebugConstants.debugModelId;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugElement#getDebugTarget()
-	 */
 	public IDebugTarget getDebugTarget() 
 	{
 		return m_debugTarget;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IDebugElement#getLaunch()
-	 */
 	public ILaunch getLaunch() 
 	{
 		return getDebugTarget().getLaunch();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
 	public Object getAdapter(Class adapter) 
 	{
 		if (adapter == IDebugElement.class) 

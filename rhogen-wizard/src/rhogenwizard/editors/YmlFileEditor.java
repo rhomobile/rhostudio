@@ -40,6 +40,11 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IDE;
 
 import rhogenwizard.buildfile.AppYmlFile;
+import rhogenwizard.project.IRhomobileProject;
+import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.project.RhomobileProject;
+import rhogenwizard.project.extension.BadProjectTagException;
+import rhogenwizard.project.extension.ProjectNotFoundException;
 
 /**
  * An example showing how to create a multi-page editor.
@@ -195,13 +200,22 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 
 			m_editor.updatePartControl(fileEditor);
 			
-			fileEditor.getFile().getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+			IRhomobileProject project = ProjectFactory.getInstance().convertFromProject(fileEditor.getFile().getProject());
+			project.refreshProject();
 		} 
 		catch (CoreException e) 
 		{
 			e.printStackTrace();
 		}
 		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (BadProjectTagException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (ProjectNotFoundException e) 
 		{
 			e.printStackTrace();
 		}
