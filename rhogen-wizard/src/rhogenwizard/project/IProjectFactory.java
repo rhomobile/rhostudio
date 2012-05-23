@@ -18,4 +18,6 @@ public interface IProjectFactory
 	IProject getSelectedProject();
 	//
 	boolean isProjectLocationInWorkspace(final String projectPath);
+	//
+	Class typeFromProject(IProject project) throws BadProjectTagException;
 }

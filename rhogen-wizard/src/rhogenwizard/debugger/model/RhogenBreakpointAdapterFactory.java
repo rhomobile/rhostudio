@@ -21,9 +21,6 @@ import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
  */
 public class RhogenBreakpointAdapterFactory implements IAdapterFactory 
 {
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
-	 */
 	public Object getAdapter(Object adaptableObject, Class adapterType) 
 	{
 		if (adaptableObject instanceof RubyEditor) 
@@ -45,10 +42,7 @@ public class RhogenBreakpointAdapterFactory implements IAdapterFactory
 		
 		return null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
-	 */
+
 	public Class[] getAdapterList() 
 	{
 		return new Class[] { IToggleBreakpointsTarget.class };

@@ -88,4 +88,20 @@ public class RhodesProject extends RhomobileProject
 		
 		return AppYmlFile.createFromProject(m_project);
 	}
+	
+	@Override
+	public void refreshProject() throws ProjectNotFoundException, CoreException
+	{
+		super.refreshProject();
+		
+		try 
+		{
+			AppYmlFile ymlFile = (AppYmlFile)this.getSettingFile();
+			linkFolder("framework", ymlFile.getFrameworkPath());
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }

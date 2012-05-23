@@ -185,18 +185,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		
 		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 		
-//		try 
-//		{
-//			AppYmlFile ymlFile = AppYmlFile.createFromProject(project);			
-//			ymlFile.disableRhoelementsFlag();
-//			ymlFile.save();
-//		}
-//		catch (FileNotFoundException e) 
-//		{
-//			//TODO - add error messages
-//			e.printStackTrace();
-//		}
-		
 		launchProject(configuration, mode, launch, monitor);
 	}
 
@@ -251,7 +239,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					e.printStackTrace();
 				}
 				
-				target = new RhogenDebugTarget(launch, null, RhogenDebugTarget.EDebugPlatfrom.eRhodes);
+				target = new RhogenDebugTarget(launch, null, project);
 			}
 			
 			try

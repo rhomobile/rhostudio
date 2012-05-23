@@ -166,7 +166,6 @@ public class RhogenValue extends RhogenDebugElement implements IValue
 				{
 					try
 					{
-						Integer i = new Integer(ss[1]);
 						out.add(sb.toString());
 						sb = new StringBuilder();						
 					}
