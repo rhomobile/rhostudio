@@ -150,9 +150,6 @@ public class AppWizard extends Wizard implements INewWizard
 		{
 			monitor.beginTask("Creating " + infoHolder.appName, 2);
 			monitor.worked(1);
-			monitor.setTaskName("Create project...");
-			
-			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); 
 			
 			if (CommonConstants.checkRhodesVersion)
 			{
@@ -180,7 +177,8 @@ public class AppWizard extends Wizard implements INewWizard
 				createProjectFiles(infoHolder, monitor);
 			}
 
-			
+			monitor.setTaskName("Create project...");
+			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); 
 			newProject.refreshProject();
 
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
