@@ -11,10 +11,6 @@ public class GenerateRhoelementsAppTask extends RhoelementsTask
 {
     public static final String appName = "appname";
 
-    public GenerateRhoelementsAppTask()
-    {
-    }
-
     public GenerateRhoelementsAppTask(String workDir, String appName)
     {
         Map<String, Object> params = new HashMap<String, Object>();

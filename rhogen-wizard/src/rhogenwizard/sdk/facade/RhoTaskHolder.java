@@ -44,7 +44,6 @@ public class RhoTaskHolder
 		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
 		m_holdTasks.put(GenerateRhodesSpecTask.class, new GenerateRhodesSpecTask());
 		m_holdTasks.put(GenerateRhodesExtensionTask.class, new GenerateRhodesExtensionTask());
-		m_holdTasks.put(GenerateRhoelementsAppTask.class, new GenerateRhoelementsAppTask());
 	}
 	
 	public static RhoTaskHolder getInstance()
