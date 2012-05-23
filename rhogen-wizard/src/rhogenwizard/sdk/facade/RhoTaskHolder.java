@@ -43,7 +43,6 @@ public class RhoTaskHolder
 		m_holdTasks.put(CompileRubyPartTask.class, new CompileRubyPartTask());
 		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
 		m_holdTasks.put(GenerateRhodesSpecTask.class, new GenerateRhodesSpecTask());
-		m_holdTasks.put(GenerateRhodesExtensionTask.class, new GenerateRhodesExtensionTask());
 	}
 	
 	public static RhoTaskHolder getInstance()
