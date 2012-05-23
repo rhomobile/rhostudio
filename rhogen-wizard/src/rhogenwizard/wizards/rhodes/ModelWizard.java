@@ -10,23 +10,16 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
 
-import rhogenwizard.Activator;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.OSHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
@@ -35,79 +28,6 @@ import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 import rhogenwizard.wizards.ZeroPage;
-
-class ModelCreationJob extends UIJob 
-{
-	String   m_modelName = null;
-	String   m_modelParams = null;
-	String   m_projectLocation = null;
-	IProject m_currentProject = null;
-	
-	public ModelCreationJob(String name
-							, String projectLocation
-							, String modelName
-							, String modelParams
-							, IProject currentProject) 
-	{
-		super(name);
-		m_modelName       = modelName;
-		m_modelParams     = modelParams;
-		m_projectLocation = projectLocation;
-		m_currentProject  = currentProject;
-	}
-
-	@Override
-	public IStatus runInUIThread(IProgressMonitor monitor)
-	{
-		Shell windowShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		
-		File modelFolder = new File(m_projectLocation + "/app/" + m_modelName);
-		
-		if (modelFolder.exists())
-		{
-			MessageBox messageBox = new MessageBox(windowShell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-			messageBox.setText("Model create");
-			messageBox.setMessage("Model with name " + m_modelName + " was already created. Delete old model?");
-			
-			if (SWT.OK == messageBox.open())
-			{
-				OSHelper.deleteFolder(modelFolder);
-			}
-			else
-			{
-				return new Status(BUILD, Activator.PLUGIN_ID, "model create");
-			}
-		}
-		
-		try
-		{
-			Map<String, Object> params = new HashMap<String, Object>();
-			
-			params.put(GenerateRhodesModelTask.modelName, m_modelName);
-			params.put(GenerateRhodesModelTask.workDir, m_projectLocation);
-			params.put(GenerateRhodesModelTask.modelFields, m_modelParams);
-			
-			Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
-			
-			if (TaskResultConverter.getResultIntCode(results) != 0)
-			{
-				throw new IOException("The Rhodes SDK do not installed");
-			}
-			
-			m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-		}
-		catch (CoreException e) 
-		{
-			e.printStackTrace();
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return new Status(BUILD, Activator.PLUGIN_ID, "model create");
-	}
-}
 
 public class ModelWizard extends Wizard implements INewWizard 
 {
@@ -200,7 +120,7 @@ public class ModelWizard extends Wizard implements INewWizard
 		
 		try 
 		{
-			getContainer().run(true, false, op);
+			getContainer().run(true, true, op);
 		} 
 		catch (InterruptedException e) 
 		{
@@ -235,9 +155,8 @@ public class ModelWizard extends Wizard implements INewWizard
 			
 			if (null != m_projectLocation)
 			{
-				ModelCreationJob modelJob = new ModelCreationJob("create model", m_projectLocation, 
-						modelName, modelParams, m_currentProject);
-				modelJob.run(monitor);
+                createModel(monitor, m_projectLocation, modelName, modelParams,
+                        m_currentProject);
 			}
 			else
 			{
@@ -261,4 +180,50 @@ public class ModelWizard extends Wizard implements INewWizard
 	{
 		this.m_selection = selection;
 	}
+
+    private static void createModel(IProgressMonitor monitor, String projectLocation
+            , String modelName
+            , String modelParams
+            , IProject currentProject)
+    {
+        File modelFolder = new File(projectLocation + "/app/" + modelName);
+        
+        if (modelFolder.exists())
+        {
+            boolean ok =
+                    DialogUtils.confirm("Model create", "Model with name " + modelName
+                            + " was already created. Delete old model?");
+            if (!ok)
+            {
+                return;
+            }
+            OSHelper.deleteFolder(modelFolder);
+        }
+        
+        try
+        {
+            Map<String, Object> params = new HashMap<String, Object>();
+            
+            params.put(GenerateRhodesModelTask.modelName, modelName);
+            params.put(GenerateRhodesModelTask.workDir, projectLocation);
+            params.put(GenerateRhodesModelTask.modelFields, modelParams);
+            
+            Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
+            
+            if (TaskResultConverter.getResultIntCode(results) != 0)
+            {
+                throw new IOException("The Rhodes SDK do not installed");
+            }
+            
+            currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        }
+        catch (CoreException e) 
+        {
+            e.printStackTrace();
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
 }
