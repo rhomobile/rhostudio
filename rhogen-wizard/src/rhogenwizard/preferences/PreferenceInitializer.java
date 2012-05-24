@@ -19,7 +19,6 @@ import org.eclipse.ui.PlatformUI;
 
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;

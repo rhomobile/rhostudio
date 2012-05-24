@@ -19,7 +19,6 @@ import java.io.*;
 import org.eclipse.ui.*;
 
 import rhogenwizard.DialogUtils;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;

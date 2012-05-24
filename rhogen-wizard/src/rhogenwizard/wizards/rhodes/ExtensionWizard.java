@@ -20,7 +20,6 @@ import org.eclipse.ui.IWorkbenchWizard;
 
 import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
