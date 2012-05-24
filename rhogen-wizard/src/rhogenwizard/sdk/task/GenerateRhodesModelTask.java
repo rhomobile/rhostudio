@@ -12,10 +12,6 @@ public class GenerateRhodesModelTask extends RhodesTask
     public static final String modelName = "model-name";
     public static final String modelFields = "model-fields";
 
-    public GenerateRhodesModelTask()
-    {
-    }
-
     public GenerateRhodesModelTask(String projectLocation, String modelName, String modelParams)
     {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -39,8 +35,6 @@ public class GenerateRhodesModelTask extends RhodesTask
         modelFields = prepareModelAttributes(modelFields);
 
         List<String> cmdLine = Arrays.asList(m_rhogenExe, "model", modelName, modelFields);
-
-        // cmdLine = Arrays.asList("sleep", "1000");
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
