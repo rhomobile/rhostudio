@@ -84,15 +84,10 @@ public class RhoconnectCreationTest extends TestCase
 
         // create adapter
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
-            params.put(GenerateRhoconnectAdapterTask.workDir, projectLocation);
+            RakeTask task = new GenerateRhoconnectAdapterTask(projectLocation, adapterName);
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.class,
-                            params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
             assertTrue(OSHelper.concat(projectLocation, "sources", "adapter001.rb").isFile());
             assertTrue(OSHelper
                     .concat(projectLocation, "spec", "sources", "adapter001_spec.rb").isFile());
