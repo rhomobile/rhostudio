@@ -2,7 +2,6 @@ package rhogenwizard.launcher.rhodes;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -22,13 +21,13 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
@@ -290,8 +289,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		}
 		catch (IllegalArgumentException e) 
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
-			msgJob.run(monitor);
+			DialogUtils.error("Error", e.getMessage());
 		}
 	}
 	

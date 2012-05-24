@@ -17,6 +17,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
 import rhogenwizard.BuildInfoHolder;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
@@ -165,9 +166,12 @@ public class AppWizard extends Wizard implements INewWizard
 				catch (IOException e)
 				{
 					newProject.deleteProjectFiles();
-					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed Rhodes have old version, need rhodes version equal or greater " 
-							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-					msgJob.run(monitor);
+
+					String msg =
+					        "Installed Rhodes have old version, need rhodes version equal or greater "
+					                + CommonConstants.rhodesVersion
+					                + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+					DialogUtils.error("Error", msg);
 					return;					
 				}
 			}
@@ -189,14 +193,15 @@ public class AppWizard extends Wizard implements INewWizard
 		catch (IOException e)
 		{
 			newProject.deleteProjectFiles();
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find Rhodes, need rhodes version equal or greater " 
-					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-			msgJob.run(monitor);
+
+			String msg = "Cannot find Rhodes, need rhodes version equal or greater " 
+					+ CommonConstants.rhodesVersion
+					+ " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+			DialogUtils.error("Error", msg);
 		}
 		catch (AlredyCreatedException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
-			msgJob.run(monitor);		
+			DialogUtils.warn("Warning", e.toString());
 		}
 		catch (Exception e)
 		{

@@ -17,6 +17,7 @@ import java.io.*;
 
 import org.eclipse.ui.*;
 import rhogenwizard.BuildInfoHolder;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.MsgConstants;
@@ -156,18 +157,15 @@ public class AppWizard extends Wizard implements INewWizard
 		catch (IOException e)
 		{
 			newProject.deleteProjectFiles();
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
-			msgJob.run(monitor);
+			DialogUtils.error("Error", MsgConstants.errFindRhosync);
 		}
 		catch (CheckProjectException e) 
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
-			msgJob.run(monitor);		
+		    DialogUtils.error("Error", e.getMessage());
 		}
 		catch (AlredyCreatedException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Warning", e.toString());
-			msgJob.run(monitor);		
+		    DialogUtils.warn("Warning", e.toString());
 		}
 		catch (Exception e)
 		{

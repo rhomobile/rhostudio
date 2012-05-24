@@ -16,6 +16,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
+import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
@@ -176,14 +177,10 @@ public class SpecWizard extends Wizard implements INewWizard
                 }
                 catch (IOException e)
                 {
-                    ShowMessageJob msgJob =
-                            new ShowMessageJob(
-                                    "",
-                                    "Error",
-                                    "Installed RhoMobile have old version, need RhoMobile version equal or greater "
+                    String message = "Installed RhoMobile have old version, need RhoMobile version equal or greater "
                                             + CommonConstants.rhodesVersion
-                                            + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-                    msgJob.run(monitor);
+                                            + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+                    DialogUtils.error("Error", message);
                     return;
                 }
             }
@@ -199,14 +196,11 @@ public class SpecWizard extends Wizard implements INewWizard
         }
         catch (IOException e)
         {
-            ShowMessageJob msgJob =
-                    new ShowMessageJob(
-                            "",
-                            "Error",
+            String message =
                             "Cannot find RhoMobile, need RhoMobile version equal or greater "
                                     + CommonConstants.rhodesVersion
-                                    + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-            msgJob.run(monitor);
+                                    + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+            DialogUtils.error("Error", message);
         }
         catch (Exception e)
         {

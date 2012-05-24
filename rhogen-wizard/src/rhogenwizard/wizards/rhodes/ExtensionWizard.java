@@ -18,6 +18,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
+import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
@@ -172,9 +173,10 @@ public class ExtensionWizard extends Wizard implements INewWizard
 				}
 				catch (IOException e)
 				{
-					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed RhoMobile have old version, need RhoMobile version equal or greater " 
-							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-					msgJob.run(monitor);
+					String message = "Installed RhoMobile have old version, need RhoMobile version equal or greater " 
+							+ CommonConstants.rhodesVersion
+							+ " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+					DialogUtils.error("Error", message);
 					return;					
 				}
 			}	
@@ -188,9 +190,10 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find RhoMobile, need rhodes version equal or greater " 
-					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-			msgJob.run(monitor);
+			String message = "Cannot find RhoMobile, need rhodes version equal or greater " 
+					+ CommonConstants.rhodesVersion
+					+ " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+			DialogUtils.error("Error", message);
 		}
 		catch (Exception e)
 		{
