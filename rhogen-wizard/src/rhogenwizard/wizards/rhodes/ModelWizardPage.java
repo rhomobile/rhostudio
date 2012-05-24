@@ -90,10 +90,9 @@ public class ModelWizardPage extends WizardPage
 			return;
 		}
 			
-		if (getModelParams().length() == 0) 
+		if (!checkModelParams(getModelParams()))
 		{
-			updateStatus("Model attributes must be specified. Sample: list of one or\n" +
-					"   more string attributes (i.e. name,industry,progress), NO spaces between attributes");
+			updateStatus("Model attributes must be a comma-separated list of identifiers.");
 			return;
 		}
 
@@ -114,5 +113,11 @@ public class ModelWizardPage extends WizardPage
 	public String getModelParams() 
 	{
 		return m_modelParams.getText();
+	}
+
+	private boolean checkModelParams(String modelParams)
+	{
+	    String item = "\\s*\\p{Alpha}\\w*\\s*"; // identifier in spaces
+	    return modelParams.matches("^" + item + "(," + item + ")*$");
 	}
 }
