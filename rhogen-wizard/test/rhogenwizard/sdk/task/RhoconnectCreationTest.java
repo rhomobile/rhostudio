@@ -59,15 +59,9 @@ public class RhoconnectCreationTest extends TestCase
     {
         String appName = "test003";
 
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        params.put(GenerateRhoconnectAppTask.appName, appName);
-        params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
-
-        Map<String, ?> results =
-                RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
-
-        assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+        RakeTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
+        task.run();
+        assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
         assertTrue(checkCreateRhoconnectFile(workspaceFolder + File.separator + appName));
     }
@@ -81,31 +75,19 @@ public class RhoconnectCreationTest extends TestCase
 
         // create application
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(GenerateRhoconnectAppTask.appName, appName);
-            params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
-
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance()
-                            .runTask(GenerateRhoconnectAppTask.class, params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+            RakeTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             assertTrue(checkCreateRhoconnectFile(projectLocation));
         }
 
         // create adapter
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put(GenerateRhoconnectAdapterTask.sourceName, adapterName);
-            params.put(GenerateRhoconnectAdapterTask.workDir, projectLocation);
+            RakeTask task = new GenerateRhoconnectAdapterTask(projectLocation, adapterName);
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAdapterTask.class,
-                            params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
             assertTrue(OSHelper.concat(projectLocation, "sources", "adapter001.rb").isFile());
             assertTrue(OSHelper
                     .concat(projectLocation, "spec", "sources", "adapter001_spec.rb").isFile());

@@ -91,17 +91,9 @@ public class RhodesCreationTest extends TestCase
 
         // create model
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-            params = new HashMap<String, Object>();
-
-            params.put(GenerateRhodesModelTask.modelName, modelName);
-            params.put(GenerateRhodesModelTask.workDir, projectLoc);
-            params.put(GenerateRhodesModelTask.modelFields, "a, b, c");
-
-            Map<String, ?> modelResults =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
+            RakeTask task = new GenerateRhodesModelTask(projectLoc, modelName, "a, b, c");
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             // TODO: why model directory is capitalized?
             assertTrue(OSHelper.concat(projectLoc, "app", "Model002").isDirectory());
@@ -120,7 +112,6 @@ public class RhodesCreationTest extends TestCase
         {
             RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
-
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             assertTrue(checkCreateRhodesFile(projectLoc));
@@ -128,16 +119,9 @@ public class RhodesCreationTest extends TestCase
 
         // create extension
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(GenerateRhodesExtensionTask.extName, extensionName);
-            params.put(GenerateRhodesExtensionTask.workDir, projectLoc);
-
-            Map<String, ?> modelResults =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesExtensionTask.class,
-                            params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(modelResults), 0);
+            RakeTask task = new GenerateRhodesExtensionTask(projectLoc, extensionName);
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             // TODO: why extension directory is capitalized?
             assertTrue(OSHelper.concat(projectLoc, "app", "Extension005Test").isDirectory());
@@ -155,7 +139,6 @@ public class RhodesCreationTest extends TestCase
         {
             RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
-
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             assertTrue(checkCreateRhodesFile(projectLoc));
@@ -163,14 +146,9 @@ public class RhodesCreationTest extends TestCase
 
         // create spec
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(GenerateRhodesSpecTask.workDir, projectLoc);
-
-            Map<String, ?> specResults =
-                    RhoTaskHolder.getInstance().runTask(GenerateRhodesSpecTask.class, params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(specResults), 0);
+            RakeTask task = new GenerateRhodesSpecTask(projectLoc);
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             // TODO: why extension directory is capitalized?
             assertTrue(OSHelper.concat(projectLoc, "app", "mspec.rb").isFile());

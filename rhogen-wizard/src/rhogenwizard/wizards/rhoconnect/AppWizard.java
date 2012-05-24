@@ -1,21 +1,20 @@
 package rhogenwizard.wizards.rhoconnect;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jface.operation.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import org.eclipse.ui.IWorkbenchWizard;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.core.runtime.CoreException;
-import java.io.*;
-
-import org.eclipse.ui.*;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
@@ -30,6 +29,7 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
+import rhogenwizard.sdk.task.RakeTask;
 
 public class AppWizard extends Wizard implements INewWizard
 {
@@ -89,7 +89,7 @@ public class AppWizard extends Wizard implements INewWizard
 
         try
         {
-            getContainer().run(true, false, op);
+            getContainer().run(true, true, op);
         }
         catch (InterruptedException e)
         {
@@ -110,14 +110,10 @@ public class AppWizard extends Wizard implements INewWizard
     {
         monitor.setTaskName("Generate application...");
 
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        params.put(GenerateRhoconnectAppTask.appName, infoHolder.appName);
-        params.put(GenerateRhoconnectAppTask.workDir, infoHolder.getProjectLocationPath()
-                .toOSString());
-
-        Map results =
-                RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
+        RakeTask task =
+                new GenerateRhoconnectAppTask(infoHolder.getProjectLocationPath().toOSString(),
+                        infoHolder.appName);
+        Map<String, ?> results = task.run(monitor);
 
         if (TaskResultConverter.getResultIntCode(results) != 0)
         {

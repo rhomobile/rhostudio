@@ -33,14 +33,11 @@ public class RhoTaskHolder
 		// added tasks
 		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
 		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());
-		m_holdTasks.put(GenerateRhoconnectAppTask.class, new GenerateRhoconnectAppTask());
-		m_holdTasks.put(GenerateRhoconnectAdapterTask.class, new GenerateRhoconnectAdapterTask());
 		m_holdTasks.put(RunDebugRhoconnectAppTask.class, new RunDebugRhoconnectAppTask());
 		m_holdTasks.put(RunReleaseRhoconnectAppTask.class, new RunReleaseRhoconnectAppTask());
 		m_holdTasks.put(CleanPlatformTask.class, new CleanPlatformTask());
 		m_holdTasks.put(CleanAllPlatfromTask.class, new CleanAllPlatfromTask());	
 		m_holdTasks.put(CompileRubyPartTask.class, new CompileRubyPartTask());
-		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
 	}
 	
 	public static RhoTaskHolder getInstance()
