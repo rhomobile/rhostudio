@@ -59,15 +59,9 @@ public class RhoconnectCreationTest extends TestCase
     {
         String appName = "test003";
 
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        params.put(GenerateRhoconnectAppTask.appName, appName);
-        params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
-
-        Map<String, ?> results =
-                RhoTaskHolder.getInstance().runTask(GenerateRhoconnectAppTask.class, params);
-
-        assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+        RakeTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
+        task.run();
+        assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
         assertTrue(checkCreateRhoconnectFile(workspaceFolder + File.separator + appName));
     }
@@ -81,16 +75,9 @@ public class RhoconnectCreationTest extends TestCase
 
         // create application
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(GenerateRhoconnectAppTask.appName, appName);
-            params.put(GenerateRhoconnectAppTask.workDir, workspaceFolder);
-
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance()
-                            .runTask(GenerateRhoconnectAppTask.class, params);
-
-            assertEquals(TaskResultConverter.getResultIntCode(results), 0);
+            RakeTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             assertTrue(checkCreateRhoconnectFile(projectLocation));
         }
