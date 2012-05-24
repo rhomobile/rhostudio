@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -28,8 +27,8 @@ import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
-import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
 import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
+import rhogenwizard.sdk.task.RakeTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SpecWizard extends Wizard implements INewWizard
@@ -122,7 +121,7 @@ public class SpecWizard extends Wizard implements INewWizard
 
         try
         {
-            getContainer().run(true, false, op);
+            getContainer().run(true, true, op);
         }
         catch (InterruptedException e)
         {
@@ -138,12 +137,10 @@ public class SpecWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(IProgressMonitor monitor) throws Exception
+    private void createProjectFiles(IProgressMonitor monitor) throws InterruptedException, IOException
     {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(GenerateRhodesSpecTask.workDir, m_currentProject.getLocation().toOSString());
-
-        Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesSpecTask.class, params);
+        RakeTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
+        Map<String, ?> results = task.run(monitor);
 
         if (TaskResultConverter.getResultIntCode(results) != 0)
         {
@@ -209,11 +206,6 @@ public class SpecWizard extends Wizard implements INewWizard
                             "Cannot find RhoMobile, need RhoMobile version equal or greater "
                                     + CommonConstants.rhodesVersion
                                     + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-            msgJob.run(monitor);
-        }
-        catch (AlredyCreatedException e)
-        {
-            ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
             msgJob.run(monitor);
         }
         catch (Exception e)

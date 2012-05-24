@@ -1,42 +1,41 @@
 package rhogenwizard.sdk.task;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.naming.directory.InvalidAttributesException;
+import java.util.Map;
 
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhodesSpecTask extends RhodesTask
 {
+    public GenerateRhodesSpecTask(String workDir)
+    {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(IRunTask.workDir, workDir);
+        m_taskParams = params;
+    }
+
     @Override
     public void run()
     {
+        if (m_taskParams == null || m_taskParams.size() == 0)
+            throw new IllegalArgumentException(
+                    "parameters data is invalid [GenerateRhodesAppSpec]");
+
+        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+
+        List<String> cmdLine = Arrays.asList(m_rhogenExe, "spec");
+
+        int result = TaskResultConverter.failCode;
         try
         {
-            m_taskResult.clear();
-
-            if (m_taskParams == null || m_taskParams.size() == 0)
-                throw new InvalidAttributesException(
-                        "parameters data is invalid [GenerateRhodesAppSpec]");
-
-            String workDir = (String) m_taskParams.get(this.workDir);
-
             m_executor.setWorkingDirectory(workDir);
-
-            List<String> cmdLine = new ArrayList<String>();
-            cmdLine.add(m_rhogenExe);
-            cmdLine.add("spec");
-
-            int res = m_executor.runCommand(cmdLine);
-
-            Integer resCode = new Integer(res);
-            m_taskResult.put(resTag, resCode);
+            result = m_executor.runCommand(cmdLine);
         }
         catch (Exception e)
         {
-            Integer resCode = new Integer(TaskResultConverter.failCode);
-            m_taskResult.put(resTag, resCode);
         }
+        m_taskResult.put(resTag, result);
     }
 }
