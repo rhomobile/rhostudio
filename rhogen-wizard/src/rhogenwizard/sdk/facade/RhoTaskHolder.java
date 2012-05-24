@@ -38,7 +38,6 @@ public class RhoTaskHolder
 		m_holdTasks.put(CleanPlatformTask.class, new CleanPlatformTask());
 		m_holdTasks.put(CleanAllPlatfromTask.class, new CleanAllPlatfromTask());	
 		m_holdTasks.put(CompileRubyPartTask.class, new CompileRubyPartTask());
-		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
 	}
 	
 	public static RhoTaskHolder getInstance()
