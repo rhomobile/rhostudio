@@ -1,6 +1,6 @@
 package rhogenwizard.sdk.task;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +10,6 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 public class GenerateRhoelementsAppTask extends RhoelementsTask
 {
     public static final String appName = "appname";
-
-    public GenerateRhoelementsAppTask()
-    {
-    }
 
     public GenerateRhoelementsAppTask(String workDir, String appName)
     {
@@ -33,10 +29,7 @@ public class GenerateRhoelementsAppTask extends RhoelementsTask
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
         String appName = (String) m_taskParams.get(GenerateRhoelementsAppTask.appName);
 
-        List<String> cmdLine = new ArrayList<String>();
-        cmdLine.add(m_rhoelExe);
-        cmdLine.add("app");
-        cmdLine.add(appName);
+        List<String> cmdLine = Arrays.asList(m_rhoelExe, "app", appName);
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;

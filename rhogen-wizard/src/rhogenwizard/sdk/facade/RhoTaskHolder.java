@@ -31,7 +31,6 @@ public class RhoTaskHolder
 		m_holdTasks = new HashMap<Class<? extends IRunTask>, IRunTask>();
 		
 		// added tasks
-		m_holdTasks.put(GenerateRhodesModelTask.class, new GenerateRhodesModelTask());
 		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
 		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());
 		m_holdTasks.put(GenerateRhoconnectAppTask.class, new GenerateRhoconnectAppTask());
@@ -42,9 +41,6 @@ public class RhoTaskHolder
 		m_holdTasks.put(CleanAllPlatfromTask.class, new CleanAllPlatfromTask());	
 		m_holdTasks.put(CompileRubyPartTask.class, new CompileRubyPartTask());
 		m_holdTasks.put(BuildPlatformTask.class, new BuildPlatformTask());
-		m_holdTasks.put(GenerateRhodesSpecTask.class, new GenerateRhodesSpecTask());
-		m_holdTasks.put(GenerateRhodesExtensionTask.class, new GenerateRhodesExtensionTask());
-		m_holdTasks.put(GenerateRhoelementsAppTask.class, new GenerateRhoelementsAppTask());
 	}
 	
 	public static RhoTaskHolder getInstance()

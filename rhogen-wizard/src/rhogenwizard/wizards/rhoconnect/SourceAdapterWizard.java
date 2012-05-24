@@ -17,7 +17,8 @@ import org.eclipse.core.runtime.CoreException;
 import java.io.*;
 
 import org.eclipse.ui.*;
-import rhogenwizard.ShowMessageJob;
+
+import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
@@ -170,8 +171,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", MsgConstants.errFindRhosync);
-			msgJob.run(monitor);
+		    DialogUtils.error("Error", MsgConstants.errFindRhosync);
 		}
 		catch (Exception e)
 		{

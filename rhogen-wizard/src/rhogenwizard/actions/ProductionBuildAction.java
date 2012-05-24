@@ -3,11 +3,11 @@ package rhogenwizard.actions;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+
+import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.builder.rhodes.SelectPlatformBuildJob;
 import rhogenwizard.builder.rhodes.SelectPlatformDialog;
 import rhogenwizard.project.ProjectFactory;
@@ -30,15 +30,13 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 		
 		if (project == null)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Before run production build select RhoMobile project");
-			msgJob.schedule();
+			DialogUtils.error("Error", "Before run production build select RhoMobile project");
 			return;
 		}
 		
 		if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Production build can run only for RhoMobile project");
-			msgJob.schedule();
+			DialogUtils.error("Error", "Production build can run only for RhoMobile project");
 			return;
 		}
 		

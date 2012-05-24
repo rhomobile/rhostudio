@@ -17,8 +17,8 @@ import java.io.*;
 
 import org.eclipse.ui.*;
 import rhogenwizard.BuildInfoHolder;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.MsgConstants;
@@ -187,8 +187,7 @@ public class AppWizard extends Wizard implements INewWizard
 		}
 		catch (AlredyCreatedException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Warning", e.toString());
-			msgJob.run(monitor);		
+		    DialogUtils.warn("Warning", e.toString());
 		}
 		catch (Exception e)
 		{

@@ -18,8 +18,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
+import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
@@ -31,6 +31,7 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
+import rhogenwizard.sdk.task.RakeTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class ExtensionWizard extends Wizard implements INewWizard 
@@ -112,7 +113,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		
 		try 
 		{
-			getContainer().run(true, false, op);
+			getContainer().run(true, true, op);
 		} 
 		catch (InterruptedException e) 
 		{
@@ -128,20 +129,18 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		return true;
 	}
 	
-	private void createProjectFiles(final String extName, IProgressMonitor monitor) throws Exception
-	{
-		Map<String, Object> params = new HashMap<String, Object>();
-		
-		params.put(GenerateRhodesExtensionTask.extName, extName);
-		params.put(GenerateRhodesExtensionTask.workDir, m_currentProject.getLocation().toOSString());
-		
-		Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesExtensionTask.class, params);
-		
-		if (TaskResultConverter.getResultIntCode(results) != 0)
-		{
-			throw new IOException("The Rhodes SDK do not installed");
-		}	
-	}
+    private void createProjectFiles(final String extName, IProgressMonitor monitor)
+            throws InterruptedException, IOException
+    {
+        RakeTask task =
+                new GenerateRhodesExtensionTask(m_currentProject.getLocation().toOSString(),
+                        extName);
+        Map<String, ?> results = task.run(monitor);
+        if (TaskResultConverter.getResultIntCode(results) != 0)
+        {
+            throw new IOException("The Rhodes SDK do not installed");
+        }
+    }
 	
 	/**
 	 * @throws ProjectNotFoundExtension 
@@ -173,9 +172,10 @@ public class ExtensionWizard extends Wizard implements INewWizard
 				}
 				catch (IOException e)
 				{
-					ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Installed RhoMobile have old version, need RhoMobile version equal or greater " 
-							+ CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-					msgJob.run(monitor);
+					String message = "Installed RhoMobile have old version, need RhoMobile version equal or greater " 
+							+ CommonConstants.rhodesVersion
+							+ " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+					DialogUtils.error("Error", message);
 					return;					
 				}
 			}	
@@ -189,14 +189,10 @@ public class ExtensionWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", "Cannot find RhoMobile, need rhodes version equal or greater " 
-					+ CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)");
-			msgJob.run(monitor);
-		}
-		catch (AlredyCreatedException e)
-		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Warining", e.toString());
-			msgJob.run(monitor);		
+			String message = "Cannot find RhoMobile, need rhodes version equal or greater " 
+					+ CommonConstants.rhodesVersion
+					+ " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+			DialogUtils.error("Error", message);
 		}
 		catch (Exception e)
 		{

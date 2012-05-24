@@ -20,8 +20,8 @@ import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.LogFileHelper;
-import rhogenwizard.ShowMessageJob;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
@@ -210,8 +210,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		}
 		catch (IllegalArgumentException e) 
 		{
-			ShowMessageJob msgJob = new ShowMessageJob("", "Error", e.getMessage());
-			msgJob.run(monitor);
+			DialogUtils.error("Error", e.getMessage());
 		}
 	}
 

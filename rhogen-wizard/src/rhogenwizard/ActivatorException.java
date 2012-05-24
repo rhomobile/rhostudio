@@ -13,4 +13,9 @@ public class ActivatorException extends RuntimeException
     {
         super(msg, cause);
     }
+
+    public ActivatorException(Throwable cause)
+    {
+        super(cause);
+    }
 }
