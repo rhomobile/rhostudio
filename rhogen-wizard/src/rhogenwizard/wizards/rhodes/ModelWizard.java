@@ -3,7 +3,6 @@ package rhogenwizard.wizards.rhodes;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -24,170 +23,157 @@ import rhogenwizard.OSHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
+import rhogenwizard.sdk.task.RakeTask;
 import rhogenwizard.wizards.ZeroPage;
 
-public class ModelWizard extends Wizard implements INewWizard 
+public class ModelWizard extends Wizard implements INewWizard
 {
-	private ModelWizardPage m_pageModel = null;
-	private ISelection      m_selection = null;
-	private String 	        m_projectLocation = null;
-	private IProject		m_currentProject = null;
-	
-	public ModelWizard()
-	{
-		super();
-		setNeedsProgressMonitor(true);
-		
-		m_currentProject = ProjectFactory.getInstance().getSelectedProject();
+    private ModelWizardPage m_pageModel = null;
+    private ISelection m_selection = null;
+    private IProject m_currentProject = null;
 
-		if (m_currentProject != null)
-		{	
-			m_projectLocation = m_currentProject.getLocation().toOSString();
-		}
-	}
-	
-	/**
-	 * Constructor for SampleNewWizard.
-	 */
-	public ModelWizard(IProject currentProject) 
-	{
-		super();
-		setNeedsProgressMonitor(true);
-		
-		m_currentProject  = currentProject;
-		m_projectLocation = m_currentProject.getLocation().toOSString();
-	}
-	
-	/**
-	 * Adding the page to the wizard.
-	 */
-	public void addPages() 
-	{
-		if (m_currentProject != null)
-		{
-			if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
-			{
-				ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not RhoMobile application");
-				addPage(zeroPage);
-			}
-			else
-			{
-				m_pageModel = new ModelWizardPage(m_selection);
-				addPage(m_pageModel);
-			}
-		}
-		else
-		{
-			ZeroPage zeroPage = new ZeroPage("Select RhoMobile project for create model");
-			addPage(zeroPage);			
-		}
-	}
+    public ModelWizard()
+    {
+        this(ProjectFactory.getInstance().getSelectedProject());
+    }
 
-	/**
-	 * This method is called when 'Finish' button is pressed in
-	 * the wizard. We will create an operation and run it
-	 * using wizard as execution context.
-	 */
-	public boolean performFinish() 
-	{
-		if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
-			return true;
-	
-		final String modelName   = m_pageModel.getModelName();
-		final String modelParams = m_pageModel.getModelParams();
-		
-		IRunnableWithProgress op = new IRunnableWithProgress() 
-		{
-			public void run(IProgressMonitor monitor) throws InvocationTargetException 
-			{
-				try
-				{
-					doFinish(modelName, modelParams, monitor);
-				}
-				catch (CoreException e) 
-				{
-					throw new InvocationTargetException(e);
-				} 
-				finally 
-				{
-					monitor.done();
-				}
-			}
-		};
-		
-		try 
-		{
-			getContainer().run(true, true, op);
-		} 
-		catch (InterruptedException e) 
-		{
-			return false;
-		} 
-		catch (InvocationTargetException e) 
-		{
-			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
-			return false;
-		}
-		
-		return true;
-	}
-	
-	/**
-	 * The worker method. It will find the container, create the
-	 * file if missing or just replace its contents, and open
-	 * the editor on the newly created file.
-	 */
-	private void doFinish(
-		String modelName,
-		String modelParams,
-		IProgressMonitor monitor)
-		throws CoreException 
-	{
-		try 
-		{
-			monitor.beginTask("Creating model " + modelName, 2);
-			monitor.worked(1);
-			monitor.setTaskName("Creating model...");
-			
-			if (null != m_projectLocation)
-			{
-                createModel(monitor, m_projectLocation, modelName, modelParams,
-                        m_currentProject);
-			}
-			else
-			{
-				//TODO show error message
-			}
-			
-			monitor.worked(1);
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * We will accept the selection in the workbench to see if
-	 * we can initialize from it.
-	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
-	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection) 
-	{
-		this.m_selection = selection;
-	}
+    public ModelWizard(IProject currentProject)
+    {
+        setNeedsProgressMonitor(true);
+        m_currentProject = currentProject;
+    }
 
-    private static void createModel(IProgressMonitor monitor, String projectLocation
-            , String modelName
-            , String modelParams
-            , IProject currentProject)
+    /**
+     * Adding the page to the wizard.
+     */
+    public void addPages()
+    {
+        if (m_currentProject != null)
+        {
+            if (!RhodesProject.checkNature(m_currentProject)
+                    && !RhoelementsProject.checkNature(m_currentProject))
+            {
+                ZeroPage zeroPage =
+                        new ZeroPage("Project " + m_currentProject.getName()
+                                + " is not RhoMobile application");
+                addPage(zeroPage);
+            }
+            else
+            {
+                m_pageModel = new ModelWizardPage(m_selection);
+                addPage(m_pageModel);
+            }
+        }
+        else
+        {
+            ZeroPage zeroPage = new ZeroPage("Select RhoMobile project for create model");
+            addPage(zeroPage);
+        }
+    }
+
+    /**
+     * This method is called when 'Finish' button is pressed in the wizard. We
+     * will create an operation and run it using wizard as execution context.
+     */
+    public boolean performFinish()
+    {
+        if (!RhodesProject.checkNature(m_currentProject)
+                && !RhoelementsProject.checkNature(m_currentProject))
+            return true;
+
+        final String modelName = m_pageModel.getModelName();
+        final String modelParams = m_pageModel.getModelParams();
+
+        IRunnableWithProgress op = new IRunnableWithProgress()
+        {
+            public void run(IProgressMonitor monitor) throws InvocationTargetException
+            {
+                try
+                {
+                    doFinish(modelName, modelParams, monitor);
+                }
+                catch (CoreException e)
+                {
+                    throw new InvocationTargetException(e);
+                }
+                finally
+                {
+                    monitor.done();
+                }
+            }
+        };
+
+        try
+        {
+            getContainer().run(true, true, op);
+        }
+        catch (InterruptedException e)
+        {
+            return false;
+        }
+        catch (InvocationTargetException e)
+        {
+            Throwable realException = e.getTargetException();
+            MessageDialog.openError(getShell(), "Error", realException.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * The worker method. It will find the container, create the file if missing
+     * or just replace its contents, and open the editor on the newly created
+     * file.
+     */
+    private void doFinish(String modelName, String modelParams, IProgressMonitor monitor)
+            throws CoreException
+    {
+        try
+        {
+            monitor.beginTask("Creating model " + modelName, 2);
+            monitor.worked(1);
+            monitor.setTaskName("Creating model...");
+
+            String projectLocation =
+                    (m_currentProject == null) ? null : m_currentProject.getLocation()
+                            .toOSString();
+
+            if (null != projectLocation)
+            {
+                createModel(monitor, projectLocation, modelName, modelParams, m_currentProject);
+            }
+            else
+            {
+                // TODO show error message
+            }
+
+            monitor.worked(1);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * We will accept the selection in the workbench to see if we can initialize
+     * from it.
+     * 
+     * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
+     */
+    public void init(IWorkbench workbench, IStructuredSelection selection)
+    {
+        this.m_selection = selection;
+    }
+
+    private static void createModel(IProgressMonitor monitor, String projectLocation,
+            String modelName, String modelParams, IProject currentProject)
     {
         File modelFolder = new File(projectLocation + "/app/" + modelName);
-        
+
         if (modelFolder.exists())
         {
             boolean ok =
@@ -199,29 +185,26 @@ public class ModelWizard extends Wizard implements INewWizard
             }
             OSHelper.deleteFolder(modelFolder);
         }
-        
+
         try
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-            
-            params.put(GenerateRhodesModelTask.modelName, modelName);
-            params.put(GenerateRhodesModelTask.workDir, projectLocation);
-            params.put(GenerateRhodesModelTask.modelFields, modelParams);
-            
-            Map results = RhoTaskHolder.getInstance().runTask(GenerateRhodesModelTask.class, params);
-            
+            RakeTask task =
+                    new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
+
+            Map<String, ?> results = task.run(monitor);
+
             if (TaskResultConverter.getResultIntCode(results) != 0)
             {
                 throw new IOException("The Rhodes SDK do not installed");
             }
-            
+
             currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
         }
-        catch (CoreException e) 
+        catch (CoreException e)
         {
             e.printStackTrace();
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             e.printStackTrace();
         }
