@@ -12,6 +12,8 @@ public class FrameworkResName extends RhodesResName
 	@Override
 	public String getResName() 
 	{
-		return calcResName(getBp().getResourcePath().toOSString(), "framework/");		
+		final String token = "framework/";
+		
+		return token + calcResName(getBp().getResourcePath().toOSString(), token);		
 	}
 }

@@ -24,8 +24,8 @@ public class RhodesResName implements IResName
 		
 		if (segments.length > 1)
 			return segments[1];
-		
-		return segments[0];
+		else
+			return null;		
 	}
 	
 	protected ScriptLineBreakpoint getBp()
