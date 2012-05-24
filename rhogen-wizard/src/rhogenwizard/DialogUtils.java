@@ -16,7 +16,19 @@ public class DialogUtils
             }
         });
     }
-    
+
+    public static void error(final String title, final String message)
+    {
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                MessageDialog.openError(null, title, message);
+            }
+        });
+    }
+
     public static boolean confirm(final String title, final String message)
     {
         final boolean ok[] = new boolean[1];
