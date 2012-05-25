@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.ui.console.MessageConsoleStream;
-
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.sdk.task.RakeAdapter;
 
@@ -22,6 +20,8 @@ class AppLogAdapter implements ILogDevice
 	@Override
 	public void log(String str) 
 	{
+		ConsoleHelper.showAppConsole();
+		
 		if (null != m_consoleStream)
 		{
 			m_currShowLines++;
