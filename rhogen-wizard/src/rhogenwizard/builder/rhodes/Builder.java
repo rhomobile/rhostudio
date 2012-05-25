@@ -1,6 +1,5 @@
 package rhogenwizard.builder.rhodes;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +8,9 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.RakeTask;
@@ -64,29 +63,22 @@ public class Builder extends IncrementalProjectBuilder
         super.clean(monitor);
     }
 
-    protected void fullBuild(final IProgressMonitor monitor) throws CoreException
+    protected void fullBuild(final IProgressMonitor monitor)
     {
         try
         {
-            List<String> out = compileRubyPart();
+            RakeTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
+            Map<String, ?> res = task.run(monitor);
+            List<String> out = (List<String>) res.get(CompileRubyPartTask.outStrings);
             getProject().accept(new ResourceVisitor(out));
         }
         catch (CoreException e)
         {
-            e.printStackTrace();
+            Activator.logError(e);
         }
-    }
-
-    private List<String> compileRubyPart()
-    {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(CompileRubyPartTask.workDir, getProject().getLocation().toOSString());
-
-        Map<String, ?> res =
-            RhoTaskHolder.getInstance().runTask(CompileRubyPartTask.class, params);
-
-        List<String> errLines = (List<String>) res.get(CompileRubyPartTask.outStrings);
-
-        return errLines;
+        catch (InterruptedException e)
+        {
+            Activator.logError(e);
+        }
     }
 }
