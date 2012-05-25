@@ -3,17 +3,7 @@ package rhogenwizard.sdk.facade;
 import java.util.HashMap;
 import java.util.Map;
 
-import rhogenwizard.sdk.task.BuildPlatformTask;
-import rhogenwizard.sdk.task.CleanAllPlatfromTask;
-import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
-import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
-import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
-import rhogenwizard.sdk.task.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
-import rhogenwizard.sdk.task.GenerateRhodesModelTask;
-import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
-import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
 import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
@@ -35,8 +25,6 @@ public class RhoTaskHolder
 		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());
 		m_holdTasks.put(RunDebugRhoconnectAppTask.class, new RunDebugRhoconnectAppTask());
 		m_holdTasks.put(RunReleaseRhoconnectAppTask.class, new RunReleaseRhoconnectAppTask());
-		m_holdTasks.put(CleanPlatformTask.class, new CleanPlatformTask());
-		m_holdTasks.put(CleanAllPlatfromTask.class, new CleanAllPlatfromTask());	
 		m_holdTasks.put(CompileRubyPartTask.class, new CompileRubyPartTask());
 	}
 	
