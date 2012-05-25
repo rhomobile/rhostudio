@@ -2,6 +2,7 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.File;
 
+import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -11,13 +12,11 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import rhogenwizard.BuildInfoHolder;
@@ -32,10 +31,7 @@ import rhogenwizard.project.ProjectFactory;
 public class AppWizardPage extends WizardPage 
 {
 	private static final String projNameTemplate = "RhoMobileApplication";
-	private static final int labelWidht = 120;
-	private static final int textWidht = 300;
 	
-	private Table      m_generalAttrsTable = null; 
 	private Text       m_appFolderText = null;
 	private Text       m_appNameText      = null;
 	private String     m_selectAppDir  = null;
@@ -53,7 +49,7 @@ public class AppWizardPage extends WizardPage
 	{
 		super("wizardPage");
 		setTitle("RhoMobile application generator wizard");
-		setDescription("Desc wizar");
+		setDescription("RhoMobile application generator wizard");
 	}
 	
 	public void createAppSettingBarControls(Composite composite)
@@ -297,10 +293,12 @@ public class AppWizardPage extends WizardPage
 		newInfo.existCreate      = getExistCreate();
 		newInfo.isRhoelementsApp = m_rhoelementsEnableButton.getSelection();
 		
-		if (newInfo.existCreate) {
+		if (newInfo.existCreate) 
+		{
 			newInfo.isInDefaultWs = false;
 		}
-		else {
+		else 
+		{
 			newInfo.isInDefaultWs = m_defaultPathButton.getSelection();
 		}
 		

@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -28,7 +27,6 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
@@ -117,16 +115,15 @@ public class AppWizard extends Wizard implements INewWizard
         RakeTask task;
         if (infoHolder.isRhoelementsApp)
         {
-            task =
-                    new GenerateRhoelementsAppTask(infoHolder.getProjectLocationPath()
+            task = new GenerateRhoelementsAppTask(infoHolder.getProjectLocationPath()
                             .toOSString(), infoHolder.appName);
         }
         else
         {
-            task =
-                    new GenerateRhodesAppTask(infoHolder.getProjectLocationPath().toOSString(),
+            task = new GenerateRhodesAppTask(infoHolder.getProjectLocationPath().toOSString(),
                             infoHolder.appName);
         }
+        
         results = task.run(monitor);
 
         if (TaskResultConverter.getResultIntCode(results) != 0)
