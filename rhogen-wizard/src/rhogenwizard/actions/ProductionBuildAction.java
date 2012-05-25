@@ -1,8 +1,5 @@
 package rhogenwizard.actions;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
@@ -10,10 +7,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-import rhogenwizard.ConsoleHelper;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
-import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.builder.rhodes.SelectPlatformDialog;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
