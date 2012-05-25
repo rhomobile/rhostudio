@@ -50,591 +50,610 @@ import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
  */
 public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
 {
-	private IProject m_debugProject = null;
-	
-	// associated system process (VM)
-	private IProcess m_processHandle = null;
-	
-	// containing launch object
-	private ILaunch m_launchHandle = null;
-	
-	// program name
-	private String m_programName = null;
-	
-	// suspend state
-	private boolean m_isSuspended = true;
-	
-	// threads
-	private RhogenThread m_threadHandle = null;
-	private IThread[]    m_allThreads = null;
-	
-	private static DebugServer m_debugServer = null;
+    private IProject           m_debugProject  = null;
 
-	public RhogenDebugTarget(ILaunch launch, IProcess process, IProject debugProject) throws CoreException 
-	{
-		super(null);
-		
-		m_debugProject  = debugProject;
-		m_launchHandle  = launch;
-		m_debugTarget   = this;
-		m_processHandle = process;
+    // associated system process (VM)
+    private IProcess           m_processHandle = null;
 
-		m_threadHandle = new RhogenThread(this);
-		m_allThreads   = new IThread[] {m_threadHandle};
-				
-		DebugServer.setDebugOutputStream(System.out);
-		
-		if (m_debugServer != null)
-		{
-			m_debugServer.shutdown();
-		}
+    // containing launch object
+    private ILaunch            m_launchHandle  = null;
 
-		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
-		DebugPlugin.getDefault().getExpressionManager().addExpressionListener(this);
+    // program name
+    private String             m_programName   = null;
 
-		m_debugServer = new DebugServer(this);
-		m_debugServer.start();		
-		m_debugServer.debugSkipBreakpoints(false);
-	}
-	
-	@Override
-	protected void finalize() throws Throwable 
-	{
-		exited();
-		super.finalize();
-	}
-	
-	public void setProcess(IProcess p) 
-	{
-		m_processHandle = p;
-	}
-	
-	public IProcess getProcess()
-	{
-		return m_processHandle;
-	}
+    // suspend state
+    private boolean            m_isSuspended   = true;
 
-	public IThread[] getThreads() throws DebugException 
-	{
-		return m_allThreads;
-	}
+    // threads
+    private RhogenThread       m_threadHandle  = null;
+    private IThread[]          m_allThreads    = null;
 
-	public boolean hasThreads() throws DebugException 
-	{
-		return true; // WTB Changed per bug #138600
-	}
-	
-	public String getName() throws DebugException 
-	{
-		if (m_programName == null) 
-		{
-			try 
-			{
-				m_programName = getLaunch().getLaunchConfiguration().getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-			} 
-			catch (CoreException e) 
-			{
-				m_programName = "";
-			}
-		}
-		
-		return m_programName;
-	}
-	
-	public boolean supportsBreakpoint(IBreakpoint breakpoint) 
-	{
-		if (breakpoint.getModelIdentifier().equals(DebugConstants.debugModelId)) 
-		{
-			return true;
-		}
-		
-		return false;
-	}
+    private static DebugServer m_debugServer   = null;
 
-	public IDebugTarget getDebugTarget() 
-	{
-		return this;
-	}
-	
-	public ILaunch getLaunch() 
-	{
-		return m_launchHandle;
-	}
-	
-	public boolean canTerminate() 
-	{
-		if (m_processHandle == null)
-			return true;
-		
-		return m_processHandle.canTerminate();
-	}
-	
-	public boolean isTerminated() 
-	{
-		if (m_processHandle == null)
-			return true;
-		
-		return m_processHandle.isTerminated();
-	}
-	
-	public void terminate() throws DebugException 
-	{
-		try
-		{
-			m_debugServer.debugTerminate();
+    public RhogenDebugTarget(ILaunch launch, IProcess process, IProject debugProject) throws CoreException
+    {
+        super(null);
 
-			if (ProjectFactory.getInstance().typeFromProject(m_debugProject).equals(RhoconnectProject.class))
-			{
-				StopRhoconnectAppAdapter adapter = new StopRhoconnectAppAdapter();
-				adapter.stopSyncApp();
-			}
-			
-			if (m_processHandle != null)
-			{
-				m_processHandle.terminate();
-				m_processHandle = null;
-			}
-		}
-		catch(DebugServerException e) {
-			e.printStackTrace();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public boolean canResume() 
-	{
-		return !isTerminated() && isSuspended();
-	}
-	
-	public boolean canSuspend() 
-	{
-		return !isTerminated() && !isSuspended();
-	}
-	
-	private void waitDebugProcessing()
-	{
-		while (m_debugServer.debugIsProcessing()) {
-		}
-	}
-	
-	public boolean isSuspended()
-	{
-		return m_isSuspended;
-	}
-	
-	public void resume() throws DebugException 
-	{
-		waitDebugProcessing();
-		cleanState();
-		waitDebugProcessing();
-		resumed(DebugEvent.CLIENT_REQUEST);
-		waitDebugProcessing();
-		m_debugServer.debugResume();
-	}
-	
-	/**
-	 * Notification the target has resumed for the given reason
-	 * 
-	 * @param detail reason for the resume
-	 */
-	private void resumed(int detail) 
-	{
-		waitDebugProcessing();
-		m_isSuspended = false;
-		m_threadHandle.fireResumeEvent(detail);
-	}
-	
-	/**
-	 * Notification the target has suspended for the given reason
-	 * 
-	 * @param detail reason for the suspend
-	 */
-	private void suspended(int detail) 
-	{
-		waitDebugProcessing();
-		m_isSuspended = true;
-		m_threadHandle.fireSuspendEvent(detail);
-	}	
+        m_debugProject = debugProject;
+        m_launchHandle = launch;
+        m_debugTarget = this;
+        m_processHandle = process;
 
-	public void suspend() throws DebugException 
-	{
-	}
+        m_threadHandle = new RhogenThread(this);
+        m_allThreads = new IThread[] { m_threadHandle };
 
-	public void breakpointAdded(IBreakpoint breakpoint) 
-	{
-		if (supportsBreakpoint(breakpoint)) 
-		{
-			try 
-			{
-				if (breakpoint.isEnabled()) 
-				{					
-					ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
-					
-					int    lineNum = lineBr.getLineNumber();
-					String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
-					 										
-					m_debugServer.debugBreakpoint(srcFile, lineNum);
-				}
-			} 
-			catch (CoreException e) 
-			{
-			} 
-			catch (BadProjectTagException e) 
-			{
-				e.printStackTrace();
-			}
-		}
-	}
+        DebugServer.setDebugOutputStream(System.out);
 
-	public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) 
-	{
-		if (supportsBreakpoint(breakpoint)) 
-		{
-			try 
-			{
-				ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
-				
-				int    lineNum = lineBr.getLineNumber();
-				String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
-				
-				m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
-			} 
-			catch (CoreException e) 
-			{
-			} catch (BadProjectTagException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+        if (m_debugServer != null)
+        {
+            m_debugServer.shutdown();
+        }
 
-	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) 
-	{
-		if (supportsBreakpoint(breakpoint)) 
-		{
-			try 
-			{
-				if (breakpoint.isEnabled()) 
-				{
-					breakpointAdded(breakpoint);
-				} 
-				else 
-				{
-					breakpointRemoved(breakpoint, null);
-				}
-			} 
-			catch (CoreException e) 
-			{
-			}
-		}
-	}
+        DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
+        DebugPlugin.getDefault().getExpressionManager().addExpressionListener(this);
 
-	public boolean canDisconnect() 
-	{
-		return false;
-	}
-	
-	public void disconnect() throws DebugException 
-	{
-	}
-	
-	public void stepOver()
-	{
-		waitDebugProcessing();
-		m_threadHandle.setStepping(true);
-		waitDebugProcessing();
-		resumed(DebugEvent.STEP_OVER);
-		waitDebugProcessing();
-		m_debugServer.debugStepOver();
-	}
-	
-	public void stepReturn() 
-	{
-		waitDebugProcessing();
-		m_threadHandle.setStepping(true);
-		waitDebugProcessing();
-		resumed(DebugEvent.STEP_RETURN);
-		waitDebugProcessing();
-		m_debugServer.debugStepReturn();
-	}
-	
-	public void stepInto()
-	{
-		waitDebugProcessing();		
-		m_threadHandle.setStepping(true);
-		waitDebugProcessing();
-		resumed(DebugEvent.STEP_INTO);
-		waitDebugProcessing();
-		m_debugServer.debugStepInto();
-	}
-	
-	public boolean isDisconnected() 
-	{
-		return false;
-	}
-	
-	public boolean supportsStorageRetrieval() 
-	{
-		return false;
-	}
-	
-	public IMemoryBlock getMemoryBlock(long startAddress, long length) throws DebugException 
-	{
-		return null;
-	}
-	
-	/**
-	 * Install breakpoints that are already registered with the breakpoint
-	 * manager.
-	 */
-	private void installDeferredBreakpoints()
-	{
-		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
-		
-		for (int i = 0; i < breakpoints.length; i++)
-		{
-			breakpointAdded(breakpoints[i]);
-		}
-	}
-	
-	private void installDeferredWatchs()
-	{
-		IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions();
-		
-		for (IExpression exp : watchs) 
-		{
-			waitDebugProcessing();
-			m_debugServer.debugEvaluate(exp.getExpressionText());
-		}
-	}
-	
-	/**
-	 * Returns the current stack frames in the target.
-	 * 
-	 * @return the current stack frames in the target
-	 * @throws DebugException if unable to perform the request
-	 */
-	protected IStackFrame[] getStackFrames() throws DebugException 
-	{
-		waitDebugProcessing();
-		
-		StackData stackData = new StackData(m_debugServer.debugGetFile(), m_debugServer.debugGetLine());
-		
-		IStackFrame[] theFrames = new IStackFrame[1];
-		
-		for (int i=0; i<3; ++i)
-		{	
-			try
-			{
-				stackData.m_currVariables = m_debugServer.debugWatchList();
-				theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
-				break;
-			}
-			catch(DebugServerException e) 
-			{
-				try 
-				{
-					Thread.sleep(200);
-				}
-				catch (InterruptedException e1) {}
-			}
-		}
-		
-		return theFrames;
-	}
-	
-	@Override
-	public void connected() 
-	{
-		try
-		{
-			cleanState();
-			fireCreationEvent();
-			installDeferredBreakpoints();			
-			resume();
-		}  	
-		catch (DebugException e) 
-		{
-		}
-	}
+        m_debugServer = new DebugServer(this);
+        m_debugServer.start();
+        m_debugServer.debugSkipBreakpoints(false);
+    }
 
-	@Override
+    @Override
+    protected void finalize() throws Throwable
+    {
+        exited();
+        super.finalize();
+    }
 
-	public void stopped(DebugState state, String file, int line, String className, String method)
-	{
-		waitDebugProcessing();
-		
-		cleanState();
-		
-		installDeferredWatchs();
-		
-		waitDebugProcessing();
-		
-		if (state == DebugState.BREAKPOINT)
-		{
-			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
-		
-			for (int i = 0; i < breakpoints.length; i++) 
-			{
-				waitDebugProcessing();
-				
-				IBreakpoint breakpoint = breakpoints[i];
-	
-				if (breakpoint instanceof ScriptLineBreakpoint)
-				{					
-					try 
-					{
-						ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
-						String resPath = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBreakpoint);
-										
-						if (lineBreakpoint.getLineNumber() == line && resPath.equals(file))
-						{
-							m_threadHandle.setBreakpoints(new IBreakpoint[]{breakpoint});
-							break;
-						}
-					}
-					catch (CoreException e) 
-					{
-					}
-					catch (BadProjectTagException e1) 
-					{
-					}
-				}
-			}
-			
-			suspended(DebugEvent.BREAKPOINT);
-		}
-		else if (DebugState.paused(state))
-		{
-			m_threadHandle.setStepping(true);
-			suspended(DebugEvent.STEP_END);
-		}		
-	}
+    public void setProcess(IProcess p)
+    {
+        m_processHandle = p;
+    }
 
-	@Override
-	public void unknown(String cmd) 
-	{
-	}
+    public IProcess getProcess()
+    {
+        return m_processHandle;
+    }
 
-	@Override
-	public void exited() 
-	{
-		m_isSuspended = false;
-		
-		DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(this);
-		DebugPlugin.getDefault().getExpressionManager().removeExpressionListener(this);
-		
-		fireTerminateEvent();		
+    public IThread[] getThreads() throws DebugException
+    {
+        return m_allThreads;
+    }
 
-		if (m_processHandle != null)
-		{
-			try 
-			{
-				terminate();
-			} 
-			catch (DebugException e) 
-			{
-				e.printStackTrace();
-			}
-		}
-		
-		try 
-		{
-			m_debugServer.shutdown();
-		}
-		catch(DebugServerException e) 
-		{
-		}
-	}
+    public boolean hasThreads() throws DebugException
+    {
+        return true;
+    }
 
-	@Override
-	public void resumed() 
-	{
-		waitDebugProcessing();
-		cleanState();
-		m_isSuspended = false;
-		waitDebugProcessing();
-		resumed(DebugEvent.CLIENT_REQUEST);
-	}
+    public String getName() throws DebugException
+    {
+        if (m_programName == null)
+        {
+            try
+            {
+                m_programName = getLaunch().getLaunchConfiguration().getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
+            }
+            catch (CoreException e)
+            {
+                m_programName = "";
+            }
+        }
 
-	void cleanState()
-	{
-		m_threadHandle.setBreakpoints(null);
-		m_threadHandle.setStepping(false);
-	}
-	
-	@Override
-	synchronized public void evaluation(boolean valid, String code, String value) 
-	{
-		ConsoleHelper.consoleAppPrint("start");
-		
-		IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
-		
-		IExpression[] modelExps = expManager.getExpressions();
-			
-		for (IExpression currExp : modelExps)
-		{
-			String s = currExp.getExpressionText();
-			
-			if (currExp.getExpressionText().equals(code))
-			{
-				if (currExp instanceof RhogenWatchExpression)
-				{
-					IValue watchVal = new RhogenValue(this, value);
-					RhogenWatchExpression watchExp  = (RhogenWatchExpression)currExp;
-					watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
-				}
-			}
-		}	
-	}
+        return m_programName;
+    }
 
-	@Override
-	public void watchBOL(DebugVariableType type) 
-	{
-		// TODO Auto-generated method stub
-	}
+    public boolean supportsBreakpoint(IBreakpoint breakpoint)
+    {
+        if (breakpoint.getModelIdentifier().equals(DebugConstants.debugModelId))
+        {
+            return true;
+        }
 
-	@Override
-	public void watchEOL(DebugVariableType type) 
-	{
-		// TODO Auto-generated method stub
-	}
+        return false;
+    }
 
-	@Override
-	public void expressionAdded(IExpression expression)
-	{
-		IExpressionManager m = DebugPlugin.getDefault().getExpressionManager();
-		waitDebugProcessing();
-		String expText = expression.getExpressionText();
-		
-		if (!(expression instanceof RhogenWatchExpression))
-		{
-			m.removeExpression(expression);
-			m.addExpression(new RhogenWatchExpression(expText));
-			m_debugServer.debugEvaluate(expText);	
-		}	
-	}
+    public IDebugTarget getDebugTarget()
+    {
+        return this;
+    }
 
-	@Override
-	public void expressionRemoved(IExpression expression) 
-	{
-		// TODO Auto-generated method stub
-	}
+    public ILaunch getLaunch()
+    {
+        return m_launchHandle;
+    }
 
-	@Override
-	public void expressionChanged(IExpression expression) 
-	{
-//		waitDebugProcessing();
-//		String expText = expression.getExpressionText();
-//		expression = new RhogenWatchExpression(expText);
-//		m_debugServer.debugEvaluate(expText);
-	}
+    public boolean canTerminate()
+    {
+        if (m_processHandle == null)
+            return true;
 
-	@Override
-	public void watch(DebugVariableType type, String variable, String value) 
-	{
-		// TODO Auto-generated method stub
-	}
+        return m_processHandle.canTerminate();
+    }
+
+    public boolean isTerminated()
+    {
+        if (m_processHandle == null)
+            return true;
+
+        return m_processHandle.isTerminated();
+    }
+
+    public void terminate() throws DebugException
+    {
+        try
+        {
+            m_debugServer.debugTerminate();
+
+            if (ProjectFactory.getInstance().typeFromProject(m_debugProject).equals(RhoconnectProject.class))
+            {
+                StopRhoconnectAppAdapter adapter = new StopRhoconnectAppAdapter();
+                adapter.stopSyncApp();
+            }
+
+            if (m_processHandle != null)
+            {
+                m_processHandle.terminate();
+                m_processHandle = null;
+            }
+        }
+        catch (DebugServerException e)
+        {
+            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean canResume()
+    {
+        return !isTerminated() && isSuspended();
+    }
+
+    public boolean canSuspend()
+    {
+        return !isTerminated() && !isSuspended();
+    }
+
+    private void waitDebugProcessing()
+    {
+        while (m_debugServer.debugIsProcessing())
+        {
+        }
+    }
+
+    public boolean isSuspended()
+    {
+        return m_isSuspended;
+    }
+
+    public void resume() throws DebugException
+    {
+        waitDebugProcessing();
+        cleanState();
+        waitDebugProcessing();
+        resumed(DebugEvent.CLIENT_REQUEST);
+        waitDebugProcessing();
+        m_debugServer.debugResume();
+    }
+
+    /**
+     * Notification the target has resumed for the given reason
+     * 
+     * @param detail
+     *            reason for the resume
+     */
+    private void resumed(int detail)
+    {
+        waitDebugProcessing();
+        m_isSuspended = false;
+        m_threadHandle.fireResumeEvent(detail);
+    }
+
+    /**
+     * Notification the target has suspended for the given reason
+     * 
+     * @param detail
+     *            reason for the suspend
+     */
+    private void suspended(int detail)
+    {
+        waitDebugProcessing();
+        m_isSuspended = true;
+        m_threadHandle.fireSuspendEvent(detail);
+    }
+
+    public void suspend() throws DebugException
+    {
+    }
+
+    public void breakpointAdded(IBreakpoint breakpoint)
+    {
+        boolean globalBpEnable = DebugPlugin.getDefault().getBreakpointManager().isEnabled();
+        
+        if (supportsBreakpoint(breakpoint))
+        {
+            try
+            {
+                if (breakpoint.isEnabled() && globalBpEnable)
+                {
+                    ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
+
+                    int lineNum = lineBr.getLineNumber();
+                    String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
+
+                    m_debugServer.debugBreakpoint(srcFile, lineNum);
+                }
+            }
+            catch (CoreException e)
+            {
+            }
+            catch (BadProjectTagException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta)
+    {
+        if (supportsBreakpoint(breakpoint))
+        {
+            try
+            {
+                ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
+
+                int lineNum = lineBr.getLineNumber();
+                String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
+
+                m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
+            }
+            catch (CoreException e)
+            {
+            }
+            catch (BadProjectTagException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta)
+    {
+        boolean globalBpEnable = DebugPlugin.getDefault().getBreakpointManager().isEnabled();
+        
+        if (supportsBreakpoint(breakpoint))
+        {
+            if (!globalBpEnable)
+            {
+                breakpointRemoved(breakpoint, null);
+                return;
+            }
+            
+            try
+            {
+                if (breakpoint.isEnabled())
+                {
+                    breakpointAdded(breakpoint);
+                }
+                else
+                {
+                    breakpointRemoved(breakpoint, null);
+                }
+            }
+            catch (CoreException e)
+            {
+            }
+        }
+    }
+
+    public boolean canDisconnect()
+    {
+        return false;
+    }
+
+    public void disconnect() throws DebugException
+    {
+    }
+
+    public void stepOver()
+    {
+        waitDebugProcessing();
+        m_threadHandle.setStepping(true);
+        waitDebugProcessing();
+        resumed(DebugEvent.STEP_OVER);
+        waitDebugProcessing();
+        m_debugServer.debugStepOver();
+    }
+
+    public void stepReturn()
+    {
+        waitDebugProcessing();
+        m_threadHandle.setStepping(true);
+        waitDebugProcessing();
+        resumed(DebugEvent.STEP_RETURN);
+        waitDebugProcessing();
+        m_debugServer.debugStepReturn();
+    }
+
+    public void stepInto()
+    {
+        waitDebugProcessing();
+        m_threadHandle.setStepping(true);
+        waitDebugProcessing();
+        resumed(DebugEvent.STEP_INTO);
+        waitDebugProcessing();
+        m_debugServer.debugStepInto();
+    }
+
+    public boolean isDisconnected()
+    {
+        return false;
+    }
+
+    public boolean supportsStorageRetrieval()
+    {
+        return false;
+    }
+
+    public IMemoryBlock getMemoryBlock(long startAddress, long length) throws DebugException
+    {
+        return null;
+    }
+
+    /**
+     * Install breakpoints that are already registered with the breakpoint
+     * manager.
+     */
+    private void installDeferredBreakpoints()
+    {
+        IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
+
+        for (int i = 0; i < breakpoints.length; i++)
+        {
+            breakpointAdded(breakpoints[i]);
+        }
+    }
+
+    private void installDeferredWatchs()
+    {
+        IExpression[] watchs = DebugPlugin.getDefault().getExpressionManager().getExpressions();
+
+        for (IExpression exp : watchs)
+        {
+            waitDebugProcessing();
+            m_debugServer.debugEvaluate(exp.getExpressionText());
+        }
+    }
+
+    /**
+     * Returns the current stack frames in the target.
+     * 
+     * @return the current stack frames in the target
+     * @throws DebugException
+     *             if unable to perform the request
+     */
+    protected IStackFrame[] getStackFrames() throws DebugException
+    {
+        waitDebugProcessing();
+
+        StackData stackData = new StackData(m_debugServer.debugGetFile(), m_debugServer.debugGetLine());
+
+        IStackFrame[] theFrames = new IStackFrame[1];
+
+        for (int i = 0; i < 3; ++i)
+        {
+            try
+            {
+                stackData.m_currVariables = m_debugServer.debugWatchList();
+                theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
+                break;
+            }
+            catch (DebugServerException e)
+            {
+                try
+                {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException e1)
+                {
+                }
+            }
+        }
+
+        return theFrames;
+    }
+
+    @Override
+    public void connected()
+    {
+        try
+        {
+            cleanState();
+            fireCreationEvent();
+            installDeferredBreakpoints();
+            resume();
+        }
+        catch (DebugException e)
+        {
+        }
+    }
+
+    @Override
+    public void stopped(DebugState state, String file, int line, String className, String method)
+    {
+        waitDebugProcessing();
+
+        cleanState();
+
+        installDeferredWatchs();
+
+        waitDebugProcessing();
+
+        if (state == DebugState.BREAKPOINT)
+        {
+            IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugConstants.debugModelId);
+
+            for (int i = 0; i < breakpoints.length; i++)
+            {
+                waitDebugProcessing();
+
+                IBreakpoint breakpoint = breakpoints[i];
+
+                if (breakpoint instanceof ScriptLineBreakpoint)
+                {
+                    try
+                    {
+                        ScriptLineBreakpoint lineBreakpoint = (ScriptLineBreakpoint) breakpoint;
+                        String resPath = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBreakpoint);
+
+                        if (lineBreakpoint.getLineNumber() == line && resPath.equals(file))
+                        {
+                            m_threadHandle.setBreakpoints(new IBreakpoint[] { breakpoint });
+                            break;
+                        }
+                    }
+                    catch (CoreException e)
+                    {
+                    }
+                    catch (BadProjectTagException e1)
+                    {
+                    }
+                }
+            }
+
+            suspended(DebugEvent.BREAKPOINT);
+        }
+        else if (DebugState.paused(state))
+        {
+            m_threadHandle.setStepping(true);
+            suspended(DebugEvent.STEP_END);
+        }
+    }
+
+    @Override
+    public void unknown(String cmd)
+    {
+    }
+
+    @Override
+    public void exited()
+    {
+        m_isSuspended = false;
+
+        DebugPlugin.getDefault().getBreakpointManager().removeBreakpointListener(this);
+        DebugPlugin.getDefault().getExpressionManager().removeExpressionListener(this);
+
+        fireTerminateEvent();
+
+        if (m_processHandle != null)
+        {
+            try
+            {
+                terminate();
+            }
+            catch (DebugException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        try
+        {
+            m_debugServer.shutdown();
+        }
+        catch (DebugServerException e)
+        {
+        }
+    }
+
+    @Override
+    public void resumed()
+    {
+        waitDebugProcessing();
+        cleanState();
+        m_isSuspended = false;
+        waitDebugProcessing();
+        resumed(DebugEvent.CLIENT_REQUEST);
+    }
+
+    void cleanState()
+    {
+        m_threadHandle.setBreakpoints(null);
+        m_threadHandle.setStepping(false);
+    }
+
+    @Override
+    synchronized public void evaluation(boolean valid, String code, String value)
+    {
+        ConsoleHelper.consoleAppPrint("start");
+
+        IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
+
+        IExpression[] modelExps = expManager.getExpressions();
+
+        for (IExpression currExp : modelExps)
+        {
+            String s = currExp.getExpressionText();
+
+            if (currExp.getExpressionText().equals(code))
+            {
+                if (currExp instanceof RhogenWatchExpression)
+                {
+                    IValue watchVal = new RhogenValue(this, value);
+                    RhogenWatchExpression watchExp = (RhogenWatchExpression) currExp;
+                    watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void watchBOL(DebugVariableType type)
+    {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void watchEOL(DebugVariableType type)
+    {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void expressionAdded(IExpression expression)
+    {
+        IExpressionManager m = DebugPlugin.getDefault().getExpressionManager();
+        waitDebugProcessing();
+        String expText = expression.getExpressionText();
+
+        if (!(expression instanceof RhogenWatchExpression))
+        {
+            m.removeExpression(expression);
+            m.addExpression(new RhogenWatchExpression(expText));
+            m_debugServer.debugEvaluate(expText);
+        }
+    }
+
+    @Override
+    public void expressionRemoved(IExpression expression)
+    {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void expressionChanged(IExpression expression)
+    {
+        // waitDebugProcessing();
+        // String expText = expression.getExpressionText();
+        // expression = new RhogenWatchExpression(expText);
+        // m_debugServer.debugEvaluate(expText);
+    }
+
+    @Override
+    public void watch(DebugVariableType type, String variable, String value)
+    {
+        // TODO Auto-generated method stub
+    }
 }
