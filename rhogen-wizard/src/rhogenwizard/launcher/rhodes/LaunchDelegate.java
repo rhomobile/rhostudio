@@ -35,6 +35,7 @@ import rhogenwizard.debugger.model.RhogenDebugTarget;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.CleanPlatformTask;
+import rhogenwizard.sdk.task.RakeTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
 
@@ -162,18 +163,17 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		m_isTrace      = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
 	}
 	
-	private void cleanSelectedPlatform(IProject project, boolean isClean) throws Exception
+	private void cleanSelectedPlatform(IProject project, boolean isClean,
+	    IProgressMonitor monitor) throws InterruptedException
 	{
 		if (isClean) 
 		{
 			ConsoleHelper.consoleBuildPrint("Clean started");
 			
-			Map<String, Object> params = new HashMap<String, Object>();
-
-			params.put(CleanPlatformTask.workDir, project.getLocation().toOSString());
-			params.put(CleanPlatformTask.platformType, PlatformType.fromString(m_platformType));
-
-			RhoTaskHolder.getInstance().runTask(CleanPlatformTask.class, params);
+			RakeTask task =
+			    new CleanPlatformTask(project.getLocation().toOSString(),
+			        PlatformType.fromString(m_platformType));
+			task.run(monitor);
 		}
 	}
 
@@ -243,7 +243,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			
 			try
 			{
-				cleanSelectedPlatform(project, m_isClean);
+				cleanSelectedPlatform(project, m_isClean, monitor);
 			
 				startBuildThread(project, mode, launch);
 	

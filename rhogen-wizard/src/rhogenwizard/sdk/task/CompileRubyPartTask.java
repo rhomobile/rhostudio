@@ -2,7 +2,9 @@ package rhogenwizard.sdk.task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rhogenwizard.ILogDevice;
 import rhogenwizard.sdk.helper.TaskResultConverter;
@@ -28,38 +30,39 @@ public class CompileRubyPartTask extends RakeTask
 
     public static final String outStrings = "cmd-output";
 
-    public final List<String> m_outputStrings;
-    private final OutputAdapter m_outputHolder;
+    private final List<String> m_outputStrings;
 
-    public CompileRubyPartTask()
+    public CompileRubyPartTask(String workDir)
     {
         m_outputStrings = new ArrayList<String>();
-        m_outputHolder = new OutputAdapter();
         m_executor.setOutputLogDevice(nullLogDevice);
-        m_executor.setErrorLogDevice(m_outputHolder);
+        m_executor.setErrorLogDevice(new OutputAdapter());
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(IRunTask.workDir, workDir);
+        m_taskParams = params;
     }
 
     @Override
     public void run()
     {
+        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");
+
+        m_outputStrings.clear();
+        m_taskResult.clear();
+        int result = TaskResultConverter.failCode;
+
         try
         {
-            m_outputStrings.clear();
-
-            String workDir = (String) m_taskParams.get(IRunTask.workDir);
-
             m_executor.setWorkingDirectory(workDir);
-
-            List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");
-
-            int res = m_executor.runCommand(cmdLine);
-
-            m_taskResult.put(resTag, res);
-            m_taskResult.put(outStrings, m_outputStrings);
+            result = m_executor.runCommand(cmdLine);
         }
         catch (Exception e)
         {
-            m_taskResult.put(resTag, TaskResultConverter.failCode);
         }
+
+        m_taskResult.put(resTag, result);
+        m_taskResult.put(outStrings, m_outputStrings);
     }
 }

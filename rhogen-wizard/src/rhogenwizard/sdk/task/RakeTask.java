@@ -73,8 +73,14 @@ public abstract class RakeTask implements IRunTask
 
     public Map<String, ?> run(IProgressMonitor monitor) throws InterruptedException
     {
+        if (monitor.isCanceled())
+        {
+            throw new InterruptedException();
+        }
+
         Thread thread = new Thread(this);
         thread.start();
+
         while (thread.isAlive())
         {
             thread.join(100);
@@ -84,6 +90,7 @@ public abstract class RakeTask implements IRunTask
                 throw new InterruptedException();
             }
         }
+
         return getResult();
     }
 
