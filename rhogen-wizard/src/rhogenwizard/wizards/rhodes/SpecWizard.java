@@ -24,8 +24,6 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.project.extension.AlredyCreatedException;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
 import rhogenwizard.sdk.task.RakeTask;
@@ -67,19 +65,15 @@ public class SpecWizard extends Wizard implements INewWizard
     {
         if (m_currentProject != null)
         {
-            if (!RhodesProject.checkNature(m_currentProject)
-                    && !RhoelementsProject.checkNature(m_currentProject))
+            if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
             {
-                ZeroPage zeroPage =
-                        new ZeroPage("Project " + m_currentProject.getName()
-                                + " is not RhoMobile application");
+                ZeroPage zeroPage = new ZeroPage(
+                	"Project " + m_currentProject.getName() + " is not RhoMobile application");
                 addPage(zeroPage);
             }
             else
             {
-                ZeroPage zeroPage =
-                        new ZeroPage(
-                                "Press Finish button for finished generate spec framework files");
+                ZeroPage zeroPage = new ZeroPage("Press Finish button for finished generate spec framework files");
                 addPage(zeroPage);
             }
         }
@@ -96,8 +90,7 @@ public class SpecWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        if (!RhodesProject.checkNature(m_currentProject)
-                && !RhoelementsProject.checkNature(m_currentProject))
+        if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
             return true;
 
         IRunnableWithProgress op = new IRunnableWithProgress()

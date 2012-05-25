@@ -31,7 +31,8 @@ public class ZeroPage extends WizardPage
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
-		layout.numColumns = 1;
+		
+		layout.numColumns      = 1;
 		layout.verticalSpacing = 9;
 		
 		// first row
@@ -42,7 +43,8 @@ public class ZeroPage extends WizardPage
 
 		getShell().setSize(ZeroPage.zeroPageWidth, ZeroPage.zeroPageHeight);
 		
-		setErrorMessage("");
+		setErrorMessage(null);
 		setPageComplete(true);
+		
 	}
 }
