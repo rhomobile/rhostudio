@@ -105,8 +105,7 @@ public class AppWizard extends Wizard implements INewWizard
 		return true;
 	}
 	
-    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor)
-            throws Exception
+    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws Exception
     {
         monitor.setTaskName("Generate application...");
 
@@ -115,13 +114,13 @@ public class AppWizard extends Wizard implements INewWizard
         RakeTask task;
         if (infoHolder.isRhoelementsApp)
         {
-            task = new GenerateRhoelementsAppTask(infoHolder.getProjectLocationPath()
-                            .toOSString(), infoHolder.appName);
+            task = new GenerateRhoelementsAppTask(
+            	infoHolder.getProjectLocationPath().toOSString(), infoHolder.appName);
         }
         else
         {
-            task = new GenerateRhodesAppTask(infoHolder.getProjectLocationPath().toOSString(),
-                            infoHolder.appName);
+            task = new GenerateRhodesAppTask(
+            	infoHolder.getProjectLocationPath().toOSString(), infoHolder.appName);
         }
         
         results = task.run(monitor);
@@ -141,8 +140,6 @@ public class AppWizard extends Wizard implements INewWizard
 	 */
 	private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException 
 	{
-		IRhomobileProject newProject = null;
-		
 		try 
 		{
 			monitor.beginTask("Creating " + infoHolder.appName, 2);
@@ -161,10 +158,7 @@ public class AppWizard extends Wizard implements INewWizard
 				}
 				catch (IOException e)
 				{
-					newProject.deleteProjectFiles();
-
-					String msg =
-					        "Installed Rhodes have old version, need rhodes version equal or greater "
+					String msg = "Installed Rhodes have old version, need rhodes version equal or greater "
 					                + CommonConstants.rhodesVersion
 					                + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
 					DialogUtils.error("Error", msg);
@@ -178,7 +172,7 @@ public class AppWizard extends Wizard implements INewWizard
 			}
 
 			monitor.setTaskName("Create project...");
-			newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); 
+			IRhomobileProject newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder); 
 			newProject.refreshProject();
 
 			ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
@@ -188,11 +182,9 @@ public class AppWizard extends Wizard implements INewWizard
 		} 
 		catch (IOException e)
 		{
-			newProject.deleteProjectFiles();
-
 			String msg = "Cannot find Rhodes, need rhodes version equal or greater " 
-					+ CommonConstants.rhodesVersion
-					+ " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+							+ CommonConstants.rhodesVersion
+							+ " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
 			DialogUtils.error("Error", msg);
 		}
 		catch (AlredyCreatedException e)

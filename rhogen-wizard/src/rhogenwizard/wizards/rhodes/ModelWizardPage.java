@@ -15,8 +15,6 @@ public class ModelWizardPage extends WizardPage
 {
 	private Text       m_modelName   = null;
 	private Text       m_modelParams = null;
-	private ISelection m_selection   = null;
-
 	/**
 	 * Constructor for SampleNewWizardPage.
 	 * 
@@ -27,7 +25,6 @@ public class ModelWizardPage extends WizardPage
 		super("wizardPage");
 		setTitle("Model information");
 		setDescription("Model create");
-		this.m_selection = selection;
 	}
 
 	public void createControl(Composite parent) 

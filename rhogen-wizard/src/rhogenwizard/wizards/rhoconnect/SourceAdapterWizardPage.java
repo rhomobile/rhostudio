@@ -1,37 +1,20 @@
 package rhogenwizard.wizards.rhoconnect;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ContainerSelectionDialog;
-
-import rhogenwizard.BuildInfoHolder;
 
 public class SourceAdapterWizardPage extends WizardPage 
 {
 	private Text       m_modelName   = null;
 	private Text       m_modelParams = null;
-	private ISelection m_selection   = null;
-
 	/**
 	 * Constructor for SampleNewWizardPage.
 	 * 
@@ -42,7 +25,6 @@ public class SourceAdapterWizardPage extends WizardPage
 		super("wizardPage");
 		setTitle("Source adapter information");
 		setDescription("Source adapter create");
-		this.m_selection = selection;
 	}
 
 	public void createControl(Composite parent) 
@@ -97,11 +79,13 @@ public class SourceAdapterWizardPage extends WizardPage
 		setPageComplete(message == null);
 	}
 
-	public String getAdapterName() {
+	public String getAdapterName() 
+	{
 		return m_modelName.getText();
 	}
 	
-	public String getModelParams() {
+	public String getModelParams() 
+	{
 		return m_modelParams.getText();
 	}
 }

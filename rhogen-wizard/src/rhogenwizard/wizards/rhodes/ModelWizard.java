@@ -52,12 +52,11 @@ public class ModelWizard extends Wizard implements INewWizard
     {
         if (m_currentProject != null)
         {
-            if (!RhodesProject.checkNature(m_currentProject)
-                    && !RhoelementsProject.checkNature(m_currentProject))
+            if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
             {
-                ZeroPage zeroPage =
-                        new ZeroPage("Project " + m_currentProject.getName()
-                                + " is not RhoMobile application");
+                ZeroPage zeroPage = new ZeroPage(
+                	"Project " + m_currentProject.getName() + " is not RhoMobile application");
+                
                 addPage(zeroPage);
             }
             else
@@ -79,8 +78,7 @@ public class ModelWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        if (!RhodesProject.checkNature(m_currentProject)
-                && !RhoelementsProject.checkNature(m_currentProject))
+        if (!RhodesProject.checkNature(m_currentProject) && !RhoelementsProject.checkNature(m_currentProject))
             return true;
 
         final String modelName = m_pageModel.getModelName();
@@ -127,9 +125,8 @@ public class ModelWizard extends Wizard implements INewWizard
      * The worker method. It will find the container, create the file if missing
      * or just replace its contents, and open the editor on the newly created
      * file.
-     */
-    private void doFinish(String modelName, String modelParams, IProgressMonitor monitor)
-            throws CoreException
+     */ 
+    private void doFinish(String modelName, String modelParams, IProgressMonitor monitor) throws CoreException
     {
         try
         {
@@ -137,9 +134,7 @@ public class ModelWizard extends Wizard implements INewWizard
             monitor.worked(1);
             monitor.setTaskName("Creating model...");
 
-            String projectLocation =
-                    (m_currentProject == null) ? null : m_currentProject.getLocation()
-                            .toOSString();
+            String projectLocation = (m_currentProject == null) ? null : m_currentProject.getLocation().toOSString();
 
             if (null != projectLocation)
             {
@@ -176,20 +171,20 @@ public class ModelWizard extends Wizard implements INewWizard
 
         if (modelFolder.exists())
         {
-            boolean ok =
-                    DialogUtils.confirm("Model create", "Model with name " + modelName
-                            + " was already created. Delete old model?");
+            boolean ok = DialogUtils.confirm(
+            	"Model create", "Model with name " + modelName + " was already created. Delete old model?");
+            
             if (!ok)
             {
                 return;
             }
+            
             OSHelper.deleteFolder(modelFolder);
         }
 
         try
         {
-            RakeTask task =
-                    new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
+            RakeTask task = new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
 
             Map<String, ?> results = task.run(monitor);
 

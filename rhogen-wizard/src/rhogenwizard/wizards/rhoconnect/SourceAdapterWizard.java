@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhoconnect;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -24,7 +23,6 @@ import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
 import rhogenwizard.sdk.task.RakeTask;
@@ -32,8 +30,6 @@ import rhogenwizard.wizards.ZeroPage;
 
 public class SourceAdapterWizard extends Wizard implements INewWizard
 {
-    private static final String okRhodesVersionFlag = "1";
-
     private SourceAdapterWizardPage m_pageApp = null;
     private ISelection m_selection = null;
     private IProject m_currentProject = null;
@@ -64,9 +60,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
         {
             if (!RhoconnectProject.checkNature(m_currentProject))
             {
-                ZeroPage zeroPage =
-                        new ZeroPage("Project " + m_currentProject.getName()
-                                + " is not rhoconnect application.");
+                ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhoconnect application.");
                 addPage(zeroPage);
             }
             else
@@ -77,8 +71,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
         }
         else
         {
-            ZeroPage zeroPage =
-                    new ZeroPage("Select rhoconnect project for create source adapter.");
+            ZeroPage zeroPage = new ZeroPage("Select rhoconnect project for create source adapter.");
             addPage(zeroPage);
         }
     }
@@ -138,8 +131,6 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
      */
     private void doFinish(String adapterName, IProgressMonitor monitor) throws CoreException
     {
-        IProject newProject = null;
-
         try
         {
             if (m_currentProject.isOpen())
@@ -148,8 +139,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 monitor.worked(1);
                 monitor.setTaskName("Opening file for editing...");
 
-                RakeTask task =
-                        new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
+                RakeTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
                 Map<String, ?> results = task.run(monitor);
 
                 if (TaskResultConverter.getResultIntCode(results) != 0)
@@ -159,9 +149,9 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 
                 m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
-                ShowPerspectiveJob job =
-                        new ShowPerspectiveJob("show rhomobile perspective",
-                                UiConstants.rhodesPerspectiveId);
+                ShowPerspectiveJob job = new ShowPerspectiveJob(
+                	"show rhomobile perspective", UiConstants.rhodesPerspectiveId);
+                
                 job.schedule();
             }
 
