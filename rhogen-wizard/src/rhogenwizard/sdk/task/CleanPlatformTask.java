@@ -27,8 +27,7 @@ public class CleanPlatformTask extends RakeTask
             throw new IllegalArgumentException("parameters data is invalid [CleanPlatformTask]");
 
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
-        PlatformType platformType =
-            (PlatformType) m_taskParams.get(CleanPlatformTask.platformType);
+        PlatformType platformType = (PlatformType) m_taskParams.get(CleanPlatformTask.platformType);
 
         List<String> cmdLine = Arrays.asList(m_rakeExe, "clean:" + platformType);
 

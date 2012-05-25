@@ -23,8 +23,7 @@ public class GenerateRhoconnectAppTask extends RhoconnectTask
     public void run()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException(
-                    "parameters data is invalid [GenerateRhoconnectAppTask]");
+            throw new IllegalArgumentException("parameters data is invalid [GenerateRhoconnectAppTask]");
 
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
         String appName = (String) m_taskParams.get(GenerateRhoconnectAppTask.appName);
@@ -33,6 +32,7 @@ public class GenerateRhoconnectAppTask extends RhoconnectTask
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
+
         try
         {
             m_executor.setWorkingDirectory(workDir);
@@ -41,6 +41,7 @@ public class GenerateRhoconnectAppTask extends RhoconnectTask
         catch (Exception e)
         {
         }
+
         m_taskResult.put(resTag, result);
     }
 }

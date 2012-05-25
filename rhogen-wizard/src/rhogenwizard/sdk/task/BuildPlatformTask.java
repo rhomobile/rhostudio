@@ -33,7 +33,7 @@ public class BuildPlatformTask extends RakeTask
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
-        
+
         try
         {
             m_executor.setWorkingDirectory(workDir);
@@ -42,7 +42,7 @@ public class BuildPlatformTask extends RakeTask
         catch (Exception e)
         {
         }
-        
+
         m_taskResult.put(resTag, result);
     }
 }

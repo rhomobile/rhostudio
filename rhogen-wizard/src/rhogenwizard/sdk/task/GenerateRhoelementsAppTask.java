@@ -23,8 +23,7 @@ public class GenerateRhoelementsAppTask extends RhoelementsTask
     public void run()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException(
-                    "parameters data is invalid [GenerateRhoelementsAppTask]");
+            throw new IllegalArgumentException("parameters data is invalid [GenerateRhoelementsAppTask]");
 
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
         String appName = (String) m_taskParams.get(GenerateRhoelementsAppTask.appName);
@@ -33,6 +32,7 @@ public class GenerateRhoelementsAppTask extends RhoelementsTask
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
+        
         try
         {
             m_executor.setWorkingDirectory(workDir);
@@ -41,6 +41,7 @@ public class GenerateRhoelementsAppTask extends RhoelementsTask
         catch (Exception e)
         {
         }
+        
         m_taskResult.put(resTag, result);
     }
 }

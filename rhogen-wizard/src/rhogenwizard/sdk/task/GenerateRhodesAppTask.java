@@ -23,8 +23,7 @@ public class GenerateRhodesAppTask extends RhodesTask
     public void run()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException(
-                    "parameters data is invalid [GenerateRhodesAppTask]");
+            throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesAppTask]");
 
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
         String appName = (String) m_taskParams.get(GenerateRhodesAppTask.appName);
@@ -33,6 +32,7 @@ public class GenerateRhodesAppTask extends RhodesTask
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
+        
         try
         {
             m_executor.setWorkingDirectory(workDir);
@@ -41,6 +41,7 @@ public class GenerateRhodesAppTask extends RhodesTask
         catch (Exception e)
         {
         }
+        
         m_taskResult.put(resTag, result);
     }
 }

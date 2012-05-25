@@ -20,14 +20,14 @@ public class GenerateRhodesSpecTask extends RhodesTask
     public void run()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException(
-                    "parameters data is invalid [GenerateRhodesAppSpec]");
+            throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesAppSpec]");
 
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
 
         List<String> cmdLine = Arrays.asList(m_rhogenExe, "spec");
 
         int result = TaskResultConverter.failCode;
+        
         try
         {
             m_executor.setWorkingDirectory(workDir);
@@ -36,6 +36,7 @@ public class GenerateRhodesSpecTask extends RhodesTask
         catch (Exception e)
         {
         }
+        
         m_taskResult.put(resTag, result);
     }
 }
