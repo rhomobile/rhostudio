@@ -3,8 +3,6 @@ package rhogenwizard.sdk.helper;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
-import org.eclipse.ui.console.MessageConsoleStream;
-
 import rhogenwizard.ConsoleHelper;
 
 

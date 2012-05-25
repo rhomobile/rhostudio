@@ -56,8 +56,7 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             {
             }
 
-            RakeTask task =
-                    new BuildPlatformTask(project.getLocation().toOSString(), selectPlatform);
+            RakeTask task = new BuildPlatformTask(project.getLocation().toOSString(), selectPlatform);
             task.makeJob("Production build (" + projectName + ")").schedule();
         }
     }

@@ -73,7 +73,8 @@ public class SpecWizard extends Wizard implements INewWizard
             }
             else
             {
-                ZeroPage zeroPage = new ZeroPage("Press Finish button for finished generate spec framework files");
+                ZeroPage zeroPage = new ZeroPage(
+                	"Press Finish button for finished generate spec framework files");
                 addPage(zeroPage);
             }
         }
@@ -179,17 +180,14 @@ public class SpecWizard extends Wizard implements INewWizard
 
             m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
-            ShowPerspectiveJob job =
-                    new ShowPerspectiveJob("show RhoStudio perspective",
-                            UiConstants.rhodesPerspectiveId);
+            ShowPerspectiveJob job = new ShowPerspectiveJob("show RhoStudio perspective", UiConstants.rhodesPerspectiveId);
             job.schedule();
 
             monitor.worked(1);
         }
         catch (IOException e)
         {
-            String message =
-                            "Cannot find RhoMobile, need RhoMobile version equal or greater "
+            String message = "Cannot find RhoMobile, need RhoMobile version equal or greater "
                                     + CommonConstants.rhodesVersion
                                     + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
             DialogUtils.error("Error", message);

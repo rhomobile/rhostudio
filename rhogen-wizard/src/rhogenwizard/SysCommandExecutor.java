@@ -28,7 +28,8 @@ public class SysCommandExecutor
         m_errorLogDevice = logDevice;
     }
 
-    public void setWorkingDirectory(String workingDirectory) {
+    public void setWorkingDirectory(String workingDirectory) 
+    {
         m_workingDirectory = workingDirectory;
     }
 
@@ -102,12 +103,14 @@ public class SysCommandExecutor
     private void notifyOutputAndErrorReadThreadsToStopReading() throws InterruptedException
     {
         m_cmdOutputThread.join(1000);
+        
         if (m_cmdOutputThread.isAlive())
         {
             m_cmdOutputThread.stopReading();
         }
 
         m_cmdErrorThread.join(1000);
+        
         if (m_cmdErrorThread.isAlive())
         {
             m_cmdErrorThread.stopReading();
@@ -122,6 +125,7 @@ public class SysCommandExecutor
         String[] envTokenArray = new String[m_environmentVarList.size()];
         Iterator<EnvironmentVar> envVarIter = m_environmentVarList.iterator();
         int nEnvVarIndex = 0;
+        
         while (envVarIter.hasNext() == true)
         {
             EnvironmentVar envVar = (EnvironmentVar)(envVarIter.next());
