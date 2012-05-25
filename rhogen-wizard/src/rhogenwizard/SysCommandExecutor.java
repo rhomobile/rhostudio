@@ -82,10 +82,19 @@ public class SysCommandExecutor
     {
         ProcessBuilder pb = new ProcessBuilder(commandLine);
 
-        if (m_workingDirectory != null) {
+        if (m_workingDirectory != null) 
+        {
             pb.directory(new File(m_workingDirectory));
         }
 
+        if (m_environmentVarList != null && !m_environmentVarList.isEmpty())
+        {
+        	for (EnvironmentVar envVar : m_environmentVarList)
+        	{
+        		pb.environment().put(envVar.m_envName, envVar.m_envValue);        		
+        	}
+        }
+        
         return pb.start();
     }
 

@@ -1,7 +1,5 @@
 package rhogenwizard.sdk.helper;
 
-import org.eclipse.ui.console.MessageConsoleStream;
-
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
 

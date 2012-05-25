@@ -44,7 +44,6 @@ public class ZeroPage extends WizardPage
 		getShell().setSize(ZeroPage.zeroPageWidth, ZeroPage.zeroPageHeight);
 		
 		setErrorMessage(null);
-		setPageComplete(true);
-		
+		setPageComplete(true);	
 	}
 }

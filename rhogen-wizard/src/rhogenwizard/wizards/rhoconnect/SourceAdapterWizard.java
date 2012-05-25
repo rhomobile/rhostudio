@@ -30,10 +30,10 @@ import rhogenwizard.wizards.ZeroPage;
 
 public class SourceAdapterWizard extends Wizard implements INewWizard
 {
-    private SourceAdapterWizardPage m_pageApp = null;
-    private ISelection m_selection = null;
-    private IProject m_currentProject = null;
-    private String m_projectLocation = null;
+    private SourceAdapterWizardPage m_pageApp         = null;
+    private ISelection              m_selection       = null;
+    private IProject                m_currentProject  = null;
+    private String                  m_projectLocation = null;
 
     /**
      * Constructor for SampleNewWizard.
@@ -60,7 +60,8 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
         {
             if (!RhoconnectProject.checkNature(m_currentProject))
             {
-                ZeroPage zeroPage = new ZeroPage("Project " + m_currentProject.getName() + " is not rhoconnect application.");
+                ZeroPage zeroPage = new ZeroPage(
+                    "Project " + m_currentProject.getName() + " is not rhoconnect application.");
                 addPage(zeroPage);
             }
             else
@@ -149,9 +150,9 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
 
                 m_currentProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
-                ShowPerspectiveJob job = new ShowPerspectiveJob(
-                	"show rhomobile perspective", UiConstants.rhodesPerspectiveId);
-                
+                ShowPerspectiveJob job = new ShowPerspectiveJob("show rhomobile perspective",
+                    UiConstants.rhodesPerspectiveId);
+
                 job.schedule();
             }
 

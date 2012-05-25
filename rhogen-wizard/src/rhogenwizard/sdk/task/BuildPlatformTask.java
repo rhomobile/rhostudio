@@ -27,14 +27,13 @@ public class BuildPlatformTask extends RakeTask
             throw new IllegalArgumentException("parameters data is invalid [BuildPlatformTask]");
 
         String workDir = (String) m_taskParams.get(IRunTask.workDir);
-        PlatformType platformType =
-                (PlatformType) m_taskParams.get(BuildPlatformTask.platformType);
+        PlatformType platformType = (PlatformType) m_taskParams.get(BuildPlatformTask.platformType);
 
-        List<String> cmdLine =
-                Arrays.asList(m_rakeExe, "device:" + platformType + ":production");
+        List<String> cmdLine = Arrays.asList(m_rakeExe, "device:" + platformType + ":production");
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
+        
         try
         {
             m_executor.setWorkingDirectory(workDir);
@@ -43,6 +42,7 @@ public class BuildPlatformTask extends RakeTask
         catch (Exception e)
         {
         }
+        
         m_taskResult.put(resTag, result);
     }
 }
