@@ -20,7 +20,7 @@ public class GenerateRhoelementsAppTask extends RhoelementsTask
     }
 
     @Override
-    protected void run()
+    protected void exec()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhoelementsAppTask]");

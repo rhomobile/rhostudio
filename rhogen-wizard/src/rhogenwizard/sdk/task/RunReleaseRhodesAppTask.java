@@ -20,7 +20,7 @@ public class RunReleaseRhodesAppTask extends RhodesTask
     public static final String traceFlag    = "trace";
 
     @Override
-    protected void run()
+    protected void exec()
     {
         m_taskResult.clear();
 

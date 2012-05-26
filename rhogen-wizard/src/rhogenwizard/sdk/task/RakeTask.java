@@ -11,7 +11,7 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
-public abstract class RakeTask extends RunTask
+public abstract class RakeTask extends ExecStopTask
 {
     protected String              m_rakeExe    = "rake";
     protected SysCommandExecutor  m_executor   = new SysCommandExecutor();

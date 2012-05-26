@@ -29,7 +29,7 @@ public class RunDebugRhodesAppTask extends RhodesTask
     DebugConsoleAdapter        m_dbgConsoleAdapter = null;
 
     @Override
-    protected void run()
+    protected void exec()
     {
         m_taskResult.clear();
 

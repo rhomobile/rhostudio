@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.ExecStopTask;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;

@@ -3,7 +3,7 @@ package rhogenwizard.sdk.task;
 public class StopRhoconnectAppAdapter extends RunRhoconnectAppTask
 {
     @Override
-    protected void run()
+    protected void exec()
     {
     }
 

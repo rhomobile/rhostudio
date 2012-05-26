@@ -68,7 +68,7 @@ public class RunReleaseRhoconnectAppTask extends RunRhoconnectAppTask
     private static RhoconnectProcessRunner rhoconnectRunner = null;
 
     @Override
-    protected void run()
+    protected void exec()
     {
         m_taskResult.clear();
 

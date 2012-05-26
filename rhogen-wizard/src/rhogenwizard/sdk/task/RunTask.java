@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
@@ -11,7 +12,7 @@ public abstract class RunTask
 {
     public static class StoppedException extends RuntimeException
     {
-        private static final long serialVersionUID = 4771945946727616049L;
+        private static final long serialVersionUID = -4702661222816646561L;
 
         public StoppedException()
         {
@@ -30,41 +31,12 @@ public abstract class RunTask
 
     public abstract Map<String, ?> getResult();
 
-    public void run(IProgressMonitor monitor)
+    public void run()
     {
-        if (monitor.isCanceled())
-        {
-            throw new StoppedException();
-        }
-
-        Thread thread = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                RunTask.this.run();
-            }
-        });
-        thread.start();
-
-        while (thread.isAlive())
-        {
-            try
-            {
-                thread.join(100);
-            }
-            catch (InterruptedException e)
-            {
-                throw new StoppedException(e);
-            }
-
-            if (monitor.isCanceled())
-            {
-                stop();
-                throw new StoppedException();
-            }
-        }
+        run(new NullProgressMonitor());
     }
+
+    public abstract void run(IProgressMonitor monitor);
 
     public Job makeJob(String name)
     {
@@ -85,8 +57,4 @@ public abstract class RunTask
             }
         };
     }
-
-    protected abstract void run();
-
-    protected abstract void stop();
 }
