@@ -17,6 +17,20 @@ import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
 public abstract class RakeTask implements IRunTask
 {
+    public class StoppedException extends RuntimeException
+    {
+        private static final long serialVersionUID = -3189956590994196563L;
+
+        public StoppedException()
+        {
+        }
+
+        public StoppedException(Throwable e)
+        {
+            super(e);
+        }
+    }
+
     protected String              m_rakeExe    = "rake";
     protected SysCommandExecutor  m_executor   = new SysCommandExecutor();
     protected Map<String, ?>      m_taskParams = null;
@@ -71,11 +85,11 @@ public abstract class RakeTask implements IRunTask
         return m_executor.getCommandOutput();
     }
 
-    public Map<String, ?> run(IProgressMonitor monitor) throws InterruptedException
+    public Map<String, ?> run(IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {
-            throw new InterruptedException();
+            throw new StoppedException();
         }
 
         Thread thread = new Thread(this);
@@ -83,11 +97,19 @@ public abstract class RakeTask implements IRunTask
 
         while (thread.isAlive())
         {
-            thread.join(100);
+            try
+            {
+                thread.join(100);
+            }
+            catch (InterruptedException e)
+            {
+                throw new StoppedException(e);
+            }
+
             if (monitor.isCanceled())
             {
                 stop();
-                throw new InterruptedException();
+                throw new StoppedException();
             }
         }
 
@@ -99,20 +121,13 @@ public abstract class RakeTask implements IRunTask
         return new Job(name)
         {
             @Override
-            protected void canceling()
-            {
-                stop();
-                super.canceling();
-            }
-
-            @Override
             protected IStatus run(IProgressMonitor monitor)
             {
                 try
                 {
                     RakeTask.this.run(monitor);
                 }
-                catch (InterruptedException e)
+                catch (StoppedException e)
                 {
                     return Status.CANCEL_STATUS;
                 }

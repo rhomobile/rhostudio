@@ -76,9 +76,5 @@ public class Builder extends IncrementalProjectBuilder
         {
             Activator.logError(e);
         }
-        catch (InterruptedException e)
-        {
-            Activator.logError(e);
-        }
     }
 }
