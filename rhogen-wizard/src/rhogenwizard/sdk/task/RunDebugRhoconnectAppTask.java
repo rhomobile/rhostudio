@@ -12,11 +12,10 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
-import rhogenwizard.PlatformType;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class RunDebugRhoconnectAppTask extends RunRhoconnectAppTask
+public class RunDebugRhoconnectAppTask extends RhoconnectTask
 {
     public static final String taskTag    = "rhoconnect-app-debug-runner";
 
@@ -36,7 +35,7 @@ public class RunDebugRhoconnectAppTask extends RunRhoconnectAppTask
             String appName = (String) m_taskParams.get(this.appName);
             ILaunch launch = (ILaunch) m_taskParams.get(this.launchObj);
 
-            stopSyncApp();
+            new StopSyncAppTask().run();
 
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             store.setValue(ConfigurationConstants.lastSyncRunApp, workDir);

@@ -63,7 +63,7 @@ class RhoconnectProcessRunner extends Thread
     }
 }
 
-public class RunReleaseRhoconnectAppTask extends RunRhoconnectAppTask
+public class RunReleaseRhoconnectAppTask extends RhoconnectTask
 {
     private static RhoconnectProcessRunner rhoconnectRunner = null;
 
@@ -79,7 +79,7 @@ public class RunReleaseRhoconnectAppTask extends RunRhoconnectAppTask
 
             String workDir = (String) m_taskParams.get(this.workDir);
 
-            stopSyncApp();
+            new StopSyncAppTask().run();
 
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             store.setValue(ConfigurationConstants.lastSyncRunApp, workDir);

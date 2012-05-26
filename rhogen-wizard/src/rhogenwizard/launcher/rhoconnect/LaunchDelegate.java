@@ -30,7 +30,7 @@ import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
-import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
+import rhogenwizard.sdk.task.StopSyncAppTask;
 
 public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -174,7 +174,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 				    {
 						if (monitor.isCanceled()) 
 					    {
-							StopRhoconnectAppAdapter.stopRhoconnectApp();
+							new StopSyncAppTask().run();
 							return;
 					    }
 						

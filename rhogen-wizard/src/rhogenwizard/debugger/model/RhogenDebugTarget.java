@@ -29,6 +29,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
+
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
@@ -43,7 +44,7 @@ import rhogenwizard.debugger.model.selector.ResourceNameSelector;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.project.extension.BadProjectTagException;
-import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
+import rhogenwizard.sdk.task.StopSyncAppTask;
 
 /**
  * PDA Debug Target
@@ -185,8 +186,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 
             if (ProjectFactory.getInstance().typeFromProject(m_debugProject).equals(RhoconnectProject.class))
             {
-                StopRhoconnectAppAdapter adapter = new StopRhoconnectAppAdapter();
-                adapter.stopSyncApp();
+                new StopSyncAppTask().run();
             }
 
             if (m_processHandle != null)
