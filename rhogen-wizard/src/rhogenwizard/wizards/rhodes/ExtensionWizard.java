@@ -28,7 +28,7 @@ import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class ExtensionWizard extends Wizard implements INewWizard
@@ -128,7 +128,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
 
     private void createProjectFiles(final String extName, IProgressMonitor monitor) throws IOException
     {
-        RakeTask task = new GenerateRhodesExtensionTask(m_currentProject.getLocation().toOSString(), extName);
+        RunTask task = new GenerateRhodesExtensionTask(m_currentProject.getLocation().toOSString(), extName);
         task.run(monitor);
         if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {

@@ -62,7 +62,7 @@ public class RhodesCreationTest extends TestCase
     {
         String appName = "test001";
 
-        RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+        RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
         task.run();
 
         assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
@@ -81,7 +81,7 @@ public class RhodesCreationTest extends TestCase
         {
             Map<String, Object> params = new HashMap<String, Object>();
 
-            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
 
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
@@ -91,7 +91,7 @@ public class RhodesCreationTest extends TestCase
 
         // create model
         {
-            RakeTask task = new GenerateRhodesModelTask(projectLoc, modelName, "a, b, c");
+            RunTask task = new GenerateRhodesModelTask(projectLoc, modelName, "a, b, c");
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
@@ -110,7 +110,7 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
@@ -119,7 +119,7 @@ public class RhodesCreationTest extends TestCase
 
         // create extension
         {
-            RakeTask task = new GenerateRhodesExtensionTask(projectLoc, extensionName);
+            RunTask task = new GenerateRhodesExtensionTask(projectLoc, extensionName);
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
@@ -137,7 +137,7 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+            RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
@@ -146,7 +146,7 @@ public class RhodesCreationTest extends TestCase
 
         // create spec
         {
-            RakeTask task = new GenerateRhodesSpecTask(projectLoc);
+            RunTask task = new GenerateRhodesSpecTask(projectLoc);
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 

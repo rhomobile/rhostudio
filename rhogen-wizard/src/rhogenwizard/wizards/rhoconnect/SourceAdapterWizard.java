@@ -25,7 +25,7 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SourceAdapterWizard extends Wizard implements INewWizard
@@ -136,7 +136,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 monitor.worked(1);
                 monitor.setTaskName("Opening file for editing...");
 
-                RakeTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
+                RunTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
                 task.run(monitor);
 
                 if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)

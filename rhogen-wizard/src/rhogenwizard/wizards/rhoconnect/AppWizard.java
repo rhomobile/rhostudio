@@ -29,7 +29,7 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 
 public class AppWizard extends Wizard implements INewWizard
 {
@@ -110,7 +110,7 @@ public class AppWizard extends Wizard implements INewWizard
     {
         monitor.setTaskName("Generate application...");
 
-        RakeTask task =
+        RunTask task =
                 new GenerateRhoconnectAppTask(infoHolder.getProjectLocationPath().toOSString(),
                         infoHolder.appName);
         task.run(monitor);

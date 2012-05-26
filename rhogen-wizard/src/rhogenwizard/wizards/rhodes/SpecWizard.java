@@ -26,7 +26,7 @@ import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SpecWizard extends Wizard implements INewWizard
@@ -133,7 +133,7 @@ public class SpecWizard extends Wizard implements INewWizard
 
     private void createProjectFiles(IProgressMonitor monitor) throws IOException
     {
-        RakeTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
+        RunTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
         task.run(monitor);
 
         if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)

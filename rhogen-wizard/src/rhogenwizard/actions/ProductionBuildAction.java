@@ -19,7 +19,7 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.task.BuildPlatformTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 {
@@ -61,7 +61,7 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             {
             }
 
-            RakeTask task = new BuildPlatformTask(project.getLocation().toOSString(), selectPlatform);
+            RunTask task = new BuildPlatformTask(project.getLocation().toOSString(), selectPlatform);
             task.makeJob("Production build (" + projectName + ")").schedule();
         }
     }

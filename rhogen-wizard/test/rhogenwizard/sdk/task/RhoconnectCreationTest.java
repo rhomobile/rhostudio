@@ -59,7 +59,7 @@ public class RhoconnectCreationTest extends TestCase
     {
         String appName = "test003";
 
-        RakeTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
+        RunTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
         task.run();
         assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
@@ -75,7 +75,7 @@ public class RhoconnectCreationTest extends TestCase
 
         // create application
         {
-            RakeTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
+            RunTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
@@ -84,7 +84,7 @@ public class RhoconnectCreationTest extends TestCase
 
         // create adapter
         {
-            RakeTask task = new GenerateRhoconnectAdapterTask(projectLocation, adapterName);
+            RunTask task = new GenerateRhoconnectAdapterTask(projectLocation, adapterName);
             task.run();
             assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
