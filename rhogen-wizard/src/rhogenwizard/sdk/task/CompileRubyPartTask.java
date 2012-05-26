@@ -39,14 +39,14 @@ public class CompileRubyPartTask extends RakeTask
         m_executor.setErrorLogDevice(new OutputAdapter());
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         m_taskParams = params;
     }
 
     @Override
     public void run()
     {
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");
 
         m_outputStrings.clear();

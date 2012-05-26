@@ -15,7 +15,7 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
-public abstract class RakeTask implements IRunTask
+public abstract class RakeTask extends RunTask
 {
     public class StoppedException extends RuntimeException
     {

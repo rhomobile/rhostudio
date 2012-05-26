@@ -14,7 +14,7 @@ public class GenerateRhodesAppTask extends RhodesTask
     public GenerateRhodesAppTask(String workDir, String appName)
     {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         params.put(GenerateRhodesAppTask.appName, appName);
         m_taskParams = params;
     }
@@ -25,7 +25,7 @@ public class GenerateRhodesAppTask extends RhodesTask
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesAppTask]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         String appName = (String) m_taskParams.get(GenerateRhodesAppTask.appName);
 
         List<String> cmdLine = Arrays.asList(m_rhogenExe, "app", appName);

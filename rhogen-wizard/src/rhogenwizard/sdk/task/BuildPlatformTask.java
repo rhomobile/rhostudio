@@ -15,7 +15,7 @@ public class BuildPlatformTask extends RakeTask
     public BuildPlatformTask(String workDir, PlatformType platformType)
     {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         params.put(BuildPlatformTask.platformType, platformType);
         m_taskParams = params;
     }
@@ -26,7 +26,7 @@ public class BuildPlatformTask extends RakeTask
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [BuildPlatformTask]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         PlatformType platformType = (PlatformType) m_taskParams.get(BuildPlatformTask.platformType);
 
         List<String> cmdLine = Arrays.asList(m_rakeExe, "device:" + platformType + ":production");

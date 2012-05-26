@@ -14,7 +14,7 @@ public class GenerateRhoconnectAdapterTask extends RhoconnectTask
     public GenerateRhoconnectAdapterTask(String workDir, String sourceName)
     {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         params.put(GenerateRhoconnectAdapterTask.sourceName, sourceName);
         m_taskParams = params;
     }
@@ -25,7 +25,7 @@ public class GenerateRhoconnectAdapterTask extends RhoconnectTask
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhoconnectAdapterTask]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         String sourceName = (String) m_taskParams.get(GenerateRhoconnectAdapterTask.sourceName);
 
         List<String> cmdLine = Arrays.asList(m_rhoConnectExe, "source", sourceName);

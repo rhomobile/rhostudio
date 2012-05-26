@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.eclipse.debug.core.model.IProcess;
 
-import rhogenwizard.sdk.task.IRunTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 
 public class TaskResultConverter 
@@ -17,7 +17,7 @@ public class TaskResultConverter
 		if (results == null)
 			throw new IllegalArgumentException("result container is null [TaskResultConverter]");
 		
-		Object value = results.get(IRunTask.resTag);
+		Object value = results.get(RunTask.resTag);
 
 		if (value == null)
 			throw new IllegalArgumentException("return patameter is null [TaskResultConverter]");

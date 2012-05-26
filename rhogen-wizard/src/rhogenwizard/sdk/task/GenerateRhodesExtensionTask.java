@@ -14,7 +14,7 @@ public class GenerateRhodesExtensionTask extends RhodesTask
     public GenerateRhodesExtensionTask(String workDir, String extName)
     {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         params.put(GenerateRhodesExtensionTask.extName, extName);
         m_taskParams = params;
     }
@@ -25,7 +25,7 @@ public class GenerateRhodesExtensionTask extends RhodesTask
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesExtensionTask]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         String extName = (String) m_taskParams.get(GenerateRhodesExtensionTask.extName);
 
         List<String> cmdLine = Arrays.asList(m_rhogenExe, "extension", extName);
