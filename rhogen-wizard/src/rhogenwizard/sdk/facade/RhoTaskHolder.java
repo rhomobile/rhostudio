@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
@@ -24,7 +23,6 @@ public class RhoTaskHolder
 		// added tasks
 		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
 		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());
-		m_holdTasks.put(RunDebugRhoconnectAppTask.class, new RunDebugRhoconnectAppTask());
 		m_holdTasks.put(RunReleaseRhoconnectAppTask.class, new RunReleaseRhoconnectAppTask());
 	}
 	
