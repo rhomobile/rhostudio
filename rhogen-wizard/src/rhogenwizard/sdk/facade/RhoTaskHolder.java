@@ -49,17 +49,4 @@ public class RhoTaskHolder
 
 		throw new IndexOutOfBoundsException();
 	}
-	
-	public void stopTask(Class<? extends RunTask> id)
-	{
-		RunTask task = m_holdTasks.get(id);
-		
-		if (task != null)
-		{
-			task.stop();
-			return;
-		}
-
-		throw new IndexOutOfBoundsException();
-	}
 }
