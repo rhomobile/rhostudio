@@ -104,7 +104,7 @@ public class AppWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws Exception
+    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws IOException
     {
         monitor.setTaskName("Generate application...");
 

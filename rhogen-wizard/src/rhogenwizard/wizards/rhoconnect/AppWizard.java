@@ -106,7 +106,7 @@ public class AppWizard extends Wizard implements INewWizard
     }
 
     private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor)
-            throws IOException, Exception
+            throws IOException
     {
         monitor.setTaskName("Generate application...");
 
@@ -161,10 +161,6 @@ public class AppWizard extends Wizard implements INewWizard
         {
             newProject.deleteProjectFiles();
             DialogUtils.error("Error", MsgConstants.errFindRhosync);
-        }
-        catch (CheckProjectException e)
-        {
-            DialogUtils.error("Error", e.getMessage());
         }
         catch (AlredyCreatedException e)
         {

@@ -126,7 +126,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(final String extName, IProgressMonitor monitor) throws InterruptedException, IOException
+    private void createProjectFiles(final String extName, IProgressMonitor monitor) throws IOException
     {
         RakeTask task = new GenerateRhodesExtensionTask(m_currentProject.getLocation().toOSString(), extName);
         Map<String, ?> results = task.run(monitor);

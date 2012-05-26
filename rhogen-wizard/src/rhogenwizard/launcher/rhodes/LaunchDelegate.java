@@ -163,8 +163,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		m_isTrace      = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
 	}
 	
-	private void cleanSelectedPlatform(IProject project, boolean isClean,
-	    IProgressMonitor monitor) throws InterruptedException
+	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor)
 	{
 		if (isClean) 
 		{

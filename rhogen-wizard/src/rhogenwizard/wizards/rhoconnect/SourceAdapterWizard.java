@@ -96,10 +96,6 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 {
                     doFinish(srcAdapterName, monitor);
                 }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
                 finally
                 {
                     monitor.done();
@@ -130,7 +126,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
      * or just replace its contents, and open the editor on the newly created
      * file.
      */
-    private void doFinish(String adapterName, IProgressMonitor monitor) throws CoreException
+    private void doFinish(String adapterName, IProgressMonitor monitor)
     {
         try
         {

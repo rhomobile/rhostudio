@@ -131,7 +131,7 @@ public class SpecWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(IProgressMonitor monitor) throws InterruptedException, IOException
+    private void createProjectFiles(IProgressMonitor monitor) throws IOException
     {
         RakeTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
         Map<String, ?> results = task.run(monitor);
