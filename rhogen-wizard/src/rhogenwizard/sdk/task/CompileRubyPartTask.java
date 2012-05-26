@@ -44,7 +44,7 @@ public class CompileRubyPartTask extends RakeTask
     }
 
     @Override
-    public void run()
+    protected void run()
     {
         String workDir = (String) m_taskParams.get(RunTask.workDir);
         List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");

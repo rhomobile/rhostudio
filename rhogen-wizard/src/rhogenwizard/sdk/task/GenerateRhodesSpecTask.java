@@ -17,7 +17,7 @@ public class GenerateRhodesSpecTask extends RhodesTask
     }
 
     @Override
-    public void run()
+    protected void run()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesAppSpec]");

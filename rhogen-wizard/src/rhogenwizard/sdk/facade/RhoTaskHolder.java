@@ -3,6 +3,8 @@ package rhogenwizard.sdk.facade;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
+
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
@@ -43,7 +45,7 @@ public class RhoTaskHolder
 		if (task != null)
 		{
 			task.setData(params);
-			task.run();
+			task.run(new NullProgressMonitor());
 			return task.getResult();
 		}
 

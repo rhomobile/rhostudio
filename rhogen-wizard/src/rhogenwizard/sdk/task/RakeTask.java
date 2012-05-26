@@ -30,7 +30,7 @@ public abstract class RakeTask extends RunTask
     }
 
     @Override
-    public void stop()
+    protected void stop()
     {
         try
         {

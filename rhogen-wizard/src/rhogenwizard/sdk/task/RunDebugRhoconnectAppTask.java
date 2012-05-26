@@ -25,7 +25,7 @@ public class RunDebugRhoconnectAppTask extends RunRhoconnectAppTask
     public static final String resProcess = "debug-process";
 
     @Override
-    public void run()
+    protected void run()
     {
         try
         {

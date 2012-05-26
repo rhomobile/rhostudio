@@ -28,10 +28,6 @@ public abstract class RunTask
 
     public abstract void setData(Map<String, ?> data);
 
-    public abstract void run();
-
-    public abstract void stop();
-
     public abstract Map<String, ?> getResult();
 
     public void run(IProgressMonitor monitor)
@@ -89,4 +85,8 @@ public abstract class RunTask
             }
         };
     }
+
+    protected abstract void run();
+
+    protected abstract void stop();
 }
