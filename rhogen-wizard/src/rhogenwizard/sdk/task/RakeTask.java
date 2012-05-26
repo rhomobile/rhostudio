@@ -92,7 +92,14 @@ public abstract class RakeTask extends RunTask
             throw new StoppedException();
         }
 
-        Thread thread = new Thread(this);
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                RakeTask.this.run();
+            }
+        });
         thread.start();
 
         while (thread.isAlive())
