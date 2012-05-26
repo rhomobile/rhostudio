@@ -174,7 +174,7 @@ public class RunDebugRhodesAppTaskTest
         {
             // create application
             {
-                RakeTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
+                RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
                 task.run();
 
                 assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));

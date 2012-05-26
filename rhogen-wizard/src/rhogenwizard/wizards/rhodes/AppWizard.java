@@ -30,7 +30,7 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 
 public class AppWizard extends Wizard implements INewWizard
 {
@@ -104,13 +104,11 @@ public class AppWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws Exception
+    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws IOException
     {
         monitor.setTaskName("Generate application...");
 
-        Map<String, ?> results = null;
-
-        RakeTask task;
+        RunTask task;
         if (infoHolder.isRhoelementsApp)
         {
             task = new GenerateRhoelementsAppTask(infoHolder.getProjectLocationPath().toOSString(),
@@ -122,9 +120,9 @@ public class AppWizard extends Wizard implements INewWizard
                 infoHolder.appName);
         }
 
-        results = task.run(monitor);
+        task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(results) != 0)
+        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {
             throw new IOException(MsgConstants.errInstallRhodes);
         }

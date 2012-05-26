@@ -9,7 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
+import rhogenwizard.sdk.task.StopSyncAppTask;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -53,8 +53,7 @@ public class Activator extends AbstractUIPlugin {
 	{
 	    killProcessesForForRunReleaseRhodesAppTask();
 
-		StopRhoconnectAppAdapter rhodesAdapter = new StopRhoconnectAppAdapter();
-		rhodesAdapter.stopSyncApp();
+	    new StopSyncAppTask().run();
 
 		plugin = null;
 		super.stop(context);		

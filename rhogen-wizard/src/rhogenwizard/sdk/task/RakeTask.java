@@ -6,16 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
-public abstract class RakeTask implements IRunTask
+public abstract class RakeTask extends RunTask
 {
     protected String              m_rakeExe    = "rake";
     protected SysCommandExecutor  m_executor   = new SysCommandExecutor();
@@ -34,19 +31,6 @@ public abstract class RakeTask implements IRunTask
     }
 
     @Override
-    public void stop()
-    {
-        try
-        {
-            OSHelper.killProcess("ruby");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void setData(Map<String, ?> data)
     {
         m_taskParams = data;
@@ -58,66 +42,54 @@ public abstract class RakeTask implements IRunTask
         return m_taskResult;
     }
 
-    public String runRakeTask(String workDir, String taskName) throws Exception
-    {
-        m_executor.setWorkingDirectory(workDir);
-
-        List<String> cmdLine = new ArrayList<String>();
-        cmdLine.add(m_rakeExe);
-        cmdLine.add(taskName);
-
-        m_executor.runCommand(cmdLine);
-
-        return m_executor.getCommandOutput();
-    }
-
-    public Map<String, ?> run(IProgressMonitor monitor) throws InterruptedException
+    @Override
+    public void run(IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {
-            throw new InterruptedException();
+            throw new StoppedException();
         }
 
-        Thread thread = new Thread(this);
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                exec();
+            }
+        });
         thread.start();
 
         while (thread.isAlive())
         {
-            thread.join(100);
+            try
+            {
+                thread.join(100);
+            }
+            catch (InterruptedException e)
+            {
+                throw new StoppedException(e);
+            }
+
             if (monitor.isCanceled())
             {
                 stop();
-                throw new InterruptedException();
+                throw new StoppedException();
             }
         }
-
-        return getResult();
     }
 
-    public Job makeJob(String name)
-    {
-        return new Job(name)
-        {
-            @Override
-            protected void canceling()
-            {
-                stop();
-                super.canceling();
-            }
+    protected abstract void exec();
 
-            @Override
-            protected IStatus run(IProgressMonitor monitor)
-            {
-                try
-                {
-                    RakeTask.this.run(monitor);
-                }
-                catch (InterruptedException e)
-                {
-                    return Status.CANCEL_STATUS;
-                }
-                return Status.OK_STATUS;
-            }
-        };
+    protected void stop()
+    {
+        try
+        {
+            OSHelper.killProcess("ruby");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -15,18 +15,18 @@ public class CleanPlatformTask extends RakeTask
     public CleanPlatformTask(String workDir, PlatformType platformType)
     {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         params.put(CleanPlatformTask.platformType, platformType);
         m_taskParams = params;
     }
 
     @Override
-    public void run()
+    protected void exec()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [CleanPlatformTask]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         PlatformType platformType = (PlatformType) m_taskParams.get(CleanPlatformTask.platformType);
 
         List<String> cmdLine = Arrays.asList(m_rakeExe, "clean:" + platformType);

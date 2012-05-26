@@ -25,7 +25,7 @@ import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class ModelWizard extends Wizard implements INewWizard
@@ -184,11 +184,10 @@ public class ModelWizard extends Wizard implements INewWizard
 
         try
         {
-            RakeTask task = new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
+            RunTask task = new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
+            task.run(monitor);
 
-            Map<String, ?> results = task.run(monitor);
-
-            if (TaskResultConverter.getResultIntCode(results) != 0)
+            if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
             {
                 throw new IOException("The Rhodes SDK do not installed");
             }

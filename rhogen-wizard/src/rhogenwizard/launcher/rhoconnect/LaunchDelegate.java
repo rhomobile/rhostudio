@@ -30,7 +30,8 @@ import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
-import rhogenwizard.sdk.task.StopRhoconnectAppAdapter;
+import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.StopSyncAppTask;
 
 public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -108,15 +109,10 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put(RunDebugRhoconnectAppTask.workDir, currProject.getLocation().toOSString());
-		params.put(RunDebugRhoconnectAppTask.appName, currProject.getName());
-		params.put(RunDebugRhoconnectAppTask.launchObj, launch);
-		
-		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhoconnectAppTask.class, params);
-				
-		return TaskResultConverter.getResultLaunchObj(results);
+		RunTask task = new RunDebugRhoconnectAppTask(currProject.getLocation().toOSString(),
+		    currProject.getName(), launch);
+		task.run();
+		return TaskResultConverter.getResultLaunchObj(task.getResult());
 	}
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
@@ -174,7 +170,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 				    {
 						if (monitor.isCanceled()) 
 					    {
-							StopRhoconnectAppAdapter.stopRhoconnectApp();
+							new StopSyncAppTask().run();
 							return;
 					    }
 						

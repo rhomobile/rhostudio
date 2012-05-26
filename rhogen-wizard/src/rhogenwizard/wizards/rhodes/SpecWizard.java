@@ -26,7 +26,7 @@ import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SpecWizard extends Wizard implements INewWizard
@@ -131,12 +131,12 @@ public class SpecWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(IProgressMonitor monitor) throws InterruptedException, IOException
+    private void createProjectFiles(IProgressMonitor monitor) throws IOException
     {
-        RakeTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
-        Map<String, ?> results = task.run(monitor);
+        RunTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
+        task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(results) != 0)
+        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {
             throw new IOException("The RhoMobile SDK do not installed");
         }

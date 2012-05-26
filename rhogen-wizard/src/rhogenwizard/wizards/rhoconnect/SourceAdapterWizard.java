@@ -25,7 +25,7 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SourceAdapterWizard extends Wizard implements INewWizard
@@ -96,10 +96,6 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 {
                     doFinish(srcAdapterName, monitor);
                 }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
                 finally
                 {
                     monitor.done();
@@ -130,7 +126,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
      * or just replace its contents, and open the editor on the newly created
      * file.
      */
-    private void doFinish(String adapterName, IProgressMonitor monitor) throws CoreException
+    private void doFinish(String adapterName, IProgressMonitor monitor)
     {
         try
         {
@@ -140,10 +136,10 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 monitor.worked(1);
                 monitor.setTaskName("Opening file for editing...");
 
-                RakeTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
-                Map<String, ?> results = task.run(monitor);
+                RunTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
+                task.run(monitor);
 
-                if (TaskResultConverter.getResultIntCode(results) != 0)
+                if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
                 {
                     throw new IOException("The Rhodes SDK do not installed");
                 }

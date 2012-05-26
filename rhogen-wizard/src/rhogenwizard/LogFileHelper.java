@@ -7,8 +7,9 @@ import java.io.InputStream;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
+
 import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.sdk.task.RakeAdapter;
+import rhogenwizard.sdk.task.ARakeTask;
 
 class AppLogAdapter implements ILogDevice
 {
@@ -243,9 +244,9 @@ public class LogFileHelper
 	
 	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
-		RakeAdapter rakeCmdAdapter = new RakeAdapter();
-		
-		String output = rakeCmdAdapter.runRakeTask(project.getLocation().toOSString(), taskName);
+		ARakeTask task = new ARakeTask(project.getLocation().toOSString(), taskName);
+		task.run();
+		String output = task.getOutput();
 		
 		StringTokenizer st = new StringTokenizer(output, "\n");
 		

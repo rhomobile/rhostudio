@@ -29,7 +29,7 @@ public class RunDebugRhodesAppTask extends RhodesTask
     DebugConsoleAdapter        m_dbgConsoleAdapter = null;
 
     @Override
-    public void run()
+    protected void exec()
     {
         m_taskResult.clear();
 
@@ -38,7 +38,7 @@ public class RunDebugRhodesAppTask extends RhodesTask
             if (m_taskParams == null || m_taskParams.size() == 0)
                 throw new InvalidAttributesException("parameters data is invalid [RunDebugRhodesAppTask]");
 
-            String workDir = (String) m_taskParams.get(IRunTask.workDir);
+            String workDir = (String) m_taskParams.get(RunTask.workDir);
             String appName = (String) m_taskParams.get(RunDebugRhodesAppTask.appName);
             PlatformType platformType = (PlatformType) m_taskParams.get(RunDebugRhodesAppTask.platformType);
             Boolean isReloadCode = (Boolean) m_taskParams.get(RunDebugRhodesAppTask.reloadCode);

@@ -35,9 +35,9 @@ import rhogenwizard.debugger.model.RhogenDebugTarget;
 import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.CleanPlatformTask;
-import rhogenwizard.sdk.task.RakeTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
+import rhogenwizard.sdk.task.RunTask;
 
 public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
@@ -163,14 +163,13 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		m_isTrace      = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
 	}
 	
-	private void cleanSelectedPlatform(IProject project, boolean isClean,
-	    IProgressMonitor monitor) throws InterruptedException
+	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor)
 	{
 		if (isClean) 
 		{
 			ConsoleHelper.consoleBuildPrint("Clean started");
 			
-			RakeTask task =
+			RunTask task =
 			    new CleanPlatformTask(project.getLocation().toOSString(),
 			        PlatformType.fromString(m_platformType));
 			task.run(monitor);

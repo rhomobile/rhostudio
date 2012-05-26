@@ -22,12 +22,12 @@ public class GenerateRhodesModelTask extends RhodesTask
     }
 
     @Override
-    public void run()
+    protected void exec()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesModelTask]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
         String modelName = (String) m_taskParams.get(GenerateRhodesModelTask.modelName);
         String modelFields = (String) m_taskParams.get(GenerateRhodesModelTask.modelFields);
 

@@ -13,7 +13,7 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
-import rhogenwizard.sdk.task.RakeTask;
+import rhogenwizard.sdk.task.RunTask;
 
 public class Builder extends IncrementalProjectBuilder
 {
@@ -48,7 +48,7 @@ public class Builder extends IncrementalProjectBuilder
 
             for (PlatformType platformType : platformTypes)
             {
-                RakeTask task =
+                RunTask task =
                     new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
                 task.run(monitor);
             }
@@ -67,16 +67,13 @@ public class Builder extends IncrementalProjectBuilder
     {
         try
         {
-            RakeTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
-            Map<String, ?> res = task.run(monitor);
+            RunTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
+            task.run(monitor);
+            Map<String, ?> res = task.getResult();
             List<String> out = (List<String>) res.get(CompileRubyPartTask.outStrings);
             getProject().accept(new ResourceVisitor(out));
         }
         catch (CoreException e)
-        {
-            Activator.logError(e);
-        }
-        catch (InterruptedException e)
         {
             Activator.logError(e);
         }

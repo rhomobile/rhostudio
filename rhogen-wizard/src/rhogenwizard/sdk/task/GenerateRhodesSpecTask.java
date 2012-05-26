@@ -12,17 +12,17 @@ public class GenerateRhodesSpecTask extends RhodesTask
     public GenerateRhodesSpecTask(String workDir)
     {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(IRunTask.workDir, workDir);
+        params.put(RunTask.workDir, workDir);
         m_taskParams = params;
     }
 
     @Override
-    public void run()
+    protected void exec()
     {
         if (m_taskParams == null || m_taskParams.size() == 0)
             throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesAppSpec]");
 
-        String workDir = (String) m_taskParams.get(IRunTask.workDir);
+        String workDir = (String) m_taskParams.get(RunTask.workDir);
 
         List<String> cmdLine = Arrays.asList(m_rhogenExe, "spec");
 
