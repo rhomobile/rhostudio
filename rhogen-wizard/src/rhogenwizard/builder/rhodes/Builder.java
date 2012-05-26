@@ -68,7 +68,8 @@ public class Builder extends IncrementalProjectBuilder
         try
         {
             RakeTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
-            Map<String, ?> res = task.run(monitor);
+            task.run(monitor);
+            Map<String, ?> res = task.getResult();
             List<String> out = (List<String>) res.get(CompileRubyPartTask.outStrings);
             getProject().accept(new ResourceVisitor(out));
         }

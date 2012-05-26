@@ -137,9 +137,9 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 monitor.setTaskName("Opening file for editing...");
 
                 RakeTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
-                Map<String, ?> results = task.run(monitor);
+                task.run(monitor);
 
-                if (TaskResultConverter.getResultIntCode(results) != 0)
+                if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
                 {
                     throw new IOException("The Rhodes SDK do not installed");
                 }

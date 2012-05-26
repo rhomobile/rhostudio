@@ -85,7 +85,7 @@ public abstract class RakeTask implements IRunTask
         return m_executor.getCommandOutput();
     }
 
-    public Map<String, ?> run(IProgressMonitor monitor)
+    public void run(IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {
@@ -112,8 +112,6 @@ public abstract class RakeTask implements IRunTask
                 throw new StoppedException();
             }
         }
-
-        return getResult();
     }
 
     public Job makeJob(String name)

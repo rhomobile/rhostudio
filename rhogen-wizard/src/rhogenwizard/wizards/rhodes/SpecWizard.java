@@ -134,9 +134,9 @@ public class SpecWizard extends Wizard implements INewWizard
     private void createProjectFiles(IProgressMonitor monitor) throws IOException
     {
         RakeTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
-        Map<String, ?> results = task.run(monitor);
+        task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(results) != 0)
+        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {
             throw new IOException("The RhoMobile SDK do not installed");
         }

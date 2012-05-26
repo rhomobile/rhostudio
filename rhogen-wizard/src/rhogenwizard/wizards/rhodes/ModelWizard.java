@@ -185,10 +185,9 @@ public class ModelWizard extends Wizard implements INewWizard
         try
         {
             RakeTask task = new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
+            task.run(monitor);
 
-            Map<String, ?> results = task.run(monitor);
-
-            if (TaskResultConverter.getResultIntCode(results) != 0)
+            if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
             {
                 throw new IOException("The Rhodes SDK do not installed");
             }

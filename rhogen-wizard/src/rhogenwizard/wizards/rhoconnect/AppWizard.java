@@ -113,9 +113,9 @@ public class AppWizard extends Wizard implements INewWizard
         RakeTask task =
                 new GenerateRhoconnectAppTask(infoHolder.getProjectLocationPath().toOSString(),
                         infoHolder.appName);
-        Map<String, ?> results = task.run(monitor);
+        task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(results) != 0)
+        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {
             throw new IOException(MsgConstants.errInstallRhosync);
         }

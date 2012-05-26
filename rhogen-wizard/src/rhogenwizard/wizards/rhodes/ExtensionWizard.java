@@ -129,8 +129,8 @@ public class ExtensionWizard extends Wizard implements INewWizard
     private void createProjectFiles(final String extName, IProgressMonitor monitor) throws IOException
     {
         RakeTask task = new GenerateRhodesExtensionTask(m_currentProject.getLocation().toOSString(), extName);
-        Map<String, ?> results = task.run(monitor);
-        if (TaskResultConverter.getResultIntCode(results) != 0)
+        task.run(monitor);
+        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {
             throw new IOException("The Rhodes SDK do not installed");
         }

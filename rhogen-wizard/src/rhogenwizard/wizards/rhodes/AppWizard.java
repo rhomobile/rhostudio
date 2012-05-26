@@ -108,8 +108,6 @@ public class AppWizard extends Wizard implements INewWizard
     {
         monitor.setTaskName("Generate application...");
 
-        Map<String, ?> results = null;
-
         RakeTask task;
         if (infoHolder.isRhoelementsApp)
         {
@@ -122,9 +120,9 @@ public class AppWizard extends Wizard implements INewWizard
                 infoHolder.appName);
         }
 
-        results = task.run(monitor);
+        task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(results) != 0)
+        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
         {
             throw new IOException(MsgConstants.errInstallRhodes);
         }
