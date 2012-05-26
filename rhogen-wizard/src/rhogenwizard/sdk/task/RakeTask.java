@@ -42,19 +42,6 @@ public abstract class RakeTask extends RunTask
         return m_taskResult;
     }
 
-    public String runRakeTask(String workDir, String taskName) throws Exception
-    {
-        m_executor.setWorkingDirectory(workDir);
-
-        List<String> cmdLine = new ArrayList<String>();
-        cmdLine.add(m_rakeExe);
-        cmdLine.add(taskName);
-
-        m_executor.runCommand(cmdLine);
-
-        return m_executor.getCommandOutput();
-    }
-
     @Override
     public void run(IProgressMonitor monitor)
     {
