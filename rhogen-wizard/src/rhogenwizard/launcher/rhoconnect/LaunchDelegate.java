@@ -170,7 +170,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 				    {
 						if (monitor.isCanceled()) 
 					    {
-							new StopSyncAppTask().run();
+						    new StopSyncAppTask().makeJob("StopSyncAppTask").schedule();
 							return;
 					    }
 						
