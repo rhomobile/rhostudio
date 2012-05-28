@@ -9,33 +9,26 @@ import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhodesExtensionTask extends RhodesTask
 {
-    public static final String extName = "ext-name";
+    private final String m_workDir;
+    private final String m_extName;
 
     public GenerateRhodesExtensionTask(String workDir, String extName)
     {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(RunTask.workDir, workDir);
-        params.put(GenerateRhodesExtensionTask.extName, extName);
-        m_taskParams = params;
+        m_workDir = workDir;
+        m_extName = extName;
     }
 
     @Override
     protected void exec()
     {
-        if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesExtensionTask]");
-
-        String workDir = (String) m_taskParams.get(RunTask.workDir);
-        String extName = (String) m_taskParams.get(GenerateRhodesExtensionTask.extName);
-
-        List<String> cmdLine = Arrays.asList(m_rhogenExe, "extension", extName);
+        List<String> cmdLine = Arrays.asList(m_rhogenExe, "extension", m_extName);
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
 
         try
         {
-            m_executor.setWorkingDirectory(workDir);
+            m_executor.setWorkingDirectory(m_workDir);
             result = m_executor.runCommand(cmdLine);
         }
         catch (Exception e)

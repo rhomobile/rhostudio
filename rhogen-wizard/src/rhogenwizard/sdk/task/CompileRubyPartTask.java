@@ -2,9 +2,7 @@ package rhogenwizard.sdk.task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rhogenwizard.ILogDevice;
 import rhogenwizard.sdk.helper.TaskResultConverter;
@@ -20,16 +18,17 @@ public class CompileRubyPartTask extends RakeTask
         }
     }
 
-    private static ILogDevice nullLogDevice = new ILogDevice()
-    {
-        @Override
-        public void log(String str)
-        {
-        }
-    };
+    private static ILogDevice  nullLogDevice = new ILogDevice()
+                                             {
+                                                 @Override
+                                                 public void log(String str)
+                                                 {
+                                                 }
+                                             };
 
-    public static final String outStrings = "cmd-output";
+    public static final String outStrings    = "cmd-output";
 
+    private final String       m_workDir;
     private final List<String> m_outputStrings;
 
     public CompileRubyPartTask(String workDir)
@@ -38,15 +37,12 @@ public class CompileRubyPartTask extends RakeTask
         m_executor.setOutputLogDevice(nullLogDevice);
         m_executor.setErrorLogDevice(new OutputAdapter());
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(RunTask.workDir, workDir);
-        m_taskParams = params;
+        m_workDir = workDir;
     }
 
     @Override
     protected void exec()
     {
-        String workDir = (String) m_taskParams.get(RunTask.workDir);
         List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");
 
         m_outputStrings.clear();
@@ -55,7 +51,7 @@ public class CompileRubyPartTask extends RakeTask
 
         try
         {
-            m_executor.setWorkingDirectory(workDir);
+            m_executor.setWorkingDirectory(m_workDir);
             result = m_executor.runCommand(cmdLine);
         }
         catch (Exception e)

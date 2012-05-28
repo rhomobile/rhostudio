@@ -16,7 +16,6 @@ public abstract class RakeTask extends RunTask
 {
     protected String              m_rakeExe    = "rake";
     protected SysCommandExecutor  m_executor   = new SysCommandExecutor();
-    protected Map<String, ?>      m_taskParams = null;
     protected Map<String, Object> m_taskResult = new HashMap<String, Object>();
 
     public RakeTask()

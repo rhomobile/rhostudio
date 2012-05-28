@@ -25,7 +25,6 @@ public abstract class RunTask
     }
 
     public static final String resTag  = "result-code";
-    public static final String workDir = "workdir";
 
     public abstract Map<String, ?> getResult();
 

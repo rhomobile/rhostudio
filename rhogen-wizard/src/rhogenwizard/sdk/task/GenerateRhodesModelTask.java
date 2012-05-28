@@ -1,46 +1,34 @@
 package rhogenwizard.sdk.task;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhodesModelTask extends RhodesTask
 {
-    public static final String modelName   = "model-name";
-    public static final String modelFields = "model-fields";
+    private final String m_workDir;
+    private final String m_modelName;
+    private final String m_modelFields;
 
-    public GenerateRhodesModelTask(String projectLocation, String modelName, String modelParams)
+    public GenerateRhodesModelTask(String workDir, String modelName, String modelFields)
     {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(GenerateRhodesModelTask.workDir, projectLocation);
-        params.put(GenerateRhodesModelTask.modelName, modelName);
-        params.put(GenerateRhodesModelTask.modelFields, modelParams);
-        m_taskParams = params;
+        m_workDir = workDir;
+        m_modelName = modelName;
+        m_modelFields = prepareModelAttributes(modelFields);
     }
 
     @Override
     protected void exec()
     {
-        if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException("parameters data is invalid [GenerateRhodesModelTask]");
-
-        String workDir = (String) m_taskParams.get(RunTask.workDir);
-        String modelName = (String) m_taskParams.get(GenerateRhodesModelTask.modelName);
-        String modelFields = (String) m_taskParams.get(GenerateRhodesModelTask.modelFields);
-
-        modelFields = prepareModelAttributes(modelFields);
-
-        List<String> cmdLine = Arrays.asList(m_rhogenExe, "model", modelName, modelFields);
+        List<String> cmdLine = Arrays.asList(m_rhogenExe, "model", m_modelName, m_modelFields);
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
         
         try
         {
-            m_executor.setWorkingDirectory(workDir);
+            m_executor.setWorkingDirectory(m_workDir);
             result = m_executor.runCommand(cmdLine);
         }
         catch (Exception e)
