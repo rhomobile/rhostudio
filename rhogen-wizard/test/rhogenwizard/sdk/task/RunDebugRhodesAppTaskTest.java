@@ -233,17 +233,11 @@ public class RunDebugRhodesAppTaskTest
 
                 ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
 
-                params.put(RunDebugRhodesAppTask.workDir, projectLocation);
-                params.put(RunDebugRhodesAppTask.appName, appName);
-                params.put(RunDebugRhodesAppTask.platformType, PlatformType.eAndroid);
-                params.put(RunDebugRhodesAppTask.reloadCode, false);
-                params.put(RunDebugRhodesAppTask.launchObj, launch);
-                params.put(RunDebugRhodesAppTask.traceFlag, false);
-
-                Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.class, params);
+                RunTask task = new RunDebugRhodesAppTask(projectLocation, appName, PlatformType.eAndroid,
+                    false, launch, false);
+                task.run();
                 assertEquals(TaskResultConverter.okCode,
-                    TaskResultConverter.getResultIntCode(results));
+                    TaskResultConverter.getResultIntCode(task.getResult()));
             }
 
             suspend("connected");
