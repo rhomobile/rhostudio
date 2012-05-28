@@ -123,18 +123,10 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 
 	private int runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put(RunReleaseRhodesAppTask.workDir, currProject.getLocation().toOSString());
-		params.put(RunReleaseRhodesAppTask.runType, selType);
-		params.put(RunReleaseRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
-		params.put(RunReleaseRhodesAppTask.reloadCode, m_isReloadCode);
-		params.put(RunReleaseRhodesAppTask.debugPort, new Integer(9000));
-		params.put(RunReleaseRhodesAppTask.traceFlag, m_isTrace);
-		
-		Map results = RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
-				
-		return TaskResultConverter.getResultIntCode(results);
+		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
+		    PlatformType.fromString(m_platformType), selType, m_isReloadCode, m_isTrace);
+		task.run();
+		return TaskResultConverter.getResultIntCode(task.getResult());
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception

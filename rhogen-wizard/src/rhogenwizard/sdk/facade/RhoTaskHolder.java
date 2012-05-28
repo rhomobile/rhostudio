@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
 import rhogenwizard.sdk.task.RunTask;
 
 public class RhoTaskHolder 
@@ -17,9 +16,6 @@ public class RhoTaskHolder
 	public RhoTaskHolder()
 	{
 		m_holdTasks = new HashMap<Class<? extends RunTask>, RunTask>();
-		
-		// added tasks
-		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
 	}
 	
 	public static RhoTaskHolder getInstance()
