@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhoconnect;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,9 +23,7 @@ import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
-import rhogenwizard.project.extension.CheckProjectException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunTask;

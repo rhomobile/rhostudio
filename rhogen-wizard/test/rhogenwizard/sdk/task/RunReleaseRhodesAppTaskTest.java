@@ -3,9 +3,6 @@ package rhogenwizard.sdk.task;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -20,7 +17,6 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunType;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunReleaseRhodesAppTaskTest
