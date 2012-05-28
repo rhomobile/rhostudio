@@ -22,7 +22,6 @@ public class RhoTaskHolder
 		
 		// added tasks
 		m_holdTasks.put(RunReleaseRhodesAppTask.class, new RunReleaseRhodesAppTask());
-		m_holdTasks.put(RunDebugRhodesAppTask.class, new RunDebugRhodesAppTask());
 		m_holdTasks.put(RunReleaseRhoconnectAppTask.class, new RunReleaseRhoconnectAppTask());
 	}
 	

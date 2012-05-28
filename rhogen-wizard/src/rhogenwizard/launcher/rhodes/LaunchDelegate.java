@@ -139,18 +139,11 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put(RunDebugRhodesAppTask.workDir, currProject.getLocation().toOSString());
-		params.put(RunDebugRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
-		params.put(RunDebugRhodesAppTask.reloadCode, m_isReloadCode);
-		params.put(RunDebugRhodesAppTask.debugPort, new Integer(9000));
-		params.put(RunDebugRhodesAppTask.launchObj, launch);
-		params.put(RunDebugRhodesAppTask.traceFlag, m_isTrace);
-		
-		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.class, params);
-				
-		return TaskResultConverter.getResultLaunchObj(results);
+		RunTask task =
+		    new RunDebugRhodesAppTask(currProject.getLocation().toOSString(), currProject.getName(),
+		        PlatformType.fromString(m_platformType), m_isReloadCode, launch, m_isTrace);
+		task.run();
+		return TaskResultConverter.getResultLaunchObj(task.getResult());
 	}
 	
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
