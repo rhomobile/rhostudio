@@ -1,13 +1,11 @@
 package rhogenwizard.sdk.task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import rhogenwizard.ILogDevice;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class CompileRubyPartTask extends RakeTask
+public class CompileRubyPartTask extends ARakeTask
 {
     private class OutputAdapter implements ILogDevice
     {
@@ -28,37 +26,23 @@ public class CompileRubyPartTask extends RakeTask
 
     public static final String outStrings    = "cmd-output";
 
-    private final String       m_workDir;
     private final List<String> m_outputStrings;
 
     public CompileRubyPartTask(String workDir)
     {
+        super(workDir, "build:bundle:rhostudio");
+
         m_outputStrings = new ArrayList<String>();
+
         m_executor.setOutputLogDevice(nullLogDevice);
         m_executor.setErrorLogDevice(new OutputAdapter());
-
-        m_workDir = workDir;
     }
 
     @Override
     protected void exec()
     {
-        List<String> cmdLine = Arrays.asList(m_rakeExe, "build:bundle:rhostudio");
-
         m_outputStrings.clear();
-        m_taskResult.clear();
-        int result = TaskResultConverter.failCode;
-
-        try
-        {
-            m_executor.setWorkingDirectory(m_workDir);
-            result = m_executor.runCommand(cmdLine);
-        }
-        catch (Exception e)
-        {
-        }
-
-        m_taskResult.put(resTag, result);
+        super.exec();
         m_taskResult.put(outStrings, m_outputStrings);
     }
 }

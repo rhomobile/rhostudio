@@ -37,23 +37,7 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
             }
         };
 
-        RunTask redisStartbgTask = new RakeTask()
-        {
-            @Override
-            protected void exec()
-            {
-                List<String> cmdLine = Arrays.asList(m_rakeExe, "redis:startbg");
-
-                try
-                {
-                    m_executor.setWorkingDirectory(workDir_);
-                    m_executor.runCommand(cmdLine);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        };
+        RunTask redisStartbgTask = new ARakeTask("redis:startbg");
 
         RunTask rhoconnectStartdebugTask = new RakeTask()
         {

@@ -1,39 +1,11 @@
 package rhogenwizard.sdk.task;
 
-import java.util.Arrays;
-import java.util.List;
-
 import rhogenwizard.PlatformType;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class BuildPlatformTask extends RakeTask
+public class BuildPlatformTask extends ARakeTask
 {
-    private final String       m_workDir;
-    private final PlatformType m_platformType;
-
     public BuildPlatformTask(String workDir, PlatformType platformType)
     {
-        m_workDir = workDir;
-        m_platformType = platformType;
-    }
-
-    @Override
-    protected void exec()
-    {
-        List<String> cmdLine = Arrays.asList(m_rakeExe, "device:" + m_platformType + ":production");
-
-        m_taskResult.clear();
-        int result = TaskResultConverter.failCode;
-
-        try
-        {
-            m_executor.setWorkingDirectory(m_workDir);
-            result = m_executor.runCommand(cmdLine);
-        }
-        catch (Exception e)
-        {
-        }
-
-        m_taskResult.put(resTag, result);
+        super(workDir, "device:" + platformType + ":production");
     }
 }
