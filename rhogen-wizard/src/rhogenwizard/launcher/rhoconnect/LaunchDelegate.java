@@ -1,7 +1,5 @@
 package rhogenwizard.launcher.rhoconnect;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -26,7 +24,6 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
@@ -98,13 +95,9 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 
 	private int runSelectedBuildConfiguration(IProject currProject) throws Exception
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put(RunReleaseRhoconnectAppTask.workDir, currProject.getLocation().toOSString());
-		
-		Map results = RhoTaskHolder.getInstance().runTask(RunReleaseRhoconnectAppTask.class, params);
-				
-		return TaskResultConverter.getResultIntCode(results);		
+		RunTask task = new RunReleaseRhoconnectAppTask(currProject.getLocation().toOSString());
+		task.run();
+		return TaskResultConverter.okCode;
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception

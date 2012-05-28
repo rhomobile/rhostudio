@@ -21,14 +21,8 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
 
     private static RunTask[] getTasks(final String workDir_, final String appName, final ILaunch launch)
     {
-        RunTask storeLastSyncRunApp = new RunTask()
+        RunTask storeLastSyncRunAppTask = new RunTask()
         {
-            @Override
-            public void setData(Map<String, ?> data)
-            {
-                throw new UnsupportedOperationException();
-            }
-
             @Override
             public Map<String, ?> getResult()
             {
@@ -43,23 +37,7 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
             }
         };
 
-        RunTask redisStartbgTask = new RakeTask()
-        {
-            @Override
-            protected void exec()
-            {
-                List<String> cmdLine = Arrays.asList(m_rakeExe, "redis:startbg");
-
-                try
-                {
-                    m_executor.setWorkingDirectory(workDir_);
-                    m_executor.runCommand(cmdLine);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        };
+        RunTask redisStartbgTask = new ARakeTask("redis:startbg");
 
         RunTask rhoconnectStartdebugTask = new RakeTask()
         {
@@ -88,7 +66,8 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
             }
         };
 
-        return new RunTask[] { new StopSyncAppTask(), storeLastSyncRunApp, redisStartbgTask, rhoconnectStartdebugTask };
+        return new RunTask[] { new StopSyncAppTask(), storeLastSyncRunAppTask, redisStartbgTask,
+            rhoconnectStartdebugTask };
     }
 
     public RunDebugRhoconnectAppTask(String workDir, String appName, ILaunch launch)

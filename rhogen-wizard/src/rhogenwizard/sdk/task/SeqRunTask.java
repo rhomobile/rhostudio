@@ -15,12 +15,6 @@ public class SeqRunTask extends RunTask
     }
 
     @Override
-    public void setData(Map<String, ?> data)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void run(IProgressMonitor monitor)
     {
         for (RunTask task : m_tasks)

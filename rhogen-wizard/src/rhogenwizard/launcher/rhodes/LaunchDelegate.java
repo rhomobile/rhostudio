@@ -1,7 +1,5 @@
 package rhogenwizard.launcher.rhodes;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -32,7 +30,6 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
@@ -123,34 +120,19 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 
 	private int runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put(RunReleaseRhodesAppTask.workDir, currProject.getLocation().toOSString());
-		params.put(RunReleaseRhodesAppTask.runType, selType);
-		params.put(RunReleaseRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
-		params.put(RunReleaseRhodesAppTask.reloadCode, m_isReloadCode);
-		params.put(RunReleaseRhodesAppTask.debugPort, new Integer(9000));
-		params.put(RunReleaseRhodesAppTask.traceFlag, m_isTrace);
-		
-		Map results = RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
-				
-		return TaskResultConverter.getResultIntCode(results);
+		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
+		    PlatformType.fromString(m_platformType), selType, m_isReloadCode, m_isTrace);
+		task.run();
+		return TaskResultConverter.getResultIntCode(task.getResult());
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put(RunDebugRhodesAppTask.workDir, currProject.getLocation().toOSString());
-		params.put(RunDebugRhodesAppTask.platformType, PlatformType.fromString(m_platformType));
-		params.put(RunDebugRhodesAppTask.reloadCode, m_isReloadCode);
-		params.put(RunDebugRhodesAppTask.debugPort, new Integer(9000));
-		params.put(RunDebugRhodesAppTask.launchObj, launch);
-		params.put(RunDebugRhodesAppTask.traceFlag, m_isTrace);
-		
-		Map results = RhoTaskHolder.getInstance().runTask(RunDebugRhodesAppTask.class, params);
-				
-		return TaskResultConverter.getResultLaunchObj(results);
+		RunTask task =
+		    new RunDebugRhodesAppTask(currProject.getLocation().toOSString(), currProject.getName(),
+		        PlatformType.fromString(m_platformType), m_isReloadCode, launch, m_isTrace);
+		task.run();
+		return TaskResultConverter.getResultLaunchObj(task.getResult());
 	}
 	
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException

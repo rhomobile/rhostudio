@@ -16,7 +16,6 @@ public abstract class RakeTask extends RunTask
 {
     protected String              m_rakeExe    = "rake";
     protected SysCommandExecutor  m_executor   = new SysCommandExecutor();
-    protected Map<String, ?>      m_taskParams = null;
     protected Map<String, Object> m_taskResult = new HashMap<String, Object>();
 
     public RakeTask()
@@ -28,12 +27,6 @@ public abstract class RakeTask extends RunTask
         {
             m_rakeExe = m_rakeExe + ".bat";
         }
-    }
-
-    @Override
-    public void setData(Map<String, ?> data)
-    {
-        m_taskParams = data;
     }
 
     @Override

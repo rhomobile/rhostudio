@@ -1,8 +1,8 @@
 package rhogenwizard.sdk.task;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+
+import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,11 +12,7 @@ import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
-import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
-import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
-import junit.framework.TestCase;
 
 public class RhoconnectCreationTest extends TestCase
 {

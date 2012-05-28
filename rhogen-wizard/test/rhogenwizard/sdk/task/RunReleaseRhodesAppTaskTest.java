@@ -3,9 +3,6 @@ package rhogenwizard.sdk.task;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -20,7 +17,6 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunType;
-import rhogenwizard.sdk.facade.RhoTaskHolder;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunReleaseRhodesAppTaskTest
@@ -72,20 +68,14 @@ public class RunReleaseRhodesAppTaskTest
         // TODO: remove "if" when "rake run:iphone" will be fixed
         if (false)
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(RunReleaseRhodesAppTask.workDir, projectLocation);
-            params.put(RunReleaseRhodesAppTask.platformType, PlatformType.eIPhone);
-            params.put(RunReleaseRhodesAppTask.runType, RunType.eEmulator);
-            params.put(RunReleaseRhodesAppTask.reloadCode, false);
-            params.put(RunReleaseRhodesAppTask.traceFlag, false);
+            RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eIPhone,
+                RunType.eEmulator, false, false);
 
             ProcessListViewer plv = new ProcessListViewer(
                     "-e logcat >> \"/private" + projectLocation + "/rholog.txt\"");
 
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
-            assertEquals(0, TaskResultConverter.getResultIntCode(results));
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             Set<Integer> diff = plv.getNewProcesses();
             assertEquals(1, diff.size());
@@ -94,13 +84,8 @@ public class RunReleaseRhodesAppTaskTest
 
         // run release Rhodes application [android] [simulator]
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(RunReleaseRhodesAppTask.workDir, projectLocation);
-            params.put(RunReleaseRhodesAppTask.platformType, PlatformType.eAndroid);
-            params.put(RunReleaseRhodesAppTask.runType, RunType.eEmulator);
-            params.put(RunReleaseRhodesAppTask.reloadCode, false);
-            params.put(RunReleaseRhodesAppTask.traceFlag, false);
+            RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eAndroid,
+                RunType.eEmulator, false, false);
 
             String signature = "-e logcat >> \""
             + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "rholog.txt").getPath()))
@@ -108,9 +93,8 @@ public class RunReleaseRhodesAppTaskTest
 
             ProcessListViewer plv = new ProcessListViewer(signature);
 
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
-            assertEquals(0, TaskResultConverter.getResultIntCode(results));
+            task.run();
+            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             Set<Integer> diff = plv.getNewProcesses();
             assertEquals(1, diff.size());
@@ -125,13 +109,8 @@ public class RunReleaseRhodesAppTaskTest
                 continue;
             }
 
-            Map<String, Object> params = new HashMap<String, Object>();
-
-            params.put(RunReleaseRhodesAppTask.workDir, projectLocation);
-            params.put(RunReleaseRhodesAppTask.platformType, platformType);
-            params.put(RunReleaseRhodesAppTask.runType, RunType.eRhoEmulator);
-            params.put(RunReleaseRhodesAppTask.reloadCode, false);
-            params.put(RunReleaseRhodesAppTask.traceFlag, false);
+            RunTask task = new RunReleaseRhodesAppTask(projectLocation, platformType, RunType.eRhoEmulator,
+                false, false);
 
             String signature = (OSValidator.isWindows())
                     ? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
@@ -139,10 +118,9 @@ public class RunReleaseRhodesAppTaskTest
 
             ProcessListViewer plv = new ProcessListViewer(signature);
 
-            Map<String, ?> results =
-                    RhoTaskHolder.getInstance().runTask(RunReleaseRhodesAppTask.class, params);
+            task.run();
             assertEquals(
-                "for " + platformType, 0, TaskResultConverter.getResultIntCode(results));
+                "for " + platformType, 0, TaskResultConverter.getResultIntCode(task.getResult()));
 
             Set<Integer> diff = plv.getNewProcesses();
             assertEquals("for " + platformType, 1, diff.size());

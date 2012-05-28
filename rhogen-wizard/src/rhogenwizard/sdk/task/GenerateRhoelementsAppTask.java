@@ -1,47 +1,38 @@
 package rhogenwizard.sdk.task;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class GenerateRhoelementsAppTask extends RhoelementsTask
 {
-    public static final String appName = "appname";
+    private final String m_workDir;
+    private final String m_appName;
 
     public GenerateRhoelementsAppTask(String workDir, String appName)
     {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(RunTask.workDir, workDir);
-        params.put(GenerateRhoelementsAppTask.appName, appName);
-        m_taskParams = params;
+        m_workDir = workDir;
+        m_appName = appName;
     }
 
     @Override
     protected void exec()
     {
-        if (m_taskParams == null || m_taskParams.size() == 0)
-            throw new IllegalArgumentException("parameters data is invalid [GenerateRhoelementsAppTask]");
-
-        String workDir = (String) m_taskParams.get(RunTask.workDir);
-        String appName = (String) m_taskParams.get(GenerateRhoelementsAppTask.appName);
-
-        List<String> cmdLine = Arrays.asList(m_rhoelExe, "app", appName);
+        List<String> cmdLine = Arrays.asList(m_rhoelExe, "app", m_appName);
 
         m_taskResult.clear();
         int result = TaskResultConverter.failCode;
-        
+
         try
         {
-            m_executor.setWorkingDirectory(workDir);
+            m_executor.setWorkingDirectory(m_workDir);
             result = m_executor.runCommand(cmdLine);
         }
         catch (Exception e)
         {
         }
-        
+
         m_taskResult.put(resTag, result);
     }
 }

@@ -3,92 +3,47 @@ package rhogenwizard.sdk.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.InvalidAttributesException;
-
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class RunReleaseRhodesAppTask extends RhodesTask
+public class RunReleaseRhodesAppTask extends ARakeTask
 {
-    public static final String runType      = "run-type";     // sim, rhosim,
-                                                               // device
-    public static final String platformType = "platform-type"; // wm, wp,
-                                                               // iphone, etc
-    public static final String reloadCode   = "reload-code";
-    public static final String debugPort    = "debug-port";
-    public static final String traceFlag    = "trace";
-
-    @Override
-    protected void exec()
+    private static String[] getArgs(PlatformType platformType, RunType runType, boolean isReloadCode,
+        boolean isTrace)
     {
-        m_taskResult.clear();
+        String task;
+        if (runType == RunType.eDevice)
+            if (platformType == PlatformType.eIPhone)
+                task = "device:iphone:production";
+            else if (platformType == PlatformType.eBb) // FIX for bb
+                task = "device:bb:production";
+            else
+                task = "run:" + platformType + ":device";
+        else if (runType == RunType.eRhoEmulator)
+            task = "run:" + platformType + ":rhosimulator";
+        else
+            task = "run:" + platformType;
 
-        try
+        List<String> cmdLine = new ArrayList<String>();
+        cmdLine.add(task);
+
+        if (isTrace)
         {
-            if (m_taskParams == null || m_taskParams.size() == 0)
-                throw new InvalidAttributesException("parameters data is invalid [RunReleaseRhodesAppTask]");
-
-            String workDir = (String) m_taskParams.get(this.workDir);
-            PlatformType platformType = (PlatformType) m_taskParams.get(this.platformType);
-            RunType runType = (RunType) m_taskParams.get(this.runType);
-            Boolean isReloadCode = (Boolean) m_taskParams.get(this.reloadCode);
-            Boolean isTrace = (Boolean) m_taskParams.get(this.traceFlag);
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("run:");
-            sb.append(platformType.toString());
-
-            if (runType == RunType.eDevice)
-            {
-                if (platformType == PlatformType.eIPhone)
-                {
-                    sb = new StringBuilder();
-                    sb.append("device:iphone:production");
-                }
-                else if (platformType == PlatformType.eBb) // FIX for bb
-                {
-                    sb = new StringBuilder();
-                    sb.append("device:bb:production");
-                }
-                else
-                    sb.append(":device");
-            }
-            else if (runType == RunType.eRhoEmulator)
-            {
-                sb.append(":rhosimulator");
-            }
-
-            m_executor.setWorkingDirectory(workDir);
-
-            List<String> cmdLine = new ArrayList<String>();
-            cmdLine.add(m_rakeExe);
-            cmdLine.add(sb.toString());
-
-            if (isTrace)
-            {
-                cmdLine.add("--trace");
-            }
-
-            if (runType == RunType.eRhoEmulator)
-            {
-                cmdLine.add("rho_debug_port=9000");
-
-                if (isReloadCode.booleanValue())
-                    cmdLine.add("rho_reload_app_changes=1");
-                else
-                    cmdLine.add("rho_reload_app_changes=0");
-            }
-
-            int res = m_executor.runCommand(cmdLine);
-
-            Integer resCode = new Integer(res);
-            m_taskResult.put(resTag, resCode);
+            cmdLine.add("--trace");
         }
-        catch (Exception e)
+
+        if (runType == RunType.eRhoEmulator)
         {
-            Integer resCode = new Integer(TaskResultConverter.failCode);
-            m_taskResult.put(resTag, resCode);
+            cmdLine.add("rho_debug_port=9000");
+            cmdLine.add("rho_reload_app_changes=" + (isReloadCode ? "1" : "0"));
         }
+
+        return cmdLine.toArray(new String[0]);
+    }
+
+    public RunReleaseRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
+        boolean isReloadCode, boolean isTrace)
+    {
+        super(workDir, getArgs(platformType, runType, isReloadCode, isTrace));
     }
 }
