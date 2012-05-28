@@ -31,12 +31,6 @@ public abstract class RakeTask extends RunTask
     }
 
     @Override
-    public void setData(Map<String, ?> data)
-    {
-        m_taskParams = data;
-    }
-
-    @Override
     public Map<String, ?> getResult()
     {
         return m_taskResult;

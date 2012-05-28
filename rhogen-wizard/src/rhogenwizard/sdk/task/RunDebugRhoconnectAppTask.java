@@ -24,12 +24,6 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
         RunTask storeLastSyncRunAppTask = new RunTask()
         {
             @Override
-            public void setData(Map<String, ?> data)
-            {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
             public Map<String, ?> getResult()
             {
                 throw new UnsupportedOperationException();
