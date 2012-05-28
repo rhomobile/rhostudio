@@ -1,10 +1,10 @@
 package rhogenwizard.sdk.task;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import javax.naming.directory.InvalidAttributesException;
-
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
@@ -13,98 +13,111 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.sdk.helper.ConsoleAppAdapter;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
-class RhoconnectProcessRunner extends Thread
+public class RunReleaseRhoconnectAppTask extends SeqRunTask
 {
-    private String             m_rakeExe  = "rake";
-    private String             m_cmd      = null;
-    private String             m_workDir  = null;
-
-    private SysCommandExecutor m_executor = new SysCommandExecutor();
-
-    public RhoconnectProcessRunner(final String command, final String workDir)
+    private static RunTask[] getTasks(final String workDir_)
     {
-        m_workDir = workDir;
-        m_cmd = command;
-
-        m_executor.setOutputLogDevice(new ConsoleAppAdapter());
-        m_executor.setErrorLogDevice(new ConsoleAppAdapter());
-
-        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
+        RunTask storeLastSyncRunAppTask = new RunTask()
         {
-            m_rakeExe = m_rakeExe + ".bat";
-        }
+            @Override
+            public void setData(Map<String, ?> data)
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public Map<String, ?> getResult()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+                store.setValue(ConfigurationConstants.lastSyncRunApp, workDir_);
+            }
+        };
+
+        RunTask redisStartbgTask = new RakeTask()
+        {
+            @Override
+            protected void exec()
+            {
+                List<String> cmdLine = Arrays.asList(m_rakeExe, "redis:startbg");
+
+                try
+                {
+                    m_executor.setWorkingDirectory(workDir_);
+                    m_executor.runCommand(cmdLine);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        };
+
+        RunTask rhoconnectStartTask = new RunTask()
+        {
+            @Override
+            public void setData(Map<String, ?> data)
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public Map<String, ?> getResult()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        String rakeExe = "rake";
+                        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
+                        {
+                            rakeExe = rakeExe + ".bat";
+                        }
+
+                        SysCommandExecutor executor = new SysCommandExecutor();
+
+                        executor.setOutputLogDevice(new ConsoleAppAdapter());
+                        executor.setErrorLogDevice(new ConsoleAppAdapter());
+
+                        if (workDir_ == null)
+                            return;
+
+                        ConsoleHelper.showAppConsole();
+
+                        List<String> cmdLine = Arrays.asList(rakeExe, "rhoconnect:start");
+
+                        try
+                        {
+                            executor.setWorkingDirectory(workDir_);
+                            executor.runCommand(cmdLine);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        };
+
+        return new RunTask[] { new StopSyncAppTask(), storeLastSyncRunAppTask, redisStartbgTask,
+            rhoconnectStartTask };
     }
 
-    @Override
-    public void run()
+    public RunReleaseRhoconnectAppTask(String workDir)
     {
-        if (m_workDir == null)
-            return;
-
-        ConsoleHelper.showAppConsole();
-
-        List<String> cmdLine = new ArrayList<String>();
-
-        cmdLine = new ArrayList<String>();
-        cmdLine.add(m_rakeExe);
-        cmdLine.add(m_cmd);
-
-        try
-        {
-            m_executor.setWorkingDirectory(m_workDir);
-            int res = m_executor.runCommand(cmdLine);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-}
-
-public class RunReleaseRhoconnectAppTask extends RhoconnectTask
-{
-    private static RhoconnectProcessRunner rhoconnectRunner = null;
-
-    @Override
-    protected void exec()
-    {
-        m_taskResult.clear();
-
-        try
-        {
-            if (m_taskParams == null || m_taskParams.size() == 0)
-                throw new InvalidAttributesException("parameters data is invalid [RunReleaseRhodesAppTask]");
-
-            String workDir = (String) m_taskParams.get(this.workDir);
-
-            new StopSyncAppTask().run();
-
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-            store.setValue(ConfigurationConstants.lastSyncRunApp, workDir);
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("redis:startbg");
-
-            m_executor.setWorkingDirectory(workDir);
-
-            List<String> cmdLine = new ArrayList<String>();
-            cmdLine.add(m_rakeExe);
-            cmdLine.add(sb.toString());
-
-            m_executor.runCommand(cmdLine);
-
-            rhoconnectRunner = new RhoconnectProcessRunner("rhoconnect:start", workDir);
-            rhoconnectRunner.start();
-
-            Integer resCode = new Integer(TaskResultConverter.okCode);
-            m_taskResult.put(resTag, resCode);
-        }
-        catch (Exception e)
-        {
-            Integer resCode = new Integer(TaskResultConverter.failCode);
-            m_taskResult.put(resTag, resCode);
-        }
+        super(getTasks(workDir));
     }
 }
