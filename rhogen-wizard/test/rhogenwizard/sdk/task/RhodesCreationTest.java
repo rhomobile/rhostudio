@@ -14,12 +14,11 @@ import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RhodesCreationTest extends TestCase
 {
-    private static final String workspaceFolder = new File(
-            System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
+    private static final String workspaceFolder = new File(System.getProperty("java.io.tmpdir"),
+                                                    "junitworkfiles").getPath();
 
     private boolean checkCreateRhodesFile(String path)
     {
@@ -59,8 +58,7 @@ public class RhodesCreationTest extends TestCase
 
         RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
         task.run();
-
-        assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+        assertTrue(task.isOk());
 
         assertTrue(checkCreateRhodesFile(workspaceFolder + File.separator + appName));
     }
@@ -78,8 +76,7 @@ public class RhodesCreationTest extends TestCase
 
             RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
-
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             assertTrue(checkCreateRhodesFile(projectLoc));
         }
@@ -88,7 +85,7 @@ public class RhodesCreationTest extends TestCase
         {
             RunTask task = new GenerateRhodesModelTask(projectLoc, modelName, "a, b, c");
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             // TODO: why model directory is capitalized?
             assertTrue(OSHelper.concat(projectLoc, "app", "Model002").isDirectory());
@@ -107,7 +104,7 @@ public class RhodesCreationTest extends TestCase
         {
             RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             assertTrue(checkCreateRhodesFile(projectLoc));
         }
@@ -116,7 +113,7 @@ public class RhodesCreationTest extends TestCase
         {
             RunTask task = new GenerateRhodesExtensionTask(projectLoc, extensionName);
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             // TODO: why extension directory is capitalized?
             assertTrue(OSHelper.concat(projectLoc, "app", "Extension005Test").isDirectory());
@@ -134,7 +131,7 @@ public class RhodesCreationTest extends TestCase
         {
             RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             assertTrue(checkCreateRhodesFile(projectLoc));
         }
@@ -143,7 +140,7 @@ public class RhodesCreationTest extends TestCase
         {
             RunTask task = new GenerateRhodesSpecTask(projectLoc);
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             // TODO: why extension directory is capitalized?
             assertTrue(OSHelper.concat(projectLoc, "app", "mspec.rb").isFile());

@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -24,7 +23,6 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
@@ -136,7 +134,7 @@ public class SpecWizard extends Wizard implements INewWizard
         RunTask task = new GenerateRhodesSpecTask(m_currentProject.getLocation().toOSString());
         task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
+        if (!task.isOk())
         {
             throw new IOException("The RhoMobile SDK do not installed");
         }

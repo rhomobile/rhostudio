@@ -24,7 +24,6 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunTask;
 
@@ -112,7 +111,7 @@ public class AppWizard extends Wizard implements INewWizard
                         infoHolder.appName);
         task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
+        if (!task.isOk())
         {
             throw new IOException(MsgConstants.errInstallRhosync);
         }

@@ -11,18 +11,16 @@ import org.eclipse.debug.core.model.IProcess;
 
 import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.helper.DebugConsoleAdapter;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunDebugRhodesAppTask extends RubyTask
 {
-    public static final String resProcess = "debug-process";
-
     private final String       m_workDir;
     private final String       m_appName;
     private final PlatformType m_platformType;
     private final boolean      m_isReloadCode;
     private final ILaunch      m_launch;
     private final boolean      m_isTrace;
+    private IProcess           m_debugProcess;
 
     public RunDebugRhodesAppTask(String workDir, String appName, PlatformType platformType,
         boolean isReloadCode, ILaunch launch, boolean isTrace)
@@ -33,6 +31,18 @@ public class RunDebugRhodesAppTask extends RubyTask
         m_isReloadCode = isReloadCode;
         m_launch = launch;
         m_isTrace = isTrace;
+        m_debugProcess = null;
+    }
+
+    @Override
+    public boolean isOk()
+    {
+        return m_debugProcess != null;
+    }
+
+    public IProcess getDebugProcess()
+    {
+        return m_debugProcess;
     }
 
     @Override
@@ -52,33 +62,18 @@ public class RunDebugRhodesAppTask extends RubyTask
 
         String[] commandLine = cmdLine.toArray(new String[0]);
 
-        m_taskResult.clear();
-
-        int result = TaskResultConverter.failCode;
-        IProcess debugProcess = null;
-
+        Process process;
         try
         {
-            Process process;
-            try
-            {
-                process = DebugPlugin.exec(commandLine, new File(m_workDir));
-            }
-            catch (CoreException e)
-            {
-                return;
-            }
-
-            debugProcess = DebugPlugin.newProcess(m_launch, process, m_appName);
-
-            new DebugConsoleAdapter(debugProcess);
-
-            result = (debugProcess == null) ? 1 : 0;
+            process = DebugPlugin.exec(commandLine, new File(m_workDir));
         }
-        finally
+        catch (CoreException e)
         {
-            m_taskResult.put(resTag, result);
-            m_taskResult.put(resProcess, debugProcess);
+            return;
         }
+
+        m_debugProcess = DebugPlugin.newProcess(m_launch, process, m_appName);
+
+        new DebugConsoleAdapter(m_debugProcess);
     }
 }

@@ -1,6 +1,7 @@
 package rhogenwizard.sdk.task;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -31,17 +32,16 @@ import rhogenwizard.debugger.backend.DebugServer;
 import rhogenwizard.debugger.backend.DebugState;
 import rhogenwizard.debugger.backend.DebugVariableType;
 import rhogenwizard.debugger.backend.IDebugCallback;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RunDebugRhodesAppTaskTest
 {
     private SynchronousQueue<String> m_eventQueue;
-    private Semaphore m_semaphore;
+    private Semaphore                m_semaphore;
 
     private static class DebugCallback implements IDebugCallback
     {
         private final SynchronousQueue<String> m_eventQueue;
-        private final Semaphore m_semaphore;
+        private final Semaphore                m_semaphore;
 
         public DebugCallback(SynchronousQueue<String> eventQueue, Semaphore semaphore)
         {
@@ -56,11 +56,10 @@ public class RunDebugRhodesAppTaskTest
         }
 
         @Override
-        public void stopped(DebugState state, String file, int line, String className,
-                String method)
+        public void stopped(DebugState state, String file, int line, String className, String method)
         {
-            send("stopped [" + DebugState.getName(state) + "] [" + file + "] ["
-                + line + "] [" + className + "] [" + method + "]");
+            send("stopped [" + DebugState.getName(state) + "] [" + file + "] [" + line + "] [" + className
+                + "] [" + method + "]");
         }
 
         @Override
@@ -90,8 +89,7 @@ public class RunDebugRhodesAppTaskTest
         @Override
         public void watch(DebugVariableType type, String variable, String value)
         {
-            send("watch [" + DebugVariableType.getName(type) + "] [" + variable + "] ["
-                + value + "]");
+            send("watch [" + DebugVariableType.getName(type) + "] [" + variable + "] [" + value + "]");
         }
 
         @Override
@@ -120,8 +118,8 @@ public class RunDebugRhodesAppTaskTest
         }
     }
 
-    private static final String workspaceFolder = new File(
-            System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
+    private static final String workspaceFolder = new File(System.getProperty("java.io.tmpdir"),
+                                                    "junitworkfiles").getPath();
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -158,13 +156,10 @@ public class RunDebugRhodesAppTaskTest
         String appName = "app";
         String projectLocation = OSHelper.concat(workspaceFolder, appName).getPath();
 
-        String signature1 = OSValidator.isWindows()
-                ? "rhosimulator.exe -approot=\'" + unixSlashes(projectLocation) + "\'"
-                : "RhoSimulator -approot=/private" + projectLocation;
-        String signature2 =
-            OSValidator.isWindows()
-                ? "cmd /c rhodes.bat app app"
-                : "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0";
+        String signature1 = OSValidator.isWindows() ? "rhosimulator.exe -approot=\'"
+            + unixSlashes(projectLocation) + "\'" : "RhoSimulator -approot=/private" + projectLocation;
+        String signature2 = OSValidator.isWindows() ? "cmd /c rhodes.bat app app"
+            : "rake run:android:rhosimulator_debug rho_debug_port=9000 rho_reload_app_changes=0";
 
         ProcessListViewer rhosimViewer = new ProcessListViewer(signature1);
         ProcessListViewer rakeViewer = new ProcessListViewer(signature2);
@@ -175,33 +170,29 @@ public class RunDebugRhodesAppTaskTest
             {
                 RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
                 task.run();
-
-                assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+                assertTrue(task.isOk());
             }
 
             // write new application.rb
             {
-                String text[] =
-                {
-                    /* 01 */"require 'rho/rhoapplication'",
-                    /* 02 */"class AppApplication < Rho::RhoApplication",
-                    /* 03 */"  def initialize",
-                    /* 04 */"    super",
-                    /* 05 */"    x = 0",
-                    /* 06 */"    x = x + 1",
-                    /* 07 */"    $y = 11",
-                    /* 08 */"    m",
-                    /* 09 */"    $y = $y + 22",
-                    /* 10 */"  end",
-                    /* 11 */"  def m",
-                    /* 12 */"    z = 0",
-                    /* 13 */"    zz = 0",
-                    /* 14 */"  end",
-                    /* 15 */"end",
-                    /* 16 */""
-                };
-                String appRb =
-                    OSHelper.concat(projectLocation, "app", "application.rb").getPath();
+                String text[] = {
+                /* 01 */"require 'rho/rhoapplication'",
+                /* 02 */"class AppApplication < Rho::RhoApplication",
+                /* 03 */"  def initialize",
+                /* 04 */"    super",
+                /* 05 */"    x = 0",
+                /* 06 */"    x = x + 1",
+                /* 07 */"    $y = 11",
+                /* 08 */"    m",
+                /* 09 */"    $y = $y + 22",
+                /* 10 */"  end",
+                /* 11 */"  def m",
+                /* 12 */"    z = 0",
+                /* 13 */"    zz = 0",
+                /* 14 */"  end",
+                /* 15 */"end",
+                /* 16 */"" };
+                String appRb = OSHelper.concat(projectLocation, "app", "application.rb").getPath();
                 writeTextFile(appRb, join("\n", text));
             }
 
@@ -213,16 +204,16 @@ public class RunDebugRhodesAppTaskTest
             {
                 @Override
                 public void run()
-            {
-                try
                 {
-                    debugServer.run();
+                    try
+                    {
+                        debugServer.run();
+                    }
+                    catch (Throwable t)
+                    {
+                        exception[0] = t;
+                    }
                 }
-                catch (Throwable t)
-                {
-                    exception[0] = t;
-                }
-            }
             });
             debugServerThread.start();
 
@@ -235,8 +226,7 @@ public class RunDebugRhodesAppTaskTest
                 RunTask task = new RunDebugRhodesAppTask(projectLocation, appName, PlatformType.eAndroid,
                     false, launch, false);
                 task.run();
-                assertEquals(TaskResultConverter.okCode,
-                    TaskResultConverter.getResultIntCode(task.getResult()));
+                assertTrue(task.isOk());
             }
 
             suspend("connected");
@@ -245,13 +235,8 @@ public class RunDebugRhodesAppTaskTest
             debugServer.debugBreakpoint("application.rb", 6);
             debugServer.debugRemoveBreakpoint("application.rb", 5);
 
-            pass(
-                "unknown [HOST=127.0.0.1]",
-                "unknown [PORT=9000]",
-                "unknown [DEBUG PATH="
-                    + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "app")
-                        .getPath()))
-                    + "/]",
+            pass("unknown [HOST=127.0.0.1]", "unknown [PORT=9000]", "unknown [DEBUG PATH="
+                + unixSlashes(prependPrivate(OSHelper.concat(projectLocation, "app").getPath())) + "/]",
                 "stopped [breakpoint] [application.rb] [6] [AppApplication] [initialize]");
 
             debugServer.debugEvaluate("x");
@@ -261,9 +246,7 @@ public class RunDebugRhodesAppTaskTest
             debugServer.debugBreakpoint("application.rb", 7);
             debugServer.debugResume();
 
-            pass(
-                "resumed",
-                "stopped [breakpoint] [application.rb] [7] [AppApplication] [initialize]");
+            pass("resumed", "stopped [breakpoint] [application.rb] [7] [AppApplication] [initialize]");
 
             debugServer.debugEvaluate("x");
 
@@ -271,9 +254,7 @@ public class RunDebugRhodesAppTaskTest
 
             debugServer.debugStepOver();
 
-            pass(
-                "unknown [STEPOVER start]",
-                "resumed",
+            pass("unknown [STEPOVER start]", "resumed",
                 "stopped [stopped (over)] [application.rb] [8] [AppApplication] [initialize]");
 
             debugServer.debugEvaluate("$y");
@@ -283,24 +264,19 @@ public class RunDebugRhodesAppTaskTest
             debugServer.debugBreakpoint("application.rb", 12);
             debugServer.debugResume();
 
-            pass(
-                "resumed",
-                "stopped [breakpoint] [application.rb] [12] [AppApplication] [m]");
+            pass("resumed", "stopped [breakpoint] [application.rb] [12] [AppApplication] [m]");
 
             debugServer.debugBreakpoint("application.rb", 13);
             debugServer.debugRemoveAllBreakpoints();
             debugServer.debugStepReturn();
 
-            pass(
-                "resumed",
-                "stopped [stopped (return)] [application.rb] [9] [AppApplication] [initialize]");
+            pass("resumed", "stopped [stopped (return)] [application.rb] [9] [AppApplication] [initialize]");
 
             debugServer.debugEvaluate("(1+2");
 
             pass("evaluation [false] [(1+2] [\""
-                + prependPrivate(unixSlashes(OSHelper.concat(projectLocation, "app",
-                    "application.rb").getPath()))
-                + ":9: syntax error, unexpected $end, expecting ')'\"]");
+                + prependPrivate(unixSlashes(OSHelper.concat(projectLocation, "app", "application.rb")
+                    .getPath())) + ":9: syntax error, unexpected $end, expecting ')'\"]");
 
             debugServer.debugEvaluate("\"\\\\n\"");
 

@@ -38,11 +38,15 @@ public class CompileRubyPartTask extends ARubyTask
         m_executor.setErrorLogDevice(new OutputAdapter());
     }
 
+    public List<String> getOutputStrings()
+    {
+        return m_outputStrings;
+    }
+
     @Override
     protected void exec()
     {
         m_outputStrings.clear();
         super.exec();
-        m_taskResult.put(outStrings, m_outputStrings);
     }
 }

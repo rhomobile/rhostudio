@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -26,7 +25,6 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
@@ -130,7 +128,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
     {
         RunTask task = new GenerateRhodesExtensionTask(m_currentProject.getLocation().toOSString(), extName);
         task.run(monitor);
-        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
+        if (!task.isOk())
         {
             throw new IOException("The Rhodes SDK do not installed");
         }

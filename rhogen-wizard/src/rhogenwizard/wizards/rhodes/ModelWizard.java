@@ -3,7 +3,6 @@ package rhogenwizard.wizards.rhodes;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -23,7 +22,6 @@ import rhogenwizard.OSHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
@@ -187,7 +185,7 @@ public class ModelWizard extends Wizard implements INewWizard
             RunTask task = new GenerateRhodesModelTask(projectLocation, modelName, modelParams);
             task.run(monitor);
 
-            if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
+            if (!task.isOk())
             {
                 throw new IOException("The Rhodes SDK do not installed");
             }

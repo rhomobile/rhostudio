@@ -1,8 +1,5 @@
 package rhogenwizard.sdk.task;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.OSHelper;
@@ -13,20 +10,12 @@ import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 public abstract class RubyTask extends RunTask
 {
     protected final SysCommandExecutor m_executor;
-    protected Map<String, Object>      m_taskResult;
 
     public RubyTask()
     {
         m_executor = new SysCommandExecutor();
-        m_taskResult = new HashMap<String, Object>();
         m_executor.setOutputLogDevice(new ConsoleBuildAdapter());
         m_executor.setErrorLogDevice(new ConsoleBuildAdapter());
-    }
-
-    @Override
-    public Map<String, ?> getResult()
-    {
-        return m_taskResult;
     }
 
     public String getOutput()

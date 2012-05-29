@@ -24,8 +24,7 @@ public class Builder extends IncrementalProjectBuilder
         super();
     }
 
-    protected IProject[] build(int kind, Map args, final IProgressMonitor monitor)
-        throws CoreException
+    protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException
     {
         // need implement separate rake command for build ruby part without
         // extension and other staff build
@@ -41,15 +40,12 @@ public class Builder extends IncrementalProjectBuilder
         {
             ConsoleHelper.consoleBuildPrint("Clean project started");
 
-            PlatformType platformTypes[] =
-                {
-                    PlatformType.eAndroid, PlatformType.eBb, PlatformType.eIPhone,
-                    PlatformType.eWm, PlatformType.eWp7 };
+            PlatformType platformTypes[] = { PlatformType.eAndroid, PlatformType.eBb, PlatformType.eIPhone,
+                PlatformType.eWm, PlatformType.eWp7 };
 
             for (PlatformType platformType : platformTypes)
             {
-                RunTask task =
-                    new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
+                RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
                 task.run(monitor);
             }
 
@@ -67,10 +63,9 @@ public class Builder extends IncrementalProjectBuilder
     {
         try
         {
-            RunTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
+            CompileRubyPartTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
             task.run(monitor);
-            Map<String, ?> res = task.getResult();
-            List<String> out = (List<String>) res.get(CompileRubyPartTask.outStrings);
+            List<String> out = task.getOutputStrings();
             getProject().accept(new ResourceVisitor(out));
         }
         catch (CoreException e)

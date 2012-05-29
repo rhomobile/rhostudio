@@ -24,7 +24,6 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -73,12 +72,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					}
 					else
 					{
-						if (runSelectedBuildConfiguration(project) != 0)
-						{
-							ConsoleHelper.consoleBuildPrint("Error in build application");
-							setProcessFinished(true);
-							return;
-						}
+						runSelectedBuildConfiguration(project);
 					}
 				} 
 				catch (Exception e) 
@@ -93,19 +87,18 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		cancelingThread.start();
 	}
 
-	private int runSelectedBuildConfiguration(IProject currProject) throws Exception
+	private void runSelectedBuildConfiguration(IProject currProject) throws Exception
 	{
 		RunTask task = new RunReleaseRhoconnectAppTask(currProject.getLocation().toOSString());
 		task.run();
-		return TaskResultConverter.okCode;
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception
 	{
-		RunTask task = new RunDebugRhoconnectAppTask(currProject.getLocation().toOSString(),
+		RunDebugRhoconnectAppTask task = new RunDebugRhoconnectAppTask(currProject.getLocation().toOSString(),
 		    currProject.getName(), launch);
 		task.run();
-		return TaskResultConverter.getResultLaunchObj(task.getResult());
+		return task.getDebugProcess();
 	}
 	
 	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
