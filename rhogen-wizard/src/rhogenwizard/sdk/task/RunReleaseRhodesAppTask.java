@@ -6,7 +6,7 @@ import java.util.List;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 
-public class RunReleaseRhodesAppTask extends ARakeTask
+public class RunReleaseRhodesAppTask extends ARubyTask
 {
     private static String[] getArgs(PlatformType platformType, RunType runType, boolean isReloadCode,
         boolean isTrace)
@@ -44,6 +44,6 @@ public class RunReleaseRhodesAppTask extends ARakeTask
     public RunReleaseRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
         boolean isReloadCode, boolean isTrace)
     {
-        super(workDir, getArgs(platformType, runType, isReloadCode, isTrace));
+        super(workDir, "rake", getArgs(platformType, runType, isReloadCode, isTrace));
     }
 }

@@ -1,8 +1,6 @@
 package rhogenwizard.sdk.task;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -19,7 +17,7 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
 {
     public static final String resProcess = "debug-process";
 
-    private static RunTask[] getTasks(final String workDir_, final String appName, final ILaunch launch)
+    private static RunTask[] getTasks(final String workDir, final String appName, final ILaunch launch)
     {
         RunTask storeLastSyncRunAppTask = new RunTask()
         {
@@ -33,23 +31,23 @@ public class RunDebugRhoconnectAppTask extends SeqRunTask
             public void run(IProgressMonitor monitor)
             {
                 IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-                store.setValue(ConfigurationConstants.lastSyncRunApp, workDir_);
+                store.setValue(ConfigurationConstants.lastSyncRunApp, workDir);
             }
         };
 
-        RunTask redisStartbgTask = new ARakeTask("redis:startbg");
+        RunTask redisStartbgTask = new ARubyTask(workDir, "rake", "redis:startbg");
 
-        RunTask rhoconnectStartdebugTask = new RakeTask()
+        RunTask rhoconnectStartdebugTask = new RubyTask()
         {
             @Override
             protected void exec()
             {
-                String[] commandLine = { m_rakeExe, "rhoconnect:startdebug" };
+                String[] commandLine = { getCommand("rake"), "rhoconnect:startdebug" };
 
                 Process process;
                 try
                 {
-                    process = DebugPlugin.exec(commandLine, new File(workDir_));
+                    process = DebugPlugin.exec(commandLine, new File(workDir));
                 }
                 catch (CoreException e)
                 {

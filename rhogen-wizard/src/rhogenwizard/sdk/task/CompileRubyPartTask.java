@@ -5,7 +5,7 @@ import java.util.List;
 
 import rhogenwizard.ILogDevice;
 
-public class CompileRubyPartTask extends ARakeTask
+public class CompileRubyPartTask extends ARubyTask
 {
     private class OutputAdapter implements ILogDevice
     {
@@ -30,7 +30,7 @@ public class CompileRubyPartTask extends ARakeTask
 
     public CompileRubyPartTask(String workDir)
     {
-        super(workDir, "build:bundle:rhostudio");
+        super(workDir, "rake", "build:bundle:rhostudio");
 
         m_outputStrings = new ArrayList<String>();
 

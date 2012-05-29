@@ -6,23 +6,18 @@ import java.util.List;
 
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class ARakeTask extends RakeTask
+public class ARubyTask extends RubyTask
 {
     private final String       m_workDir;
     private final List<String> m_cmdLine;
 
-    public ARakeTask(String workDir, String... args)
+    public ARubyTask(String workDir, String commandName, String... args)
     {
         m_workDir = workDir;
 
         m_cmdLine = new ArrayList<String>();
-        m_cmdLine.add(m_rakeExe);
+        m_cmdLine.add(getCommand(commandName));
         m_cmdLine.addAll(Arrays.asList(args));
-    }
-
-    public String getOutput()
-    {
-        return m_executor.getCommandOutput();
     }
 
     @Override

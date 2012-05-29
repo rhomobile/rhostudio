@@ -13,7 +13,7 @@ import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.helper.DebugConsoleAdapter;
 import rhogenwizard.sdk.helper.TaskResultConverter;
 
-public class RunDebugRhodesAppTask extends RhodesTask
+public class RunDebugRhodesAppTask extends RubyTask
 {
     public static final String resProcess = "debug-process";
 
@@ -39,7 +39,7 @@ public class RunDebugRhodesAppTask extends RhodesTask
     protected void exec()
     {
         List<String> cmdLine = new ArrayList<String>();
-        cmdLine.add(m_rakeExe);
+        cmdLine.add(getCommand("rake"));
         cmdLine.add("run:" + m_platformType + ":rhosimulator_debug");
 
         if (m_isTrace)
