@@ -12,12 +12,11 @@ import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 
 public class RhoconnectCreationTest extends TestCase
 {
-    private static final String workspaceFolder = new File(
-            System.getProperty("java.io.tmpdir"), "junitworkfiles").getPath();
+    private static final String workspaceFolder = new File(System.getProperty("java.io.tmpdir"),
+                                                    "junitworkfiles").getPath();
 
     private boolean checkCreateRhoconnectFile(String path)
     {
@@ -57,7 +56,7 @@ public class RhoconnectCreationTest extends TestCase
 
         RunTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
         task.run();
-        assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+        assertTrue(task.isOk());
 
         assertTrue(checkCreateRhoconnectFile(workspaceFolder + File.separator + appName));
     }
@@ -73,7 +72,7 @@ public class RhoconnectCreationTest extends TestCase
         {
             RunTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             assertTrue(checkCreateRhoconnectFile(projectLocation));
         }
@@ -82,11 +81,10 @@ public class RhoconnectCreationTest extends TestCase
         {
             RunTask task = new GenerateRhoconnectAdapterTask(projectLocation, adapterName);
             task.run();
-            assertEquals(0, TaskResultConverter.getResultIntCode(task.getResult()));
+            assertTrue(task.isOk());
 
             assertTrue(OSHelper.concat(projectLocation, "sources", "adapter001.rb").isFile());
-            assertTrue(OSHelper
-                    .concat(projectLocation, "spec", "sources", "adapter001_spec.rb").isFile());
+            assertTrue(OSHelper.concat(projectLocation, "spec", "sources", "adapter001_spec.rb").isFile());
         }
     }
 }

@@ -2,11 +2,9 @@ package rhogenwizard.wizards.rhoconnect;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -23,7 +21,6 @@ import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.wizards.ZeroPage;
@@ -139,7 +136,7 @@ public class SourceAdapterWizard extends Wizard implements INewWizard
                 RunTask task = new GenerateRhoconnectAdapterTask(m_projectLocation, adapterName);
                 task.run(monitor);
 
-                if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
+                if (!task.isOk())
                 {
                     throw new IOException("The Rhodes SDK do not installed");
                 }

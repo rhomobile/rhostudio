@@ -2,46 +2,25 @@ package rhogenwizard.sdk.task;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.preference.IPreferenceStore;
 
-import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.sdk.helper.ConsoleAppAdapter;
 
 public class RunReleaseRhoconnectAppTask extends SeqRunTask
 {
-    private static RunTask[] getTasks(final String workDir_)
+    private static RunTask[] getTasks(final String workDir)
     {
-        RunTask storeLastSyncRunAppTask = new RunTask()
-        {
-            @Override
-            public Map<String, ?> getResult()
-            {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public void run(IProgressMonitor monitor)
-            {
-                IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-                store.setValue(ConfigurationConstants.lastSyncRunApp, workDir_);
-            }
-        };
-
-        RunTask redisStartbgTask = new ARakeTask("redis:startbg");
+        RunTask redisStartbgTask = new ARubyTask(workDir, "rake", "redis:startbg");
 
         RunTask rhoconnectStartTask = new RunTask()
         {
             @Override
-            public Map<String, ?> getResult()
+            public boolean isOk()
             {
-                throw new UnsupportedOperationException();
+                return true;
             }
 
             @Override
@@ -52,27 +31,21 @@ public class RunReleaseRhoconnectAppTask extends SeqRunTask
                     @Override
                     public void run()
                     {
-                        String rakeExe = "rake";
-                        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
-                        {
-                            rakeExe = rakeExe + ".bat";
-                        }
-
                         SysCommandExecutor executor = new SysCommandExecutor();
 
                         executor.setOutputLogDevice(new ConsoleAppAdapter());
                         executor.setErrorLogDevice(new ConsoleAppAdapter());
 
-                        if (workDir_ == null)
+                        if (workDir == null)
                             return;
 
                         ConsoleHelper.showAppConsole();
 
-                        List<String> cmdLine = Arrays.asList(rakeExe, "rhoconnect:start");
+                        List<String> cmdLine = Arrays.asList(RubyTask.getCommand("rake"), "rhoconnect:start");
 
                         try
                         {
-                            executor.setWorkingDirectory(workDir_);
+                            executor.setWorkingDirectory(workDir);
                             executor.runCommand(cmdLine);
                         }
                         catch (Exception e)
@@ -84,7 +57,7 @@ public class RunReleaseRhoconnectAppTask extends SeqRunTask
             }
         };
 
-        return new RunTask[] { new StopSyncAppTask(), storeLastSyncRunAppTask, redisStartbgTask,
+        return new RunTask[] { new StopSyncAppTask(), new StoreLastSyncRunAppTask(workDir), redisStartbgTask,
             rhoconnectStartTask };
     }
 

@@ -1,7 +1,5 @@
 package rhogenwizard.sdk.task;
 
-import java.util.Map;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -24,9 +22,7 @@ public abstract class RunTask
         }
     }
 
-    public static final String resTag  = "result-code";
-
-    public abstract Map<String, ?> getResult();
+    public abstract boolean isOk();
 
     public void run()
     {

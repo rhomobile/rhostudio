@@ -2,7 +2,6 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,7 +26,6 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -122,7 +120,7 @@ public class AppWizard extends Wizard implements INewWizard
 
         task.run(monitor);
 
-        if (TaskResultConverter.getResultIntCode(task.getResult()) != 0)
+        if (!task.isOk())
         {
             throw new IOException(MsgConstants.errInstallRhodes);
         }

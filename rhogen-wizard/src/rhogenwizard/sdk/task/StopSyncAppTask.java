@@ -9,7 +9,7 @@ import rhogenwizard.constants.ConfigurationConstants;
 
 public class StopSyncAppTask extends SeqRunTask
 {
-    private static final RakeTask[] empty = {};
+    private static final RunTask[] empty = {};
 
     private static RunTask[] getTasks()
     {
@@ -31,8 +31,8 @@ public class StopSyncAppTask extends SeqRunTask
         if (!appFolder.exists())
             return empty;
 
-        RunTask stopRhoconnectTask = new ARakeTask(prevRunningRhoconnectApp, "rhoconnect:stop");
-        RunTask stopRedisTask = new ARakeTask(prevRunningRhoconnectApp, "redis:stop");
+        RunTask stopRhoconnectTask = new ARubyTask(prevRunningRhoconnectApp, "rake", "rhoconnect:stop");
+        RunTask stopRedisTask = new ARubyTask(prevRunningRhoconnectApp, "rake", "redis:stop");
         return new RunTask[] { stopRhoconnectTask, stopRedisTask };
     }
 

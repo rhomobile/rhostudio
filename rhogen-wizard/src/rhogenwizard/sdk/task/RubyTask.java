@@ -1,10 +1,5 @@
 package rhogenwizard.sdk.task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.OSHelper;
@@ -12,27 +7,20 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
-public abstract class RakeTask extends RunTask
+public abstract class RubyTask extends RunTask
 {
-    protected String              m_rakeExe    = "rake";
-    protected SysCommandExecutor  m_executor   = new SysCommandExecutor();
-    protected Map<String, Object> m_taskResult = new HashMap<String, Object>();
+    protected final SysCommandExecutor m_executor;
 
-    public RakeTask()
+    public RubyTask()
     {
+        m_executor = new SysCommandExecutor();
         m_executor.setOutputLogDevice(new ConsoleBuildAdapter());
         m_executor.setErrorLogDevice(new ConsoleBuildAdapter());
-
-        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
-        {
-            m_rakeExe = m_rakeExe + ".bat";
-        }
     }
 
-    @Override
-    public Map<String, ?> getResult()
+    public String getOutput()
     {
-        return m_taskResult;
+        return m_executor.getCommandOutput();
     }
 
     @Override
@@ -70,6 +58,15 @@ public abstract class RakeTask extends RunTask
                 throw new StoppedException();
             }
         }
+    }
+
+    public static String getCommand(String name)
+    {
+        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
+        {
+            return name + ".bat";
+        }
+        return name;
     }
 
     protected abstract void exec();

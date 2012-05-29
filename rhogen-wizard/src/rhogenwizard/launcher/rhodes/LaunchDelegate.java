@@ -30,7 +30,6 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-import rhogenwizard.sdk.helper.TaskResultConverter;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
@@ -93,7 +92,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					    ProcessListViewer rhosims = new ProcessListViewer(
 					            "/RhoSimulator/rhosimulator.exe -approot=\'");
 
-						if (runSelectedBuildConfiguration(project, type) != 0)
+						if (!runSelectedBuildConfiguration(project, type))
 						{
 							ConsoleHelper.consoleBuildPrint("Error in build application");
 							setProcessFinished(true);
@@ -118,21 +117,20 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		cancelingThread.start();
 	}
 
-	private int runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
+	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
 		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
 		    PlatformType.fromString(m_platformType), selType, m_isReloadCode, m_isTrace);
 		task.run();
-		return TaskResultConverter.getResultIntCode(task.getResult());
+		return task.isOk();
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		RunTask task =
-		    new RunDebugRhodesAppTask(currProject.getLocation().toOSString(), currProject.getName(),
-		        PlatformType.fromString(m_platformType), m_isReloadCode, launch, m_isTrace);
+		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(currProject.getLocation().toOSString(),
+		    currProject.getName(), PlatformType.fromString(m_platformType), m_isReloadCode, launch, m_isTrace);
 		task.run();
-		return TaskResultConverter.getResultLaunchObj(task.getResult());
+		return task.getDebugProcess();
 	}
 	
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
