@@ -5,7 +5,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class DialogUtils
 {
-    public static void warn(final String title, final String message)
+    public static void warning(final String title, final String message)
     {
         PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
         {

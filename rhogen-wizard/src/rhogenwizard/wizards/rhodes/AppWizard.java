@@ -183,7 +183,7 @@ public class AppWizard extends Wizard implements INewWizard
         }
         catch (AlredyCreatedException e)
         {
-            DialogUtils.warn("Warning", e.toString());
+            DialogUtils.warning("Warning", e.toString());
         }
         catch (Exception e)
         {

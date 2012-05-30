@@ -1,5 +1,6 @@
 package rhogenwizard.launcher.rhodes;
 
+import java.awt.Dialog;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
+import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.buildfile.AppYmlFile;
@@ -64,11 +66,15 @@ public class ParametersTab extends  JavaLaunchTab
 											    "4.0.3" };
 
 	protected static String iphoneVersions[] = { "iphone",
-											   "ipad" };
+											     "ipad" };
 
 	private static String simulatorTypes[] = { RunType.platformRhoSim,
 		                                       RunType.platformSim,
 		                                       RunType.platformDevice };
+	
+	private static int simRhosimulatorIndex = 0;
+	private static int simSimulatorIndex = 1;
+	private static int simDeviceIndex = 2;
 	
 	private static String bbVersions[] = {};
 	
@@ -176,13 +182,22 @@ public class ParametersTab extends  JavaLaunchTab
 			{
 				if (m_configuration != null)
 				{
+				    // for iphone platform we can't deploy application on device, it's need to do by hand
+				    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
+				        m_selectPlatformCombo.getText().toLowerCase().equals(PlatformType.platformIPhone.toLowerCase()))
+				    {
+				        DialogUtils.warning("Warning", "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.");
+				        m_platformTypeCombo.select(simRhosimulatorIndex); // select rhosimuator 
+				        return;
+				    }
+				    
 					encodePlatformTypeCombo(m_platformTypeCombo.getText());
 					encodePlatformInformation(m_selectPlatformCombo.getText());
 					showApplyButton();
 				}
 			}
 		});
-		m_selectPlatformVersionCombo.select(0);
+		m_selectPlatformVersionCombo.select(simRhosimulatorIndex);
 		
 		SWTFactory.createLabel(namecomp, "", 1);
 		
@@ -540,7 +555,7 @@ public class ParametersTab extends  JavaLaunchTab
 		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
 		{
 			m_platformTypeCombo.setEnabled(false);
-			m_platformTypeCombo.select(0);
+			m_platformTypeCombo.select(simRhosimulatorIndex);
 		}
 		else
 		{
@@ -550,15 +565,15 @@ public class ParametersTab extends  JavaLaunchTab
 			
 			if (platformType.equals(RunType.platformRhoSim))
 			{
-				m_platformTypeCombo.select(0);
+				m_platformTypeCombo.select(simRhosimulatorIndex);
 			}
 			else if (platformType.equals(RunType.platformSim))
 			{
-				m_platformTypeCombo.select(1);
+				m_platformTypeCombo.select(simSimulatorIndex);
 			}
 			else if (platformType.equals(RunType.platformDevice))
 			{
-				m_platformTypeCombo.select(2);
+				m_platformTypeCombo.select(simDeviceIndex);
 			}
 		}
 	}
