@@ -31,6 +31,15 @@ public class ARubyTask extends RubyTask
         return m_exitValue == 0;
     }
 
+    public int getExitValue()
+    {
+        if (m_exitValue == null)
+        {
+            throw new IllegalStateException("The task is not finished yet.");
+        }
+        return m_exitValue;
+    }
+
     @Override
     protected void exec()
     {

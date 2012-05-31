@@ -23,6 +23,11 @@ public abstract class RubyTask extends RunTask
         return m_executor.getCommandOutput();
     }
 
+    public String getError()
+    {
+        return m_executor.getCommandError();
+    }
+
     @Override
     public void run(IProgressMonitor monitor)
     {
