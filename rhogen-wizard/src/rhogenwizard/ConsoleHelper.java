@@ -10,7 +10,9 @@ public class ConsoleHelper
 {
     public interface Stream
     {
-        void println(String s);
+        void print(String message);
+        void println();
+        void println(String message);
     }
 
     private static class LazyStream implements Stream
@@ -40,11 +42,29 @@ public class ConsoleHelper
         }
 
         @Override
-        public void println(String s)
+        public void print(String message)
         {
             if (m_enabled)
             {
-                m_stream.println(s);
+                m_stream.print(message);
+            }
+        }
+
+        @Override
+        public void println()
+        {
+            if (m_enabled)
+            {
+                m_stream.println();
+            }
+        }
+
+        @Override
+        public void println(String message)
+        {
+            if (m_enabled)
+            {
+                m_stream.println(message);
             }
         }
     }
@@ -73,12 +93,12 @@ public class ConsoleHelper
         return appConsoleStream;
     }
 
-    public static void consoleAppPrint(String msg)
+    public static void consoleAppPrintln(String msg)
     {
         getAppsConsoleStream().println(msg);
     }
 
-    public static void consoleBuildPrint(String msg)
+    public static void consoleBuildPrintln(String msg)
     {
         getBuildConsoleStream().println(msg);
     }

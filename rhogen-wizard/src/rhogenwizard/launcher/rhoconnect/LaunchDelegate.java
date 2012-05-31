@@ -57,7 +57,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			{
 				try 
 				{				
-					ConsoleHelper.consoleBuildPrint("build started");
+					ConsoleHelper.consoleBuildPrintln("build started");
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
@@ -65,7 +65,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 							
 						if (m_debugProcess == null)
 						{
-							ConsoleHelper.consoleBuildPrint("Error in build application");
+							ConsoleHelper.consoleBuildPrintln("Error in build application");
 							setProcessFinished(true);
 							return;
 						}
@@ -175,7 +175,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			}
 			catch(IllegalArgumentException e)
 			{
-				ConsoleHelper.consoleBuildPrint(e.getMessage());
+				ConsoleHelper.consoleBuildPrintln(e.getMessage());
 			}
 			catch (Exception e) 
 			{
