@@ -75,7 +75,6 @@ public class ConsoleHelper
 
     public static void consoleAppPrint(String msg)
     {
-        showAppConsole();
         getAppsConsoleStream().println(msg);
     }
 

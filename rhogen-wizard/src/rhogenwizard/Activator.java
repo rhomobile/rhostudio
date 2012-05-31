@@ -40,6 +40,7 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		
+		ConsoleHelper.showAppConsole();
 		ConsoleHelper.consoleAppPrint(" ");
 		ConsoleHelper.consoleBuildPrint(" ");
 		ConsoleHelper.showBuildConsole();
