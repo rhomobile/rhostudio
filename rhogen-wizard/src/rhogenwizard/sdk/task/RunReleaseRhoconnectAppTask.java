@@ -1,13 +1,8 @@
 package rhogenwizard.sdk.task;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.sdk.helper.ConsoleAppAdapter;
 
 public class RunReleaseRhoconnectAppTask extends SeqRunTask
 {
@@ -31,27 +26,8 @@ public class RunReleaseRhoconnectAppTask extends SeqRunTask
                     @Override
                     public void run()
                     {
-                        SysCommandExecutor executor = new SysCommandExecutor();
-
-                        executor.setOutputLogDevice(new ConsoleAppAdapter());
-                        executor.setErrorLogDevice(new ConsoleAppAdapter());
-
-                        if (workDir == null)
-                            return;
-
                         ConsoleHelper.showAppConsole();
-
-                        List<String> cmdLine = Arrays.asList(RubyTask.getCommand("rake"), "rhoconnect:start");
-
-                        try
-                        {
-                            executor.setWorkingDirectory(workDir);
-                            executor.runCommand(cmdLine);
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                        new ARubyTask(workDir, "rake", "rhoconnect:start").run();
                     }
                 }).start();
             }
