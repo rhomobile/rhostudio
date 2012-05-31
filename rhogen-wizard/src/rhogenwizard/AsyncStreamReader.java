@@ -82,7 +82,7 @@ public class AsyncStreamReader extends Thread
 		}
 		
 		bufOut.close();
-		printToConsole("END OF: " + m_threadId); //DEBUG
+		// printToConsole("END OF: " + m_threadId); //DEBUG
 	}
 	
 	private void readCommandOutput() throws IOException, InterruptedException
@@ -98,7 +98,7 @@ public class AsyncStreamReader extends Thread
 		}		
 
 		bufOut.close();
-		printToConsole("END OF: " + m_threadId); //DEBUG
+		// printToConsole("END OF: " + m_threadId); //DEBUG
 	}
 	
 	public void stopReading() 
