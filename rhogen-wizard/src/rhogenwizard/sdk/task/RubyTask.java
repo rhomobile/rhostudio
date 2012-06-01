@@ -4,30 +4,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
-import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
 public abstract class RubyTask extends RunTask
 {
-    protected final SysCommandExecutor m_executor;
-
-    public RubyTask()
-    {
-        m_executor = new SysCommandExecutor();
-        m_executor.setOutputLogDevice(new ConsoleBuildAdapter());
-        m_executor.setErrorLogDevice(new ConsoleBuildAdapter());
-    }
-
-    public String getOutput()
-    {
-        return m_executor.getCommandOutput();
-    }
-
-    public String getError()
-    {
-        return m_executor.getCommandError();
-    }
-
     @Override
     public void run(IProgressMonitor monitor)
     {

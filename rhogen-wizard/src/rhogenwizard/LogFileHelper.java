@@ -10,7 +10,6 @@ import org.eclipse.core.resources.IProject;
 
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.sdk.task.ARubyTask;
-import rhogenwizard.sdk.task.RubyTask;
 
 class AppLogAdapter implements ILogDevice
 {
@@ -245,7 +244,7 @@ public class LogFileHelper
 	
 	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
-		RubyTask task = new ARubyTask(project.getLocation().toOSString(), "rake", taskName);
+		ARubyTask task = new ARubyTask(project.getLocation().toOSString(), "rake", taskName);
 		task.run();
 		String output = task.getOutput();
 		
