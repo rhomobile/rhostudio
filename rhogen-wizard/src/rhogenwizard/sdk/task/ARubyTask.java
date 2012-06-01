@@ -4,16 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import rhogenwizard.ILogDevice;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
 public class ARubyTask extends RubyTask
 {
-    protected final SysCommandExecutor m_executor;
+    private final SysCommandExecutor m_executor;
 
-    private final String               m_workDir;
-    private final List<String>         m_cmdLine;
-    private Integer                    m_exitValue;
+    private final String             m_workDir;
+    private final List<String>       m_cmdLine;
+    private Integer                  m_exitValue;
+
+    private static ILogDevice        nullLogDevice = new ILogDevice()
+                                                   {
+                                                       @Override
+                                                       public void log(String str)
+                                                       {
+                                                       }
+                                                   };
 
     public ARubyTask(String workDir, String commandName, String... args)
     {
@@ -59,14 +68,20 @@ public class ARubyTask extends RubyTask
         return m_executor.getCommandError();
     }
 
+    public void disableConsole()
+    {
+        m_executor.setOutputLogDevice(nullLogDevice);
+        m_executor.setErrorLogDevice(nullLogDevice);
+    }
+
     @Override
     protected void exec()
     {
         int exitValue = -1;
 
+        m_executor.setWorkingDirectory(m_workDir);
         try
         {
-            m_executor.setWorkingDirectory(m_workDir);
             exitValue = m_executor.runCommand(m_cmdLine);
         }
         catch (Exception e)
