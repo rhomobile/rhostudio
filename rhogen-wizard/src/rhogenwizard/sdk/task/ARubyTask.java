@@ -10,36 +10,18 @@ import rhogenwizard.SysCommandExecutor;
 
 public class ARubyTask extends RubyTask
 {
-    private final SysCommandExecutor    m_executor;
-    private ConsoleHelper.Stream        m_stream;
+    private final SysCommandExecutor m_executor;
+    private ConsoleHelper.Console    m_console;
 
-    private final String                m_workDir;
-    private final List<String>          m_cmdLine;
-    private Integer                     m_exitValue;
-
-    private static ConsoleHelper.Stream nullStream = new ConsoleHelper.Stream()
-                                                   {
-                                                       @Override
-                                                       public void println(String message)
-                                                       {
-                                                       }
-
-                                                       @Override
-                                                       public void println()
-                                                       {
-                                                       }
-
-                                                       @Override
-                                                       public void print(String message)
-                                                       {
-                                                       }
-                                                   };
+    private final String             m_workDir;
+    private final List<String>       m_cmdLine;
+    private Integer                  m_exitValue;
 
     public ARubyTask(String workDir, String commandName, String... args)
     {
         m_executor = new SysCommandExecutor();
 
-        m_stream = ConsoleHelper.getBuildConsoleStream();
+        m_console = ConsoleHelper.getBuildConsole();
 
         m_workDir = workDir;
 
@@ -81,15 +63,19 @@ public class ARubyTask extends RubyTask
 
     public void disableConsole()
     {
-        m_stream = nullStream;
+        m_console = ConsoleHelper.nullConsole;
     }
 
     @Override
     protected void exec()
     {
-        m_stream.print("\nPWD: " + showWorkingDir() + "\nCMD: " + showCommandLine() + "\n");
+        m_console.show();
 
-        ILogDevice logDevice = getLogDevice(m_stream);
+        ConsoleHelper.Stream stream = m_console.getStream();
+
+        stream.print("\nPWD: " + showWorkingDir() + "\nCMD: " + showCommandLine() + "\n");
+
+        ILogDevice logDevice = getLogDevice(stream);
         m_executor.setOutputLogDevice(logDevice);
         m_executor.setErrorLogDevice(logDevice);
 
@@ -106,7 +92,7 @@ public class ARubyTask extends RubyTask
 
         m_exitValue = exitValue;
 
-        m_stream.print("RET: " + m_exitValue + "\n");
+        stream.print("RET: " + m_exitValue + "\n");
     }
 
     private String showWorkingDir()
