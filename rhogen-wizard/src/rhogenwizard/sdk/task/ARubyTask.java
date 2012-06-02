@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
 import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.sdk.helper.ConsoleBuildAdapter;
 
 public class ARubyTask extends RubyTask
 {
     private final SysCommandExecutor m_executor;
+    private ILogDevice               m_logDevice;
 
     private final String             m_workDir;
     private final List<String>       m_cmdLine;
@@ -27,8 +28,8 @@ public class ARubyTask extends RubyTask
     public ARubyTask(String workDir, String commandName, String... args)
     {
         m_executor = new SysCommandExecutor();
-        m_executor.setOutputLogDevice(new ConsoleBuildAdapter());
-        m_executor.setErrorLogDevice(new ConsoleBuildAdapter());
+
+        m_logDevice = getBuildLogDevice();
 
         m_workDir = workDir;
 
@@ -70,13 +71,15 @@ public class ARubyTask extends RubyTask
 
     public void disableConsole()
     {
-        m_executor.setOutputLogDevice(nullLogDevice);
-        m_executor.setErrorLogDevice(nullLogDevice);
+        m_logDevice = nullLogDevice;
     }
 
     @Override
     protected void exec()
     {
+        m_executor.setOutputLogDevice(m_logDevice);
+        m_executor.setErrorLogDevice(m_logDevice);
+
         int exitValue = -1;
 
         m_executor.setWorkingDirectory(m_workDir);
@@ -89,5 +92,19 @@ public class ARubyTask extends RubyTask
         }
 
         m_exitValue = exitValue;
+    }
+
+    private static ILogDevice getBuildLogDevice()
+    {
+        return new ILogDevice()
+        {
+            private final ConsoleHelper.Stream m_stream = ConsoleHelper.getBuildConsoleStream();
+
+            @Override
+            public void log(String str)
+            {
+                m_stream.println(str.replaceAll("\\p{Cntrl}", " "));
+            }
+        };
     }
 }
