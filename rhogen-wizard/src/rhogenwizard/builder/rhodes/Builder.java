@@ -38,7 +38,8 @@ public class Builder extends IncrementalProjectBuilder
     {
         try
         {
-            ConsoleHelper.consoleBuildPrintln("Clean project started");
+            ConsoleHelper.Stream stream = ConsoleHelper.buildConsole.getStream();
+            stream.println("Clean project started");
 
             PlatformType platformTypes[] = { PlatformType.eAndroid, PlatformType.eBb, PlatformType.eIPhone,
                 PlatformType.eWm, PlatformType.eWp7 };
@@ -49,7 +50,7 @@ public class Builder extends IncrementalProjectBuilder
                 task.run(monitor);
             }
 
-            ConsoleHelper.consoleBuildPrintln("Clean application cancelled");
+            stream.println("Clean application cancelled");
         }
         catch (Exception e)
         {

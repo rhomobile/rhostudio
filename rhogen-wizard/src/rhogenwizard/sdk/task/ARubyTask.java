@@ -21,7 +21,7 @@ public class ARubyTask extends RubyTask
     {
         m_executor = new SysCommandExecutor();
 
-        m_console = ConsoleHelper.getBuildConsole();
+        m_console = ConsoleHelper.buildConsole;
 
         m_workDir = workDir;
 

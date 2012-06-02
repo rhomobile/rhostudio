@@ -15,24 +15,21 @@ class AppLogAdapter implements ILogDevice
 {
 	private static final int maxShowLines = 2*10*1000;
 	
-	private int                  m_currShowLines = 0;
-	private ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
+	private int                   m_currShowLines = 0;
+	private ConsoleHelper.Console m_console = ConsoleHelper.appConsole;
 
 	@Override
 	public void log(String str) 
 	{
-		ConsoleHelper.showAppConsole();
+	    m_console.show();
 		
-		if (null != m_consoleStream)
-		{
-			m_currShowLines++;
-			m_consoleStream.println(prepareString(str));
-		}
+		m_currShowLines++;
+		m_console.getStream().println(prepareString(str));
 		
 		if (m_currShowLines > maxShowLines)
 		{
 			m_currShowLines = 0;
-			ConsoleHelper.cleanAppConsole();
+			m_console.clear();
 		}
 	}
 	

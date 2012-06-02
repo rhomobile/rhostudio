@@ -21,6 +21,8 @@ public class ConsoleHelper
     {
         void show();
 
+        void clear();
+
         Stream getStream();
     }
 
@@ -46,6 +48,11 @@ public class ConsoleHelper
                                       {
                                           @Override
                                           public void show()
+                                          {
+                                          }
+
+                                          @Override
+                                          public void clear()
                                           {
                                           }
 
@@ -127,19 +134,24 @@ public class ConsoleHelper
         }
 
         @Override
+        public void clear()
+        {
+            if (m_enabled)
+            {
+                getConsole().clearConsole();
+            }
+        }
+
+        @Override
         public void show()
         {
             if (m_enabled)
             {
-                ConsolePlugin plugin = ConsolePlugin.getDefault();
-                IConsoleManager conMan = plugin.getConsoleManager();
+                IConsoleManager conMan = ConsolePlugin.getDefault().getConsoleManager();
 
-                if (m_console == null)
-                {
-                    m_console = findConsole(m_name);
-                }
-                conMan.showConsoleView(m_console);
-                conMan.refresh(m_console);
+                MessageConsole console = getConsole();
+                conMan.showConsoleView(console);
+                conMan.refresh(console);
             }
         }
 
@@ -154,70 +166,27 @@ public class ConsoleHelper
             m_enabled = false;
             m_stream.disable();
         }
+
+        private MessageConsole getConsole()
+        {
+            if (m_console == null)
+            {
+                m_console = findConsole(m_name);
+            }
+            return m_console;
+        }
     }
 
-    private static final String      appConsoleName   = "Rhomobile application console";
-    private static final String      buildConsoleName = "Rhomobile build console";
+    private static final LazyConsole appConsole_   = new LazyConsole("Rhomobile application console");
+    private static final LazyConsole buildConsole_ = new LazyConsole("Rhomobile build console");
 
-    private static final LazyConsole appConsole       = new LazyConsole(appConsoleName);
-    private static final LazyConsole buildConsole     = new LazyConsole(buildConsoleName);
+    public static final Console      appConsole    = appConsole_;
+    public static final Console      buildConsole  = buildConsole_;
 
     public static void disableConsoles()
     {
-        appConsole.disable();
-        buildConsole.disable();
-    }
-
-    public static Console getBuildConsole()
-    {
-        return buildConsole;
-    }
-
-    public static Console getAppsConsole()
-    {
-        return appConsole;
-    }
-
-    public static Stream getBuildConsoleStream()
-    {
-        return buildConsole.getStream();
-    }
-
-    public static Stream getAppsConsoleStream()
-    {
-        return appConsole.getStream();
-    }
-
-    public static void consoleAppPrintln(String msg)
-    {
-        getAppsConsoleStream().println(msg);
-    }
-
-    public static void consoleBuildPrintln(String msg)
-    {
-        getBuildConsoleStream().println(msg);
-    }
-
-    public static void showBuildConsole()
-    {
-        buildConsole.show();
-    }
-
-    public static void showAppConsole()
-    {
-        appConsole.show();
-    }
-
-    public static void cleanAppConsole()
-    {
-        MessageConsole myConsole = findConsole(appConsoleName);
-        myConsole.clearConsole();
-    }
-
-    public static void cleanBuildConsole()
-    {
-        MessageConsole myConsole = findConsole(buildConsoleName);
-        myConsole.clearConsole();
+        appConsole_.disable();
+        buildConsole_.disable();
     }
 
     private static MessageConsole findConsole(String name)

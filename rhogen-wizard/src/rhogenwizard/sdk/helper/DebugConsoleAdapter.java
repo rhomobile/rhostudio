@@ -3,12 +3,13 @@ package rhogenwizard.sdk.helper;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
+
 import rhogenwizard.ConsoleHelper;
 
 
 class OutputStreamListener implements IStreamListener
 {
-    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getBuildConsoleStream();
+    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.buildConsole.getStream();
 
 	@Override
 	public void streamAppended(String text, IStreamMonitor monitor)
@@ -22,7 +23,7 @@ class OutputStreamListener implements IStreamListener
 
 class ErrorStreamListener implements IStreamListener
 {
-    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getBuildConsoleStream();
+    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.buildConsole.getStream();
 
 	@Override
 	public void streamAppended(String text, IStreamMonitor monitor)

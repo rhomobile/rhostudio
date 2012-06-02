@@ -17,6 +17,7 @@ import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.LogFileHelper;
@@ -57,7 +58,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			{
 				try 
 				{				
-					ConsoleHelper.consoleBuildPrintln("build started");
+					ConsoleHelper.buildConsole.getStream().println("build started");
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
@@ -65,7 +66,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 							
 						if (m_debugProcess == null)
 						{
-							ConsoleHelper.consoleBuildPrintln("Error in build application");
+						    ConsoleHelper.buildConsole.getStream().println("Error in build application");
 							setProcessFinished(true);
 							return;
 						}
@@ -80,7 +81,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					e.printStackTrace();
 				}
 				
-				ConsoleHelper.showAppConsole();
+				ConsoleHelper.appConsole.show();
 				setProcessFinished(true);
 			}
 		});
@@ -121,8 +122,8 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			
 			setStandartConsoleOutputIsOff();
 			
-			ConsoleHelper.cleanBuildConsole();
-			ConsoleHelper.showBuildConsole();
+			ConsoleHelper.buildConsole.clear();
+			ConsoleHelper.buildConsole.show();
 			
 			setupConfigAttributes(configuration);
 	
@@ -175,7 +176,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			}
 			catch(IllegalArgumentException e)
 			{
-				ConsoleHelper.consoleBuildPrintln(e.getMessage());
+			    Activator.logError(e);
 			}
 			catch (Exception e) 
 			{
