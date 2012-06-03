@@ -1,9 +1,6 @@
 package rhogenwizard.sdk.task;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -16,22 +13,18 @@ import rhogenwizard.ConsoleHelper;
 
 public class RubyDebugTask extends RubyTask
 {
-    private final ILaunch      m_launch;
-    private final String       m_appName;
-    private final String       m_workDir;
-    private final List<String> m_cmdLine;
-    private IProcess           m_debugProcess;
+    private final ILaunch               m_launch;
+    private final String                m_appName;
+    private final ConsoleHelper.Console m_console;
+    private IProcess                    m_debugProcess;
 
     public RubyDebugTask(ILaunch launch, String appName, String workDir, String commandName, String... args)
     {
+        super(workDir, commandName, args);
+
         m_launch = launch;
         m_appName = appName;
-
-        m_workDir = workDir;
-
-        m_cmdLine = new ArrayList<String>();
-        m_cmdLine.add(getCommand(commandName));
-        m_cmdLine.addAll(Arrays.asList(args));
+        m_console = ConsoleHelper.getAppConsole();
 
         m_debugProcess = null;
     }
@@ -50,6 +43,9 @@ public class RubyDebugTask extends RubyTask
     @Override
     protected void exec()
     {
+        m_console.show();
+        m_console.getStream().print(showCommand());
+
         String[] commandLine = m_cmdLine.toArray(new String[0]);
 
         Process process;
@@ -66,7 +62,7 @@ public class RubyDebugTask extends RubyTask
 
         if (m_debugProcess != null)
         {
-            attachConsole(m_debugProcess, ConsoleHelper.getBuildConsole());
+            attachConsole(m_debugProcess, m_console);
         }
     }
 
