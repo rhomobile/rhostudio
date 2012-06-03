@@ -38,7 +38,7 @@ public class Builder extends IncrementalProjectBuilder
     {
         try
         {
-            ConsoleHelper.Stream stream = ConsoleHelper.buildConsole.getStream();
+            ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
             stream.println("Clean project started");
 
             PlatformType platformTypes[] = { PlatformType.eAndroid, PlatformType.eBb, PlatformType.eIPhone,

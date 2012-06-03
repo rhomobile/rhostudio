@@ -9,7 +9,7 @@ import rhogenwizard.ConsoleHelper;
 
 class OutputStreamListener implements IStreamListener
 {
-    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.buildConsole.getStream();
+    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getBuildConsole().getStream();
 
 	@Override
 	public void streamAppended(String text, IStreamMonitor monitor)
@@ -23,7 +23,7 @@ class OutputStreamListener implements IStreamListener
 
 class ErrorStreamListener implements IStreamListener
 {
-    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.buildConsole.getStream();
+    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getBuildConsole().getStream();
 
 	@Override
 	public void streamAppended(String text, IStreamMonitor monitor)

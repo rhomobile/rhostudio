@@ -71,7 +71,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			{
 				try 
 				{
-				    ConsoleHelper.Stream stream = ConsoleHelper.buildConsole.getStream();
+				    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
 					stream.println("build started");
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
@@ -111,7 +111,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					e.printStackTrace();
 				}
 				
-                ConsoleHelper.appConsole.show();
+                ConsoleHelper.getAppConsole().show();
 				setProcessFinished(true);
 			}
 		});
@@ -177,8 +177,8 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			
 			setStandartConsoleOutputIsOff();
 			
-            ConsoleHelper.buildConsole.clear();
-            ConsoleHelper.buildConsole.show();
+            ConsoleHelper.getBuildConsole().clear();
+            ConsoleHelper.getBuildConsole().show();
 			
 			setupConfigAttributes(configuration);
 			

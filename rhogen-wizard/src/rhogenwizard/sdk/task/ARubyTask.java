@@ -21,7 +21,7 @@ public class ARubyTask extends RubyTask
     {
         m_executor = new SysCommandExecutor();
 
-        m_console = ConsoleHelper.buildConsole;
+        m_console = ConsoleHelper.getBuildConsole();
 
         m_workDir = workDir;
 
@@ -75,9 +75,8 @@ public class ARubyTask extends RubyTask
 
         stream.print("\nPWD: " + showWorkingDir() + "\nCMD: " + showCommandLine() + "\n");
 
-        ILogDevice logDevice = getLogDevice(stream);
-        m_executor.setOutputLogDevice(logDevice);
-        m_executor.setErrorLogDevice(logDevice);
+        m_executor.setOutputLogDevice(getLogDevice(m_console.getOutputStream()));
+        m_executor.setErrorLogDevice(getLogDevice(m_console.getErrorStream()));
 
         int exitValue = -1;
 

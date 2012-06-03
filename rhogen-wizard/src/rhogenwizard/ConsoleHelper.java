@@ -1,5 +1,8 @@
 package rhogenwizard;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -24,6 +27,10 @@ public class ConsoleHelper
         void clear();
 
         Stream getStream();
+
+        Stream getOutputStream();
+
+        Stream getErrorStream();
     }
 
     public static Stream  nullStream  = new Stream()
@@ -61,19 +68,30 @@ public class ConsoleHelper
                                           {
                                               return nullStream;
                                           }
+
+                                          @Override
+                                          public Stream getOutputStream()
+                                          {
+                                              return nullStream;
+                                          }
+
+                                          @Override
+                                          public Stream getErrorStream()
+                                          {
+                                              return nullStream;
+                                          }
                                       };
 
-    private static class LazyStream implements Stream
+    private static class StreamImpl implements Stream
     {
-        private final String         m_console;
         private boolean              m_enabled;
         private MessageConsoleStream m_stream;
 
-        public LazyStream(String console)
+        public StreamImpl(MessageConsole console, int swtColorId)
         {
-            m_console = console;
             m_enabled = true;
-            m_stream = null;
+            m_stream = console.newMessageStream();
+            m_stream.setColor(getColor(swtColorId));
         }
 
         public void disable()
@@ -86,7 +104,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                getStream().print(message);
+                m_stream.print(message);
             }
         }
 
@@ -95,7 +113,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                getStream().println();
+                m_stream.println();
             }
         }
 
@@ -104,33 +122,38 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                getStream().println(message);
+                m_stream.println(message);
             }
         }
 
-        private MessageConsoleStream getStream()
+        private static Color getColor(int swtColorId)
         {
-            if (m_stream == null)
+            Display display = Display.getCurrent();
+            if (display == null)
             {
-                m_stream = findConsole(m_console).newMessageStream();
+                Activator.logError("Can not get current display.");
+                return null;
             }
-            return m_stream;
+            return display.getSystemColor(swtColorId);
         }
     }
 
-    private static class LazyConsole implements Console
+    private static class ConsoleImpl implements Console
     {
-        private final String     m_name;
-        private boolean          m_enabled;
-        private final LazyStream m_stream;
-        private MessageConsole   m_console;
+        private final MessageConsole m_console;
+        private final StreamImpl     m_stream;
+        private final StreamImpl     m_outputStream;
+        private final StreamImpl     m_errorStream;
+        private boolean              m_enabled;
 
-        public LazyConsole(String name)
+        public ConsoleImpl(String name)
         {
-            m_name = name;
+            m_console = findConsole(name);
+            m_stream = new StreamImpl(m_console, SWT.COLOR_BLACK);
+            m_outputStream = new StreamImpl(m_console, SWT.COLOR_DARK_BLUE);
+            m_errorStream = new StreamImpl(m_console, SWT.COLOR_DARK_RED);
+
             m_enabled = true;
-            m_stream = new LazyStream(name);
-            m_console = null;
         }
 
         @Override
@@ -138,7 +161,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                getConsole().clearConsole();
+                m_console.clearConsole();
             }
         }
 
@@ -149,9 +172,8 @@ public class ConsoleHelper
             {
                 IConsoleManager conMan = ConsolePlugin.getDefault().getConsoleManager();
 
-                MessageConsole console = getConsole();
-                conMan.showConsoleView(console);
-                conMan.refresh(console);
+                conMan.showConsoleView(m_console);
+                conMan.refresh(m_console);
             }
         }
 
@@ -161,52 +183,79 @@ public class ConsoleHelper
             return m_stream;
         }
 
+        @Override
+        public Stream getOutputStream()
+        {
+            return m_outputStream;
+        }
+
+        @Override
+        public Stream getErrorStream()
+        {
+            return m_errorStream;
+        }
+
         public void disable()
         {
             m_enabled = false;
             m_stream.disable();
+            m_outputStream.disable();
+            m_errorStream.disable();
         }
 
-        private MessageConsole getConsole()
+        private static MessageConsole findConsole(String name)
         {
-            if (m_console == null)
+            ConsolePlugin plugin = ConsolePlugin.getDefault();
+            IConsoleManager conMan = plugin.getConsoleManager();
+            IConsole[] existing = conMan.getConsoles();
+
+            for (int i = 0; i < existing.length; i++)
             {
-                m_console = findConsole(m_name);
+                if (name.equals(existing[i].getName()))
+                {
+                    return (MessageConsole) existing[i];
+                }
             }
-            return m_console;
+
+            // no console found, so create a new one
+            MessageConsole myConsole = new MessageConsole(name, null);
+            conMan.addConsoles(new IConsole[] { myConsole });
+
+            return myConsole;
         }
     }
 
-    private static final LazyConsole appConsole_   = new LazyConsole("Rhomobile application console");
-    private static final LazyConsole buildConsole_ = new LazyConsole("Rhomobile build console");
+    private static ConsoleImpl appConsole   = null;
+    private static ConsoleImpl buildConsole = null;
 
-    public static final Console      appConsole    = appConsole_;
-    public static final Console      buildConsole  = buildConsole_;
+    public static void initialize()
+    {
+        if (appConsole == null)
+        {
+            appConsole = new ConsoleImpl("Rhomobile application console");
+        }
+        if (buildConsole == null)
+        {
+            buildConsole = new ConsoleImpl("Rhomobile build console");
+        }
+    }
 
     public static void disableConsoles()
     {
-        appConsole_.disable();
-        buildConsole_.disable();
+        initialize();
+        appConsole.disable();
+        buildConsole.disable();
     }
 
-    private static MessageConsole findConsole(String name)
+    public static Console getAppConsole()
     {
-        ConsolePlugin plugin = ConsolePlugin.getDefault();
-        IConsoleManager conMan = plugin.getConsoleManager();
-        IConsole[] existing = conMan.getConsoles();
+        initialize();
+        return appConsole;
+    }
 
-        for (int i = 0; i < existing.length; i++)
-        {
-            if (name.equals(existing[i].getName()))
-            {
-                return (MessageConsole) existing[i];
-            }
-        }
-
-        // no console found, so create a new one
-        MessageConsole myConsole = new MessageConsole(name, null);
-        conMan.addConsoles(new IConsole[] { myConsole });
-
-        return myConsole;
+    public static Console getBuildConsole()
+    {
+        initialize();
+        return buildConsole;
     }
 }

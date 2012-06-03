@@ -5,7 +5,7 @@ import rhogenwizard.ILogDevice;
 
 public class ConsoleAppAdapter implements ILogDevice 
 {
-    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.appConsole.getStream();
+    ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getAppConsole().getStream();
 
 	@Override
 	public void log(String str) 
