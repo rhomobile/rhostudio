@@ -91,7 +91,7 @@ public class ConsoleHelper
         {
             m_enabled = true;
             m_stream = console.newMessageStream();
-            m_stream.setColor(getColor(swtColorId));
+            setColor(m_stream, swtColorId);
         }
 
         public void disable()
@@ -126,15 +126,26 @@ public class ConsoleHelper
             }
         }
 
-        private static Color getColor(int swtColorId)
+        private static void setColor(final MessageConsoleStream stream, final int swtColorId)
         {
-            Display display = Display.getCurrent();
-            if (display == null)
+            Display display1 = Display.getCurrent();
+            if (display1 != null)
             {
-                Activator.logError("Can not get current display.");
-                return null;
+                stream.setColor(display1.getSystemColor(swtColorId));
+                return;
             }
-            return display.getSystemColor(swtColorId);
+            final Display display2 = Display.getDefault();
+            if (display2 != null)
+            {
+                display2.asyncExec(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        stream.setColor(display2.getSystemColor(swtColorId));
+                    }
+                });
+            }
         }
     }
 
