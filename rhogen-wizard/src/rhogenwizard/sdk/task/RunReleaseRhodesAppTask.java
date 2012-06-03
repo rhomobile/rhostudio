@@ -6,7 +6,7 @@ import java.util.List;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 
-public class RunReleaseRhodesAppTask extends ARubyTask
+public class RunReleaseRhodesAppTask extends RubyExecTask
 {
     private static String[] getArgs(PlatformType platformType, RunType runType, boolean isReloadCode,
         boolean isTrace)

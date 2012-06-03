@@ -3,9 +3,9 @@ package rhogenwizard.sdk.task;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ARubyCodeTask extends ARubyTask
+public class RubyCodeExecTask extends RubyExecTask
 {
-    public ARubyCodeTask(String... codeLines)
+    public RubyCodeExecTask(String... codeLines)
     {
         super(null, "ruby", getArgs(codeLines));
         disableConsole();
@@ -17,13 +17,8 @@ public class ARubyCodeTask extends ARubyTask
         for (String codeLine : codeLines)
         {
             args.add("-e");
-            args.add(escape(codeLine));
+            args.add(codeLine);
         }
         return args.toArray(new String[0]);
-    }
-
-    private static String escape(String codeLine)
-    {
-        return codeLine;
     }
 }

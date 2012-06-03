@@ -1,52 +1,23 @@
 package rhogenwizard.sdk.task;
 
-import java.io.File;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 
 public class RunDebugRhoconnectAppTask extends RunTask
 {
-    private final RunTask m_task;
-    private IProcess      m_debugProcess;
+    private final RubyDebugTask m_rhoconnectStartdebugTask;
+    private final RunTask       m_task;
 
-    public RunDebugRhoconnectAppTask(final String workDir, final String appName, final ILaunch launch)
+    public RunDebugRhoconnectAppTask(String workDir, String appName, ILaunch launch)
     {
-        RunTask redisStartbgTask = new ARubyTask(workDir, "rake", "redis:startbg");
+        RunTask redisStartbgTask = new RubyExecTask(workDir, "rake", "redis:startbg");
 
-        RunTask rhoconnectStartdebugTask = new RubyTask()
-        {
-            @Override
-            public boolean isOk()
-            {
-                return m_debugProcess != null;
-            }
-
-            @Override
-            protected void exec()
-            {
-                String[] commandLine = { getCommand("rake"), "rhoconnect:startdebug" };
-
-                Process process;
-                try
-                {
-                    process = DebugPlugin.exec(commandLine, new File(workDir));
-                }
-                catch (CoreException e)
-                {
-                    return;
-                }
-
-                m_debugProcess = DebugPlugin.newProcess(launch, process, appName);
-            }
-        };
+        m_rhoconnectStartdebugTask = new RubyDebugTask(launch, appName, workDir, "rake",
+            "rhoconnect:startdebug");
 
         m_task = new SeqRunTask(new StopSyncAppTask(), new StoreLastSyncRunAppTask(workDir),
-            redisStartbgTask, rhoconnectStartdebugTask);
-        m_debugProcess = null;
+            redisStartbgTask, m_rhoconnectStartdebugTask);
     }
 
     @Override
@@ -63,6 +34,6 @@ public class RunDebugRhoconnectAppTask extends RunTask
 
     public IProcess getDebugProcess()
     {
-        return m_debugProcess;
+        return m_rhoconnectStartdebugTask.getDebugProcess();
     }
 }

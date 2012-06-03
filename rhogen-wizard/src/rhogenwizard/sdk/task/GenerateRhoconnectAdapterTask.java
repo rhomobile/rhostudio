@@ -1,6 +1,6 @@
 package rhogenwizard.sdk.task;
 
-public class GenerateRhoconnectAdapterTask extends ARubyTask
+public class GenerateRhoconnectAdapterTask extends RubyExecTask
 {
     public GenerateRhoconnectAdapterTask(String workDir, String sourceName)
     {

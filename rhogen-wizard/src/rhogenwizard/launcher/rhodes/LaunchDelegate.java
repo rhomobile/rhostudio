@@ -128,8 +128,8 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(currProject.getLocation().toOSString(),
-		    currProject.getName(), PlatformType.fromString(m_platformType), m_isReloadCode, launch, m_isTrace);
+		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, currProject.getLocation().toOSString(),
+		    currProject.getName(), PlatformType.fromString(m_platformType), m_isReloadCode, m_isTrace);
 		task.run();
 		return task.getDebugProcess();
 	}

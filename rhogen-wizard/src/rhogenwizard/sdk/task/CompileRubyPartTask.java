@@ -3,7 +3,7 @@ package rhogenwizard.sdk.task;
 import java.util.Arrays;
 import java.util.List;
 
-public class CompileRubyPartTask extends ARubyTask
+public class CompileRubyPartTask extends RubyExecTask
 {
     public CompileRubyPartTask(String workDir)
     {

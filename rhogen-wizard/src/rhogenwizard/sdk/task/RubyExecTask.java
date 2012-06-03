@@ -8,7 +8,7 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
 import rhogenwizard.SysCommandExecutor;
 
-public class ARubyTask extends RubyTask
+public class RubyExecTask extends RubyTask
 {
     private final SysCommandExecutor m_executor;
     private ConsoleHelper.Console    m_console;
@@ -17,7 +17,7 @@ public class ARubyTask extends RubyTask
     private final List<String>       m_cmdLine;
     private Integer                  m_exitValue;
 
-    public ARubyTask(String workDir, String commandName, String... args)
+    public RubyExecTask(String workDir, String commandName, String... args)
     {
         m_executor = new SysCommandExecutor();
 

@@ -31,8 +31,8 @@ public class StopSyncAppTask extends SeqRunTask
         if (!appFolder.exists())
             return empty;
 
-        RunTask stopRhoconnectTask = new ARubyTask(prevRunningRhoconnectApp, "rake", "rhoconnect:stop");
-        RunTask stopRedisTask = new ARubyTask(prevRunningRhoconnectApp, "rake", "redis:stop");
+        RunTask stopRhoconnectTask = new RubyExecTask(prevRunningRhoconnectApp, "rake", "rhoconnect:stop");
+        RunTask stopRedisTask = new RubyExecTask(prevRunningRhoconnectApp, "rake", "redis:stop");
         return new RunTask[] { stopRhoconnectTask, stopRedisTask };
     }
 

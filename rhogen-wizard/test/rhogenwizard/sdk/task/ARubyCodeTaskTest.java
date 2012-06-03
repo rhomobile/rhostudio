@@ -9,7 +9,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testHelloWorld()
     {
-        ARubyCodeTask task = new ARubyCodeTask("puts \"Hello, World!\"");
+        RubyCodeExecTask task = new RubyCodeExecTask("puts \"Hello, World!\"");
         task.run();
         assertTrue(task.isOk());
         assertEquals(0, task.getExitValue());
@@ -20,7 +20,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testArithmetics()
     {
-        ARubyCodeTask task = new ARubyCodeTask("puts 1 + 2");
+        RubyCodeExecTask task = new RubyCodeExecTask("puts 1 + 2");
         task.run();
         assertTrue(task.isOk());
         assertEquals(0, task.getExitValue());
@@ -31,7 +31,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testSeveralStatementsInline()
     {
-        ARubyCodeTask task = new ARubyCodeTask("a = 4; b = 5; puts a + b");
+        RubyCodeExecTask task = new RubyCodeExecTask("a = 4; b = 5; puts a + b");
         task.run();
         assertTrue(task.isOk());
         assertEquals(0, task.getExitValue());
@@ -42,7 +42,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testSeveralStatements()
     {
-        ARubyCodeTask task = new ARubyCodeTask("h = 'Hello'", "w = 'World'", "puts h + ', ' + w + '!'");
+        RubyCodeExecTask task = new RubyCodeExecTask("h = 'Hello'", "w = 'World'", "puts h + ', ' + w + '!'");
         task.run();
         assertTrue(task.isOk());
         assertEquals(0, task.getExitValue());
@@ -53,7 +53,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testUndefinedError()
     {
-        ARubyCodeTask task = new ARubyCodeTask("a");
+        RubyCodeExecTask task = new RubyCodeExecTask("a");
         task.run();
         assertFalse(task.isOk());
         assertEquals(1, task.getExitValue());
@@ -65,7 +65,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testSyntaxError()
     {
-        ARubyCodeTask task = new ARubyCodeTask("def");
+        RubyCodeExecTask task = new RubyCodeExecTask("def");
         task.run();
         assertFalse(task.isOk());
         assertEquals(1, task.getExitValue());
@@ -76,7 +76,7 @@ public class ARubyCodeTaskTest extends TestCase
     @Test
     public void testPartialSuccess()
     {
-        ARubyCodeTask task = new ARubyCodeTask("puts 'The \\'a\\' value is'", "puts a");
+        RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'", "puts a");
         task.run();
         assertFalse(task.isOk());
         assertEquals(1, task.getExitValue());
