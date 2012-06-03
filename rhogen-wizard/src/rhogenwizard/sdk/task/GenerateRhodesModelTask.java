@@ -1,6 +1,6 @@
 package rhogenwizard.sdk.task;
 
-public class GenerateRhodesModelTask extends ARubyTask
+public class GenerateRhodesModelTask extends RubyExecTask
 {
     public GenerateRhodesModelTask(String workDir, String modelName, String modelFields)
     {

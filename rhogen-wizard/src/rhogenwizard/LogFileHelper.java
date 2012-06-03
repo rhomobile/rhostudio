@@ -9,31 +9,27 @@ import java.util.StringTokenizer;
 import org.eclipse.core.resources.IProject;
 
 import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.sdk.task.ARubyTask;
-import rhogenwizard.sdk.task.RubyTask;
+import rhogenwizard.sdk.task.RubyExecTask;
 
 class AppLogAdapter implements ILogDevice
 {
 	private static final int maxShowLines = 2*10*1000;
 	
-	private int                  m_currShowLines = 0;
-	private ConsoleHelper.Stream m_consoleStream = ConsoleHelper.getAppsConsoleStream();
+	private int                   m_currShowLines = 0;
+	private ConsoleHelper.Console m_console = ConsoleHelper.getAppConsole();
 
 	@Override
 	public void log(String str) 
 	{
-		ConsoleHelper.showAppConsole();
+	    m_console.show();
 		
-		if (null != m_consoleStream)
-		{
-			m_currShowLines++;
-			m_consoleStream.println(prepareString(str));
-		}
+		m_currShowLines++;
+		m_console.getStream().println(prepareString(str));
 		
 		if (m_currShowLines > maxShowLines)
 		{
 			m_currShowLines = 0;
-			ConsoleHelper.cleanAppConsole();
+			m_console.clear();
 		}
 	}
 	
@@ -245,7 +241,7 @@ public class LogFileHelper
 	
 	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
-		RubyTask task = new ARubyTask(project.getLocation().toOSString(), "rake", taskName);
+		RubyExecTask task = new RubyExecTask(project.getLocation().toOSString(), "rake", taskName);
 		task.run();
 		String output = task.getOutput();
 		

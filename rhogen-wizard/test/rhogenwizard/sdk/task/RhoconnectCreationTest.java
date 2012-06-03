@@ -52,6 +52,8 @@ public class RhoconnectCreationTest extends TestCase
     @Test
     public void testCreateRhoconnectApp() throws Exception
     {
+        fail();
+
         String appName = "test003";
 
         RunTask task = new GenerateRhoconnectAppTask(workspaceFolder, appName);
@@ -64,6 +66,8 @@ public class RhoconnectCreationTest extends TestCase
     @Test
     public void testCreateRhoconnectSrcAdapter() throws Exception
     {
+        fail();
+
         String appName = "test004";
         String adapterName = "adapter001";
         String projectLocation = workspaceFolder + File.separator + appName;

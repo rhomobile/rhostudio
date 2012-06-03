@@ -71,7 +71,8 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			{
 				try 
 				{
-					ConsoleHelper.consoleBuildPrint("build started");
+				    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
+					stream.println("build started");
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
@@ -79,7 +80,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 							
 						if (m_debugProcess == null)
 						{
-							ConsoleHelper.consoleBuildPrint("Error in build application");
+						    stream.println("Error in build application");
 							setProcessFinished(true);
 							return;
 						}
@@ -94,7 +95,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 
 						if (!runSelectedBuildConfiguration(project, type))
 						{
-							ConsoleHelper.consoleBuildPrint("Error in build application");
+						    stream.println("Error in build application");
 							setProcessFinished(true);
 							return;
 						}
@@ -110,7 +111,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					e.printStackTrace();
 				}
 				
-				ConsoleHelper.showAppConsole();
+                ConsoleHelper.getAppConsole().show();
 				setProcessFinished(true);
 			}
 		});
@@ -127,8 +128,8 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(currProject.getLocation().toOSString(),
-		    currProject.getName(), PlatformType.fromString(m_platformType), m_isReloadCode, launch, m_isTrace);
+		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, currProject.getLocation().toOSString(),
+		    currProject.getName(), PlatformType.fromString(m_platformType), m_isReloadCode, m_isTrace);
 		task.run();
 		return task.getDebugProcess();
 	}
@@ -147,8 +148,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	{
 		if (isClean) 
 		{
-			ConsoleHelper.consoleBuildPrint("Clean started");
-			
 			RunTask task =
 			    new CleanPlatformTask(project.getLocation().toOSString(),
 			        PlatformType.fromString(m_platformType));
@@ -178,8 +177,8 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			
 			setStandartConsoleOutputIsOff();
 			
-			ConsoleHelper.cleanBuildConsole();
-			ConsoleHelper.showBuildConsole();
+            ConsoleHelper.getBuildConsole().clear();
+            ConsoleHelper.getBuildConsole().show();
 			
 			setupConfigAttributes(configuration);
 			
@@ -251,7 +250,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			}
 			catch(IllegalArgumentException e)
 			{
-				ConsoleHelper.consoleBuildPrint(e.getMessage());
+			    Activator.logError(e);
 			}
 			catch (Exception e) 
 			{

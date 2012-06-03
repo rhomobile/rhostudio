@@ -58,9 +58,7 @@ public class Activator extends AbstractUIPlugin
         // set our default 
         setEgitDefaultRepositaryPath();
 
-        ConsoleHelper.consoleAppPrint(" ");
-        ConsoleHelper.consoleBuildPrint(" ");
-        ConsoleHelper.showBuildConsole();
+        ConsoleHelper.initialize();
     }
 
     public void stop(BundleContext context) throws Exception

@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
@@ -219,12 +217,10 @@ public class RunDebugRhodesAppTaskTest
 
             // run debug Rhodes application [android] [rhosimulator]
             {
-                Map<String, Object> params = new HashMap<String, Object>();
-
                 ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
 
-                RunTask task = new RunDebugRhodesAppTask(projectLocation, appName, PlatformType.eAndroid,
-                    false, launch, false);
+                RunTask task = new RunDebugRhodesAppTask(launch, projectLocation, appName,
+                    PlatformType.eAndroid, false, false);
                 task.run();
                 assertTrue(task.isOk());
             }

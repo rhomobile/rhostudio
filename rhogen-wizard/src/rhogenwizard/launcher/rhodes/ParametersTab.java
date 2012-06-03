@@ -1,6 +1,5 @@
 package rhogenwizard.launcher.rhodes;
 
-import java.awt.Dialog;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
@@ -857,16 +855,6 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 		
 		return null;
-	}
-	
-	private void showWrongDeviceMsgBox(String msg)
-	{
-		MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK);
-		messageBox.setText("Warrning");
-		messageBox.setMessage(msg);
-		messageBox.open();	
-		encodePlatformInformation(platformItems[0]);
-		m_selectPlatformCombo.select(0);	
 	}
 	
 	private void encodePlatformInformation(String selPlatform)

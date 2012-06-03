@@ -1,6 +1,6 @@
 package rhogenwizard.sdk.task;
 
-public class GenerateRhodesExtensionTask extends ARubyTask
+public class GenerateRhodesExtensionTask extends RubyExecTask
 {
     public GenerateRhodesExtensionTask(String workDir, String extName)
     {

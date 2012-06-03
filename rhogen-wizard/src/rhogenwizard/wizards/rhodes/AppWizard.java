@@ -1,19 +1,24 @@
 package rhogenwizard.wizards.rhodes;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepository;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
-
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
@@ -60,6 +65,11 @@ public class AppWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         final BuildInfoHolder holder = m_pageApp.getBuildInformation();
+        
+//        if (!selection.isEmpty())
+//        {
+//            
+//        }
 
         IRunnableWithProgress op = new IRunnableWithProgress()
         {
@@ -164,11 +174,11 @@ public class AppWizard extends Wizard implements INewWizard
             {
                 createProjectFiles(infoHolder, monitor);
             }
-
+            
             monitor.setTaskName("Create project...");
             IRhomobileProject newProject = ProjectFactory.getInstance().createProject(RhodesProject.class, infoHolder);
             newProject.refreshProject();
-
+            
             ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective",
                 UiConstants.rhodesPerspectiveId);
             job.schedule();
@@ -198,7 +208,12 @@ public class AppWizard extends Wizard implements INewWizard
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     public void init(IWorkbench workbench, IStructuredSelection selection)
-    {
+    {      
+        IAdaptable firstElement = (IAdaptable) selection.getFirstElement();
+        String s = firstElement.toString();
+        
+        String[] del = s.split("Repository[");
+            
         this.selection = selection;
     }
 }

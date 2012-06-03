@@ -54,8 +54,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		}
 		catch (Exception e) 
 		{
-			ConsoleHelper.consoleBuildPrint(e.toString());
-			e.printStackTrace();
+		    Activator.logError(e);
 		}
 		
 		return m_initPref;

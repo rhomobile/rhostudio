@@ -587,7 +587,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
     @Override
     synchronized public void evaluation(boolean valid, String code, String value)
     {
-        ConsoleHelper.consoleAppPrint("start");
+        ConsoleHelper.getAppConsole().show();
+        ConsoleHelper.getAppConsole().getStream().println("start");
 
         IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
 
