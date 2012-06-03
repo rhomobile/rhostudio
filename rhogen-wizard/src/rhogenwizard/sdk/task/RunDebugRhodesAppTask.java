@@ -7,10 +7,12 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamMonitor;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
-import rhogenwizard.sdk.helper.DebugConsoleAdapter;
 
 public class RunDebugRhodesAppTask extends RubyTask
 {
@@ -74,6 +76,29 @@ public class RunDebugRhodesAppTask extends RubyTask
 
         m_debugProcess = DebugPlugin.newProcess(m_launch, process, m_appName);
 
-        new DebugConsoleAdapter(m_debugProcess);
+        if (m_debugProcess != null)
+        {
+            attachConsole(m_debugProcess, ConsoleHelper.getBuildConsole());
+        }
+    }
+
+    public static void attachConsole(IProcess process, ConsoleHelper.Console console)
+    {
+        process.getStreamsProxy().getErrorStreamMonitor()
+            .addListener(getStreamListener(console.getErrorStream()));
+        process.getStreamsProxy().getOutputStreamMonitor()
+            .addListener(getStreamListener(console.getOutputStream()));
+    }
+
+    private static IStreamListener getStreamListener(final ConsoleHelper.Stream stream)
+    {
+        return new IStreamListener()
+        {
+            @Override
+            public void streamAppended(String text, IStreamMonitor monitor)
+            {
+                stream.println(text);
+            }
+        };
     }
 }
