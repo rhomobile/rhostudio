@@ -39,6 +39,7 @@ public class RubyExecTask extends RubyTask
         {
             throw new IllegalStateException("The task is not finished yet.");
         }
+        
         return m_exitValue == 0;
     }
 
@@ -48,6 +49,7 @@ public class RubyExecTask extends RubyTask
         {
             throw new IllegalStateException("The task is not finished yet.");
         }
+        
         return m_exitValue;
     }
 
@@ -81,6 +83,7 @@ public class RubyExecTask extends RubyTask
         int exitValue = -1;
 
         m_executor.setWorkingDirectory(m_workDir);
+        
         try
         {
             exitValue = m_executor.runCommand(m_cmdLine);
@@ -103,6 +106,7 @@ public class RubyExecTask extends RubyTask
     {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
+        
         for (String item : m_cmdLine)
         {
             if (first)
@@ -115,6 +119,7 @@ public class RubyExecTask extends RubyTask
             }
             sb.append(item);
         }
+        
         return sb.toString();
     }
 
