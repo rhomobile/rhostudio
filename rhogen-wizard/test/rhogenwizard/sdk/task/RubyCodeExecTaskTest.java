@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-public class ARubyCodeTaskTest extends TestCase
+public class RubyCodeExecTaskTest extends TestCase
 {
     @Test
     public void testHelloWorld()
