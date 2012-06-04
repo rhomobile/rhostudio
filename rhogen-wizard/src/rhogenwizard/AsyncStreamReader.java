@@ -21,16 +21,17 @@ public class AsyncStreamReader extends Thread
 	
 	public AsyncStreamReader(boolean readFile, InputStream inputStream, StringBuffer buffer, ILogDevice logDevice, String threadId)
 	{
-		m_readFile = readFile;
+		m_readFile    = readFile;
 		m_inputStream = inputStream;
-		m_buffer = buffer;
-		m_threadId = threadId;
-		m_logDevice = logDevice;
+		m_buffer      = buffer;
+		m_threadId    = threadId;
+		m_logDevice   = logDevice;
 		
 		fNewLine = System.getProperty("line.separator");
 	}	
 	
-	public String getBuffer() {		
+	public String getBuffer() 
+	{		
 		return m_buffer.toString();
 	}
 	
@@ -82,7 +83,7 @@ public class AsyncStreamReader extends Thread
 		}
 		
 		bufOut.close();
-		// printToConsole("END OF: " + m_threadId); //DEBUG
+		m_inputStream.close(); //TODO -- need test it
 	}
 	
 	private void readCommandOutput() throws IOException, InterruptedException
@@ -98,7 +99,6 @@ public class AsyncStreamReader extends Thread
 		}		
 
 		bufOut.close();
-		// printToConsole("END OF: " + m_threadId); //DEBUG
 	}
 	
 	public void stopReading() 
