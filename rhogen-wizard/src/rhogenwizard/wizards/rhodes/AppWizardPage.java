@@ -20,7 +20,9 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
 import rhogenwizard.BuildInfoHolder;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.project.ProjectFactory;
+import rhogenwizard.wizards.BaseAppWizard;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -32,11 +34,13 @@ public class AppWizardPage extends WizardPage
 {
 	private static final String projNameTemplate = "RhoMobileApplication";
 	
-	private Text       m_appFolderText = null;
-	private Text       m_appNameText      = null;
-	private String     m_selectAppDir  = null;
+	private BaseAppWizard m_parentWizard = null;
+	
+	private Text       m_appFolderText     = null;
+	private Text       m_appNameText       = null;
+	private String     m_selectAppDir      = null;
 	private Button     m_defaultPathButton = null;
-	private Button     m_browseButton = null;
+	private Button     m_browseButton      = null;
 	private Button     m_exitsCreateButton = null;
 	private Button     m_rhoelementsEnableButton = null;
 	
@@ -45,11 +49,13 @@ public class AppWizardPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public AppWizardPage(ISelection selection) 
+	public AppWizardPage(BaseAppWizard parentWizard) 
 	{
 		super("wizardPage");
 		setTitle("RhoMobile application generator wizard");
 		setDescription("RhoMobile application generator wizard");
+		
+		m_parentWizard = parentWizard;
 	}
 	
 	public void createAppSettingBarControls(Composite composite)
@@ -151,6 +157,7 @@ public class AppWizardPage extends WizardPage
 	{
 		boolean enableDefPath = m_exitsCreateButton.getSelection();
 		
+		m_defaultPathButton.setSelection(!enableDefPath);
 		m_defaultPathButton.setEnabled(!enableDefPath);
 		m_browseButton.setEnabled(enableDefPath);
 		m_appFolderText.setEnabled(enableDefPath);
@@ -197,6 +204,17 @@ public class AppWizardPage extends WizardPage
 		}
 		
 		setControlsForDefaultPath();
+		
+		// for selection in view
+		if (m_parentWizard.isSelected() && m_parentWizard.getProjectNameFromGitRepo() != null)
+		{
+		    m_exitsCreateButton.setSelection(true);
+		    
+		    setControlsForExistingSource();
+		    
+		    m_appNameText.setText(m_parentWizard.getProjectNameFromGitRepo());
+		    m_appFolderText.setText(m_parentWizard.getProjectPathFromGitRepo());
+		}
 	}
 
 	/**
@@ -212,10 +230,7 @@ public class AppWizardPage extends WizardPage
 		
 		if (!placeFolder.isDirectory())
 		{
-			MessageBox msg = new MessageBox(getShell(), ERROR);
-			msg.setMessage("Invalid directory");
-			msg.setText("Selected item is not directory.");
-			msg.open();
+		    DialogUtils.error("Invalid directory", "Selected item is not directory.");
 			return;
 		}
 		
@@ -236,7 +251,7 @@ public class AppWizardPage extends WizardPage
 	 */
 	private void dialogChanged()
 	{
-		String appFolder = getAppFolder();
+		String appFolder     = m_appFolderText.getText();
 		boolean isDefultPath = m_defaultPathButton.getSelection();
 		
 		File appFolderFile = new File(appFolder);
@@ -246,13 +261,13 @@ public class AppWizardPage extends WizardPage
 		else
 			m_appNameText.setEditable(true);
 				
-		if (!isDefultPath && (!appFolderFile.isDirectory() || (getAppFolder().length() == 0))) 
+		if (!isDefultPath && (!appFolderFile.isDirectory() || (m_appFolderText.getText().length() == 0))) 
 		{
 			updateStatus("Application folder must be specified");
 			return;
 		}
 	
-		if (getAppName().length() == 0) 
+		if (m_appNameText.getText().length() == 0) 
 		{
 			updateStatus("Project name must be specified");
 			return;
@@ -268,39 +283,16 @@ public class AppWizardPage extends WizardPage
 		setErrorMessage(message);
 		setPageComplete(message == null);
 	}
-
-	private String getAppFolder() 
-	{
-		return m_appFolderText.getText();
-	}
-
-	private String getAppName() 
-	{
-		return m_appNameText.getText();
-	}
-	
-	private boolean getExistCreate()
-	{
-		return m_exitsCreateButton.getSelection();
-	}
 	
 	public BuildInfoHolder getBuildInformation()
 	{
 		BuildInfoHolder newInfo  = new BuildInfoHolder();
 		
-		newInfo.appDir           = getAppFolder();
-		newInfo.appName          = getAppName();
-		newInfo.existCreate      = getExistCreate();
+		newInfo.appDir           = m_appFolderText.getText();
+		newInfo.appName          = m_appNameText.getText();
+		newInfo.existCreate      = m_exitsCreateButton.getSelection();
 		newInfo.isRhoelementsApp = m_rhoelementsEnableButton.getSelection();
-		
-		if (newInfo.existCreate) 
-		{
-			newInfo.isInDefaultWs = false;
-		}
-		else 
-		{
-			newInfo.isInDefaultWs = m_defaultPathButton.getSelection();
-		}
+		newInfo.isInDefaultWs    = m_defaultPathButton.getSelection();
 		
 		return newInfo;
 	}

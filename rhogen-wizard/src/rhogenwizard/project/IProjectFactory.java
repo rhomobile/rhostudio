@@ -2,6 +2,7 @@ package rhogenwizard.project;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.project.extension.AlredyCreatedException;
@@ -20,4 +21,6 @@ public interface IProjectFactory
 	boolean isProjectLocationInWorkspace(final String projectPath);
 	//
 	Class typeFromProject(IProject project) throws BadProjectTagException;
+	//
+	IPath getWorkspaceDir();
 }

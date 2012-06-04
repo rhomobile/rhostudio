@@ -29,25 +29,11 @@ public class BuildInfoHolder
 			return location.toOSString() + File.separator + appName;
 		}
 		
-		return appDir + File.separator + appName;
-	}
-	
-	public IPath getProjectLocationPath()
-	{
-		if (isInDefaultWs)
+		if (appDir.codePointAt(appDir.length() - 1) == '/' || appDir.codePointAt(appDir.length() - 1) == '\\')
 		{
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
-			IWorkspaceRoot root = workspace.getRoot();
-			IPath location = root.getLocation();
-			
-			return location;
+		    return appDir + appName;
 		}
 		
-		return new Path(appDir);
-	}
-	
-	public URI getProjectLocation()
-	{
-		return URIUtil.toURI(getProjectLocationPath());
+		return appDir + File.separator + appName;
 	}	
 }

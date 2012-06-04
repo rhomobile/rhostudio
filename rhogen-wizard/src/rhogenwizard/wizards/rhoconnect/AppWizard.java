@@ -7,7 +7,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -31,8 +30,8 @@ public class AppWizard extends Wizard implements INewWizard
 {
     private static final String okRhodesVersionFlag = "1";
 
-    private AppWizardPage m_pageApp = null;
-    private ISelection selection = null;
+    private AppWizardPage        m_pageApp = null;
+    private IStructuredSelection m_selection = null;
 
     /**
      * Constructor for SampleNewWizard.
@@ -48,7 +47,7 @@ public class AppWizard extends Wizard implements INewWizard
      */
     public void addPages()
     {
-        m_pageApp = new AppWizardPage(selection);
+        m_pageApp = new AppWizardPage(m_selection);
         addPage(m_pageApp);
     }
 
@@ -101,14 +100,22 @@ public class AppWizard extends Wizard implements INewWizard
         return true;
     }
 
-    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor)
-            throws IOException
+    private void createProjectFiles(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws IOException
     {
         monitor.setTaskName("Generate application...");
 
-        RunTask task =
-                new GenerateRhoconnectAppTask(infoHolder.getProjectLocationPath().toOSString(),
-                        infoHolder.appName);
+        String pathToApp = null;
+        
+        if (infoHolder.isInDefaultWs)
+        {
+            pathToApp = ProjectFactory.getInstance().getWorkspaceDir().toOSString();
+        }
+        else
+        {
+            pathToApp = infoHolder.appDir;
+        }
+        
+        RunTask task = new GenerateRhoconnectAppTask(pathToApp, infoHolder.appName);
         task.run(monitor);
 
         if (!task.isOk())
@@ -135,9 +142,7 @@ public class AppWizard extends Wizard implements INewWizard
             monitor.worked(1);
             monitor.setTaskName("Create project...");
 
-            newProject =
-                    ProjectFactory.getInstance().createProject(RhoconnectProject.class,
-                            infoHolder);
+            newProject = ProjectFactory.getInstance().createProject(RhoconnectProject.class, infoHolder);
 
             if (!infoHolder.existCreate)
             {
@@ -146,9 +151,8 @@ public class AppWizard extends Wizard implements INewWizard
 
             newProject.refreshProject();
 
-            ShowPerspectiveJob job =
-                    new ShowPerspectiveJob("show rhodes perspective",
-                            UiConstants.rhodesPerspectiveId);
+            ShowPerspectiveJob job = new ShowPerspectiveJob(
+                "show rhodes perspective", UiConstants.rhodesPerspectiveId);
             job.schedule();
 
             monitor.worked(1);
@@ -176,6 +180,6 @@ public class AppWizard extends Wizard implements INewWizard
      */
     public void init(IWorkbench workbench, IStructuredSelection selection)
     {
-        this.selection = selection;
+        this.m_selection = selection;
     }
 }

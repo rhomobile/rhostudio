@@ -1,9 +1,6 @@
 package rhogenwizard.project;
 
 import java.io.File;
-import java.net.URI;
-
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -37,7 +34,16 @@ public class ProjectFactory implements IProjectFactory
 		
 		return (IProjectFactory) factoryInstance;
 	}
-	    
+	
+	public IPath getWorkspaceDir()
+	{
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IWorkspaceRoot root = workspace.getRoot();
+        IPath location = root.getLocation();
+      
+        return location;    
+	}
+	
     /**
      * Just do the basics: create a basic project.
      *
@@ -53,26 +59,34 @@ public class ProjectFactory implements IProjectFactory
 
         if (!newProject.exists())
         {
-            URI projectLocation = projectInfo.getProjectLocation();
-            String path = URIUtil.toPath(projectLocation).toOSString();
-            
-            if (!projectInfo.existCreate) {
-            	path = path + File.separatorChar + projectInfo.appName;
-            }
+            String path = null;
 
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
-
-            if (isProjectLocationInWorkspace(path))
-            	 projectInfo.isInDefaultWs = true;
             
-            if (!projectInfo.isInDefaultWs)
+            if (projectInfo.isInDefaultWs)
             {
-            	desc.setLocation(new Path(path));
+                path = getWorkspaceDir() + File.separator + projectInfo.appName;                
+            }
+            else
+            {
+                path = projectInfo.appDir;
+                
+                if (projectInfo.existCreate && !isProjectLocationInWorkspace(path))
+                {
+                    desc.setLocation(new Path(path));   
+                }
+                else if (!projectInfo.existCreate)
+                {
+                    path = projectInfo.appDir + File.separator + projectInfo.appName;
+                    
+                    desc.setLocation(new Path(path));
+                }
             }
             
             newProject.create(desc, new NullProgressMonitor());
             
-            if (!newProject.isOpen()) {
+            if (!newProject.isOpen())
+            {
                 newProject.open(new NullProgressMonitor());
             }
         }
@@ -104,18 +118,14 @@ public class ProjectFactory implements IProjectFactory
     
     public boolean isProjectLocationInWorkspace(final String projectPath)
     {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot root  = workspace.getRoot();
-		String wsPath        = root.getLocation().toOSString();
+		String wsPath = getWorkspaceDir().toOSString();
 		
-		return projectPath.toLowerCase().equals(wsPath.toLowerCase()); //.contains(wsPath); 
+		return projectPath.toLowerCase().contains(wsPath.toLowerCase()); 
     }
     
 	public IRhomobileProject createProject(Class<? extends IRhomobileProject> projectTag, BuildInfoHolder projectInfo) 
 		throws CoreException, ProjectNotFoundException, AlredyCreatedException, BadProjectTagException
 	{
-    	IPath projectPath = (IPath) projectInfo.getProjectLocationPath();
-		
         Assert.isNotNull(projectInfo.appName);
         Assert.isTrue(projectInfo.appName.trim().length() != 0);
 

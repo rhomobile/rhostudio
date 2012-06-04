@@ -207,24 +207,24 @@ public class AppWizardPage extends WizardPage
 	 */
 	private void dialogChanged()
 	{
-		String appFolder = getAppFolder();
+		String appFolder     = m_appFolderText.getText();
 		boolean isDefultPath = m_defaultPathButton.getSelection();
 		
 		File appFolderFile = new File(appFolder);
 				
-		if (!isDefultPath && (!appFolderFile.isDirectory() || (getAppFolder().length() == 0))) 
+		if (!isDefultPath && (!appFolderFile.isDirectory() || (m_appFolderText.getText().length() == 0))) 
 		{
-			updateStatus("Application folder must be specified");
+			updateStatus("Application folder must be specified.");
 			return;
 		}
 	
-		if (getAppName().length() == 0) 
+		if (m_appNameText.getText().length() == 0)
 		{
-			updateStatus("Project name must be specified");
+			updateStatus("Project name must be specified.");
 			return;
 		}
 		
-		updateStatus("Press finish for creation of project");
+		updateStatus("Press finish for creation of project.");
 		
 		updateStatus(null);
 	}
@@ -234,37 +234,16 @@ public class AppWizardPage extends WizardPage
 		setErrorMessage(message);
 		setPageComplete(message == null);
 	}
-
-	private String getAppFolder() 
-	{
-		return m_appFolderText.getText();
-	}
-
-	private String getAppName() 
-	{
-		return m_appNameText.getText();
-	}
-	
-	private boolean getExistCreate()
-	{
-		return m_exitsCreateButton.getSelection();
-	}
 	
 	BuildInfoHolder getBuildInformation()
 	{
-		BuildInfoHolder newInfo  = new BuildInfoHolder();
-		
-		newInfo.appDir        = getAppFolder();
-		newInfo.appName       = getAppName();
-		newInfo.existCreate   = getExistCreate();
-		
-		if (newInfo.existCreate) {
-			newInfo.isInDefaultWs = false;
-		}
-		else {
-			newInfo.isInDefaultWs = m_defaultPathButton.getSelection();
-		}
-		
-		return newInfo;
+        BuildInfoHolder newInfo  = new BuildInfoHolder();
+        
+        newInfo.appDir           = m_appFolderText.getText();
+        newInfo.appName          = m_appNameText.getText();
+        newInfo.existCreate      = m_exitsCreateButton.getSelection();
+        newInfo.isInDefaultWs    = m_defaultPathButton.getSelection();
+        
+        return newInfo;
 	}
 }

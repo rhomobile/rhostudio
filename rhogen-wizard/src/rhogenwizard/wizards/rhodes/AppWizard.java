@@ -1,24 +1,11 @@
 package rhogenwizard.wizards.rhodes;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.StringTokenizer;
-
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.storage.file.FileRepository;
-import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWizard;
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
@@ -34,15 +21,12 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.task.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.wizards.BaseAppWizard;
 
-public class AppWizard extends Wizard implements INewWizard
+public class AppWizard extends BaseAppWizard
 {
     private AppWizardPage m_pageApp = null;
-    private ISelection    selection = null;
 
-    /**
-     * Constructor for SampleNewWizard.
-     */
     public AppWizard()
     {
         super();
@@ -54,7 +38,7 @@ public class AppWizard extends Wizard implements INewWizard
      */
     public void addPages()
     {
-        m_pageApp = new AppWizardPage(selection);
+        m_pageApp = new AppWizardPage(this);
         addPage(m_pageApp);
     }
 
@@ -65,11 +49,6 @@ public class AppWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         final BuildInfoHolder holder = m_pageApp.getBuildInformation();
-        
-//        if (!selection.isEmpty())
-//        {
-//            
-//        }
 
         IRunnableWithProgress op = new IRunnableWithProgress()
         {
@@ -116,16 +95,25 @@ public class AppWizard extends Wizard implements INewWizard
     {
         monitor.setTaskName("Generate application...");
 
-        RunTask task;
-        if (infoHolder.isRhoelementsApp)
+        RunTask task = null;
+        String  pathToApp = null;
+        
+        if (infoHolder.isInDefaultWs)
         {
-            task = new GenerateRhoelementsAppTask(infoHolder.getProjectLocationPath().toOSString(),
-                infoHolder.appName);
+            pathToApp = ProjectFactory.getInstance().getWorkspaceDir().toOSString();
         }
         else
         {
-            task = new GenerateRhodesAppTask(infoHolder.getProjectLocationPath().toOSString(),
-                infoHolder.appName);
+            pathToApp = infoHolder.appDir;
+        }
+        
+        if (infoHolder.isRhoelementsApp)
+        {
+            task = new GenerateRhoelementsAppTask(pathToApp, infoHolder.appName);
+        }
+        else
+        {
+            task = new GenerateRhodesAppTask(pathToApp, infoHolder.appName);
         }
 
         task.run(monitor);
@@ -199,21 +187,5 @@ public class AppWizard extends Wizard implements INewWizard
         {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * We will accept the selection in the workbench to see if we can initialize
-     * from it.
-     * 
-     * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
-     */
-    public void init(IWorkbench workbench, IStructuredSelection selection)
-    {      
-        IAdaptable firstElement = (IAdaptable) selection.getFirstElement();
-        String s = firstElement.toString();
-        
-        String[] del = s.split("Repository[");
-            
-        this.selection = selection;
     }
 }
