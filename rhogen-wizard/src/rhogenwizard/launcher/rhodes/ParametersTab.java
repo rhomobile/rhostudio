@@ -195,7 +195,7 @@ public class ParametersTab extends  JavaLaunchTab
 				}
 			}
 		});
-		m_selectPlatformVersionCombo.select(simRhosimulatorIndex);
+		m_selectPlatformVersionCombo.select(0);
 		
 		SWTFactory.createLabel(namecomp, "", 1);
 		
