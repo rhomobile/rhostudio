@@ -14,7 +14,7 @@ public class RubyCodeExecTaskTest extends TestCase
         assertTrue(task.isOk());
         assertEquals(0, task.getExitValue());
         assertEquals("", task.getError());
-        assertEquals("Hello, World!\n", task.getOutput());
+        assertEquals("Hello, World!\r\n", task.getOutput());
     }
 
     @Test
@@ -77,6 +77,18 @@ public class RubyCodeExecTaskTest extends TestCase
     public void testPartialSuccess()
     {
         RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'", "puts a");
+        task.run();
+        assertFalse(task.isOk());
+        assertEquals(1, task.getExitValue());
+        assertEquals("-e:2: undefined local variable or method `a' for main:Object (NameError)\n",
+            task.getError());
+        assertEquals("The 'a' value is\n", task.getOutput());
+    }
+    
+    @Test
+    public void testMultyLineCode()
+    {
+        RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'\nputs a");
         task.run();
         assertFalse(task.isOk());
         assertEquals(1, task.getExitValue());
