@@ -7,7 +7,7 @@ public class RubyCodeExecTask extends RubyExecTask
 {
     public RubyCodeExecTask(String... codeLines)
     {
-        super("c:\\Android", "ruby", getArgs(codeLines));
+        super(null, "ruby", getArgs(codeLines));
         
         disableConsole();
     }
