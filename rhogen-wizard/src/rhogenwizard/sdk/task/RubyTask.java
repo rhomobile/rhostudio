@@ -1,26 +1,21 @@
 package rhogenwizard.sdk.task;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.OSHelper;
-import rhogenwizard.OSValidator;
 
 public abstract class RubyTask extends RunTask
 {
     protected final String       m_workDir;
     protected final List<String> m_cmdLine;
 
-    public RubyTask(String workDir, String commandName, String... args)
+    public RubyTask(String workDir, String... args)
     {
         m_workDir = workDir;
-
-        m_cmdLine = new ArrayList<String>();
-        m_cmdLine.add(getCommand(commandName));
-        m_cmdLine.addAll(Arrays.asList(args));
+        m_cmdLine = Arrays.asList(args);
     }
 
     @Override
@@ -58,15 +53,6 @@ public abstract class RubyTask extends RunTask
                 throw new StoppedException();
             }
         }
-    }
-
-    private static String getCommand(String name)
-    {
-        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
-        {
-            return name + ".bat";
-        }
-        return name;
     }
 
     protected abstract void exec();

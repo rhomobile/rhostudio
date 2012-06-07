@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class SysCommandExecutor
 {
@@ -60,7 +61,7 @@ public class SysCommandExecutor
         }
 
         /* run command */
-        Process process = runCommandHelper(commandLine);
+        Process process = runCommandHelper(decorateCommandLine(commandLine));
 
         /* close process input stream (required for WMIC on Win32) */
         process.getOutputStream().close();
@@ -144,6 +145,33 @@ public class SysCommandExecutor
         }
 
         return envTokenArray;
+    }
+
+    private static List<String> decorateCommandLine(List<String> source)
+    {
+        if (!OSValidator.isWindows())
+        {
+            return source;
+        }
+
+        List<String> target = new ArrayList<String>();
+        target.add("cmd");
+        target.add("/c");
+
+        for (String arg : source)
+        {
+            target.add(escapeArgForWin(arg));
+        }
+
+        return target;
+    }
+
+    private static String escapeArgForWin(String arg)
+    {
+        String s = arg;
+        s = s.replaceAll("\\\\", "\\\\\\\\"); // escape backslashes
+        s = s.replaceAll("\"", "\\\\\\\""); // escape double quotes
+        return s;
     }
 }
 

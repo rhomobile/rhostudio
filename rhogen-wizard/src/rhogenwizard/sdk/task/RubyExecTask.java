@@ -11,9 +11,9 @@ public class RubyExecTask extends RubyTask
     
     private Integer                  m_exitValue;
 
-    public RubyExecTask(String workDir, String commandName, String... args)
+    public RubyExecTask(String workDir, String... args)
     {
-        super(workDir, commandName, args);
+        super(workDir, args);
 
         m_executor = new SysCommandExecutor();
         m_console  = ConsoleHelper.getBuildConsole();

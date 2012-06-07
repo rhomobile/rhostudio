@@ -7,7 +7,7 @@ public class RubyCodeExecTask extends RubyExecTask
 {
     public RubyCodeExecTask(String... codeLines)
     {
-        super(null, "ruby", getArgs(codeLines));
+        super(null, getArgs(codeLines));
         
         disableConsole();
     }
@@ -16,12 +16,12 @@ public class RubyCodeExecTask extends RubyExecTask
     {
         List<String> args = new ArrayList<String>();
         
+        args.add("ruby");
+
         for (String codeLine : codeLines)
         {
-            codeLine = codeLine.replaceAll("\\\"", "\\\\\"");
-            
             args.add("-e");
-            args.add("\"" + codeLine + "\"");
+            args.add(codeLine);
         }
         
         return args.toArray(new String[0]);

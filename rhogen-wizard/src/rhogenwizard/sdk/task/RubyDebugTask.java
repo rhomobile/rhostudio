@@ -18,9 +18,9 @@ public class RubyDebugTask extends RubyTask
     private final ConsoleHelper.Console m_console;
     private IProcess                    m_debugProcess;
 
-    public RubyDebugTask(ILaunch launch, String appName, String workDir, String commandName, String... args)
+    public RubyDebugTask(ILaunch launch, String appName, String workDir, String... args)
     {
-        super(workDir, commandName, args);
+        super(workDir, args);
 
         m_launch = launch;
         m_appName = appName;

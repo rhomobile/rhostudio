@@ -25,6 +25,7 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
             task = "run:" + platformType;
 
         List<String> cmdLine = new ArrayList<String>();
+        cmdLine.add("rake");
         cmdLine.add(task);
 
         if (isTrace)
@@ -44,6 +45,6 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
     public RunReleaseRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
         boolean isReloadCode, boolean isTrace)
     {
-        super(workDir, "rake", getArgs(platformType, runType, isReloadCode, isTrace));
+        super(workDir, getArgs(platformType, runType, isReloadCode, isTrace));
     }
 }

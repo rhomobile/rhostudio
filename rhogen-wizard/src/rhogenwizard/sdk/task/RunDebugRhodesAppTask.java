@@ -12,12 +12,13 @@ public class RunDebugRhodesAppTask extends RubyDebugTask
     public RunDebugRhodesAppTask(ILaunch launch, String workDir, String appName, PlatformType platformType,
         boolean isReloadCode, boolean isTrace)
     {
-        super(launch, appName, workDir, "rake", getArgs(platformType, isTrace, isReloadCode));
+        super(launch, appName, workDir, getArgs(platformType, isTrace, isReloadCode));
     }
 
     private static String[] getArgs(PlatformType platformType, boolean isReloadCode, boolean isTrace)
     {
         List<String> args = new ArrayList<String>();
+        args.add("rake");
         args.add("run:" + platformType + ":rhosimulator_debug");
 
         if (isTrace)
