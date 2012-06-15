@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import rhogenwizard.OSHelper;
+
 public class RubyCodeExecTaskTest extends TestCase
 {
     private static String nl = System.getProperty("line.separator");
@@ -45,7 +47,14 @@ public class RubyCodeExecTaskTest extends TestCase
     {
         RubyCodeExecTask task = new RubyCodeExecTask("a = 4\nb = 5\nputs a + b");
         task.run();
-        check(true, 0, "", "", task);
+        if (OSHelper.isWindows())
+        {
+            check(true, 0, "", "", task);
+        }
+        else
+        {
+            check(true, 0, "", "9\n", task);
+        }
     }
 
     @Test
@@ -53,9 +62,11 @@ public class RubyCodeExecTaskTest extends TestCase
     {
         RubyCodeExecTask task = new RubyCodeExecTask("a");
         task.run();
-        check(false, 1,
-            "-e:1:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n", "",
-            task);
+
+        String error = (OSHelper.isWindows())
+            ? "-e:1:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n"
+            : "-e:1: undefined local variable or method `a' for main:Object (NameError)\n";
+        check(false, 1, error, "", task);
     }
 
     @Test
@@ -71,11 +82,12 @@ public class RubyCodeExecTaskTest extends TestCase
     {
         RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'", "puts a");
         task.run();
-        check(
-            false,
-            1,
-            "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n",
-            "", task);
+
+        String error = (OSHelper.isWindows())
+            ? "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n"
+            : "-e:2: undefined local variable or method `a' for main:Object (NameError)\n";
+        String output = (OSHelper.isWindows()) ? "" : "The 'a' value is\n";
+        check(false, 1, error, output, task);
     }
 
     @Test
@@ -83,11 +95,12 @@ public class RubyCodeExecTaskTest extends TestCase
     {
         RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'\nputs a");
         task.run();
-        check(
-            false,
-            1,
-            "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n",
-            "", task);
+
+        String error = (OSHelper.isWindows())
+            ? "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n"
+            : "-e:2: undefined local variable or method `a' for main:Object (NameError)\n";
+        String output = (OSHelper.isWindows()) ? "" : "The 'a' value is\n";
+        check(false, 1, error, output, task);
     }
 
     private static void check(boolean ok, int exitValue, String error, String output, RubyExecTask task)
