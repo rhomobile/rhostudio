@@ -20,16 +20,7 @@ public class RhoHubAppListTask extends RubyCodeExecTask
         String listOfApps = this.getOutput();
         
         listOfApps = listOfApps.replaceAll("\\p{Cntrl}", " ");
-        
-        // TODO - its temporary solutions, wait Lucas for fix api output 
-        String[] a = listOfApps.split("\\[");
-        
-        if (a.length < 2)
-            return null;
-        
-        String[] b = a[1].split("\\]");
-        // end of
                
-        return new JSONArray("[" + b[0] + "]");
+        return new JSONArray(listOfApps);
     }
 }

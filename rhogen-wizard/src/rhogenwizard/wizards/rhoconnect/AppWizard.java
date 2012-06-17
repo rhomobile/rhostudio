@@ -23,8 +23,8 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.task.GenerateRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.generate.GenerateRhoconnectAppTask;
 
 public class AppWizard extends Wizard implements INewWizard
 {

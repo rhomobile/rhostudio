@@ -14,4 +14,9 @@ public class ConfigurationConstants
 	public static final String prjectLogFileName = "log_filename";
 	public static final String simulatorType = "type_symulator";
 	public static final String lastSyncRunApp = "sync_app";
+	public static final String rhoHubUrl = "rho_hub_url";
+	public static final String rhoHubToken = "rho_hub_token";
+	public static final String rhoHubSelectedPlatform = "rho_hub_select_platform";
+	public static final String rhoHubSelectedRhodesVesion = "rho_hub_select_rhodes_vesrion";
+	public static final String isUseRhoHub = "use_rho_hub";
 }

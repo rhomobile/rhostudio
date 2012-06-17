@@ -24,12 +24,12 @@ public class SelectPlatformDialog extends Dialog
 	private static final int comboWidht = 300;
 	
 	private static final String[] platformTypes = {
-		PlatformType.platformWinMobile,
-		PlatformType.platformAdroid,
-		PlatformType.platformBlackBerry,
-		PlatformType.platformIPhone,
-		PlatformType.platformWp7,
-		PlatformType.platformSymbian
+		PlatformType.platformWinMobilePublic,
+		PlatformType.platformAdroidPublic,
+		PlatformType.platformBlackBerryPublic,
+		PlatformType.platformIPhonePublic,
+		PlatformType.platformWp7Public,
+		PlatformType.platformSymbianPublic
 	};
 	 
 	private Combo  m_platfromCombo = null;
@@ -60,11 +60,12 @@ public class SelectPlatformDialog extends Dialog
 		m_platfromCombo.setItems(platformTypes);
 		m_platfromCombo.select(0);
 		m_platfromCombo.setLayoutData(comboAligment);
-		    		
+		
 		// 3 row
-		Composite rowContainer2 = new Composite(shell, SWT.NULL);
+		Composite rowContainer2 = new Composite(shell, SWT.CENTER);
 		RowLayout rowLayout = new RowLayout();
 		rowLayout.center = true;
+		rowLayout.marginLeft = comboWidht / 2 - buttonWidht;
 		rowContainer2.setLayout(rowLayout);
 
 		// event handlers

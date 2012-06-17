@@ -18,9 +18,10 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.task.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.GenerateRhoelementsAppTask;
+import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
+import rhogenwizard.sdk.task.generate.GenerateRhoelementsAppTask;
 import rhogenwizard.wizards.BaseAppWizard;
 
 public class AppWizard extends BaseAppWizard

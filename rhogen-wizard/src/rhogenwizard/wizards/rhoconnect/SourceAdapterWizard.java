@@ -21,8 +21,8 @@ import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
-import rhogenwizard.sdk.task.GenerateRhoconnectAdapterTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.generate.GenerateRhoconnectAdapterTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SourceAdapterWizard extends Wizard implements INewWizard

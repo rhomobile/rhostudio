@@ -1,6 +1,5 @@
 package rhogenwizard.wizards.rhohub;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
@@ -8,22 +7,17 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import rhogenwizard.BuildInfoHolder;
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import rhogenwizard.Activator;
 import rhogenwizard.DialogUtils;
-import rhogenwizard.RunExeHelper;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
-import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
-import rhogenwizard.project.IRhomobileProject;
-import rhogenwizard.project.ProjectFactory;
-import rhogenwizard.project.RhodesProject;
-import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.task.RubyCodeExecTask;
-import rhogenwizard.sdk.task.RunTask;
-import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.generate.GenerateRhoelementsAppTask;
+import rhogenwizard.rhohub.IRemoteProjectDesc;
+import rhogenwizard.rhohub.RemoteStatus;
+import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.wizards.BaseAppWizard;
 
 public class BuildWizard extends BaseAppWizard
@@ -45,7 +39,7 @@ public class BuildWizard extends BaseAppWizard
      */
     public void addPages()
     {       
-        m_pageCred = new BuildCredentialPage();
+        m_pageCred    = new BuildCredentialPage();
         m_pageSetting = new BuildSettingPage();
         
         addPage(m_pageCred);
@@ -110,30 +104,58 @@ public class BuildWizard extends BaseAppWizard
     {
         try
         {
-            monitor.beginTask("Creating building on rhohub server", 2);
-            monitor.worked(1);
-
-            if (CommonConstants.checkRhodesVersion)
+            monitor.beginTask("Start building on rhohub server", 2);
+            
+            if (CommonConstants.checkRhohubVersion)
             {
-                monitor.setTaskName("Check Rhodes version...");
-
-                try
-                {
-                    if (!RunExeHelper.checkRhodesVersion(CommonConstants.rhodesVersion))
-                    {
-                        throw new IOException();
-                    }
-                }
-                catch (IOException e)
-                {
-                    String msg = "Installed Rhohubdes have old version, need rhodes version equal or greater " 
-                        + CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
-                    DialogUtils.error("Error", msg);
-                    return;
-                }
+//                monitor.setTaskName("Check Rhodes version...");
+//
+//                try
+//                {
+//                    if (!RunExeHelper.checkRhodesVersion(CommonConstants.rhodesVersion))
+//                    {
+//                        throw new IOException();
+//                    }
+//                }
+//                catch (IOException e)
+//                {
+//                    String msg = "Installed Rhohub have old version, need rhodes version equal or greater " 
+//                        + CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+//                    DialogUtils.error("Error", msg);
+//                    return;
+//                }
             }
             
+            monitor.worked(1);
             
+            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+            if (store != null)
+            {
+                IRemoteProjectDesc projectDesc = RhoHub.getInstance(store).findRemoteApp(m_selectedProject);
+                
+                if (projectDesc != null)
+                {
+                    if (!RhoHub.getInstance(store).buildRemoteApp(projectDesc))
+                    {
+                        DialogUtils.error("Error", "Build is failed.");
+                    }
+                }                       
+                monitor.worked(1);
+                
+                monitor.beginTask("Start cheking build on rhohub server", 1);
+
+                while(projectDesc.getBuildStatus() == RemoteStatus.eQueued || projectDesc.getBuildStatus() == RemoteStatus.eStarted)
+                {
+                    RhoHub.getInstance(store).checkProjectBuildStatus(projectDesc);
+                    
+                    if(monitor.isCanceled())
+                        break;
+                }
+                
+                // 
+                
+            }
             
             ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective",
                 UiConstants.rhodesPerspectiveId);

@@ -35,5 +35,15 @@ public class BuildInfoHolder
 		}
 		
 		return appDir + File.separator + appName;
-	}	
+	}
+	
+	public String getAppDirString()
+	{
+	    return appDir;
+	}
+	
+	public IPath getAppDirPath()
+	{
+	    return new Path(appDir);
+	}
 }

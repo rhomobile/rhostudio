@@ -23,8 +23,8 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.sdk.task.GenerateRhodesSpecTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesSpecTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class SpecWizard extends Wizard implements INewWizard

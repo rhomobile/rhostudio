@@ -22,8 +22,8 @@ import rhogenwizard.OSHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.sdk.task.GenerateRhodesModelTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesModelTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class ModelWizard extends Wizard implements INewWizard

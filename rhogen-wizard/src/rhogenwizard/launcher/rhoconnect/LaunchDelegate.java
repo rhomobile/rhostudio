@@ -25,10 +25,10 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-import rhogenwizard.sdk.task.RunDebugRhoconnectAppTask;
-import rhogenwizard.sdk.task.RunReleaseRhoconnectAppTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.StopSyncAppTask;
+import rhogenwizard.sdk.task.run.RunDebugRhoconnectAppTask;
+import rhogenwizard.sdk.task.run.RunReleaseRhoconnectAppTask;
 
 public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		

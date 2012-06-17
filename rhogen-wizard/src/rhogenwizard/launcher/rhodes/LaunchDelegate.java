@@ -16,6 +16,10 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
@@ -30,23 +34,23 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
+import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.sdk.task.CleanPlatformTask;
-import rhogenwizard.sdk.task.RunDebugRhodesAppTask;
-import rhogenwizard.sdk.task.RunReleaseRhodesAppTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
+import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
 
 public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
-	private static final int sleepWaitChangeConsole = 1000;
-	
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
-	protected String            m_projectName = null;
+	protected String          m_projectName = null;
 	private String            m_runType     = null;
 	private String            m_platformType = null;
 	private boolean           m_isClean = false;
 	private boolean           m_isReloadCode = false;
 	private boolean           m_isTrace = false;
+	private boolean           m_isRhohubBuild = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	private IProcess          m_debugProcess = null;
 		
@@ -60,6 +64,40 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		return m_buildFinished.get();
 	}
 
+	private void releaseBuild(IProject project, RunType type) throws Exception
+	{
+	    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
+	    
+        Activator activator = Activator.getDefault();
+        activator.killProcessesForForRunReleaseRhodesAppTask();
+
+        ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe -approot=\'");
+
+        if (!runSelectedBuildConfiguration(project, type))
+        {
+            stream.println("Error in build application");
+            setProcessFinished(true);
+            return;
+        }
+
+        activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
+	}
+	
+	private IProcess debugBuild(IProject project, RunType type, ILaunch launch) throws Exception
+	{
+	    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
+	    
+        m_debugProcess = debugSelectedBuildConfiguration(project, type, launch);
+        
+        if (m_debugProcess == null)
+        {
+            stream.println("Error in build application");
+            setProcessFinished(true);
+        }
+
+        return m_debugProcess;        
+	}
+	
 	public void startBuildThread(final IProject project, final String mode, final ILaunch launch)
 	{
 		final RunType type = RunType.fromString(m_runType);
@@ -76,35 +114,14 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
-						m_debugProcess = debugSelectedBuildConfiguration(project, type, launch);
-							
-						if (m_debugProcess == null)
-						{
-						    stream.println("Error in build application");
-							setProcessFinished(true);
-							return;
-						}
+					    debugBuild(project, type, launch);
 					}
 					else
 					{
-					    Activator activator = Activator.getDefault();
-					    activator.killProcessesForForRunReleaseRhodesAppTask();
-
-					    ProcessListViewer rhosims = new ProcessListViewer(
-					            "/RhoSimulator/rhosimulator.exe -approot=\'");
-
-						if (!runSelectedBuildConfiguration(project, type))
-						{
-						    stream.println("Error in build application");
-							setProcessFinished(true);
-							return;
-						}
-
-						activator.storeProcessesForForRunReleaseRhodesAppTask(
-						        rhosims.getNewProcesses());
+					    releaseBuild(project, type);
 					}
 					
-					startLogOutput(project, PlatformType.fromString(m_platformType), type);
+					rhodesLogHelper.startLog(PlatformType.fromString(m_platformType), project, type);
 				} 
 				catch (Exception e) 
 				{
@@ -136,21 +153,20 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
-		m_projectName  = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-		m_platformType = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
-		m_isClean      = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
-		m_runType      = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
-		m_isReloadCode = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
-		m_isTrace      = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
+		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
+		m_platformType  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
+		m_runType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
+		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);		
+		m_isRhohubBuild = configuration.getAttribute(ConfigurationConstants.isUseRhoHub, false);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor)
 	{
 		if (isClean) 
 		{
-			RunTask task =
-			    new CleanPlatformTask(project.getLocation().toOSString(),
-			        PlatformType.fromString(m_platformType));
+			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), PlatformType.fromString(m_platformType));
 			task.run(monitor);
 		}
 	}
@@ -162,11 +178,23 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		
 		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
 		
-		launchProject(configuration, mode, launch, monitor);
+//		if (m_isRhohubBuild)
+//		{
+//		    launchRemoteProject(project, configuration, mode, launch, monitor);
+//		    return; //TODO its temp statement
+//		}
+		
+		launchLocalProject(project, configuration, mode, launch, monitor);
 	}
 
+    @SuppressWarnings("deprecation")
+    public synchronized void launchRemoteProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException
+    {
+         //RhoHub.getInstance(configuration).findRemoteApp(project);
+    }
+
 	@SuppressWarnings("deprecation")
-	public synchronized void launchProject(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
+	public synchronized void launchLocalProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{
 		try
 		{
@@ -194,9 +222,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			{
 				throw new IllegalArgumentException("Platform and project name should be assigned");
 			}
-			
-			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-			
+						
 			if (!project.isOpen()) 
 			{
 				throw new IllegalArgumentException("Project " + project.getName() + " not found");
@@ -281,14 +307,9 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
 	}
 
-	@Override
-	public void handleDebugEvents(DebugEvent[] events) 
-	{
-	}
-	
-	private void startLogOutput(IProject project, PlatformType type, RunType runType) throws Exception
-	{
-		rhodesLogHelper.startLog(type, project, runType);
-	}
+    @Override
+    public void handleDebugEvents(DebugEvent[] events)
+    {
+    }
 }
 

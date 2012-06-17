@@ -23,8 +23,9 @@ import rhogenwizard.sdk.task.StopSyncAppTask;
 public class Activator extends AbstractUIPlugin
 {
     // The plug-in ID
-    public static final String PLUGIN_ID = "RhogenWizard";        //$NON-NLS-1$
-
+    public static final String PLUGIN_ID    = "RhogenWizard";        //$NON-NLS-1$
+    public static final String egitPluginId = "org.eclipse.egit.ui";        //$NON-NLS-1$
+    
     // The shared instance
     private static Activator plugin;
 
@@ -45,7 +46,7 @@ public class Activator extends AbstractUIPlugin
         // get location of workspace (java.io.File)
         File workspaceDirectory = workspace.getRoot().getLocation().toFile();
 
-        IEclipsePreferences instanceNode = new InstanceScope().getNode("org.eclipse.egit.ui");
+        IEclipsePreferences instanceNode = new InstanceScope().getNode(egitPluginId);
         instanceNode.put(UIPreferences.DEFAULT_REPO_DIR, workspaceDirectory.toString());
     }
 

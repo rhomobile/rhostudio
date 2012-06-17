@@ -32,7 +32,11 @@ import rhogenwizard.rhohub.RhoHub;
 
 public class BuildSettingPage extends WizardPage 
 {
-    private Combo m_comboPlatforms = null;
+    private Combo m_comboPlatforms   = null;
+    private Combo m_comboRhodesAppVersions = null;
+    private Text  m_textAppBranch    = null;
+    
+    private RemotePlatformList m_remotePlatforms = null;
     
     /**
      * Constructor for SampleNewWizardPage.
@@ -73,7 +77,37 @@ public class BuildSettingPage extends WizardPage
             }
         });
         
+        label = new Label(composite, SWT.NULL);
+        
         // 2 row
+        label = new Label(composite, SWT.NULL);
+        label.setText("&Rhodes version:");
+        
+        m_comboRhodesAppVersions = new Combo(composite, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
+        m_comboRhodesAppVersions.setLayoutData(textAligment);
+        m_comboRhodesAppVersions.addModifyListener(new ModifyListener() 
+        {
+            public void modifyText(ModifyEvent e) 
+            {
+                dialogChanged();
+            }
+        });
+        
+        label = new Label(composite, SWT.NULL);
+        
+        // 3 row
+        label = new Label(composite, SWT.NULL);
+        label.setText("&Application branch:");
+        
+        m_textAppBranch = new Text(composite, SWT.BORDER | SWT.SINGLE);
+        m_textAppBranch.setLayoutData(textAligment);
+        m_textAppBranch.addModifyListener(new ModifyListener() 
+        {
+            public void modifyText(ModifyEvent e) 
+            {
+                dialogChanged();
+            }
+        });
     }
 
     /**
@@ -97,29 +131,32 @@ public class BuildSettingPage extends WizardPage
         setDescription("");
         
         m_comboPlatforms.setEnabled(true);
+        m_comboRhodesAppVersions.setEnabled(true);
         
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
         if (store == null)
             return;
        
-        RemotePlatformList remotePlatforms = RhoHub.getInstance(store).getPlatformList();
+        m_remotePlatforms = RhoHub.getInstance(store).getPlatformList();
         
-        if (remotePlatforms == null)
+        if (m_remotePlatforms.size() == 0)
         {
-            DialogUtils.error("Error", "Rhohub server is not avaialible");
+            DialogUtils.error("Error", "Rhohub server is not avaialible. Please try run build sometime later.");
             m_comboPlatforms.setEnabled(false);
+            m_comboRhodesAppVersions.setEnabled(false);
             return;
         }
         else
         {
-            for (RemotePlatformDesc d : remotePlatforms)
+            for (RemotePlatformDesc d : m_remotePlatforms)
             {
                 m_comboPlatforms.add(d.getPublicName());    
             }
+            m_comboPlatforms.select(0);
             
             String platformText = store.getString(ConfigurationConstants.rhoHubSelectedPlatform);
-            
+                        
             for (int i=0; i < m_comboPlatforms.getItemCount(); ++i)
             {
                 if (m_comboPlatforms.getItem(i).equals(platformText))
@@ -128,6 +165,12 @@ public class BuildSettingPage extends WizardPage
                     break;
                 }
             }
+            
+            m_comboRhodesAppVersions.add("master");
+            m_comboRhodesAppVersions.add("3.3.2");
+            m_comboRhodesAppVersions.select(0);
+            
+            m_textAppBranch.setText("master");
         }
     }
 
@@ -147,7 +190,15 @@ public class BuildSettingPage extends WizardPage
         if (store == null)
             return;
         
-        store.setValue(ConfigurationConstants.rhoHubSelectedPlatform, m_comboPlatforms.getText());
+        store.setValue(ConfigurationConstants.rhoHubSelectedPlatform, "");
+        store.setValue(ConfigurationConstants.rhoHubSelectedRhodesVesion, m_comboRhodesAppVersions.getText());
+
+        // if not selected item from list in store stored empty string
+        for (RemotePlatformDesc pl : m_remotePlatforms)
+        {
+            if (pl.getPublicName().equals(m_comboPlatforms.getText()))
+                store.setValue(ConfigurationConstants.rhoHubSelectedPlatform, pl.getInternalName());
+        }
         
         updateStatus("Press finish for creation of project");
         updateStatus(null);

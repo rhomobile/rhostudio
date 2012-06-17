@@ -89,7 +89,7 @@ public class AppWizardPage extends WizardPage
 		// 0 row
 		m_rhoelementsEnableButton = new Button(composite, SWT.CHECK);
 		m_rhoelementsEnableButton.setText("Use RhoElements");
-		m_rhoelementsEnableButton.setSelection(true);
+		m_rhoelementsEnableButton.setSelection(false);
 		m_rhoelementsEnableButton.setLayoutData(checkBoxAligment);
 		m_rhoelementsEnableButton.addSelectionListener(new SelectionAdapter() 
 		{

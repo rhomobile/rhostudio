@@ -73,13 +73,13 @@ public class ProjectFactory implements IProjectFactory
                 
                 if (projectInfo.existCreate && !isProjectLocationInWorkspace(path))
                 {
-                    desc.setLocation(new Path(path));   
+                    desc.setLocation(projectInfo.getAppDirPath());   
                 }
                 else if (!projectInfo.existCreate)
                 {
                     path = projectInfo.appDir + File.separator + projectInfo.appName;
                     
-                    desc.setLocation(new Path(path));
+                    desc.setLocation(projectInfo.getAppDirPath());
                 }
             }
             

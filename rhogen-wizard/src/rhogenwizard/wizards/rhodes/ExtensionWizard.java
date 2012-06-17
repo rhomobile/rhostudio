@@ -25,8 +25,8 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.task.GenerateRhodesExtensionTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesExtensionTask;
 import rhogenwizard.wizards.ZeroPage;
 
 public class ExtensionWizard extends Wizard implements INewWizard

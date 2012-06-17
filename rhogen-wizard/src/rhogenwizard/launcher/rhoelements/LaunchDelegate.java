@@ -83,6 +83,6 @@ public class LaunchDelegate extends rhogenwizard.launcher.rhodes.LaunchDelegate
 			e.printStackTrace();
 		}
 		
-		super.launchProject(configuration, mode, launch, monitor);
+		super.launchLocalProject(project, configuration, mode, launch, monitor);
 	}
 }
