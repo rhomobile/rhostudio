@@ -1,9 +1,13 @@
 package rhogenwizard.wizards.rhohub;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
@@ -24,19 +28,30 @@ import rhogenwizard.rhohub.RemotePlatformDesc;
 import rhogenwizard.rhohub.RemotePlatformList;
 import rhogenwizard.rhohub.RhoHub;
 
-/**
- * The "New" wizard page allows setting the container for the new file as well
- * as the file name. The page will only accept file name without the extension
- * OR with the extension that matches the expected one (mpe).
- */
+class RemotePlatformAdapter implements Callable<RemotePlatformList>
+{    
+    @Override
+    public RemotePlatformList call() throws Exception
+    {
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        if (store == null)
+            return null;        
+        
+        return RhoHub.getInstance(store).getPlatformList();
+    }
+}
 
 public class BuildSettingPage extends WizardPage 
 {
-    private Combo m_comboPlatforms   = null;
-    private Combo m_comboRhodesAppVersions = null;
-    private Text  m_textAppBranch    = null;
+    private static int waitTimeOutRhoHubServer = 5;
     
-    private RemotePlatformList m_remotePlatforms = null;
+    private Combo m_comboPlatforms         = null;
+    private Combo m_comboRhodesAppVersions = null;
+    private Text  m_textAppBranch          = null;
+    
+    private RemotePlatformList         m_remotePlatforms = null;
+    private Future<RemotePlatformList> m_getPlatfomListFuture = null;
     
     /**
      * Constructor for SampleNewWizardPage.
@@ -50,6 +65,36 @@ public class BuildSettingPage extends WizardPage
         setDescription("RhoHub build application wizard");        
     }
     
+    @Override
+    public void setVisible(boolean visible)
+    {
+        try
+        {
+            updateStatus("Please wait until the server request.");
+            
+            m_remotePlatforms = m_getPlatfomListFuture.get(waitTimeOutRhoHubServer, TimeUnit.MINUTES);            
+            initializePlatformsCombo();
+            
+            updateStatus("Please select parameters.");
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e)
+        {
+            DialogUtils.error("Error", "Not response from Rhohub server. Please try run build sometime later.");
+            e.printStackTrace();
+        }
+        catch (TimeoutException e)
+        {
+            DialogUtils.error("Error", "Not response from Rhohub server. Please try run build sometime later.");
+            e.printStackTrace();
+        }
+        
+        super.setVisible(visible);
+    }
+
     public void createAppSettingBarControls(Composite composite)
     {   
         GridLayout layout = new GridLayout(3, false);
@@ -122,29 +167,19 @@ public class BuildSettingPage extends WizardPage
         initialize();
         setControl(container);
     }
-
-    /**
-     * Tests if the current workbench selection is a suitable container to use.
-     */
-    private void initialize() 
-    {       
-        setDescription("");
-        
-        m_comboPlatforms.setEnabled(true);
-        m_comboRhodesAppVersions.setEnabled(true);
-        
+    
+    private void initializePlatformsCombo()
+    {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return;
        
-        m_remotePlatforms = RhoHub.getInstance(store).getPlatformList();
-        
-        if (m_remotePlatforms.size() == 0)
+        if (store == null || m_remotePlatforms == null || m_remotePlatforms.size() == 0)
         {
             DialogUtils.error("Error", "Rhohub server is not avaialible. Please try run build sometime later.");
+            
             m_comboPlatforms.setEnabled(false);
-            m_comboRhodesAppVersions.setEnabled(false);
+            m_comboRhodesAppVersions.setEnabled(false);            
+            this.getShell().close();
+            
             return;
         }
         else
@@ -165,13 +200,26 @@ public class BuildSettingPage extends WizardPage
                     break;
                 }
             }
-            
-            m_comboRhodesAppVersions.add("master");
-            m_comboRhodesAppVersions.add("3.3.2");
-            m_comboRhodesAppVersions.select(0);
-            
-            m_textAppBranch.setText("master");
         }
+    }
+    
+    private void initialize() 
+    {       
+        setDescription("");
+        
+        m_comboPlatforms.setEnabled(true);
+        m_comboRhodesAppVersions.setEnabled(true);
+        
+        // run async request to rhohub server
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        m_getPlatfomListFuture = executor.submit(new RemotePlatformAdapter());
+
+        //TODO HOT-FIX - need call enumerate func for rhodes versions
+        m_comboRhodesAppVersions.add("master");
+        m_comboRhodesAppVersions.add("3.3.2");
+        m_comboRhodesAppVersions.select(0);
+        
+        m_textAppBranch.setText("master");
     }
 
     /**
@@ -197,7 +245,10 @@ public class BuildSettingPage extends WizardPage
         for (RemotePlatformDesc pl : m_remotePlatforms)
         {
             if (pl.getPublicName().equals(m_comboPlatforms.getText()))
+            {
                 store.setValue(ConfigurationConstants.rhoHubSelectedPlatform, pl.getInternalName());
+                break;
+            }
         }
         
         updateStatus("Press finish for creation of project");
