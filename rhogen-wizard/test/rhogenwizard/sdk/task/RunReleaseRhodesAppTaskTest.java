@@ -18,6 +18,8 @@ import rhogenwizard.OSValidator;
 import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunType;
+import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
+import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
 
 public class RunReleaseRhodesAppTaskTest
 {

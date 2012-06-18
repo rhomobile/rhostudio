@@ -12,6 +12,8 @@ import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
+import rhogenwizard.sdk.task.generate.GenerateRhoconnectAdapterTask;
+import rhogenwizard.sdk.task.generate.GenerateRhoconnectAppTask;
 
 public class RhoconnectCreationTest extends TestCase
 {
