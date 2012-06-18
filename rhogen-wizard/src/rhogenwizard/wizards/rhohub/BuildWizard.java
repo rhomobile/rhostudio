@@ -18,6 +18,7 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.RemoteStatus;
 import rhogenwizard.rhohub.RhoHub;
+import rhogenwizard.sdk.task.rhohub.CheckBuildStatusTask;
 import rhogenwizard.wizards.BaseAppWizard;
 
 public class BuildWizard extends BaseAppWizard
@@ -145,16 +146,8 @@ public class BuildWizard extends BaseAppWizard
                 
                 monitor.beginTask("Start cheking build on rhohub server", 1);
 
-                while(projectDesc.getBuildStatus() == RemoteStatus.eQueued || projectDesc.getBuildStatus() == RemoteStatus.eStarted)
-                {
-                    RhoHub.getInstance(store).checkProjectBuildStatus(projectDesc);
-                    
-                    if(monitor.isCanceled())
-                        break;
-                }
-                
-                // 
-                
+                CheckBuildStatusTask checkTask = new CheckBuildStatusTask(projectDesc);
+                checkTask.makeJob("Cheking build status");
             }
             
             ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective",
