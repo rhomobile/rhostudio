@@ -8,10 +8,10 @@ import org.json.JSONException;
 
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
-import rhogenwizard.sdk.task.rhohub.RhoHubAppListTask;
-import rhogenwizard.sdk.task.rhohub.RhoHubBuildApp;
-import rhogenwizard.sdk.task.rhohub.RhoHubPlatformListTask;
-import rhogenwizard.sdk.task.rhohub.RhoHubShowBuildTask;
+import rhogenwizard.sdk.task.rhohub.AppListTask;
+import rhogenwizard.sdk.task.rhohub.BuildApp;
+import rhogenwizard.sdk.task.rhohub.PlatformListTask;
+import rhogenwizard.sdk.task.rhohub.ShowBuildTask;
 
 public class RhoHub implements IRhoHub
 {
@@ -42,10 +42,10 @@ public class RhoHub implements IRhoHub
         if (rhohubConfiguration == null)
             return null;
         
-        String rhohubToken   = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
-        String rhohubServer  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
+        String rhohubToken  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
+        String rhohubServer = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
         
-        RhoHubAppListTask task = new RhoHubAppListTask(rhohubToken, rhohubServer);
+        AppListTask task = new AppListTask(rhohubToken, rhohubServer);
         task.run();
         
         if (!task.isOk())
@@ -59,10 +59,10 @@ public class RhoHub implements IRhoHub
         if (rhohubConfiguration == null)
             return null;
         
-        String rhohubToken   = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
-        String rhohubServer  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
+        String rhohubToken  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
+        String rhohubServer = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
         
-        RhoHubPlatformListTask task = new RhoHubPlatformListTask(rhohubToken, rhohubServer);
+        PlatformListTask task = new PlatformListTask(rhohubToken, rhohubServer);
         task.run();
         
         if (!task.isOk())
@@ -115,7 +115,7 @@ public class RhoHub implements IRhoHub
         String rhoHubSelectedPlatform     = rhohubConfiguration.getString(ConfigurationConstants.rhoHubSelectedPlatform);
         String rhoHubSelectedRhodesVesion = rhohubConfiguration.getString(ConfigurationConstants.rhoHubSelectedRhodesVesion);
 
-        RhoHubBuildApp task = new RhoHubBuildApp(project, rhohubToken, rhohubServer, rhoHubSelectedPlatform, rhodesBranchTag, rhoHubSelectedRhodesVesion);
+        BuildApp task = new BuildApp(project, rhohubToken, rhohubServer, rhoHubSelectedPlatform, rhodesBranchTag, rhoHubSelectedRhodesVesion);
         task.run();
         
         try
@@ -155,7 +155,7 @@ public class RhoHub implements IRhoHub
             String rhohubToken  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
             String rhohubServer = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
 
-            RhoHubShowBuildTask task = new RhoHubShowBuildTask(rhohubToken, rhohubServer, project.getId(), project.getBuildId());
+            ShowBuildTask task = new ShowBuildTask(rhohubToken, rhohubServer, project.getId(), project.getBuildId());
             task.run();
             
             if (!task.isOk())
