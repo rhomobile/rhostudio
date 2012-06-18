@@ -5,14 +5,14 @@ import org.json.JSONException;
 
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 
-public class RhoHubAppListTask extends RubyCodeExecTask
+public class PlatformListTask extends RubyCodeExecTask
 {
-    public RhoHubAppListTask(String userToken, String serverUrl)
+    public PlatformListTask(String userToken, String serverUrl)
     {
         super("require 'rhohub'", 
               "Rhohub.token = \"" + userToken + "\"", 
               "Rhohub.url = \"" + serverUrl + "\"", 
-              "puts Rhohub::App.list()");
+              "puts Rhohub::Build.platforms()");
     }
 
     public JSONArray getOutputAsJSON() throws JSONException
@@ -20,7 +20,16 @@ public class RhoHubAppListTask extends RubyCodeExecTask
         String listOfApps = this.getOutput();
         
         listOfApps = listOfApps.replaceAll("\\p{Cntrl}", " ");
+        
+        // TODO - its temporary solutions, wait Lucas for fix api output 
+        String[] a = listOfApps.split("\\[");
+        
+        if (a.length < 2)
+            return null;
+        
+        String[] b = a[1].split("\\]");
+        // end of
                
-        return new JSONArray(listOfApps);
+        return new JSONArray("[" + b[0] + "]");
     }
 }

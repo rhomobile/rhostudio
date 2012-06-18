@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 
-public class RhoHubBuildApp extends RubyCodeExecTask
+public class BuildApp extends RubyCodeExecTask
 {
     private static class BuildAppArgsHelper
     {
@@ -63,7 +63,7 @@ public class RhoHubBuildApp extends RubyCodeExecTask
         return new JSONObject(super.getOutput());
     }
 
-    public RhoHubBuildApp(IRemoteProjectDesc project, String userToken, String serverUrl, String buildPlatform, String appVersion, String rhodesVersion)
+    public BuildApp(IRemoteProjectDesc project, String userToken, String serverUrl, String buildPlatform, String appVersion, String rhodesVersion)
     {        
         super("require 'rhohub'", 
               "Rhohub.token = \"" + userToken + "\"", 

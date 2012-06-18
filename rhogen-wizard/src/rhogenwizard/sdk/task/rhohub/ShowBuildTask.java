@@ -6,9 +6,9 @@ import org.json.JSONObject;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 
 
-public class RhoHubShowBuildTask extends RubyCodeExecTask
+public class ShowBuildTask extends RubyCodeExecTask
 {
-    public RhoHubShowBuildTask(String userToken, String serverUrl, Integer appId, Integer buildId)
+    public ShowBuildTask(String userToken, String serverUrl, Integer appId, Integer buildId)
     {
         super("require 'rhohub'", 
               "Rhohub.token = \"" + userToken + "\"", 
