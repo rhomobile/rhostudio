@@ -14,6 +14,10 @@ import org.junit.Test;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
+import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesExtensionTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesModelTask;
+import rhogenwizard.sdk.task.generate.GenerateRhodesSpecTask;
 
 public class RhodesCreationTest extends TestCase
 {
