@@ -716,21 +716,30 @@ public class ParametersTab extends  JavaLaunchTab
 					MessageDialog.openError(getShell(), "Message", "Project " + selProject.getName() + " is not rhodes application");
 					return;
 				}
-				
-				m_selProject = selProject;								
-				m_appNameText.setText(selProjectName);	
-				
-				m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());
-				
+																
 				try 
 				{
-					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
+			        m_ymlFile = AppYmlFile.createFromProject(selProject);
 					setPlatformVersionCombo(m_configuration);
 				}
 				catch (FileNotFoundException e) 
 				{
+				    MessageDialog.openError(getShell(), "File error", e.toString());
 					e.printStackTrace();
+					return;
 				}
+                catch (Exception e) 
+                {
+                    MessageDialog.openError(getShell(), "Yaml error", e.toString());
+                    e.printStackTrace();
+                    return;
+                }
+
+                // if yaml file not found or corrupt transaction is revert to prev state 
+                m_selProject = selProject;
+                m_appNameText.setText(selProjectName);  
+                
+                m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());
 				
 				showApplyButton();
 			}
