@@ -169,7 +169,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		m_runType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);		
-		m_isRhohubBuild = configuration.getAttribute(ConfigurationConstants.isUseRhoHub, false);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor)
