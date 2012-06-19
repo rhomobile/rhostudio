@@ -47,9 +47,14 @@ class LicMessageJob extends UIJob
 	}
 }
 
-public class LaunchDelegate extends rhogenwizard.launcher.rhodes.LaunchDelegate 
+public class LaunchDelegate extends rhogenwizard.launcher.LaunchDelegateBase 
 {	
-	@Override
+    public LaunchDelegate()
+    {
+        super(null, new String[0]);
+    }
+
+    @Override
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException 
 	{
 		setupConfigAttributes(configuration);

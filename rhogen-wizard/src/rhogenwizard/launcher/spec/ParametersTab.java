@@ -1,13 +1,10 @@
 package rhogenwizard.launcher.spec;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.dialogs.MessageDialog;
-
-import rhogenwizard.launcher.SpecFileHelper;
 
 
 public class ParametersTab extends rhogenwizard.launcher.rhodes.ParametersTab 
@@ -26,25 +23,9 @@ public class ParametersTab extends rhogenwizard.launcher.rhodes.ParametersTab
 	{
 		super.initializeFrom(configuration);
 		
-		SpecFileHelper helper = getAppConfig();
-
-		if (helper != null)
+		if (!checkSpecFiles())
 		{
-			try 
-			{
-				if (!checkSpecFiles())
-				{
-					MessageDialog.openError(getShell(), "Error", "Spec files not found in project " + getSelectProject().getName());
-					return;
-				}
-
-				helper.changeForSpec();
-			} 
-			catch (IOException e) 
-			{
-				MessageDialog.openError(getShell(), "Error", "Encountered error in rhoconfig.txt file. Project - " + getSelectProject().getName());
-				e.printStackTrace();
-			}
+			MessageDialog.openError(getShell(), "Error", "Spec files not found in project " + getSelectProject().getName());
 		}
 	}
 }

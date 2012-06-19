@@ -74,7 +74,7 @@ public class RunReleaseRhodesAppTaskTest
                 + "/rholog.txt\"");
 
             RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eIPhone,
-                RunType.eEmulator, false, false);
+                RunType.eEmulator, false, false, null, null);
             task.run();
             assertTrue(task.isOk());
 
@@ -92,7 +92,7 @@ public class RunReleaseRhodesAppTaskTest
             ProcessListViewer plv = new ProcessListViewer(signature);
 
             RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eAndroid,
-                RunType.eEmulator, false, false);
+                RunType.eEmulator, false, false, null, null);
             task.run();
             assertTrue(task.isOk());
 
@@ -115,7 +115,7 @@ public class RunReleaseRhodesAppTaskTest
             ProcessListViewer plv = new ProcessListViewer(signature);
 
             RunTask task = new RunReleaseRhodesAppTask(projectLocation, platformType, RunType.eRhoEmulator,
-                false, false);
+                false, false, null, null);
             task.run();
             assertTrue("for " + platformType, task.isOk());
 

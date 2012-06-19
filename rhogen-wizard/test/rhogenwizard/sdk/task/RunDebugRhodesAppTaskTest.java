@@ -222,7 +222,7 @@ public class RunDebugRhodesAppTaskTest
                 ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
 
                 RunTask task = new RunDebugRhodesAppTask(launch, projectLocation, appName,
-                    PlatformType.eAndroid, false, false);
+                    PlatformType.eAndroid, false, false, null, null);
                 task.run();
                 assertTrue(task.isOk());
             }

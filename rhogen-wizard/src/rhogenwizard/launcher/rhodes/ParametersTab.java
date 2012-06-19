@@ -36,7 +36,6 @@ import rhogenwizard.RunType;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
-import rhogenwizard.launcher.SpecFileHelper;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
@@ -96,7 +95,6 @@ public class ParametersTab extends  JavaLaunchTab
 	protected ILaunchConfigurationWorkingCopy m_configuration = null;
 	
 	protected AppYmlFile     m_ymlFile = null;
-	SpecFileHelper m_configHelper = null;
 	
 	@SuppressWarnings("restriction")
 	@Override
@@ -508,9 +506,6 @@ public class ParametersTab extends  JavaLaunchTab
 			if (selProjectName != "")
 			{
 				m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
-				m_configHelper = new SpecFileHelper(m_selProject);
-				
-				m_configHelper.changeForApp();
 				
 				m_appNameText.setText(selProjectName);
 				m_adroidEmuNameText.setText(selAndroidEmuName);
@@ -895,11 +890,6 @@ public class ParametersTab extends  JavaLaunchTab
 		
 		setPlatformVersionCombo(m_configuration);
 		setAndroidEmuName(m_configuration);
-	}
-	
-	protected SpecFileHelper getAppConfig()
-	{
-		return m_configHelper;
 	}
 	
 	protected IProject getSelectProject()

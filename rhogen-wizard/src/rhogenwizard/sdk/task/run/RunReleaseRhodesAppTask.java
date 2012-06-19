@@ -10,7 +10,7 @@ import rhogenwizard.sdk.task.RubyExecTask;
 public class RunReleaseRhodesAppTask extends RubyExecTask
 {
     private static String[] getArgs(PlatformType platformType, RunType runType, boolean isReloadCode,
-        boolean isTrace)
+        boolean isTrace, String startPathOverride, String[] additionalRubyExtensions)
     {
         String task;
         if (runType == RunType.eDevice)
@@ -40,12 +40,42 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
             cmdLine.add("rho_reload_app_changes=" + (isReloadCode ? "1" : "0"));
         }
 
+        if (startPathOverride != null)
+        {
+            cmdLine.add("rho_override_start_path=\'" + startPathOverride + "\'");
+        }
+
+        if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
+        {
+            cmdLine.add("rho_extensions=" + join(",", additionalRubyExtensions));
+        }
+
         return cmdLine.toArray(new String[0]);
     }
 
     public RunReleaseRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
-        boolean isReloadCode, boolean isTrace)
+        boolean isReloadCode, boolean isTrace, String startPathOverride, String[] additionalRubyExtensions)
     {
-        super(workDir, getArgs(platformType, runType, isReloadCode, isTrace));
+        super(workDir, getArgs(platformType, runType, isReloadCode, isTrace, startPathOverride,
+            additionalRubyExtensions));
+    }
+
+    private static String join(String delimiter, String... text)
+    {
+        boolean first = true;
+        StringBuilder sb = new StringBuilder();
+        for (String line : text)
+        {
+            if (first)
+            {
+                first = false;
+            }
+            else
+            {
+                sb.append(delimiter);
+            }
+            sb.append(line);
+        }
+        return sb.toString();
     }
 }
