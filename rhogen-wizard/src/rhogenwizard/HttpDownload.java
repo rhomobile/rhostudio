@@ -144,10 +144,10 @@ public class HttpDownload
 
     private final URL            m_url;
     private final OutputStream   m_stream;
-    private volatile long        m_size;
-    private volatile long        m_downloaded;
-    private volatile IOException m_exception;
-    private volatile int         m_responseCode;
+    private volatile long        m_size         = 0;
+    private volatile long        m_downloaded   = 0;
+    private volatile IOException m_exception    = null;
+    private volatile int         m_responseCode = 0;
     private final Thread         m_downloader;
 
     public HttpDownload(URL url, OutputStream stream)
