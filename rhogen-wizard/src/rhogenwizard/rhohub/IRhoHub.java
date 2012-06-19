@@ -16,4 +16,6 @@ public interface IRhoHub
     boolean pushSourcesToRemote(IRemoteProjectDesc project);
     //
     boolean checkProjectBuildStatus(IRemoteProjectDesc project);
+    //
+    boolean isRemoteProjectExist(IProject project);
 }

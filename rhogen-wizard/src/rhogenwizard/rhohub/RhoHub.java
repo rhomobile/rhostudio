@@ -1,12 +1,32 @@
 package rhogenwizard.rhohub;
 
+import java.io.File;
+import java.io.IOException;
+import java.rmi.Remote;
+import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CommitCommand;
+import org.eclipse.jgit.api.FetchCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.InitCommand;
+import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.NoFilepatternException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.api.errors.NoMessageException;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+import org.eclipse.jgit.dircache.DirCache;
+import org.eclipse.jgit.lib.StoredConfig;
+import org.eclipse.jgit.revwalk.DepthWalk.Commit;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.rhohub.AppListTask;
 import rhogenwizard.sdk.task.rhohub.BuildApp;
@@ -15,12 +35,10 @@ import rhogenwizard.sdk.task.rhohub.ShowBuildTask;
 
 public class RhoHub implements IRhoHub
 {
-    private static String rhodesBranchTag = "master";
-    
     private static IRhoHub          rhoApi = null;    
-    private static IPreferenceStore rhohubConfiguration = null;
+    private static IRhoHubSetting   rhohubConfiguration = null;
     
-    public static IRhoHub getInstance(IPreferenceStore configuration)
+    public static IRhoHub getInstance(IRhoHubSetting configuration)
     {
         if (rhoApi == null)
             rhoApi = new RhoHub();
@@ -42,10 +60,7 @@ public class RhoHub implements IRhoHub
         if (rhohubConfiguration == null)
             return null;
         
-        String rhohubToken  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
-        String rhohubServer = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
-        
-        AppListTask task = new AppListTask(rhohubToken, rhohubServer);
+        AppListTask task = new AppListTask(rhohubConfiguration);
         task.run();
         
         if (!task.isOk())
@@ -58,11 +73,8 @@ public class RhoHub implements IRhoHub
     {
         if (rhohubConfiguration == null)
             return null;
-        
-        String rhohubToken  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
-        String rhohubServer = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
-        
-        PlatformListTask task = new PlatformListTask(rhohubToken, rhohubServer);
+                
+        PlatformListTask task = new PlatformListTask(rhohubConfiguration);
         task.run();
         
         if (!task.isOk())
@@ -110,12 +122,7 @@ public class RhoHub implements IRhoHub
     @Override
     public boolean buildRemoteApp(IRemoteProjectDesc project)
     {
-        String rhohubToken                = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
-        String rhohubServer               = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
-        String rhoHubSelectedPlatform     = rhohubConfiguration.getString(ConfigurationConstants.rhoHubSelectedPlatform);
-        String rhoHubSelectedRhodesVesion = rhohubConfiguration.getString(ConfigurationConstants.rhoHubSelectedRhodesVesion);
-
-        BuildApp task = new BuildApp(project, rhohubToken, rhohubServer, rhoHubSelectedPlatform, rhodesBranchTag, rhoHubSelectedRhodesVesion);
+        BuildApp task = new BuildApp(project, rhohubConfiguration);
         task.run();
         
         try
@@ -131,7 +138,74 @@ public class RhoHub implements IRhoHub
         
         return task.isOk();
     }
+    
+    public void initGitRepo(IProject project)
+    {
+    }
+    
+    public void replaceRemoteSourcesFromLocal(IProject project)
+    {
+        InitCommand initCmd = Git.init();
+        
+        File repoDir = new File(project.getLocation().toOSString());
+        
+        initCmd.setDirectory(repoDir);
+        initCmd.call();
 
+        try
+        {
+            Git localRepo = Git.open(repoDir);
+
+            AddCommand addCmd = localRepo.add();
+            addCmd.addFilepattern(".");
+            addCmd.call();
+            
+            CommitCommand commitCmd = localRepo.commit();
+            commitCmd.setAll(true);
+            commitCmd.setMessage("replace remote sources from local computer");
+            commitCmd.call();
+            
+            FetchCommand fetchCmd = localRepo.fetch();
+            fetchCmd.setRemote("git@git-staging.rhohub.com:antonvishnevski/test002-rhodes.git");
+            fetchCmd.call();
+            
+            PushCommand pushCmd = localRepo.push();
+            pushCmd.call();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (NoFilepatternException e)
+        {
+            e.printStackTrace();
+        }
+        catch (NoHeadException e)
+        {
+            e.printStackTrace();
+        }
+        catch (NoMessageException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ConcurrentRefUpdateException e)
+        {
+            e.printStackTrace();
+        }
+        catch (JGitInternalException e)
+        {
+            e.printStackTrace();
+        }
+        catch (WrongRepositoryStateException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InvalidRemoteException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     @Override
     public boolean pullRemoteAppSources(IRemoteProjectDesc project)
     {
@@ -152,10 +226,7 @@ public class RhoHub implements IRhoHub
         
         try
         {
-            String rhohubToken  = rhohubConfiguration.getString(ConfigurationConstants.rhoHubToken);
-            String rhohubServer = rhohubConfiguration.getString(ConfigurationConstants.rhoHubUrl);
-
-            ShowBuildTask task = new ShowBuildTask(rhohubToken, rhohubServer, project.getId(), project.getBuildId());
+            ShowBuildTask task = new ShowBuildTask(rhohubConfiguration, project.getId(), project.getBuildId());
             task.run();
             
             if (!task.isOk())
@@ -191,5 +262,39 @@ public class RhoHub implements IRhoHub
         }
 
         return null;       
+    }
+
+    @Override
+    public boolean isRemoteProjectExist(IProject project)
+    {
+        try
+        {
+            RemoteProjectsList projectList = new RemoteProjectsList (getAppList());
+            
+            Git localRepo = Git.open(new File(project.getLocation().toOSString()));
+            StoredConfig repoConfig = localRepo.getRepository().getConfig();
+            
+            String localRepoUrl = repoConfig.getString("remote", "origin", "url");
+            
+            for (IRemoteProjectDesc remotePrj : projectList)
+            {
+                if (remotePrj.getGitLink().equals(localRepoUrl))
+                    return true;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (CoreException e)
+        {
+            e.printStackTrace();
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return false;
     }
 }

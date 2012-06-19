@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
@@ -20,20 +21,30 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.Activator;
 import rhogenwizard.DialogUtils;
-import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.IRhoHubSettingSaver;
 import rhogenwizard.rhohub.RemotePlatformDesc;
 import rhogenwizard.rhohub.RemotePlatformList;
 import rhogenwizard.rhohub.RhoHub;
+import rhogenwizard.rhohub.RhoHubBundleSetting;
 
 class RemotePlatformAdapter implements Callable<RemotePlatformList>
 {    
+    IProject m_project = null;
+    
+    RemotePlatformAdapter(IProject project)
+    {
+        m_project = project;
+    }
+    
     @Override
     public RemotePlatformList call() throws Exception
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_project);
 
         if (store == null)
             return null;        
@@ -45,6 +56,8 @@ class RemotePlatformAdapter implements Callable<RemotePlatformList>
 public class BuildSettingPage extends WizardPage 
 {
     private static int waitTimeOutRhoHubServer = 5;
+    
+    private IProject m_project = null;
     
     private Combo m_comboPlatforms         = null;
     private Combo m_comboRhodesAppVersions = null;
@@ -58,11 +71,13 @@ public class BuildSettingPage extends WizardPage
      * 
      * @param pageName
      */
-    public BuildSettingPage() 
+    public BuildSettingPage(IProject project) 
     {
         super("wizardPage");
         setTitle("RhoHub build application wizard");
-        setDescription("RhoHub build application wizard");        
+        setDescription("RhoHub build application wizard");
+        
+        m_project = project;
     }
     
     @Override
@@ -190,7 +205,7 @@ public class BuildSettingPage extends WizardPage
             }
             m_comboPlatforms.select(0);
             
-            String platformText = store.getString(ConfigurationConstants.rhoHubSelectedPlatform);
+            String platformText = store.getString(IRhoHubSetting.rhoHubSelectedPlatform);
                         
             for (int i=0; i < m_comboPlatforms.getItemCount(); ++i)
             {
@@ -212,7 +227,7 @@ public class BuildSettingPage extends WizardPage
         
         // run async request to rhohub server
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        m_getPlatfomListFuture = executor.submit(new RemotePlatformAdapter());
+        m_getPlatfomListFuture = executor.submit(new RemotePlatformAdapter(m_project));
 
         //TODO HOT-FIX - need call enumerate func for rhodes versions
         m_comboRhodesAppVersions.add("master");
@@ -232,23 +247,28 @@ public class BuildSettingPage extends WizardPage
             updateStatus("RhoHub platform should be selected");
             return;
         }
-
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return;
         
-        store.setValue(ConfigurationConstants.rhoHubSelectedPlatform, "");
-        store.setValue(ConfigurationConstants.rhoHubSelectedRhodesVesion, m_comboRhodesAppVersions.getText());
-
-        // if not selected item from list in store stored empty string
-        for (RemotePlatformDesc pl : m_remotePlatforms)
+        try
         {
-            if (pl.getPublicName().equals(m_comboPlatforms.getText()))
+            IRhoHubSettingSaver store = RhoHubBundleSetting.createSetter(m_project);
+            
+            store.setSelectedPlatform("");
+            store.setRhodesBranch(m_comboRhodesAppVersions.getText());
+
+            // if not selected item from list in store stored empty string
+            for (RemotePlatformDesc pl : m_remotePlatforms)
             {
-                store.setValue(ConfigurationConstants.rhoHubSelectedPlatform, pl.getInternalName());
-                break;
+                if (pl.getPublicName().equals(m_comboPlatforms.getText()))
+                {
+                    store.setSelectedPlatform(pl.getInternalName());
+                    break;
+                }
             }
+        }
+        catch (BackingStoreException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         
         updateStatus("Press finish for creation of project");

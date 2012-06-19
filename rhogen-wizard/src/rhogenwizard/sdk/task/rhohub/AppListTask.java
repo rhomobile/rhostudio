@@ -3,15 +3,16 @@ package rhogenwizard.sdk.task.rhohub;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 
 public class AppListTask extends RubyCodeExecTask
 {
-    public AppListTask(String userToken, String serverUrl)
+    public AppListTask(IRhoHubSetting setting)
     {
         super("require 'rhohub'", 
-              "Rhohub.token = \"" + userToken + "\"", 
-              "Rhohub.url = \"" + serverUrl + "\"", 
+              "Rhohub.token = \"" + setting.getToken() + "\"", 
+              "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               "puts Rhohub::App.list()");
     }
 

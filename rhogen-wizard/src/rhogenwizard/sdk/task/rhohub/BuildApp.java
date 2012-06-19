@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import rhogenwizard.rhohub.IRemoteProjectDesc;
+import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 
 public class BuildApp extends RubyCodeExecTask
@@ -13,18 +14,16 @@ public class BuildApp extends RubyCodeExecTask
         IRemoteProjectDesc m_project = null;
         JSONObject         m_buildObj = null;
         
-        public BuildAppArgsHelper(IRemoteProjectDesc project, String buildPlatform, String appVersion, String rhodesVersion)
+        public BuildAppArgsHelper(IRemoteProjectDesc project, IRhoHubSetting setting)
         {
             try
             {
                 m_project = project;
                 
                 JSONObject buildOptions = new JSONObject();        
-                buildOptions.put("target_device", buildPlatform);
-                buildOptions.put("version_tag", appVersion);
-                buildOptions.put("rhodes_version", rhodesVersion);
-
-                //m_buildObj = buildOptions;
+                buildOptions.put("target_device", setting.getSelectedPlatform());
+                buildOptions.put("version_tag", setting.getAppBranch());
+                buildOptions.put("rhodes_version", setting.getRhodesBranch());
                 
                 m_buildObj = new JSONObject();
                 m_buildObj.put("build", buildOptions);
@@ -45,9 +44,6 @@ public class BuildApp extends RubyCodeExecTask
                 sb.append("puts Rhohub::Build.create(");
                 sb.append("{:app_id =>" + m_project.getId() + "},");
                 sb.append("\"" + m_buildObj.toString().replaceAll("\\\"", "\\\\\"") + "\")");
-                
-//                sb.append("{:build => " + m_buildObj.toString()/*.replaceAll("\\:", "=>")*/ + "}");
-//                sb.append(".to_json)");
             }
             catch (JSONException e)
             {
@@ -63,11 +59,11 @@ public class BuildApp extends RubyCodeExecTask
         return new JSONObject(super.getOutput());
     }
 
-    public BuildApp(IRemoteProjectDesc project, String userToken, String serverUrl, String buildPlatform, String appVersion, String rhodesVersion)
+    public BuildApp(IRemoteProjectDesc project, IRhoHubSetting setting)
     {        
         super("require 'rhohub'", 
-              "Rhohub.token = \"" + userToken + "\"", 
-              "Rhohub.url = \"" + serverUrl + "\"", 
-              new BuildAppArgsHelper(project, buildPlatform, appVersion, rhodesVersion).toString());
+              "Rhohub.token = \"" + setting.getToken() + "\"", 
+              "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
+              new BuildAppArgsHelper(project, setting).toString());
     }
 }

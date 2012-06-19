@@ -31,6 +31,10 @@ public abstract class RunTask
 
     public abstract void run(IProgressMonitor monitor);
 
+    /**
+     * @param name
+     * @return associate Job object with task
+     */
     public Job makeJob(String name)
     {
         return new Job(name)
@@ -46,6 +50,7 @@ public abstract class RunTask
                 {
                     return Status.CANCEL_STATUS;
                 }
+                
                 return Status.OK_STATUS;
             }
         };

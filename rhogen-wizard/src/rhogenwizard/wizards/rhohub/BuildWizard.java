@@ -5,19 +5,18 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.preference.IPreferenceStore;
-
-import rhogenwizard.Activator;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.rhohub.IRemoteProjectDesc;
-import rhogenwizard.rhohub.RemoteStatus;
+import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.RhoHub;
+import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.sdk.task.rhohub.CheckBuildStatusTask;
 import rhogenwizard.wizards.BaseAppWizard;
 
@@ -25,6 +24,7 @@ public class BuildWizard extends BaseAppWizard
 {
     private BuildCredentialPage m_pageCred    = null;
     private BuildSettingPage    m_pageSetting = null;
+    
     private IProject            m_selectedProject = null;
     
     public BuildWizard(IProject project)
@@ -40,8 +40,8 @@ public class BuildWizard extends BaseAppWizard
      */
     public void addPages()
     {       
-        m_pageCred    = new BuildCredentialPage();
-        m_pageSetting = new BuildSettingPage();
+        m_pageCred    = new BuildCredentialPage(m_selectedProject);
+        m_pageSetting = new BuildSettingPage(m_selectedProject);
         
         addPage(m_pageCred);
         addPage(m_pageSetting);
@@ -99,13 +99,12 @@ public class BuildWizard extends BaseAppWizard
      *             The worker method. It will find the container, create the
      *             file if missing or just replace its contents, and open the
      *             editor on the newly created file.
-     * @throws
      */
     private void doFinish(IProgressMonitor monitor) throws CoreException, ProjectNotFoundException
     {
         try
         {
-            monitor.beginTask("Start building on rhohub server", 2);
+            monitor.beginTask("Start building on rhohub server", 1);
             
             if (CommonConstants.checkRhohubVersion)
             {
@@ -125,11 +124,10 @@ public class BuildWizard extends BaseAppWizard
 //                    DialogUtils.error("Error", msg);
 //                    return;
 //                }
-            }
-            
+            }            
             monitor.worked(1);
             
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+            IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_selectedProject);
 
             if (store != null)
             {
@@ -144,17 +142,18 @@ public class BuildWizard extends BaseAppWizard
                 }                       
                 monitor.worked(1);
                 
-                monitor.beginTask("Start cheking build on rhohub server", 1);
+                monitor.beginTask("Start checking build on rhohub server", 1);
 
                 CheckBuildStatusTask checkTask = new CheckBuildStatusTask(projectDesc);
-                checkTask.makeJob("Cheking build status");
+                Job checkJob = checkTask.makeJob("Checking remote build status");
+                checkJob.schedule();
             }
             
             ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective",
                 UiConstants.rhodesPerspectiveId);
             job.schedule();
 
-            monitor.worked(1);
+            monitor.done();
         }
         catch (Exception e)
         {

@@ -1,7 +1,7 @@
 package rhogenwizard.wizards.rhohub;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -11,9 +11,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.service.prefs.BackingStoreException;
 
-import rhogenwizard.Activator;
-import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.IRhoHubSettingSaver;
+import rhogenwizard.rhohub.RhoHubBundleSetting;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -23,6 +25,8 @@ import rhogenwizard.constants.ConfigurationConstants;
 
 public class BuildCredentialPage extends WizardPage 
 {
+    private IProject m_project = null;
+    
 	private Text m_hubToken = null;
 	private Text m_hubUrl   = null;
 	
@@ -31,11 +35,13 @@ public class BuildCredentialPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public BuildCredentialPage() 
+	public BuildCredentialPage(IProject project) 
 	{
 		super("wizardPage");
 		setTitle("RhoHub build application wizard");
 		setDescription("Setup your credential information for RhoHub");
+		
+		m_project = project;
 	}
 	
 	public void createAppSettingBarControls(Composite composite)
@@ -94,7 +100,6 @@ public class BuildCredentialPage extends WizardPage
 	    createAppSettingBarControls(container);
 	    
         initialize();
-		//dialogChanged();
 		setControl(container);
 	}
 
@@ -105,13 +110,13 @@ public class BuildCredentialPage extends WizardPage
 	{		
 		setDescription("");
 		
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
+		IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_project);
+		
         if (store == null)
             return;
        
-		m_hubToken.setText(store.getString(ConfigurationConstants.rhoHubToken));		
-		m_hubUrl.setText(store.getString(ConfigurationConstants.rhoHubUrl)); 
+		m_hubToken.setText(store.getToken());		
+		m_hubUrl.setText(store.getServerUrl()); 
 	}
 
 	/**
@@ -131,13 +136,21 @@ public class BuildCredentialPage extends WizardPage
 	        return;
 	    }
 
-	    IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return;
+        try
+        {
+    	    IRhoHubSettingSaver store = RhoHubBundleSetting.createSetter(m_project);
+    
+            if (store == null)
+                return;
         
-        store.setValue(ConfigurationConstants.rhoHubUrl, m_hubUrl.getText());
-        store.setValue(ConfigurationConstants.rhoHubToken, m_hubToken.getText());
+            store.setServerUrl(m_hubUrl.getText());
+            store.setToken(m_hubToken.getText());
+        }
+        catch (BackingStoreException e)
+        {
+            updateStatus("Unhandled exception, close the wizard and try again");
+            e.printStackTrace();
+        }
         
         updateStatus("Press finish for creation of project");
 		updateStatus(null);
