@@ -1,27 +1,55 @@
 package rhogenwizard.actions;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.DialogUtils;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.wizards.rhohub.BuildWizard;
+import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.IRhoHubSettingSaver;
+import rhogenwizard.rhohub.RhoHub;
+import rhogenwizard.rhohub.RhoHubBundleSetting;
+
+
+//InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), "Test", "Please input text.",
+//    "Test-Text", null) {
+//
+//  /**
+//   * Override this method to make the text field multilined
+//   * and give it a scroll bar. But...
+//   */
+//  @Override
+//  protected int getInputTextStyle() {
+//    return SWT.SINGLE | SWT.BORDER ;
+//  }
+//
+////  /**
+////   * ...it still is just one line high.
+////   * This hack is not very nice, but at least it gets the job done... ;o)
+////   */
+////  @Override
+////  protected Control createDialogArea(Composite parent) {
+////    Control res = super.createDialogArea(parent);
+////    ((GridData) this.getText().getLayoutData()).heightHint = 10;
+////    return res;
+////  }
+//};
+//dlg.open();
 
 public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
 {
+    private static int wizardHeigth = 500;
+    private static int wizardWidth  = 800;
+        
     private IWorkbenchWindow window;
 
     /**
@@ -36,44 +64,74 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
 
         if (project == null)
         {
-            DialogUtils.error("Error", "Before run production build select RhoMobile project");
+            DialogUtils.error("Error", "Before run remote build select RhoMobile project's");
             return;
         }
 
         if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
         {
-            DialogUtils.error("Error", "Production build can run only for RhoMobile project");
+            DialogUtils.error("Error", "Remote build can run only for RhoMobile project's");
             return;
         }
-
-        BuildWizard w =  new BuildWizard(project);
-        WizardDialog wd = new WizardDialog(window.getShell(), w);
-        wd.create();
-        wd.open();
         
-//        String s = null;
-//        Iterable<RevCommit> logC = null;
-//        try
-//        {
-//            Git g = Git.open(new File("C:\\Android\\rhodes-system-api-samples"));
-//            logC = g.log().call(); 
-//            s =logC.toString();
-//        }
-//        catch (IOException e)
-//        {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        catch (NoHeadException e)
-//        {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        catch (JGitInternalException e)
-//        {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+        IRhoHubSetting setting = new RhoHubBundleSetting(project);
+                
+        if (!checkProjectProperties(project))
+        {
+            if (DialogUtils.confirm("Project setting", "For project " + project.getName() + 
+                    " not found infomation on RhoHub. Link the project with project on RhoHub server?"))
+            {
+                LinkWizard linkWizard = new LinkWizard(project);
+                createWizardDialog(linkWizard);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        BuildWizard  buildWizard =  new BuildWizard(project);
+        createWizardDialog(buildWizard);
+    }
+    
+    void createWizardDialog(IWizard wizard)
+    {
+        WizardDialog buildWizardDialog = new WizardDialog(window.getShell(), wizard) 
+        {
+            @Override
+            protected void configureShell(Shell newShell) 
+            {
+                super.configureShell(newShell);
+                newShell.setSize(wizardWidth, wizardHeigth);
+            }       
+        };
+        
+        buildWizardDialog.create();
+        buildWizardDialog.open(); 
+    }
+
+    private boolean checkProjectProperties(IProject project)
+    {
+        IRhoHubSetting setting = new RhoHubBundleSetting(project);
+        
+        if (!setting.isLinking())
+        {
+            if (RhoHub.getInstance(setting).isRemoteProjectExist(project))
+            {
+                try
+                {
+                    IRhoHubSettingSaver settingSave = (IRhoHubSettingSaver)setting;
+                    settingSave.setLinking();
+                    return true;
+                }
+                catch (BackingStoreException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        return setting.isLinking();
     }
 
     /**
