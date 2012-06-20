@@ -38,14 +38,17 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.debug;bundle-version="2.0.0",
  org.eclipse.dltk.debug.ui;bundle-version="2.0.0",
  org.eclipse.dltk.console;bundle-version="1.0.0",
- org.junit
+ org.junit,
+ com.jcraft.jsch;bundle-version="0.1.41"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: com.ibm.icu.text,
  org.eclipse.core.filesystem,
  org.eclipse.core.variables,
+ org.eclipse.egit.ui,
  org.eclipse.jdt.ui
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/snakeyaml-1.8.jar,
+                  lib/org.eclipse.jgit-1.3.0.201202151440-r.jar,
  .
 Bundle-Vendor: Rhomobile Inc.
 
