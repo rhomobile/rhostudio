@@ -18,6 +18,8 @@ import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSaver;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
+import rhogenwizard.wizards.rhohub.BuildWizard;
+import rhogenwizard.wizards.rhohub.LinkWizard;
 
 
 //InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), "Test", "Please input text.",
