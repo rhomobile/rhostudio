@@ -22,8 +22,13 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.dircache.DirCache;
+import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.DepthWalk.Commit;
+import org.eclipse.jgit.transport.CredentialItem;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.URIish;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -143,7 +148,7 @@ public class RhoHub implements IRhoHub
     {
     }
     
-    public void replaceRemoteSourcesFromLocal(IProject project)
+    public void replaceRemoteSourcesFromLocal(IProject project, final String userPwd)
     {
         InitCommand initCmd = Git.init();
         
@@ -165,11 +170,33 @@ public class RhoHub implements IRhoHub
             commitCmd.setMessage("replace remote sources from local computer");
             commitCmd.call();
             
-            FetchCommand fetchCmd = localRepo.fetch();
-            fetchCmd.setRemote("git@git-staging.rhohub.com:antonvishnevski/test002-rhodes.git");
-            fetchCmd.call();
+            StoredConfig repoCfg = localRepo.getRepository().getConfig();
+            repoCfg.setString("remote", "origin", "url", "git@git-staging.rhohub.com:antonvishnevski/test003-rhodes.git");
+            repoCfg.setString("remote", "origin", "fetch", "+refs/heads/*:refs/remotes/origin/*");
+            repoCfg.save();
             
             PushCommand pushCmd = localRepo.push();
+            pushCmd.setForce(true);
+            pushCmd.setCredentialsProvider(new CredentialsProvider()
+            {
+                @Override
+                public boolean supports(CredentialItem... arg0) {
+                    return false;
+                }
+                
+                @Override
+                public boolean isInteractive() {
+                    return false;
+                }
+                
+                @Override
+                public boolean get(URIish arg0, CredentialItem... arg1) throws UnsupportedCredentialItem
+                {
+                    CredentialItem.StringType pwdCred = (CredentialItem.StringType )arg1[0];
+                    pwdCred.setValue(userPwd);
+                    return true;
+                }
+            });
             pushCmd.call();
         }
         catch (IOException e)
