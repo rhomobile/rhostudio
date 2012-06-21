@@ -26,7 +26,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import rhogenwizard.Activator;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.rhohub.IRhoHubSettingSaver;
+import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RemotePlatformDesc;
 import rhogenwizard.rhohub.RemotePlatformList;
 import rhogenwizard.rhohub.RhoHub;
@@ -250,7 +250,7 @@ public class BuildSettingPage extends WizardPage
         
         try
         {
-            IRhoHubSettingSaver store = RhoHubBundleSetting.createSetter(m_project);
+            IRhoHubSettingSetter store = RhoHubBundleSetting.createSetter(m_project);
             
             store.setSelectedPlatform("");
             store.setRhodesBranch(m_comboRhodesAppVersions.getText());

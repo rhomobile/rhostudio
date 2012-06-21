@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.rhohub.IRhoHubSettingSaver;
+import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 
 /**
@@ -138,7 +138,7 @@ public class BuildCredentialPage extends WizardPage
 
         try
         {
-    	    IRhoHubSettingSaver store = RhoHubBundleSetting.createSetter(m_project);
+    	    IRhoHubSettingSetter store = RhoHubBundleSetting.createSetter(m_project);
     
             if (store == null)
                 return;

@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.osgi.service.prefs.BackingStoreException;
 
 
-public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSaver
+public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
 {
     private static String rhohubTag = "rhohub";
     
@@ -18,7 +18,7 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSaver
         return new RhoHubBundleSetting(project);
     }
 
-    public static IRhoHubSettingSaver createSetter(IProject project)
+    public static IRhoHubSettingSetter createSetter(IProject project)
     {
         return new RhoHubBundleSetting(project);
     }

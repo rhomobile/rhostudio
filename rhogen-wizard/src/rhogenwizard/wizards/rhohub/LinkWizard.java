@@ -7,21 +7,18 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.preference.IPreferenceStore;
-
-import rhogenwizard.Activator;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
+import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.wizards.BaseAppWizard;
 
 public class LinkWizard extends BaseAppWizard
 {
-    private BuildCredentialPage m_pageCred    = null;
-    private BuildSettingPage    m_pageSetting = null;
-
-    private IProject m_selectedProject = null;
+    private LinkProjectPage m_pageLink    = null;
+    
+    private IProject        m_selectedProject = null;
     
     public LinkWizard(IProject project)
     {
@@ -36,13 +33,15 @@ public class LinkWizard extends BaseAppWizard
      */
     public void addPages()
     {       
-        m_pageCred    = new BuildCredentialPage(m_selectedProject);
-        m_pageSetting = new BuildSettingPage(m_selectedProject);
-        
-        addPage(m_pageCred);
-        addPage(m_pageSetting);
+        m_pageLink = new LinkProjectPage(m_selectedProject);
+
+        addPage(m_pageLink);
     }
 
+    /**
+     * This method is called when 'Finish' button is pressed in the wizard. We
+     * will create an operation and run it using wizard as execution context.
+     */
     public boolean performFinish()
     {
         IRunnableWithProgress op = new IRunnableWithProgress()
@@ -97,30 +96,8 @@ public class LinkWizard extends BaseAppWizard
         try
         {
             monitor.beginTask("Start building on rhohub server", 1);
-            
-            if (CommonConstants.checkRhohubVersion)
-            {
-//                monitor.setTaskName("Check Rhodes version...");
-//
-//                try
-//                {
-//                    if (!RunExeHelper.checkRhodesVersion(CommonConstants.rhodesVersion))
-//                    {
-//                        throw new IOException();
-//                    }
-//                }
-//                catch (IOException e)
-//                {
-//                    String msg = "Installed Rhohub have old version, need rhodes version equal or greater " 
-//                        + CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
-//                    DialogUtils.error("Error", msg);
-//                    return;
-//                }
-            }
-            
-            monitor.worked(1);
-            
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+                        
+            IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_selectedProject);
 
             if (store != null)
             {
@@ -131,7 +108,7 @@ public class LinkWizard extends BaseAppWizard
                 UiConstants.rhodesPerspectiveId);
             job.schedule();
 
-            monitor.worked(1);
+            monitor.done();
         }
         catch (Exception e)
         {

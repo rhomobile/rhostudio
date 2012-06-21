@@ -2,15 +2,10 @@ package rhogenwizard.rhohub;
 
 import java.io.File;
 import java.io.IOException;
-import java.rmi.Remote;
-import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CommitCommand;
-import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.InitCommand;
 import org.eclipse.jgit.api.PushCommand;
@@ -21,14 +16,11 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
-import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 import org.eclipse.jgit.lib.StoredConfig;
-import org.eclipse.jgit.revwalk.DepthWalk.Commit;
 import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.URIish;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -94,21 +86,20 @@ public class RhoHub implements IRhoHub
         try
         {
             RemoteProjectsList projectList = new RemoteProjectsList (getAppList());
-
-            String localProjectName = project.getName();
+            
+            Git localRepo = Git.open(new File(project.getLocation().toOSString()));
+            StoredConfig repoConfig = localRepo.getRepository().getConfig();
+            
+            String localRepoUrl = repoConfig.getString("remote", "origin", "url");
             
             for (IRemoteProjectDesc remoteProject : projectList)
             {
-                if (localProjectName.equals(remoteProject.getName()))
+                if (remoteProject.getGitLink().equals(localRepoUrl))
                 {
-                    //TODO - hot fix, need add filter parameter to list command 
-                    if (remoteProject.getGitLink().contains(localProjectName + "-rhodes"))
-                    {
-                        RemoteProjectDesc prjDesc = (RemoteProjectDesc) remoteProject;
-                        prjDesc.setProject(project);
-                        
-                        return remoteProject;
-                    }
+                    RemoteProjectDesc prjDesc = (RemoteProjectDesc) remoteProject;
+                    prjDesc.setProject(project);
+                    
+                    return remoteProject;
                 }
             }
         }
@@ -117,6 +108,10 @@ public class RhoHub implements IRhoHub
             e.printStackTrace();
         }
         catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -148,7 +143,7 @@ public class RhoHub implements IRhoHub
     {
     }
     
-    public void replaceRemoteSourcesFromLocal(IProject project, final String userPwd)
+    private void replaceRemoteSourcesFromLocal(IProject project, final String userPwd, final String remoteGitRepo)
     {
         InitCommand initCmd = Git.init();
         
@@ -171,7 +166,7 @@ public class RhoHub implements IRhoHub
             commitCmd.call();
             
             StoredConfig repoCfg = localRepo.getRepository().getConfig();
-            repoCfg.setString("remote", "origin", "url", "git@git-staging.rhohub.com:antonvishnevski/test003-rhodes.git");
+            repoCfg.setString("remote", "origin", "url", remoteGitRepo);
             repoCfg.setString("remote", "origin", "fetch", "+refs/heads/*:refs/remotes/origin/*");
             repoCfg.save();
             
@@ -294,34 +289,6 @@ public class RhoHub implements IRhoHub
     @Override
     public boolean isRemoteProjectExist(IProject project)
     {
-        try
-        {
-            RemoteProjectsList projectList = new RemoteProjectsList (getAppList());
-            
-            Git localRepo = Git.open(new File(project.getLocation().toOSString()));
-            StoredConfig repoConfig = localRepo.getRepository().getConfig();
-            
-            String localRepoUrl = repoConfig.getString("remote", "origin", "url");
-            
-            for (IRemoteProjectDesc remotePrj : projectList)
-            {
-                if (remotePrj.getGitLink().equals(localRepoUrl))
-                    return true;
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (CoreException e)
-        {
-            e.printStackTrace();
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-        
-        return false;
+        return findRemoteApp(project) == null ? false : true;
     }
 }
