@@ -3,8 +3,10 @@ package rhogenwizard.actions;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -15,35 +17,19 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.rhohub.IRhoHubSettingSaver;
+import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.wizards.rhohub.BuildWizard;
 import rhogenwizard.wizards.rhohub.LinkWizard;
 
 
-//InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), "Test", "Please input text.",
+//InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), "", "Please input text.",
 //    "Test-Text", null) {
-//
-//  /**
-//   * Override this method to make the text field multilined
-//   * and give it a scroll bar. But...
-//   */
 //  @Override
 //  protected int getInputTextStyle() {
 //    return SWT.SINGLE | SWT.BORDER ;
 //  }
-//
-////  /**
-////   * ...it still is just one line high.
-////   * This hack is not very nice, but at least it gets the job done... ;o)
-////   */
-////  @Override
-////  protected Control createDialogArea(Composite parent) {
-////    Control res = super.createDialogArea(parent);
-////    ((GridData) this.getText().getLayoutData()).heightHint = 10;
-////    return res;
-////  }
 //};
 //dlg.open();
 
@@ -76,15 +62,15 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             return;
         }
         
-        IRhoHubSetting setting = new RhoHubBundleSetting(project);
-                
         if (!checkProjectProperties(project))
         {
             if (DialogUtils.confirm("Project setting", "For project " + project.getName() + 
                     " not found infomation on RhoHub. Link the project with project on RhoHub server?"))
             {
                 LinkWizard linkWizard = new LinkWizard(project);
-                createWizardDialog(linkWizard);
+                
+                if (createWizardDialog(linkWizard) == Window.CANCEL)
+                    return;
             }
             else
             {
@@ -96,7 +82,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
         createWizardDialog(buildWizard);
     }
     
-    void createWizardDialog(IWizard wizard)
+    int createWizardDialog(IWizard wizard)
     {
         WizardDialog buildWizardDialog = new WizardDialog(window.getShell(), wizard) 
         {
@@ -109,7 +95,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
         };
         
         buildWizardDialog.create();
-        buildWizardDialog.open(); 
+        return buildWizardDialog.open(); 
     }
 
     private boolean checkProjectProperties(IProject project)
@@ -122,7 +108,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             {
                 try
                 {
-                    IRhoHubSettingSaver settingSave = (IRhoHubSettingSaver)setting;
+                    IRhoHubSettingSetter settingSave = (IRhoHubSettingSetter)setting;
                     settingSave.setLinking();
                     return true;
                 }
