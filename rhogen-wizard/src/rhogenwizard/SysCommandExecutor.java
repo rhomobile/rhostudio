@@ -53,7 +53,7 @@ public class SysCommandExecutor
         return m_cmdError.toString();
     }
 
-    public int runCommand(List<String> commandLine) throws IOException, InterruptedException
+    public Process startCommand(List<String> commandLine) throws IOException
     {
         if (m_cmdOutput != null)
         {
@@ -68,6 +68,13 @@ public class SysCommandExecutor
 
         /* start output and error read threads */
         startOutputAndErrorReadThreads(process.getInputStream(), process.getErrorStream());
+
+        return process;
+    }
+
+    public int runCommand(List<String> commandLine) throws IOException, InterruptedException
+    {
+        Process process = startCommand(commandLine);
 
         try
         {

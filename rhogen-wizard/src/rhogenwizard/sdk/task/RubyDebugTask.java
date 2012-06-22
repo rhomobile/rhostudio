@@ -1,15 +1,17 @@
 package rhogenwizard.sdk.task;
 
-import java.io.File;
+import java.io.IOException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
 
+import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.ILogDevice;
+import rhogenwizard.SysCommandExecutor;
 
 public class RubyDebugTask extends RubyTask
 {
@@ -46,15 +48,20 @@ public class RubyDebugTask extends RubyTask
         m_console.show();
         m_console.getStream().print(showCommand());
 
-        String[] commandLine = m_cmdLine.toArray(new String[0]);
+        SysCommandExecutor executor = new SysCommandExecutor();
+        executor.setOutputLogDevice(getLogDevice(m_console.getOutputStream()));
+        executor.setErrorLogDevice(getLogDevice(m_console.getErrorStream()));
+
+        executor.setWorkingDirectory(m_workDir);
 
         Process process;
         try
         {
-            process = DebugPlugin.exec(commandLine, new File(m_workDir));
+            process = executor.startCommand(m_cmdLine);
         }
-        catch (CoreException e)
+        catch (IOException e)
         {
+            Activator.logError(e);
             return;
         }
 
@@ -82,6 +89,18 @@ public class RubyDebugTask extends RubyTask
             public void streamAppended(String text, IStreamMonitor monitor)
             {
                 stream.println(text);
+            }
+        };
+    }
+
+    private static ILogDevice getLogDevice(final ConsoleHelper.Stream stream)
+    {
+        return new ILogDevice()
+        {
+            @Override
+            public void log(String str)
+            {
+                stream.println(str.replaceAll("\\p{Cntrl}", " "));
             }
         };
     }
