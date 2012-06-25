@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class SysCommandExecutor
 {
@@ -133,25 +131,6 @@ public class SysCommandExecutor
         {
             m_cmdErrorThread.stopReading();
         }
-    }
-
-    private String[] getEnvTokens()
-    {
-        if (m_environmentVarList == null)
-            return null;
-
-        String[] envTokenArray = new String[m_environmentVarList.size()];
-        Iterator<EnvironmentVar> envVarIter = m_environmentVarList.iterator();
-        int nEnvVarIndex = 0;
-
-        while (envVarIter.hasNext() == true)
-        {
-            EnvironmentVar envVar = (EnvironmentVar) (envVarIter.next());
-            String envVarToken = envVar.m_envName + "=" + envVar.m_envValue;
-            envTokenArray[nEnvVarIndex++] = envVarToken;
-        }
-
-        return envTokenArray;
     }
 
     private static List<String> decorateCommandLine(List<String> source)

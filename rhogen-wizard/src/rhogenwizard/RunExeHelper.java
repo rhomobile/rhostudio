@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rhogenwizard.constants.CommonConstants;
-import rhogenwizard.sdk.task.RubyCodeExecTask;
 
 public class RunExeHelper 
 {

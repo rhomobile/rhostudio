@@ -1,9 +1,7 @@
 package rhogenwizard;
 
 import java.io.File;
-import java.net.URI;
 
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
