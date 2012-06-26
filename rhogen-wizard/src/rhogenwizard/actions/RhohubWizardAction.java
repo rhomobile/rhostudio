@@ -6,7 +6,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -20,18 +19,7 @@ import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
-import rhogenwizard.wizards.rhohub.BuildWizard;
 import rhogenwizard.wizards.rhohub.LinkWizard;
-
-
-//InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), "", "Please input text.",
-//    "Test-Text", null) {
-//  @Override
-//  protected int getInputTextStyle() {
-//    return SWT.SINGLE | SWT.BORDER ;
-//  }
-//};
-//dlg.open();
 
 public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
 {
@@ -61,7 +49,12 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             DialogUtils.error("Error", "Remote build can run only for RhoMobile project's");
             return;
         }
+
+        LinkWizard linkWizard = new LinkWizard(project);
         
+        if (createWizardDialog(linkWizard) == Window.CANCEL)
+            return;
+/*
         if (!checkProjectProperties(project))
         {
             if (DialogUtils.confirm("Project setting", "For project " + project.getName() + 
@@ -80,6 +73,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
 
         BuildWizard  buildWizard =  new BuildWizard(project);
         createWizardDialog(buildWizard);
+        */
     }
     
     int createWizardDialog(IWizard wizard)
