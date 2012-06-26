@@ -110,7 +110,8 @@ public class Builder extends IncrementalProjectBuilder
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException 
+	@Override
+    protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException
 	{
 		/*
 		if (kind == FULL_BUILD) {
@@ -145,25 +146,11 @@ public class Builder extends IncrementalProjectBuilder
 		}
 	}
 
-	protected void fullBuild(final IProgressMonitor monitor)
-			throws CoreException {
-		try {
-			getProject().accept(new SampleResourceVisitor());
-		} catch (CoreException e) {
-		}
-	}
-
 	private SAXParser getParser() throws ParserConfigurationException,
 			SAXException {
 		if (parserFactory == null) {
 			parserFactory = SAXParserFactory.newInstance();
 		}
 		return parserFactory.newSAXParser();
-	}
-
-	protected void incrementalBuild(IResourceDelta delta,
-			IProgressMonitor monitor) throws CoreException {
-		// the visitor does the work.
-		delta.accept(new SampleDeltaVisitor());
 	}
 }

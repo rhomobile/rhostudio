@@ -50,7 +50,7 @@ public class Activator extends AbstractUIPlugin
         instanceNode.put(UIPreferences.DEFAULT_REPO_DIR, workspaceDirectory.toString());
     }
 
-    @SuppressWarnings("deprecation")
+    @Override
     public void start(BundleContext context) throws Exception
     {
         super.start(context);
@@ -62,6 +62,7 @@ public class Activator extends AbstractUIPlugin
         ConsoleHelper.initialize();
     }
 
+    @Override
     public void stop(BundleContext context) throws Exception
     {
         killProcessesForForRunReleaseRhodesAppTask();

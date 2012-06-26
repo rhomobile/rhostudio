@@ -81,7 +81,7 @@ public class SelectPlatformDialog extends Dialog
 		{
 			public void handleEvent(Event event) 
 			{
-				handleOk(event);
+				handleOk();
 				shell.dispose();
 			}
 		});
@@ -90,7 +90,7 @@ public class SelectPlatformDialog extends Dialog
 		{
 			public void handleEvent(Event event) 
 			{
-				nandleCancel(event);			    	  
+				handleCancel();
 				shell.dispose();
 			}
 		});
@@ -119,12 +119,12 @@ public class SelectPlatformDialog extends Dialog
 		return m_selectPlaform;
 	}
 	
-	protected void nandleCancel(Event event) 
+	protected void handleCancel()
 	{
 		m_selectPlaform = PlatformType.eUnknown;	
 	}
 	
-	protected void handleOk(Event event) 
+	protected void handleOk()
 	{
 		m_selectPlaform = PlatformType.fromString(m_platfromCombo.getText());		
 	}	

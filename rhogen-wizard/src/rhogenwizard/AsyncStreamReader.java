@@ -35,7 +35,8 @@ public class AsyncStreamReader extends Thread
 		return m_buffer.toString();
 	}
 	
-	public void run()
+	@Override
+    public void run()
 	{
 		try 
 		{
@@ -86,7 +87,7 @@ public class AsyncStreamReader extends Thread
 		m_inputStream.close(); //TODO -- need test it
 	}
 	
-	private void readCommandOutput() throws IOException, InterruptedException
+	private void readCommandOutput() throws IOException
 	{		
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));		
 		String line = null;
