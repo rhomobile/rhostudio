@@ -13,8 +13,6 @@ import rhogenwizard.constants.CommonConstants;
 
 class ResourceVisitor extends MarkerHelper implements IResourceVisitor 
 {
-	private static String compileMarker = "Running compileRB";
-	
 	List<String> m_compileOutput = null;
 	
 	public ResourceVisitor(List<String> compileOutput)
