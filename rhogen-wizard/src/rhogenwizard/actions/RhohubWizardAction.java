@@ -6,7 +6,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -46,6 +45,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
      * 
      * @see IWorkbenchWindowActionDelegate#run
      */
+    @Override
     public void run(IAction action)
     {       
         IProject project = ProjectFactory.getInstance().getSelectedProject();
@@ -129,6 +129,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
      * 
      * @see IWorkbenchWindowActionDelegate#selectionChanged
      */
+    @Override
     public void selectionChanged(IAction action, ISelection selection)
     {
     }
@@ -139,6 +140,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
      * 
      * @see IWorkbenchWindowActionDelegate#dispose
      */
+    @Override
     public void dispose()
     {
     }
@@ -149,6 +151,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
      * 
      * @see IWorkbenchWindowActionDelegate#init
      */
+    @Override
     public void init(IWorkbenchWindow window)
     {
         this.window = window;

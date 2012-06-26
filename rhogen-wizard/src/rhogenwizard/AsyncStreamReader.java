@@ -35,7 +35,8 @@ public class AsyncStreamReader extends Thread
 		return m_buffer.toString();
 	}
 	
-	public void run()
+	@Override
+    public void run()
 	{
 		try 
 		{
