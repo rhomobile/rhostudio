@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.json.JSONException;
 
-import rhogenwizard.Activator;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.HttpDownload;
 import rhogenwizard.rhohub.IRemoteProjectDesc;
@@ -39,6 +39,17 @@ public class CheckBuildStatusTask extends RunTask
         return m_status.get();
     }
 
+    private String getSelectedDirectory()
+    {
+        DirectoryDialog dlg = new DirectoryDialog(Display.getCurrent().getActiveShell());
+
+        dlg.setFilterPath("C:");
+        dlg.setText("Select destination directory");
+        dlg.setMessage("Select a directory");
+
+        return dlg.open();
+    }
+    
     @Override
     public void run(IProgressMonitor monitor)
     {
@@ -67,8 +78,7 @@ public class CheckBuildStatusTask extends RunTask
                     HttpDownload hd = new HttpDownload(m_project.getBuildResultUrl(), os);
                     hd.join(0);
                     
-                    //TODO - need change to user folder 
-                    File resultFile = new File("c:\\Android" + File.separator + m_project.getBuildResultFileName());
+                    File resultFile = new File(getSelectedDirectory() + File.separator + m_project.getBuildResultFileName());
                     FileOutputStream foStream = new FileOutputStream(resultFile);
                     os.writeTo(foStream);
                     
@@ -77,7 +87,7 @@ public class CheckBuildStatusTask extends RunTask
                     
                     monitor.worked(1);
                     
-                    if (DialogUtils.confirm("Build result", "Build is download to your compter open file?"))
+                    if (DialogUtils.confirm("Build result", "File with application build is download to your computer, open file?"))
                     {
                         Desktop.getDesktop().open(resultFile);
                     }                    

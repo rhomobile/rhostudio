@@ -8,32 +8,12 @@ import rhogenwizard.sdk.task.RubyCodeExecTask;
 
 public class CreateAppTask extends RubyCodeExecTask
 {
-    private static String getAppParams(String appName)
-    {
-        try
-        {
-            JSONObject createOptions = new JSONObject();
-            createOptions.put("name", appName);
-            
-            JSONObject wrapObject = new JSONObject();
-            wrapObject.put("app", createOptions);
-            
-            return "\"" + wrapObject.toString().replaceAll("\\\"", "\\\\\"") + "\"";
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-    
     public CreateAppTask(IRhoHubSetting setting, String appName)
     {
         super("require 'rhohub'", 
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
-              "puts Rhohub::App.create(" + getAppParams(appName) + ")");
+              "puts Rhohub::App.create({:app => {:name => \'" + appName + "\', :app_type => \'rhodes\'}})");
     }
 
     public JSONObject getOutputAsJSON() throws JSONException
