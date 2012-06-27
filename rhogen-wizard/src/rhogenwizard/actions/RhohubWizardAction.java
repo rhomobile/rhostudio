@@ -19,6 +19,7 @@ import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
+import rhogenwizard.wizards.rhohub.BuildWizard;
 import rhogenwizard.wizards.rhohub.LinkWizard;
 
 public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
@@ -51,11 +52,6 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             return;
         }
 
-        LinkWizard linkWizard = new LinkWizard(project);
-        
-        if (createWizardDialog(linkWizard) == Window.CANCEL)
-            return;
-/*
         if (!checkProjectProperties(project))
         {
             if (DialogUtils.confirm("Project setting", "For project " + project.getName() + 
@@ -71,10 +67,9 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
                 return;
             }
         }
-
+        
         BuildWizard  buildWizard =  new BuildWizard(project);
         createWizardDialog(buildWizard);
-        */
     }
     
     int createWizardDialog(IWizard wizard)
