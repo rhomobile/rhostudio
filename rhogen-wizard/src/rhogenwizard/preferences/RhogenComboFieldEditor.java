@@ -3,7 +3,6 @@ package rhogenwizard.preferences;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -99,12 +98,6 @@ public class RhogenComboFieldEditor extends FieldEditor
 	
 	protected void doFillIntoGrid(final Composite parent, int numColumns) 
 	{
-		int comboC = 1;
-		if (numColumns > 1) 
-		{
-			comboC = numColumns - 1;
-		}
-		
 		Control control = getLabelControl(parent);
 		GridData gd = new GridData();
 		gd.horizontalSpan = 1;
@@ -140,9 +133,6 @@ public class RhogenComboFieldEditor extends FieldEditor
 		});
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.preference.FieldEditor#doLoad()
-	 */
 	protected void doLoad() 
 	{
 		updateComboForValue(getPreferenceStore().getString(getPreferenceName()));

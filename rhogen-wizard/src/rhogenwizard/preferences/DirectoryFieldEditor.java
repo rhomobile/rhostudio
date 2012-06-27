@@ -8,11 +8,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
-public class RhogenDirectoryFieldEditor extends StringButtonFieldEditor 
+public class DirectoryFieldEditor extends StringButtonFieldEditor 
 {
     private File filterPath = null;
 
-    protected RhogenDirectoryFieldEditor() 
+    protected DirectoryFieldEditor() 
     {
     }
 
@@ -23,7 +23,7 @@ public class RhogenDirectoryFieldEditor extends StringButtonFieldEditor
      * @param labelText the label text of the field editor
      * @param parent the parent of the field editor's control
      */
-    public RhogenDirectoryFieldEditor(String name, String labelText, Composite parent) 
+    public DirectoryFieldEditor(String name, String labelText, Composite parent) 
     {
         init(name, labelText);
         setErrorMessage(JFaceResources
@@ -61,10 +61,11 @@ public class RhogenDirectoryFieldEditor extends StringButtonFieldEditor
     {
         String fileName = getTextControl().getText();
         fileName = fileName.trim();
+        
         if (fileName.length() == 0 && isEmptyStringAllowed()) {
 			return true;
 		}
-        File file = new File(fileName);
+
         return true;
     }
 

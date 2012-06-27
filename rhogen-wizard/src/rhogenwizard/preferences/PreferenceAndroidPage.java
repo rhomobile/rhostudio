@@ -1,20 +1,15 @@
 package rhogenwizard.preferences;
 
-import org.eclipse.jface.preference.*;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
-import rhogenwizard.buildfile.SdkYmlAdapter;
-import rhogenwizard.buildfile.SdkYmlFile;
-import rhogenwizard.buildfile.YmlFile;
 import rhogenwizard.constants.MsgConstants;
 
-public class RhogenPreferencePageWm extends BasePreferencePage 
+public class PreferenceAndroidPage extends BasePreferencePage 
 {
 	PreferenceInitializer m_pInit = null;
 	
-	public RhogenPreferencePageWm() 
+	public PreferenceAndroidPage() 
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -25,16 +20,7 @@ public class RhogenPreferencePageWm extends BasePreferencePage
 	public boolean performOk()
 	{
 		boolean ret = super.performOk();
-
-		try 
-		{
-			m_pInit.savePreferences();
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-
+		m_pInit.savePreferences();
 		return ret;
 	}
 
@@ -48,16 +34,13 @@ public class RhogenPreferencePageWm extends BasePreferencePage
 	{
 		checkRhodesSdk();
 		
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.cabWizardPath, 
-				"&Cab wizard path:", getFieldEditorParent()));
-				
-		addField(new FileFieldEditor(PreferenceConstants.vcBuildPath, 
-				"&VS build tool path:", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceConstants.androidSdkParh, 
+				"&Android SDK:", getFieldEditorParent()));
+		
+		addField(new DirectoryFieldEditor(PreferenceConstants.androidNdkPath, 
+				"&Android NDK:", getFieldEditorParent()));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	public void init(IWorkbench workbench) 
 	{
 		m_pInit = PreferenceInitializer.getInstance();

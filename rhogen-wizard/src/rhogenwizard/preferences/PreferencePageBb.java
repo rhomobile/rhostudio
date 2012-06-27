@@ -1,36 +1,29 @@
 package rhogenwizard.preferences;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.preference.*;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
-import rhogenwizard.ConsoleHelper;
-import rhogenwizard.buildfile.SdkYmlAdapter;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.MsgConstants;
 
 
-public class RhogenPreferencePageBb extends BasePreferencePage implements IItemAddedNotifier
+public class PreferencePageBb extends BasePreferencePage implements IItemAddedNotifier
 {
 	private static final String newVersionLabel = "New version";
 	
-	private PreferenceInitializer       m_pInit = null;
-	private RhogenComboFieldEditor 	    m_selectCombo = null;
-	private RhogenDirectoryFieldEditor 	m_jdkDir = null;
-	private RhogenDirectoryFieldEditor 	m_mdsDir = null;
-	private StringFieldEditor 		    m_simPort = null;
-	private StringFieldEditor           m_bbVer = null;
-	private int                         m_selComboItem = 0;
+	private PreferenceInitializer   m_pInit = null;
+	private RhogenComboFieldEditor 	m_selectCombo = null;
+	private DirectoryFieldEditor 	m_jdkDir = null;
+	private DirectoryFieldEditor 	m_mdsDir = null;
+	private StringFieldEditor 		m_simPort = null;
+	private int                     m_selComboItem = 0;
 	
-	public RhogenPreferencePageBb() 
+	public PreferencePageBb() 
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -142,11 +135,11 @@ public class RhogenPreferencePageBb extends BasePreferencePage implements IItemA
 		
 		addField(m_selectCombo);
 		
-		m_jdkDir = new RhogenDirectoryFieldEditor(PreferenceConstants.bbJdkPath, 
+		m_jdkDir = new DirectoryFieldEditor(PreferenceConstants.bbJdkPath, 
 				"&Blackbery JDE path:", getFieldEditorParent());
 		addField(m_jdkDir);
 		
-		m_mdsDir = new RhogenDirectoryFieldEditor(PreferenceConstants.bbMdsPath, 
+		m_mdsDir = new DirectoryFieldEditor(PreferenceConstants.bbMdsPath, 
 				"&Blackbery MDS path:", getFieldEditorParent());
 		addField(m_mdsDir);
 		

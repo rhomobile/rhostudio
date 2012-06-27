@@ -1,17 +1,15 @@
 package rhogenwizard.preferences;
 
-import java.util.List;
-
 import org.eclipse.ui.IWorkbench;
 import rhogenwizard.Activator;
 import rhogenwizard.constants.MsgConstants;
 
-public class RhogenPreferencePage extends BasePreferencePage 
+public class PreferencePage extends BasePreferencePage 
 {
-	PreferenceInitializer		   m_pInit = null;
-	private RhogenComboFieldEditor m_selectCombo = null;
+    private PreferenceInitializer		   m_pInit = null;
+	//private RhogenComboFieldEditor m_selectCombo = null;
 	
-	public RhogenPreferencePage() 
+	public PreferencePage() 
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -26,23 +24,23 @@ public class RhogenPreferencePage extends BasePreferencePage
 		return ret;
 	}
 
-	private String[][] prepareComboItems()
-	{
-		checkRhodesSdk();
-		
-		List<String> projNames = PreferenceInitializer.getInstance().getRhodesProjects();
-		
-		String[][] comboItems = new String[projNames.size()][];
-		
-		for (int i=0; i<projNames.size(); ++i)
-		{
-			String ver = projNames.get(i);
-			String[] newItem = {ver, ver};
-			comboItems[i] = newItem;
-		}
-		
-		return comboItems;
-	}
+//	private String[][] prepareComboItems()
+//	{
+//		checkRhodesSdk();
+//		
+//		List<String> projNames = PreferenceInitializer.getInstance().getRhodesProjects();
+//		
+//		String[][] comboItems = new String[projNames.size()][];
+//		
+//		for (int i=0; i<projNames.size(); ++i)
+//		{
+//			String ver = projNames.get(i);
+//			String[] newItem = {ver, ver};
+//			comboItems[i] = newItem;
+//		}
+//		
+//		return comboItems;
+//	}
 	
 	/**
 	 * Creates the field editors. Field editors are abstractions of
@@ -52,8 +50,8 @@ public class RhogenPreferencePage extends BasePreferencePage
 	 */
 	public void createFieldEditors() 
 	{
-		String[][] comboItems = prepareComboItems();
-		
+//		String[][] comboItems = prepareComboItems();
+//		
 //		if (comboItems == null)
 //		{
 //			String[][] emptyComboItems = {{"",""}};
@@ -80,13 +78,10 @@ public class RhogenPreferencePage extends BasePreferencePage
 //		});
 //		addField(m_selectCombo);
 		
-		addField(new RhogenDirectoryFieldEditor(PreferenceConstants.javaPath, 
+		addField(new DirectoryFieldEditor(PreferenceConstants.javaPath, 
 				"&Java bin path:", getFieldEditorParent()));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	public void init(IWorkbench workbench) 
 	{
 		m_pInit = PreferenceInitializer.getInstance();
