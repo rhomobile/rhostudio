@@ -24,7 +24,6 @@
                id="rhostudio.actions.productionBuildAction">
          </action>
          
-         <!--
          <action
                label="Rhohub build"
                icon="icons/sample16.png"
@@ -33,7 +32,6 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.generateSpecAction">
          </action>
-         -->
          
          <!-- move to wizards
          <action
@@ -353,6 +351,12 @@
             class="rhogenwizard.preferences.RhogenPreferencePageWm"
             id="rhogen-wizard.page3"
             name="Windows Mobile">
+      </page>
+      <page
+            category="rhogenwizard.preferences.RhogenPreferencePage"
+            class="rhogenwizard.preferences.PreferencesPageRhoHub"
+            id="rhogen-wizard.page4"
+            name="RhoHub">
       </page>
     </extension>
 
