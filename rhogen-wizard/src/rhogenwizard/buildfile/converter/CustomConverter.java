@@ -30,13 +30,13 @@ public class CustomConverter extends AbstractStructureConverter
 	{
 		StringBuilder sb = new StringBuilder();
 		
-	    Iterator it = m_dataStructure.entrySet().iterator();
+	    Iterator<Map.Entry<Object, Object>> it = m_dataStructure.entrySet().iterator();
 	    
 	    while (it.hasNext()) 
 	    {
-	        Map.Entry pairs = (Map.Entry)it.next();
+	        Map.Entry<Object, Object> pairs = it.next();
 	        
-	        Object key = (Object) pairs.getKey();
+	        Object key = pairs.getKey();
 	        Object val = pairs.getValue();
 	        
 	        if (key != null)
@@ -239,8 +239,8 @@ public class CustomConverter extends AbstractStructureConverter
 		}
 	}
 	
-	@Override
-	public Map getDataStorage(String filePath) throws FileNotFoundException 
+    @Override
+	public Map<Object, Object> getDataStorage(String filePath) throws FileNotFoundException
 	{
 		File       ymlFile = new File(filePath);
 		Yaml       yaml    = new Yaml();		
@@ -248,6 +248,12 @@ public class CustomConverter extends AbstractStructureConverter
 
 		fillCommentsMap(filePath);
 		
-		return (Map) yaml.load(fr);		
+		return cast(yaml.load(fr));
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<Object, Object> cast(Object mapObject)
+	{
+        return (Map<Object, Object>) mapObject;
 	}
 }
