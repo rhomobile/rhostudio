@@ -1,5 +1,8 @@
 package rhogenwizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum PlatformType
 {
     eWm("wm", "Windows Mobile"),
@@ -8,7 +11,7 @@ public enum PlatformType
     eIPhone("iphone", "iPhone"),
     eWp7("wp", "Windows Phone"),
     eSymbian("symbian", "Symbian"),
-    eRsync("", ""),
+    eRsync("", null),
     eUnknown(null, null);
 
     public final String id;
@@ -22,18 +25,39 @@ public enum PlatformType
         this.publicId = publicId;
     }
 
+    public static String[] getPublicIds()
+    {
+        List<String> list = new ArrayList<String>();
+        for (PlatformType pt : PlatformType.values())
+        {
+            list.add(pt.publicId);
+        }
+        return list.toArray(new String[0]);
+    }
+
     @Override
     public String toString()
     {
         return id;
     }
 
-    public static PlatformType fromString(String newPlatform)
+    public static PlatformType fromId(String id)
     {
-        String id = newPlatform.toLowerCase();
         for (PlatformType pt : PlatformType.values())
         {
-            if (id.equals(pt.id) || id.equals(pt.publicId.toLowerCase()))
+            if (id.equals(pt.id))
+            {
+                return pt;
+            }
+        }
+        return PlatformType.eUnknown;
+    }
+
+    public static PlatformType fromPublicId(String publicId)
+    {
+        for (PlatformType pt : PlatformType.values())
+        {
+            if (publicId.equals(pt.publicId))
             {
                 return pt;
             }

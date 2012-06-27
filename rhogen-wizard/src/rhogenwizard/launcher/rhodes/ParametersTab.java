@@ -1,7 +1,6 @@
 package rhogenwizard.launcher.rhodes;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +43,6 @@ public class ParametersTab extends  JavaLaunchTab
 {
 	private static int    minTabSize      = 650;
 		
-	private static String platformItems[] = {  "Android", 
-									           "iPhone", 
-									           "Windows Mobile",
-									           "Blackberry",
-									           "Windows phone",
-									           "Symbian" };
-	
 	protected static String androidVersions[] = { "1.6",
 											    "2.1",
 											    "2.2",
@@ -72,8 +64,6 @@ public class ParametersTab extends  JavaLaunchTab
 	private static int simRhosimulatorIndex = 0;
 	private static int simSimulatorIndex = 1;
 	private static int simDeviceIndex = 2;
-	
-	private static String bbVersions[] = {};
 	
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
@@ -106,7 +96,7 @@ public class ParametersTab extends  JavaLaunchTab
 		Composite namecomp = SWTFactory.createComposite(composite, composite.getFont(), 3, 1, GridData.FILL_HORIZONTAL, 0, 0);
 		
 		// 1 row
-		Label label = SWTFactory.createLabel(namecomp, "&Project name:", 1);
+		SWTFactory.createLabel(namecomp, "&Project name:", 1);
 
 		m_appNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY, 1);	
 		m_appNameText.addModifyListener(new ModifyListener() 
@@ -133,7 +123,7 @@ public class ParametersTab extends  JavaLaunchTab
 		// 2 row
 		SWTFactory.createLabel(namecomp, "Platform:", 1); 
 		
-		m_selectPlatformCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, platformItems);
+		m_selectPlatformCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, PlatformType.getPublicIds());
 		m_selectPlatformCombo.addSelectionListener(new SelectionAdapter()
 		{	
 			@Override
@@ -537,10 +527,6 @@ public class ParametersTab extends  JavaLaunchTab
 		{
 			e.printStackTrace();
 		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		} 
 	}
 	
 	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
@@ -764,12 +750,9 @@ public class ParametersTab extends  JavaLaunchTab
 	{
 		try
 		{
-			String androidVersion = m_ymlFile.getAndroidVer();
-			String bbVersion      = m_ymlFile.getBlackberryVer();
-			
 			String selPlatform = m_configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
 			
-			PlatformType type = PlatformType.fromString(selPlatform);
+			PlatformType type = PlatformType.fromId(selPlatform);
 			
 			if (type == PlatformType.eAndroid)
 			{
@@ -863,29 +846,10 @@ public class ParametersTab extends  JavaLaunchTab
 	
 	private void encodePlatformInformation(String selPlatform)
 	{
-		if (selPlatform.equals(platformItems[0]))
+		PlatformType pt = PlatformType.fromPublicId(selPlatform);
+		if (pt != PlatformType.eUnknown)
 		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eAndroid.id);
-		}
-		else if (selPlatform.equals(platformItems[1]))
-		{		
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eIPhone.id);
-		}
-		else if (selPlatform.equals(platformItems[2]))
-		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eWm.id);
-		}	
-		else if (selPlatform.equals(platformItems[3]))
-		{			
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eBb.id);
-		}
-		else if (selPlatform.equals(platformItems[4]))
-		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eWp7.id);
-		}
-		else if (selPlatform.equals(platformItems[5]))
-		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eSymbian.id);
+			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, pt.id);
 		}
 		
 		setPlatformVersionCombo(m_configuration);

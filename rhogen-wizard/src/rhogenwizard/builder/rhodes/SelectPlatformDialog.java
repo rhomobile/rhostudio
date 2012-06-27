@@ -23,15 +23,6 @@ public class SelectPlatformDialog extends Dialog
 	private static final int buttonWidht = 60;
 	private static final int comboWidht = 300;
 	
-	private static final String[] platformTypes = {
-		PlatformType.eWm.publicId,
-		PlatformType.eAndroid.publicId,
-		PlatformType.eBb.publicId,
-		PlatformType.eIPhone.publicId,
-		PlatformType.eWp7.publicId,
-		PlatformType.eSymbian.publicId
-	};
-	 
 	private Combo  m_platfromCombo = null;
 
 	public SelectPlatformDialog(Shell parent) 
@@ -57,7 +48,7 @@ public class SelectPlatformDialog extends Dialog
 		rowContainer1.setLayout(new RowLayout());
 
 		m_platfromCombo = new Combo(rowContainer1, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.SIMPLE);
-		m_platfromCombo.setItems(platformTypes);
+		m_platfromCombo.setItems(PlatformType.getPublicIds());
 		m_platfromCombo.select(0);
 		m_platfromCombo.setLayoutData(comboAligment);
 		
@@ -126,6 +117,6 @@ public class SelectPlatformDialog extends Dialog
 	
 	protected void handleOk()
 	{
-		m_selectPlaform = PlatformType.fromString(m_platfromCombo.getText());		
+		m_selectPlaform = PlatformType.fromPublicId(m_platfromCombo.getText());
 	}	
 }
