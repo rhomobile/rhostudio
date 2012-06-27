@@ -4,7 +4,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
+
+import rhogenwizard.Activator;
 
 
 public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
@@ -38,13 +41,23 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getToken()
     {
-        return m_projectSetting.get(rhoHubToken, "");
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        if (store == null)
+            return "";
+        
+        return store.getString(rhoHubToken);
     }
 
     @Override
     public String getServerUrl()
     {
-        return m_projectSetting.get(rhoHubUrl, "");
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        if (store == null)
+            return "";
+        
+        return store.getString(rhoHubUrl);
     }
 
     @Override
@@ -68,15 +81,23 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public void setToken(String value) throws BackingStoreException
     {
-        m_projectSetting.put(rhoHubToken, value);
-        m_projectSetting.flush();
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        
+        if (store == null)
+            return;
+        
+        store.setValue(rhoHubToken, value);
     }
     
     @Override
     public void setServerUrl(String value) throws BackingStoreException
     {
-        m_projectSetting.put(rhoHubUrl, value);
-        m_projectSetting.flush();
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        
+        if (store == null)
+            return;
+        
+        store.setValue(rhoHubUrl, value);
     }
 
     @Override

@@ -81,6 +81,9 @@ public class RemoteProjectsList extends AbstractCollection<IRemoteProjectDesc>
     @Override
     public int size()
     {
+        if (m_projectDescs == null)
+            return 0;
+        
         return m_projectDescs.length();
     }
 }

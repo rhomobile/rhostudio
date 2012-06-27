@@ -37,4 +37,19 @@ public class RemotePlatformDesc
     {
         return m_publicName;
     }
+    
+    public String getPlatformName()
+    {
+        return m_publicName.split("\\-")[0];
+    }
+    
+    public String getPlatformVersion()
+    {
+        String[] components = m_publicName.split("\\-");
+        
+        if (components.length > 1) 
+            return m_publicName.split("\\-")[1];
+        else
+            return m_publicName.split("\\-")[0];
+    }
 }

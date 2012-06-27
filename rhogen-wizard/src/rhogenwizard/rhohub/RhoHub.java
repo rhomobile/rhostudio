@@ -16,17 +16,15 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
-import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 import org.eclipse.jgit.lib.StoredConfig;
-import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.URIish;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.rhohub.AppListTask;
 import rhogenwizard.sdk.task.rhohub.BuildApp;
+import rhogenwizard.sdk.task.rhohub.CreateAppTask;
 import rhogenwizard.sdk.task.rhohub.PlatformListTask;
 import rhogenwizard.sdk.task.rhohub.ShowBuildTask;
 
@@ -52,13 +50,13 @@ public class RhoHub implements IRhoHub
         return task.isOk();
     }
         
-    private JSONArray getAppList() throws CoreException, JSONException
+    private JSONArray getAppList() throws CoreException, JSONException, InterruptedException
     {
         if (rhohubConfiguration == null)
             return null;
         
         AppListTask task = new AppListTask(rhohubConfiguration);
-        task.run();
+        task.runAndWaitJob("Getting remote applications list");
         
         if (!task.isOk())
             return null;
@@ -66,7 +64,7 @@ public class RhoHub implements IRhoHub
         return task.getOutputAsJSON();
     }
     
-    private JSONArray getRemotePlatformList() throws CoreException, JSONException
+    private JSONArray getRemotePlatformList() throws CoreException, JSONException, InterruptedException
     {
         if (rhohubConfiguration == null)
             return null;
@@ -115,6 +113,10 @@ public class RhoHub implements IRhoHub
         {
             e.printStackTrace();
         }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
 
         return null;
     }
@@ -139,11 +141,7 @@ public class RhoHub implements IRhoHub
         return task.isOk();
     }
     
-    public void initGitRepo(IProject project)
-    {
-    }
-    
-    private void replaceRemoteSourcesFromLocal(IProject project, final String userPwd, final String remoteGitRepo)
+    private boolean replaceRemoteSourcesFromLocal(IProject project, final String remoteGitRepo, final CredentialsProvider credProvider) throws InvalidRemoteException
     {
         InitCommand initCmd = Git.init();
         
@@ -172,27 +170,10 @@ public class RhoHub implements IRhoHub
             
             PushCommand pushCmd = localRepo.push();
             pushCmd.setForce(true);
-            pushCmd.setCredentialsProvider(new CredentialsProvider()
-            {
-                @Override
-                public boolean supports(CredentialItem... arg0) {
-                    return false;
-                }
-                
-                @Override
-                public boolean isInteractive() {
-                    return false;
-                }
-                
-                @Override
-                public boolean get(URIish arg0, CredentialItem... arg1) throws UnsupportedCredentialItem
-                {
-                    CredentialItem.StringType pwdCred = (CredentialItem.StringType )arg1[0];
-                    pwdCred.setValue(userPwd);
-                    return true;
-                }
-            });
+            pushCmd.setCredentialsProvider(credProvider);
             pushCmd.call();
+            
+            return true;
         }
         catch (IOException e)
         {
@@ -222,21 +203,33 @@ public class RhoHub implements IRhoHub
         {
             e.printStackTrace();
         }
-        catch (InvalidRemoteException e)
-        {
-            e.printStackTrace();
-        }
+        
+        return false;
     }
     
     @Override
-    public boolean pullRemoteAppSources(IRemoteProjectDesc project)
+    public boolean pushSourcesToRemote(IRemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException
     {
-        return false;
-    }
+        try
+        {
+            Git localRepo = Git.open((File) project.getProject().getLocation());
+            
+            PushCommand pushCmd = localRepo.push();
+            pushCmd.setForce(true);
+            pushCmd.setCredentialsProvider(credProvider);
+            pushCmd.call();
+            
+            return true;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (JGitInternalException e)
+        {
+            e.printStackTrace();
+        }
 
-    @Override
-    public boolean pushSourcesToRemote(IRemoteProjectDesc project)
-    {
         return false;
     }
 
@@ -282,6 +275,10 @@ public class RhoHub implements IRhoHub
         {
             e.printStackTrace();
         }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
 
         return null;       
     }
@@ -290,5 +287,54 @@ public class RhoHub implements IRhoHub
     public boolean isRemoteProjectExist(IProject project)
     {
         return findRemoteApp(project) == null ? false : true;
+    }
+
+    @Override
+    public RemoteProjectsList getProjectsList() throws CoreException, JSONException, InterruptedException
+    {
+        return new RemoteProjectsList (getAppList());
+    }
+
+    @Override
+    public boolean pullRemoteAppSources(IRemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    private NewRemoteProjectDesc createRemoteApp(IProject project) throws JSONException
+    {
+        CreateAppTask task = new CreateAppTask(rhohubConfiguration, project.getName());
+        task.run();
+        
+        return new NewRemoteProjectDesc(task.getOutputAsJSON());
+    }
+    
+    @Override
+    public IRemoteProjectDesc createRemoteAppFromLocalSources(IProject project, final CredentialsProvider credProvider) throws InvalidRemoteException
+    {
+        try
+        {
+            NewRemoteProjectDesc newProjectDesc = createRemoteApp(project);
+            
+            return updateRemoteAppFromLocalSources(project, newProjectDesc.getGitRepo(), credProvider);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
+    @Override
+    public IRemoteProjectDesc updateRemoteAppFromLocalSources(IProject project, String gitRepoUrl, CredentialsProvider credProvider) throws InvalidRemoteException
+    {
+        if (replaceRemoteSourcesFromLocal(project, gitRepoUrl, credProvider))
+        {
+            return findRemoteApp(project);
+        }
+        
+        return null;
     }
 }
