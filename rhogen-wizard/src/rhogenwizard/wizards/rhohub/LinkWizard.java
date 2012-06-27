@@ -7,10 +7,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+
+import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
+import rhogenwizard.rhohub.GitCredentialsProvider;
+import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.wizards.BaseAppWizard;
 
@@ -19,6 +24,7 @@ public class LinkWizard extends BaseAppWizard
     private LinkProjectPage m_pageLink    = null;
     
     private IProject        m_selectedProject = null;
+    private IRhoHubSetting  m_setting = null;
     
     public LinkWizard(IProject project)
     {
@@ -26,6 +32,8 @@ public class LinkWizard extends BaseAppWizard
         setNeedsProgressMonitor(true);
         
         m_selectedProject = project;
+        
+        m_setting = RhoHubBundleSetting.createGetter(m_selectedProject);
     }
 
     /**
@@ -33,7 +41,7 @@ public class LinkWizard extends BaseAppWizard
      */
     public void addPages()
     {       
-        m_pageLink = new LinkProjectPage(m_selectedProject);
+        m_pageLink = new LinkProjectPage(m_selectedProject, m_setting);
 
         addPage(m_pageLink);
     }
@@ -96,12 +104,17 @@ public class LinkWizard extends BaseAppWizard
         try
         {
             monitor.beginTask("Start building on rhohub server", 1);
-                        
-            IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_selectedProject);
 
-            if (store != null)
+            if (m_pageLink.isNewProject())
             {
-
+                RhoHub.getInstance(m_setting).createRemoteAppFromLocalSources(m_selectedProject, new GitCredentialsProvider());
+            }
+            else
+            {
+                if (DialogUtils.quetsion("RhoHub", "Sources from remote project on RhoHub will be replaced on local sources. Contionue?"))
+                {
+                    RhoHub.getInstance(m_setting).updateRemoteAppFromLocalSources(m_selectedProject, m_pageLink.getSelectedProjectUrl(), new GitCredentialsProvider());
+                }
             }
             
             ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective",

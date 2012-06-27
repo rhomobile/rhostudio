@@ -22,7 +22,6 @@ import rhogenwizard.wizards.BaseAppWizard;
 
 public class BuildWizard extends BaseAppWizard
 {
-    private BuildCredentialPage m_pageCred    = null;
     private BuildSettingPage    m_pageSetting = null;
     
     private IProject            m_selectedProject = null;
@@ -40,10 +39,8 @@ public class BuildWizard extends BaseAppWizard
      */
     public void addPages()
     {       
-        m_pageCred    = new BuildCredentialPage(m_selectedProject);
         m_pageSetting = new BuildSettingPage(m_selectedProject);
         
-        addPage(m_pageCred);
         addPage(m_pageSetting);
     }
 

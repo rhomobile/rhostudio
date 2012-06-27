@@ -1,5 +1,10 @@
 package rhogenwizard.wizards.rhohub;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -9,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -23,7 +26,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 
-import rhogenwizard.Activator;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
@@ -55,16 +57,38 @@ class RemotePlatformAdapter implements Callable<RemotePlatformList>
 
 public class BuildSettingPage extends WizardPage 
 {
+    private class PlatfromInfoHolder
+    {
+        public PlatfromInfoHolder(String platformVersion, RemotePlatformDesc pl)
+        {
+            plVersion      = platformVersion;
+            remotePlatform = pl;
+        }
+        
+        public String             plVersion      = null;
+        public RemotePlatformDesc remotePlatform = null;
+    }
+
     private static int waitTimeOutRhoHubServer = 5;
     
     private IProject m_project = null;
+    private Map<String, List<PlatfromInfoHolder>> m_platformsInfo = null;
     
     private Combo m_comboPlatforms         = null;
-    private Combo m_comboRhodesAppVersions = null;
+    private Combo m_comboPlatformVersions  = null;
     private Text  m_textAppBranch          = null;
+    private Text  m_textRhodesBranch       = null;
     
     private RemotePlatformList         m_remotePlatforms = null;
     private Future<RemotePlatformList> m_getPlatfomListFuture = null;
+    
+    void enableControls(boolean enable)
+    {
+        m_comboPlatforms.setEnabled(enable);
+        m_comboPlatformVersions.setEnabled(enable);
+        m_textAppBranch.setEnabled(enable);
+        m_textRhodesBranch.setEnabled(enable);
+    }
     
     /**
      * Constructor for SampleNewWizardPage.
@@ -83,14 +107,14 @@ public class BuildSettingPage extends WizardPage
     @Override
     public void setVisible(boolean visible)
     {
+        super.setVisible(visible);
+        
         try
         {
             updateStatus("Please wait until the server request.");
             
             m_remotePlatforms = m_getPlatfomListFuture.get(waitTimeOutRhoHubServer, TimeUnit.MINUTES);            
             initializePlatformsCombo();
-            
-            updateStatus("Please select parameters.");
         }
         catch (InterruptedException e)
         {
@@ -98,67 +122,41 @@ public class BuildSettingPage extends WizardPage
         }
         catch (ExecutionException e)
         {
-            DialogUtils.error("Error", "Not response from Rhohub server. Please try run build sometime later.");
+            DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
             e.printStackTrace();
         }
         catch (TimeoutException e)
         {
-            DialogUtils.error("Error", "Not response from Rhohub server. Please try run build sometime later.");
+            DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
             e.printStackTrace();
         }
-        
-        super.setVisible(visible);
+ 
+        enableControls(true);
     }
 
     public void createAppSettingBarControls(Composite composite)
     {   
-        GridLayout layout = new GridLayout(3, false);
+        GridLayout layout = new GridLayout(4, true);
         layout.verticalSpacing = 9;
         
         composite.setLayout(layout);
         
-        GridData textAligment = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
-        
-        GridData checkBoxAligment = new GridData();
-        checkBoxAligment.horizontalAlignment = GridData.FILL;
-        checkBoxAligment.horizontalSpan = 3;
-                    
+        GridData textAligment = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);        
+                   
         // 1 row
         Label label = new Label(composite, SWT.NULL);
-        label.setText("&Platform:");
-        
-        m_comboPlatforms = new Combo(composite, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
-        m_comboPlatforms.setLayoutData(textAligment);
-        m_comboPlatforms.addModifyListener(new ModifyListener() 
-        {
-            public void modifyText(ModifyEvent e) 
-            {
-                dialogChanged();
-            }
-        });
-        
+        label.setText("&App branch:");
+
         label = new Label(composite, SWT.NULL);
-        
+        label.setText("&Rhodes branch:");
+
+        label = new Label(composite, SWT.NULL);
+        label.setText("&Targer device:");
+
+        label = new Label(composite, SWT.NULL);
+        label.setText("&Platform version:");
+
         // 2 row
-        label = new Label(composite, SWT.NULL);
-        label.setText("&Rhodes version:");
-        
-        m_comboRhodesAppVersions = new Combo(composite, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
-        m_comboRhodesAppVersions.setLayoutData(textAligment);
-        m_comboRhodesAppVersions.addModifyListener(new ModifyListener() 
-        {
-            public void modifyText(ModifyEvent e) 
-            {
-                dialogChanged();
-            }
-        });
-        
-        label = new Label(composite, SWT.NULL);
-        
-        // 3 row
-        label = new Label(composite, SWT.NULL);
-        label.setText("&Application branch:");
-        
         m_textAppBranch = new Text(composite, SWT.BORDER | SWT.SINGLE);
         m_textAppBranch.setLayoutData(textAligment);
         m_textAppBranch.addModifyListener(new ModifyListener() 
@@ -168,11 +166,49 @@ public class BuildSettingPage extends WizardPage
                 dialogChanged();
             }
         });
+        
+        m_textRhodesBranch = new Text(composite, SWT.BORDER | SWT.SINGLE);
+        m_textRhodesBranch.setLayoutData(textAligment);
+        m_textRhodesBranch.addModifyListener(new ModifyListener() 
+        {
+            public void modifyText(ModifyEvent e) 
+            {
+                dialogChanged();
+            }
+        });
+        
+        m_comboPlatforms = new Combo(composite, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
+        m_comboPlatforms.setLayoutData(textAligment);
+        m_comboPlatforms.addModifyListener(new ModifyListener() 
+        {
+            public void modifyText(ModifyEvent e) 
+            {
+                List<PlatfromInfoHolder> versions = m_platformsInfo.get(m_comboPlatforms.getText());
+                
+                m_comboPlatformVersions.removeAll();
+                
+                for (PlatfromInfoHolder ver : versions)
+                {
+                    m_comboPlatformVersions.add(ver.plVersion);
+                    m_comboPlatformVersions.setData(ver.plVersion, ver.remotePlatform);
+                }
+                m_comboPlatformVersions.select(0);
+            }
+        });
+        
+        m_comboPlatformVersions = new Combo(composite, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
+        m_comboPlatformVersions.setLayoutData(textAligment);
+        m_comboPlatformVersions.addModifyListener(new ModifyListener() 
+        {
+            public void modifyText(ModifyEvent e) 
+            {
+                dialogChanged();
+            }
+        });
+        
+        enableControls(false);
     }
 
-    /**
-     * @see IDialogPage#createControl(Composite)
-     */
     public void createControl(Composite parent) 
     {   
         Composite container = new Composite(parent, SWT.NULL);
@@ -185,36 +221,46 @@ public class BuildSettingPage extends WizardPage
     
     private void initializePlatformsCombo()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-       
-        if (store == null || m_remotePlatforms == null || m_remotePlatforms.size() == 0)
+        if (m_remotePlatforms == null || m_remotePlatforms.size() == 0)
         {
-            DialogUtils.error("Error", "Rhohub server is not avaialible. Please try run build sometime later.");
+            DialogUtils.error("Connect error", "Rhohub server is not avaialible. Please try run build sometime later.");
             
             m_comboPlatforms.setEnabled(false);
-            m_comboRhodesAppVersions.setEnabled(false);            
+            m_comboPlatformVersions.setEnabled(false);            
             this.getShell().close();
             
             return;
         }
         else
         {
-            for (RemotePlatformDesc d : m_remotePlatforms)
-            {
-                m_comboPlatforms.add(d.getPublicName());    
-            }
-            m_comboPlatforms.select(0);
+            m_platformsInfo = new HashMap<String, List<PlatfromInfoHolder>>();  
             
-            String platformText = store.getString(IRhoHubSetting.rhoHubSelectedPlatform);
-                        
-            for (int i=0; i < m_comboPlatforms.getItemCount(); ++i)
+            for (RemotePlatformDesc pl : m_remotePlatforms)
             {
-                if (m_comboPlatforms.getItem(i).equals(platformText))
+                List<PlatfromInfoHolder> plVers = m_platformsInfo.get(pl.getPlatformName());
+                
+                PlatfromInfoHolder item  = new PlatfromInfoHolder(pl.getPlatformVersion(), pl);
+                
+                if (plVers == null)
                 {
-                    m_comboPlatforms.select(i);
-                    break;
+                    plVers = new ArrayList<PlatfromInfoHolder>();
+                    plVers.add(item);
+
+                    m_platformsInfo.put(pl.getPlatformName(), plVers);
+                }
+                else
+                {
+                    plVers.add(item);
                 }
             }
+
+            Set<String> plList = m_platformsInfo.keySet();
+            
+            for (String plName : plList)
+            {
+                m_comboPlatforms.add(plName);    
+            }
+            m_comboPlatforms.select(0);
         }
     }
     
@@ -223,17 +269,13 @@ public class BuildSettingPage extends WizardPage
         setDescription("");
         
         m_comboPlatforms.setEnabled(true);
-        m_comboRhodesAppVersions.setEnabled(true);
+        m_comboPlatformVersions.setEnabled(true);
         
         // run async request to rhohub server
         ExecutorService executor = Executors.newSingleThreadExecutor();
         m_getPlatfomListFuture = executor.submit(new RemotePlatformAdapter(m_project));
 
-        //TODO HOT-FIX - need call enumerate func for rhodes versions
-        m_comboRhodesAppVersions.add("master");
-        m_comboRhodesAppVersions.add("3.3.2");
-        m_comboRhodesAppVersions.select(0);
-        
+        m_textRhodesBranch.setText("3.3.2");
         m_textAppBranch.setText("master");
     }
 
@@ -252,27 +294,23 @@ public class BuildSettingPage extends WizardPage
         {
             IRhoHubSettingSetter store = RhoHubBundleSetting.createSetter(m_project);
             
-            store.setSelectedPlatform("");
-            store.setRhodesBranch(m_comboRhodesAppVersions.getText());
+            store.setRhodesBranch(m_textRhodesBranch.getText());
 
             // if not selected item from list in store stored empty string
-            for (RemotePlatformDesc pl : m_remotePlatforms)
-            {
-                if (pl.getPublicName().equals(m_comboPlatforms.getText()))
-                {
-                    store.setSelectedPlatform(pl.getInternalName());
-                    break;
-                }
-            }
+            RemotePlatformDesc desc = (RemotePlatformDesc) m_comboPlatformVersions.getData(m_comboPlatformVersions.getText());
+            
+            if (desc == null)
+                return;
+            
+            store.setSelectedPlatform(desc.getInternalName());
         }
         catch (BackingStoreException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        updateStatus("Press finish for creation of project");
         updateStatus(null);
+        setMessage("Press finish for start remote project build");
     }
 
     private void updateStatus(String message)

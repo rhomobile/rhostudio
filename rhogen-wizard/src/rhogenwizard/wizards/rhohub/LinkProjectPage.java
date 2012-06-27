@@ -1,6 +1,7 @@
 package rhogenwizard.wizards.rhohub;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -10,31 +11,43 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.json.JSONException;
+
+import rhogenwizard.DialogUtils;
+import rhogenwizard.rhohub.IRemoteProjectDesc;
+import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.RemoteProjectsList;
+import rhogenwizard.rhohub.RhoHub;
 
 public class LinkProjectPage extends WizardPage 
 {
-    private IProject m_project = null;
-
-    Table   m_remoteProjectsList = null;
-    Button m_newAppCheckBox     = null;
+    private static int nameColIdx = 0;
+    private static int urlColIdx = 1;
+    
+    private IProject       m_project = null;
+    private IRhoHubSetting m_setting = null;
+    private boolean        m_isNewProject = true;
+    
+    private Table  m_remoteProjectsList = null;
+    private Button m_newAppCheckBox     = null;
         
     /**
      * Constructor for SampleNewWizardPage.
      * 
      * @param pageName
      */
-    public LinkProjectPage(IProject project) 
+    public LinkProjectPage(IProject project, IRhoHubSetting setting) 
     {
         super("wizardPage");
         setTitle("Link application with rhohub project wizard");
         setDescription("Link application with rhohub project wizard");
         
         m_project = project;
+        m_setting = setting;
     }
 
     public void createAppSettingBarControls(Composite composite)
@@ -43,8 +56,9 @@ public class LinkProjectPage extends WizardPage
         layout.verticalSpacing = 9;
         
         composite.setLayout(layout);
-        
-        GridData textAligment = new GridData(GridData.FILL_VERTICAL | GridData.FILL_HORIZONTAL);
+                
+        GridData tableAligment = new GridData(SWT.FILL, SWT.FILL, true, true);
+        tableAligment.heightHint = 200;
         
         GridData checkBoxAligment = new GridData();
         checkBoxAligment.horizontalAlignment = GridData.FILL;
@@ -52,8 +66,8 @@ public class LinkProjectPage extends WizardPage
         
         // 1 row
         m_newAppCheckBox = new Button(composite, SWT.CHECK);
-        m_newAppCheckBox.setText("Use RhoElements");
-        m_newAppCheckBox.setSelection(false);
+        m_newAppCheckBox.setText("Create new project on RhoHub server");
+        m_newAppCheckBox.setSelection(m_isNewProject);
         m_newAppCheckBox.setLayoutData(checkBoxAligment);
         m_newAppCheckBox.addSelectionListener(new SelectionAdapter() 
         {
@@ -68,21 +82,19 @@ public class LinkProjectPage extends WizardPage
         label.setText("Select project on RhoHub for linking:");
 
         // 3 row
-        m_remoteProjectsList = new Table (composite, SWT.VIRTUAL | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-        m_remoteProjectsList.setItemCount (100);
-        m_remoteProjectsList.setLayoutData(textAligment);
+        m_remoteProjectsList = new Table (composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+        m_remoteProjectsList.setLayoutData(tableAligment);
         m_remoteProjectsList.setEnabled(true);
-        m_remoteProjectsList.addListener (SWT.SetData, new Listener () 
-        {
-            public void handleEvent (Event event) 
-            {
-                //TODO - temp sol.
-                TableItem item = (TableItem) event.item;
-                int index = m_remoteProjectsList.indexOf (item);
-                item.setText ("Item " + index);
-                System.out.println (item.getText ());
-            }
-        });  
+        m_remoteProjectsList.setHeaderVisible(true);
+        m_remoteProjectsList.setLinesVisible(true);
+        
+        TableColumn colName = new TableColumn(m_remoteProjectsList, SWT.LEFT);
+        colName.setText("Project name");
+        colName.setWidth(350);
+        
+        TableColumn colUrl  = new TableColumn(m_remoteProjectsList, SWT.LEFT);        
+        colUrl.setText("Project url");
+        colUrl.setWidth(400);
     }
 
     /**
@@ -95,14 +107,48 @@ public class LinkProjectPage extends WizardPage
         createAppSettingBarControls(container);
         
         initialize();
+        dialogChanged();
+        
         setControl(container);
     }
     
     private void initialize() 
     {       
         setDescription("");
-        
-        m_newAppCheckBox.setSelection(true);
+
+        try
+        {
+            RemoteProjectsList remoteProjects = RhoHub.getInstance(m_setting).getProjectsList();
+
+            if (remoteProjects.size() == 0)
+            {
+                DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
+                this.getShell().close();
+                return;
+            }
+            else
+            {
+                for (IRemoteProjectDesc project : remoteProjects)
+                {
+                    TableItem item = new TableItem(m_remoteProjectsList, SWT.NONE);
+                    
+                    item.setText(nameColIdx, project.getName());
+                    item.setText(urlColIdx, project.getGitLink());
+                }
+            }
+        }
+        catch (CoreException e)
+        {
+            e.printStackTrace();
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -112,7 +158,9 @@ public class LinkProjectPage extends WizardPage
     {
         m_remoteProjectsList.setEnabled(!m_newAppCheckBox.getSelection());
         
-        updateStatus("Press finish for creation of project");
+        m_isNewProject = m_newAppCheckBox.getSelection();
+        
+        updateStatus("Press finish for link remote project with local sources");
         updateStatus(null);
     }
 
@@ -120,5 +168,15 @@ public class LinkProjectPage extends WizardPage
     {
         setErrorMessage(message);
         setPageComplete(message == null);
+    }
+        
+    public boolean isNewProject()
+    {
+        return m_isNewProject;
+    }
+    
+    public String getSelectedProjectUrl()
+    {
+        return m_remoteProjectsList.getSelection()[urlColIdx].toString();
     }
 }
