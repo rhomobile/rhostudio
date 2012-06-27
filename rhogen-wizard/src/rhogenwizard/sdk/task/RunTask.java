@@ -55,4 +55,11 @@ public abstract class RunTask
             }
         };
     }
+    
+    public void runAndWaitJob(String name) throws InterruptedException
+    {
+        Job theJob = makeJob(name);
+        theJob.schedule();
+        theJob.join();
+    }
 }
