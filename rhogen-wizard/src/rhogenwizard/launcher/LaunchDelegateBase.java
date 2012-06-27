@@ -129,7 +129,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					    releaseBuild(project, type);
 					}
 					
-					rhodesLogHelper.startLog(PlatformType.fromString(m_platformType), project, type);
+					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, type);
 				} 
 				catch (Exception e) 
 				{
@@ -146,7 +146,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
 		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
-		    PlatformType.fromString(m_platformType), selType, m_isReloadCode, m_isTrace, m_startPathOverride,
+		    PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace, m_startPathOverride,
 		    m_additionalRubyExtensions);
 		task.run();
 		return task.isOk();
@@ -155,7 +155,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
 		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, currProject.getLocation().toOSString(),
-		    currProject.getName(), PlatformType.fromString(m_platformType), m_isReloadCode, m_isTrace,
+		    currProject.getName(), PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace,
 		    m_startPathOverride, m_additionalRubyExtensions);
 		task.run();
 		return task.getDebugProcess();
@@ -175,7 +175,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		if (isClean) 
 		{
-			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), PlatformType.fromString(m_platformType));
+			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), PlatformType.fromId(m_platformType));
 			task.run(monitor);
 		}
 	}
@@ -219,7 +219,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			
 			setupConfigAttributes(configuration);
 			
-			PlatformType currPlType = PlatformType.fromString(m_platformType);
+			PlatformType currPlType = PlatformType.fromId(m_platformType);
 			
 			// stop blackberry simulator
 			if (OSHelper.isWindows() && currPlType == PlatformType.eBb)

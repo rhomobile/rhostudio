@@ -5,9 +5,9 @@ import java.util.Map;
 
 public interface IStructureConverter 
 {
-	Map getDataStorage(String filaPath) throws FileNotFoundException;
+	Map<Object, Object> getDataStorage(String filaPath) throws FileNotFoundException;
 	
-	void applyDataStorage(Map dataStorage);
+	void applyDataStorage(Map<Object, Object> dataStorage);
 	
 	String convertStructure();
 }

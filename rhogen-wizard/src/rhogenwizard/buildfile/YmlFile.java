@@ -3,23 +3,15 @@ package rhogenwizard.buildfile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.yaml.snakeyaml.Yaml;
-
-import rhogenwizard.ConsoleHelper;
 import rhogenwizard.buildfile.converter.CustomConverter;
 import rhogenwizard.buildfile.converter.IStructureConverter;
 
 public class YmlFile
 {
-	private static boolean SNAKE_YAML_SAVE = false;
-	
 	private String              m_filePath = null;
 	private Map                 m_dataStorage = null;
 	private IStructureConverter m_dataConverter = new CustomConverter();

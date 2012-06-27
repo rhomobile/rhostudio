@@ -1,86 +1,67 @@
 package rhogenwizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum PlatformType
 {
-	eWm,
-	eAndroid,
-	eBb,
-	eIPhone,
-	eWp7,
-	eSymbian,
-	eRsync,
-	eUnknown;
+    eWm("wm", "Windows Mobile"),
+    eAndroid("android", "Android"),
+    eBb("bb", "BlackBerry"),
+    eIPhone("iphone", "iPhone"),
+    eWp7("wp", "Windows Phone"),
+    eSymbian("symbian", "Symbian"),
+    eRsync("", null),
+    eUnknown(null, null);
 
-	public static final String platformWinMobile  = "wm";
-	public static final String platformAdroid     = "android";
-	public static final String platformBlackBerry = "bb";
-	public static final String platformIPhone     = "iphone";
-	public static final String platformWp7        = "wp";
-	public static final String platformSymbian    = "symbian";
-	public static final String platformRsync      = "";
-		
-	public static final String platformWinMobilePublic  = "Windows Mobile";
-	public static final String platformAdroidPublic     = "Android";
-	public static final String platformBlackBerryPublic = "BlackBerry";
-	public static final String platformIPhonePublic     = "iPhone";
-	public static final String platformWp7Public        = "Windows Phone";
-	public static final String platformSymbianPublic    = "Symbian";
-	
-	@Override
-	public String toString() 
-	{
-		switch(this)
-		{
-		case eWm:
-			return platformWinMobile;
-		case eAndroid:
-			return platformAdroid;
-		case eBb:
-			return platformBlackBerry;
-		case eIPhone:
-			return platformIPhone;
-		case eWp7:
-			return platformWp7;
-		case eSymbian:
-			return platformSymbian;
-		case eRsync:
-			return platformRsync;
-		}
+    public final String id;
+    public final String publicId;
 
-		return null;
-	}
-	
-	public static PlatformType fromString(String newPlatform)
-	{
-		if (newPlatform.toLowerCase().equals(platformWinMobile) || newPlatform.toLowerCase().equals(platformWinMobilePublic.toLowerCase()))
-		{
-			return PlatformType.eWm;
-		}
-		else if (newPlatform.toLowerCase().equals(platformAdroid) || newPlatform.toLowerCase().equals(platformAdroidPublic.toLowerCase()))
-		{
-			return PlatformType.eAndroid;
-		}
-		else if (newPlatform.toLowerCase().equals(platformBlackBerry) || newPlatform.toLowerCase().equals(platformBlackBerryPublic.toLowerCase()))
-		{
-			return PlatformType.eBb;
-		}
-		else if (newPlatform.toLowerCase().equals(platformIPhone) || newPlatform.toLowerCase().equals(platformIPhonePublic.toLowerCase()))
-		{
-			return PlatformType.eIPhone;
-		}
-		else if (newPlatform.toLowerCase().equals(platformWp7) || newPlatform.toLowerCase().equals(platformWp7Public.toLowerCase()))
-		{
-			return PlatformType.eWp7;
-		}
-		else if (newPlatform.toLowerCase().equals(platformRsync))
-		{
-			return PlatformType.eRsync;
-		}
-		else if (newPlatform.toLowerCase().equals(platformSymbian) || newPlatform.toLowerCase().equals(platformSymbianPublic.toLowerCase()))
-		{
-			return PlatformType.eSymbian;
-		}
-				
-		return PlatformType.eUnknown;		
-	}
+    private PlatformType(String id, String publicId)
+    {
+        assert id.equals(id.toLowerCase());
+
+        this.id = id;
+        this.publicId = publicId;
+    }
+
+    public static String[] getPublicIds()
+    {
+        List<String> list = new ArrayList<String>();
+        for (PlatformType pt : PlatformType.values())
+        {
+            list.add(pt.publicId);
+        }
+        return list.toArray(new String[0]);
+    }
+
+    @Override
+    public String toString()
+    {
+        return id;
+    }
+
+    public static PlatformType fromId(String id)
+    {
+        for (PlatformType pt : PlatformType.values())
+        {
+            if (id.equals(pt.id))
+            {
+                return pt;
+            }
+        }
+        return PlatformType.eUnknown;
+    }
+
+    public static PlatformType fromPublicId(String publicId)
+    {
+        for (PlatformType pt : PlatformType.values())
+        {
+            if (publicId.equals(pt.publicId))
+            {
+                return pt;
+            }
+        }
+        return PlatformType.eUnknown;
+    }
 }
