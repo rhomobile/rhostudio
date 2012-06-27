@@ -24,12 +24,12 @@ public class SelectPlatformDialog extends Dialog
 	private static final int comboWidht = 300;
 	
 	private static final String[] platformTypes = {
-		PlatformType.platformWinMobilePublic,
-		PlatformType.platformAdroidPublic,
-		PlatformType.platformBlackBerryPublic,
-		PlatformType.platformIPhonePublic,
-		PlatformType.platformWp7Public,
-		PlatformType.platformSymbianPublic
+		PlatformType.eWm.publicId,
+		PlatformType.eAndroid.publicId,
+		PlatformType.eBb.publicId,
+		PlatformType.eIPhone.publicId,
+		PlatformType.eWp7.publicId,
+		PlatformType.eSymbian.publicId
 	};
 	 
 	private Combo  m_platfromCombo = null;
