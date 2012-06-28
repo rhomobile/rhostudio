@@ -61,10 +61,6 @@ public class ParametersTab extends  JavaLaunchTab
 		                                       RunType.platformSim,
 		                                       RunType.platformDevice };
 	
-	private static int simRhosimulatorIndex = 0;
-	private static int simSimulatorIndex = 1;
-	private static int simDeviceIndex = 2;
-	
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Combo       m_selectPlatformVersionCombo = null;
@@ -173,7 +169,7 @@ public class ParametersTab extends  JavaLaunchTab
 				        m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 				    {
 				        DialogUtils.warning("Warning", "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.");
-				        m_platformTypeCombo.select(simRhosimulatorIndex); // select rhosimuator 
+				        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
 				        return;
 				    }
 				    
@@ -182,7 +178,7 @@ public class ParametersTab extends  JavaLaunchTab
                         m_selectPlatformCombo.getText().equals(PlatformType.eWin32.publicId))
                     {
                         DialogUtils.warning("Warning", "For Win32 platform we can run only device build.");
-                        m_platformTypeCombo.select(simDeviceIndex); // select device 
+                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); // select device 
                         return;
                     }
                     
@@ -543,26 +539,14 @@ public class ParametersTab extends  JavaLaunchTab
 		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
 		{
 			m_platformTypeCombo.setEnabled(false);
-			m_platformTypeCombo.select(simRhosimulatorIndex);
+			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
 		}
 		else
 		{
 			String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
 			m_platformTypeCombo.setEnabled(true);
-			
-			if (platformType.equals(RunType.platformRhoSim))
-			{
-				m_platformTypeCombo.select(simRhosimulatorIndex);
-			}
-			else if (platformType.equals(RunType.platformSim))
-			{
-				m_platformTypeCombo.select(simSimulatorIndex);
-			}
-			else if (platformType.equals(RunType.platformDevice))
-			{
-				m_platformTypeCombo.select(simDeviceIndex);
-			}
+            m_platformTypeCombo.select(m_platformTypeCombo.indexOf(platformType));
 		}
 	}
 	
