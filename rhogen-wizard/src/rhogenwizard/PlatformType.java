@@ -11,6 +11,7 @@ public enum PlatformType
     eIPhone("iphone", "iPhone"),
     eWp7("wp", "Windows Phone"),
     eSymbian("symbian", "Symbian"),
+    eWin32("win32", "Win32"),
     eRsync("", null),
     eUnknown(null, null);
 

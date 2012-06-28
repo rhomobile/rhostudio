@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.Activator;
-import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
@@ -19,12 +18,9 @@ public class Builder extends IncrementalProjectBuilder
 {
     public static final String BUILDER_ID = "rhogenwizard.builder.RhogenBuilder";
 
-    public Builder()
-    {
-        super();
-    }
-
-    protected IProject[] build(int kind, Map args, final IProgressMonitor monitor) throws CoreException
+    @Override
+    protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args,
+        final IProgressMonitor monitor) throws CoreException
     {
         // need implement separate rake command for build ruby part without
         // extension and other staff build
@@ -36,25 +32,18 @@ public class Builder extends IncrementalProjectBuilder
     @Override
     protected void clean(IProgressMonitor monitor) throws CoreException
     {
-        try
+        for (PlatformType platformType : PlatformType.values())
         {
-            ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
-            stream.println("Clean project started");
-
-            PlatformType platformTypes[] = { PlatformType.eAndroid, PlatformType.eBb, PlatformType.eIPhone,
-                PlatformType.eWm, PlatformType.eWp7 };
-
-            for (PlatformType platformType : platformTypes)
+            switch (platformType)
             {
-                RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
-                task.run(monitor);
+            case eSymbian:
+            case eRsync:
+            case eUnknown:
+                continue;
             }
 
-            stream.println("Clean application cancelled");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
+            task.run(monitor);
         }
 
         super.clean(monitor);

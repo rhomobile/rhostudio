@@ -177,6 +177,15 @@ public class ParametersTab extends  JavaLaunchTab
 				        return;
 				    }
 				    
+                    // for win32
+                    if (!m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
+                        m_selectPlatformCombo.getText().equals(PlatformType.eWin32.publicId))
+                    {
+                        DialogUtils.warning("Warning", "For Win32 platform we can run only device build.");
+                        m_platformTypeCombo.select(simDeviceIndex); // select device 
+                        return;
+                    }
+                    
 					encodePlatformTypeCombo(m_platformTypeCombo.getText());
 					encodePlatformInformation(m_selectPlatformCombo.getText());
 					showApplyButton();
