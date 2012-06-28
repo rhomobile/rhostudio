@@ -30,7 +30,10 @@ public enum PlatformType
         List<String> list = new ArrayList<String>();
         for (PlatformType pt : PlatformType.values())
         {
-            list.add(pt.publicId);
+            if (pt.publicId != null)
+            {
+                list.add(pt.publicId);
+            }
         }
         return list.toArray(new String[0]);
     }
