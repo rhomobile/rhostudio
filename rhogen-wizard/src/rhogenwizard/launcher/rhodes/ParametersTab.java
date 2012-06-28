@@ -170,7 +170,7 @@ public class ParametersTab extends  JavaLaunchTab
 				{
 				    // for iphone platform we can't deploy application on device, it's need to do by hand
 				    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
-				        m_selectPlatformCombo.getText().toLowerCase().equals(PlatformType.eIPhone.id.toLowerCase()))
+				        m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 				    {
 				        DialogUtils.warning("Warning", "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.");
 				        m_platformTypeCombo.select(simRhosimulatorIndex); // select rhosimuator 
@@ -635,34 +635,8 @@ public class ParametersTab extends  JavaLaunchTab
 
 	private void setPlatformCombo(String selProjectPlatform)
 	{
-		int platformIdx = -1;
-		
-		if (selProjectPlatform.equals(PlatformType.eAndroid.id))
-		{
-			platformIdx = 0;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eIPhone.id))
-		{
-			platformIdx = 1;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eWm.id))
-		{
-			platformIdx = 2;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eBb.id))
-		{
-			platformIdx = 3;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eWp7.id))
-		{
-			platformIdx = 4;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eSymbian.id))
-		{
-			platformIdx = 5;
-		}
-
-		m_selectPlatformCombo.select(platformIdx);
+	    String publicId = PlatformType.fromId(selProjectPlatform).publicId;
+	    m_selectPlatformCombo.select(m_selectPlatformCombo.indexOf(publicId));
 	}
 	
 	@Override
