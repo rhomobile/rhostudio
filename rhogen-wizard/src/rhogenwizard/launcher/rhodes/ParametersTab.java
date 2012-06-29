@@ -61,10 +61,6 @@ public class ParametersTab extends  JavaLaunchTab
 		                                       RunType.platformSim,
 		                                       RunType.platformDevice };
 	
-	private static int simRhosimulatorIndex = 0;
-	private static int simSimulatorIndex = 1;
-	private static int simDeviceIndex = 2;
-	
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Combo       m_selectPlatformVersionCombo = null;
@@ -170,13 +166,22 @@ public class ParametersTab extends  JavaLaunchTab
 				{
 				    // for iphone platform we can't deploy application on device, it's need to do by hand
 				    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
-				        m_selectPlatformCombo.getText().toLowerCase().equals(PlatformType.eIPhone.id.toLowerCase()))
+				        m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 				    {
 				        DialogUtils.warning("Warning", "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.");
-				        m_platformTypeCombo.select(simRhosimulatorIndex); // select rhosimuator 
+				        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
 				        return;
 				    }
 				    
+                    // for win32
+                    if (!m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
+                        m_selectPlatformCombo.getText().equals(PlatformType.eWin32.publicId))
+                    {
+                        DialogUtils.warning("Warning", "For Win32 platform we can run only device build.");
+                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); // select device 
+                        return;
+                    }
+                    
 					encodePlatformTypeCombo(m_platformTypeCombo.getText());
 					encodePlatformInformation(m_selectPlatformCombo.getText());
 					showApplyButton();
@@ -534,26 +539,14 @@ public class ParametersTab extends  JavaLaunchTab
 		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
 		{
 			m_platformTypeCombo.setEnabled(false);
-			m_platformTypeCombo.select(simRhosimulatorIndex);
+			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
 		}
 		else
 		{
 			String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
 			m_platformTypeCombo.setEnabled(true);
-			
-			if (platformType.equals(RunType.platformRhoSim))
-			{
-				m_platformTypeCombo.select(simRhosimulatorIndex);
-			}
-			else if (platformType.equals(RunType.platformSim))
-			{
-				m_platformTypeCombo.select(simSimulatorIndex);
-			}
-			else if (platformType.equals(RunType.platformDevice))
-			{
-				m_platformTypeCombo.select(simDeviceIndex);
-			}
+            m_platformTypeCombo.select(m_platformTypeCombo.indexOf(platformType));
 		}
 	}
 	
@@ -576,55 +569,31 @@ public class ParametersTab extends  JavaLaunchTab
 			{
 				if (!selPlatformType.equals(RunType.platformDevice))
 				{
-					showAndroidVersions();
+			        m_selectPlatformVersionCombo.setItems(androidVersions); 
+
 					showVersionCombo(true);
 					showAndroidEmuName(true);
 					setAndroidEmuName(configuration);
 					
-					for (int idx=0; idx < androidVersions.length; idx++)
-					{
-						String currVer = androidVersions[idx];
-						
-						if (currVer.equals(selAndroidVer))
-						{
-							m_selectPlatformVersionCombo.select(idx);
-							break;
-						}
-					}
+                    m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selAndroidVer));
 				}
 			}
 			else if (selProjectPlatform.equals(PlatformType.eBb.id))
 			{
-				List<String> bbVersions = showBbVersions();
-				showVersionCombo(true);
+                m_selectPlatformVersionCombo.setItems(getBbVersions()); 
+
+                showVersionCombo(true);
 				showAndroidEmuName(true);
 				
-				for (int idx=0; idx < bbVersions.size(); idx++)
-				{
-					String currVer = bbVersions.get(idx);
-					
-					if (currVer.equals(selBlackBarryVer))
-					{
-						m_selectPlatformVersionCombo.select(idx);
-						break;
-					}
-				}
+                m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selBlackBarryVer));
 			}
 			else if (selProjectPlatform.equals(PlatformType.eIPhone.id))
 			{
-				List<String> iphoneVersions = showIphoneVersions();
-				showVersionCombo(true);
+	            m_selectPlatformVersionCombo.setItems(iphoneVersions);
 				
-				for (int idx=0; idx < iphoneVersions.size(); idx++)
-				{
-					String currVer = iphoneVersions.get(idx);
-					
-					if (currVer.equals(selIphoneVer))
-					{
-						m_selectPlatformVersionCombo.select(idx);
-						break;
-					}
-				}				
+	            showVersionCombo(true);
+                
+	            m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selIphoneVer));
 			}
 		}
 		catch (CoreException e) 
@@ -635,34 +604,8 @@ public class ParametersTab extends  JavaLaunchTab
 
 	private void setPlatformCombo(String selProjectPlatform)
 	{
-		int platformIdx = -1;
-		
-		if (selProjectPlatform.equals(PlatformType.eAndroid.id))
-		{
-			platformIdx = 0;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eIPhone.id))
-		{
-			platformIdx = 1;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eWm.id))
-		{
-			platformIdx = 2;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eBb.id))
-		{
-			platformIdx = 3;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eWp7.id))
-		{
-			platformIdx = 4;
-		}
-		else if (selProjectPlatform.equals(PlatformType.eSymbian.id))
-		{
-			platformIdx = 5;
-		}
-
-		m_selectPlatformCombo.select(platformIdx);
+	    String publicId = PlatformType.fromId(selProjectPlatform).publicId;
+	    m_selectPlatformCombo.select(m_selectPlatformCombo.indexOf(publicId));
 	}
 	
 	@Override
@@ -786,62 +729,21 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 	}
 	
-	private void showAndroidVersions()
-	{
-		m_selectPlatformVersionCombo.removeAll();
-		
-		for (String s: androidVersions) 
-		{
-			m_selectPlatformVersionCombo.add(s);
-		}
-	}
-
-	private List<String> showIphoneVersions()
-	{
-		m_selectPlatformVersionCombo.removeAll();
-		
-		for (String s: iphoneVersions) 
-		{
-			m_selectPlatformVersionCombo.add(s);
-		}
-		
-		ArrayList<String> retList = new ArrayList<String>();
-		
-		for (int i=0; i<iphoneVersions.length; ++i)
-		{
-			retList.add(iphoneVersions[i]);
-		}
-		
-		return retList;
-	}
-
-	private List<String> showBbVersions()
+	private String[] getBbVersions()
 	{
 		try 
 		{
-			m_selectPlatformVersionCombo.removeAll();
-			
 			String m_ymlSdkPath = m_ymlFile.getSdkConfigPath();
 			
 			SdkYmlFile sdkYmlFile = new SdkYmlFile(m_ymlSdkPath);
 			
-			List<String> bbVers = sdkYmlFile.getBbVersions();
-			
-			for (String s : bbVers) 
-			{
-				m_selectPlatformVersionCombo.add(s);
-			}
-			
-			m_selectPlatformVersionCombo.select(0);
-			
-			return bbVers;
+			return sdkYmlFile.getBbVersions().toArray(new String[0]);
 		} 
 		catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		return null;
+		return new String[0];
 	}
 	
 	private void encodePlatformInformation(String selPlatform)

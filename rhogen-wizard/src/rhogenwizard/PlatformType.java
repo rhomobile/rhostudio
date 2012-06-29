@@ -11,6 +11,7 @@ public enum PlatformType
     eIPhone("iphone", "iPhone"),
     eWp7("wp", "Windows Phone"),
     eSymbian("symbian", "Symbian"),
+    eWin32("win32", "Win32"),
     eRsync("", null),
     eUnknown(null, null);
 
@@ -30,7 +31,10 @@ public enum PlatformType
         List<String> list = new ArrayList<String>();
         for (PlatformType pt : PlatformType.values())
         {
-            list.add(pt.publicId);
+            if (pt.publicId != null)
+            {
+                list.add(pt.publicId);
+            }
         }
         return list.toArray(new String[0]);
     }
