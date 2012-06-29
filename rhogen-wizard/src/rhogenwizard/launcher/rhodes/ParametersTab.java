@@ -569,55 +569,31 @@ public class ParametersTab extends  JavaLaunchTab
 			{
 				if (!selPlatformType.equals(RunType.platformDevice))
 				{
-					showAndroidVersions();
+			        m_selectPlatformVersionCombo.setItems(androidVersions); 
+
 					showVersionCombo(true);
 					showAndroidEmuName(true);
 					setAndroidEmuName(configuration);
 					
-					for (int idx=0; idx < androidVersions.length; idx++)
-					{
-						String currVer = androidVersions[idx];
-						
-						if (currVer.equals(selAndroidVer))
-						{
-							m_selectPlatformVersionCombo.select(idx);
-							break;
-						}
-					}
+                    m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selAndroidVer));
 				}
 			}
 			else if (selProjectPlatform.equals(PlatformType.eBb.id))
 			{
-				List<String> bbVersions = showBbVersions();
-				showVersionCombo(true);
+                m_selectPlatformVersionCombo.setItems(getBbVersions()); 
+
+                showVersionCombo(true);
 				showAndroidEmuName(true);
 				
-				for (int idx=0; idx < bbVersions.size(); idx++)
-				{
-					String currVer = bbVersions.get(idx);
-					
-					if (currVer.equals(selBlackBarryVer))
-					{
-						m_selectPlatformVersionCombo.select(idx);
-						break;
-					}
-				}
+                m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selBlackBarryVer));
 			}
 			else if (selProjectPlatform.equals(PlatformType.eIPhone.id))
 			{
-				List<String> iphoneVersions = showIphoneVersions();
-				showVersionCombo(true);
+	            m_selectPlatformVersionCombo.setItems(iphoneVersions);
 				
-				for (int idx=0; idx < iphoneVersions.size(); idx++)
-				{
-					String currVer = iphoneVersions.get(idx);
-					
-					if (currVer.equals(selIphoneVer))
-					{
-						m_selectPlatformVersionCombo.select(idx);
-						break;
-					}
-				}				
+	            showVersionCombo(true);
+                
+	            m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selIphoneVer));
 			}
 		}
 		catch (CoreException e) 
@@ -753,62 +729,21 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 	}
 	
-	private void showAndroidVersions()
-	{
-		m_selectPlatformVersionCombo.removeAll();
-		
-		for (String s: androidVersions) 
-		{
-			m_selectPlatformVersionCombo.add(s);
-		}
-	}
-
-	private List<String> showIphoneVersions()
-	{
-		m_selectPlatformVersionCombo.removeAll();
-		
-		for (String s: iphoneVersions) 
-		{
-			m_selectPlatformVersionCombo.add(s);
-		}
-		
-		ArrayList<String> retList = new ArrayList<String>();
-		
-		for (int i=0; i<iphoneVersions.length; ++i)
-		{
-			retList.add(iphoneVersions[i]);
-		}
-		
-		return retList;
-	}
-
-	private List<String> showBbVersions()
+	private String[] getBbVersions()
 	{
 		try 
 		{
-			m_selectPlatformVersionCombo.removeAll();
-			
 			String m_ymlSdkPath = m_ymlFile.getSdkConfigPath();
 			
 			SdkYmlFile sdkYmlFile = new SdkYmlFile(m_ymlSdkPath);
 			
-			List<String> bbVers = sdkYmlFile.getBbVersions();
-			
-			for (String s : bbVers) 
-			{
-				m_selectPlatformVersionCombo.add(s);
-			}
-			
-			m_selectPlatformVersionCombo.select(0);
-			
-			return bbVers;
+			return sdkYmlFile.getBbVersions().toArray(new String[0]);
 		} 
 		catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		return null;
+		return new String[0];
 	}
 	
 	private void encodePlatformInformation(String selPlatform)
