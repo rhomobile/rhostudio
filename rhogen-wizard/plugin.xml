@@ -331,29 +331,29 @@
     <extension point="org.eclipse.ui.preferencePages">
       <page
             name="RhoMobile"
-            class="rhogenwizard.preferences.RhogenPreferencePage"
-            id="rhogenwizard.preferences.RhogenPreferencePage">
+            class="rhogenwizard.preferences.PreferencePage"
+            id="rhogenwizard.preferences.PreferencePage">
       </page>
       <page
-            category="rhogenwizard.preferences.RhogenPreferencePage"
-            class="rhogenwizard.preferences.RhogenPreferenceAndroidPage"
+            category="rhogenwizard.preferences.PreferencePage"
+            class="rhogenwizard.preferences.PreferenceAndroidPage"
             id="rhogen-wizard.page1"
             name="Android">
       </page>
       <page
-            category="rhogenwizard.preferences.RhogenPreferencePage"
-            class="rhogenwizard.preferences.RhogenPreferencePageBb"
+            category="rhogenwizard.preferences.PreferencePage"
+            class="rhogenwizard.preferences.PreferencePageBb"
             id="rhogen-wizard.page2"
             name="Blackberry">
       </page>
       <page
-            category="rhogenwizard.preferences.RhogenPreferencePage"
-            class="rhogenwizard.preferences.RhogenPreferencePageWm"
+            category="rhogenwizard.preferences.PreferencePage"
+            class="rhogenwizard.preferences.PreferencePageWm"
             id="rhogen-wizard.page3"
             name="Windows Mobile">
       </page>
       <page
-            category="rhogenwizard.preferences.RhogenPreferencePage"
+            category="rhogenwizard.preferences.PreferencePage"
             class="rhogenwizard.preferences.PreferencesPageRhoHub"
             id="rhogen-wizard.page4"
             name="RhoHub">
