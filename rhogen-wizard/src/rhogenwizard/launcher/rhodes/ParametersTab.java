@@ -68,7 +68,7 @@ public class ParametersTab extends  JavaLaunchTab
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Combo       m_selectPlatformVersionCombo = null;
-	protected Text 		m_appNameText = null;
+	Text 		m_appNameText = null;
 	Text 		m_appLogText = null;
 	Text        m_adroidEmuNameText = null;
 	Button 		m_cleanButton = null;
@@ -79,7 +79,7 @@ public class ParametersTab extends  JavaLaunchTab
 	Button      m_traceButton = null;	
 	
 	String    	m_platformName = null;
-	protected IProject 	m_selProject  = null;
+	IProject 	m_selProject  = null;
 	String      m_selPlatformVersion = null;
 	
 	protected ILaunchConfigurationWorkingCopy m_configuration = null;
