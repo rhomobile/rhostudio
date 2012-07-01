@@ -16,11 +16,6 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.DialogUtils;
@@ -34,7 +29,6 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
-import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
@@ -44,21 +38,20 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 {		
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
-	protected String          m_projectName = null;
-	private String            m_runType     = null;
-	private String            m_platformType = null;
-	private boolean           m_isClean = false;
-	private boolean           m_isReloadCode = false;
-	private boolean           m_isTrace = false;
-	private boolean           m_isRhohubBuild = false;
+	protected String          m_projectName   = null;
+	private String            m_runType       = null;
+	private String            m_platformType  = null;
+	private boolean           m_isClean       = false;
+	private boolean           m_isReloadCode  = false;
+	private boolean           m_isTrace       = false;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
-	private IProcess          m_debugProcess = null;
+	private IProcess          m_debugProcess  = null;
 	private final String      m_startPathOverride;
 	private final String[]    m_additionalRubyExtensions;
 	
 	public LaunchDelegateBase(String startPathOverride, String[] additionalRubyExtensions)
 	{
-	    m_startPathOverride = startPathOverride;
+	    m_startPathOverride        = startPathOverride;
 	    m_additionalRubyExtensions = additionalRubyExtensions;
 	}
 		
@@ -180,29 +173,15 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{
 		setupConfigAttributes(configuration);
 		
 		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-		
-//		if (m_isRhohubBuild)
-//		{
-//		    launchRemoteProject(project, configuration, mode, launch, monitor);
-//		    return; //TODO its temp statement
-//		}
-		
+				
 		launchLocalProject(project, configuration, mode, launch, monitor);
 	}
 
-    @SuppressWarnings("deprecation")
-    public synchronized void launchRemoteProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException
-    {
-         //RhoHub.getInstance(configuration).findRemoteApp(project);
-    }
-
-	@SuppressWarnings("deprecation")
 	public synchronized void launchLocalProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{
 		try
