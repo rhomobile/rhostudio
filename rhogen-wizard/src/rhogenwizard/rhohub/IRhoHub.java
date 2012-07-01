@@ -28,4 +28,6 @@ public interface IRhoHub
     IRemoteProjectDesc createRemoteAppFromLocalSources(IProject project, final CredentialsProvider credProvider) throws InvalidRemoteException;
     //
     IRemoteProjectDesc updateRemoteAppFromLocalSources(IProject project, String gitRepo, final CredentialsProvider credProvider) throws InvalidRemoteException;
+    //
+    RemoteAppBuildsList getBuildsList(IProject project) throws JSONException;
 }

@@ -24,6 +24,16 @@ public class RemoteProjectDesc implements IRemoteProjectDesc
         m_baseObject = (JSONObject) object;
     }
     
+    JSONObject getJson()
+    {
+        return m_baseObject;
+    }
+
+    JSONObject getBuildJson()
+    {
+        return m_buildInfoObject;
+    }
+
     public Integer getId() throws JSONException
     {
         return (Integer)m_baseObject.get(idTag);

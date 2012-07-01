@@ -1,5 +1,12 @@
 package rhogenwizard.wizards.rhohub;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,21 +21,43 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.progress.UIJob;
+import org.json.JSONException;
 import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.DialogUtils;
+import rhogenwizard.HttpDownload;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
+import rhogenwizard.rhohub.RemoteAppBuildDesc;
+import rhogenwizard.rhohub.RemoteAppBuildsList;
 import rhogenwizard.rhohub.RemotePlatformDesc;
 import rhogenwizard.rhohub.RemotePlatformList;
 import rhogenwizard.rhohub.RhoHub;
@@ -55,6 +84,81 @@ class RemotePlatformAdapter implements Callable<RemotePlatformList>
     }
 }
 
+class RemoteAppBuildsAdapter implements Callable<RemoteAppBuildsList>
+{    
+    IProject m_project = null;
+    
+    RemoteAppBuildsAdapter(IProject project)
+    {
+        m_project = project;
+    }
+    
+    @Override
+    public RemoteAppBuildsList call() throws Exception
+    {
+        IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_project);
+
+        if (store == null)
+            return null;        
+        
+        return RhoHub.getInstance(store).getBuildsList(m_project);
+    }
+}
+
+class BuildDownload implements Runnable
+{
+    final URL    m_buildUrl;
+    final String m_dstDir;
+    
+    String    m_fileName = null;
+    
+    BuildDownload(final URL buildUrl, final String dstDir)
+    {
+        m_buildUrl = buildUrl;
+        m_dstDir   = dstDir;
+        
+        String dwlLink = buildUrl.toString();
+        
+        int nameStartIdx = dwlLink.lastIndexOf("/");
+        
+        if (nameStartIdx != -1)
+        {
+            m_fileName = dwlLink.substring(nameStartIdx);    
+        }
+    }
+    
+    @Override
+    public void run()
+    {
+        try
+        {
+            File resultFile = new File(m_dstDir + File.separator + m_fileName);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            HttpDownload hd = new HttpDownload(m_buildUrl, os);
+            hd.join(0);
+            
+            FileOutputStream foStream = new FileOutputStream(resultFile);
+            os.writeTo(foStream);
+
+            foStream.close();
+            os.close();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
+
 public class BuildSettingPage extends WizardPage 
 {
     private class PlatfromInfoHolder
@@ -78,9 +182,12 @@ public class BuildSettingPage extends WizardPage
     private Combo m_comboPlatformVersions  = null;
     private Text  m_textAppBranch          = null;
     private Text  m_textRhodesBranch       = null;
+    private Table m_remoteBuildsList       = null;
     
-    private RemotePlatformList         m_remotePlatforms = null;
-    private Future<RemotePlatformList> m_getPlatfomListFuture = null;
+    private RemotePlatformList          m_remotePlatforms = null;
+    private RemoteAppBuildsList         m_remoteProjectBuilds = null;
+    private Future<RemotePlatformList>  m_getPlatfomListFuture = null;
+    private Future<RemoteAppBuildsList> m_getProjectBuildsFuture = null;
     
     void enableControls(boolean enable)
     {
@@ -115,6 +222,9 @@ public class BuildSettingPage extends WizardPage
             
             m_remotePlatforms = m_getPlatfomListFuture.get(waitTimeOutRhoHubServer, TimeUnit.MINUTES);            
             initializePlatformsCombo();
+            
+            m_remoteProjectBuilds = m_getProjectBuildsFuture.get(waitTimeOutRhoHubServer, TimeUnit.MINUTES);
+            initializeProjectBuildsTable();
         }
         catch (InterruptedException e)
         {
@@ -130,6 +240,16 @@ public class BuildSettingPage extends WizardPage
             DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
             e.printStackTrace();
         }
+        catch (JSONException e)
+        {
+            DialogUtils.error("Connect error", "The information from Rhohub server was corrupted. Please try run build sometime later.");
+            e.printStackTrace();
+        }
+        catch (MalformedURLException e)
+        {
+            DialogUtils.error("Connect error", "Download link is broken. Please try it sometime later.");
+            e.printStackTrace();
+        }
  
         enableControls(true);
     }
@@ -143,6 +263,10 @@ public class BuildSettingPage extends WizardPage
         
         GridData textAligment = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);        
                    
+        GridData tableAligment = new GridData(SWT.FILL, SWT.FILL, true, true);
+        tableAligment.heightHint = 200;
+        tableAligment.horizontalSpan = 4;
+        
         // 1 row
         Label label = new Label(composite, SWT.NULL);
         label.setText("&App branch:");
@@ -206,9 +330,77 @@ public class BuildSettingPage extends WizardPage
             }
         });
         
+        // 3 row
+        m_remoteBuildsList = new Table (composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+        m_remoteBuildsList.setLayoutData(tableAligment);
+        m_remoteBuildsList.setEnabled(true);
+        m_remoteBuildsList.setHeaderVisible(true);
+        m_remoteBuildsList.setLinesVisible(true);
+        
+        TableColumn colName = new TableColumn(m_remoteBuildsList, SWT.LEFT);
+        colName.setText("Project name");
+        colName.setWidth(350);
+        
+        TableColumn colUrl  = new TableColumn(m_remoteBuildsList, SWT.LEFT);        
+        colUrl.setText("Download link");
+        colUrl.setWidth(150);
+
+        TableColumn colStatus  = new TableColumn(m_remoteBuildsList, SWT.LEFT);        
+        colStatus.setText("Status");
+        colStatus.setWidth(200);
+        
         enableControls(false);
     }
+    
+    private void addTableLine(TableItem newItem, RemoteAppBuildDesc projectBuild) throws JSONException, MalformedURLException
+    {
+        TableEditor colOneEditor = new TableEditor(m_remoteBuildsList);
+        colOneEditor.grabHorizontal = true;        
+        Label prjNameLabel = new Label(m_remoteBuildsList, SWT.LEFT);
+        prjNameLabel.setText(projectBuild.getId().toString());
+        colOneEditor.setEditor(prjNameLabel, newItem, 0);
 
+        TableEditor colTwoEditor = new TableEditor(m_remoteBuildsList);
+        colTwoEditor.grabHorizontal = true;
+        Button dwlButton = new Button(m_remoteBuildsList, SWT.PUSH | SWT.VIRTUAL);
+        dwlButton.setText("Download");
+        dwlButton.setData(projectBuild.getBuildResultUrl());
+        dwlButton.addSelectionListener(new SelectionListener()
+        {
+            private String getDirectory()
+            {
+                DirectoryDialog dlg = new DirectoryDialog(Display.getCurrent().getActiveShell());
+
+                dlg.setFilterPath("C:");
+                dlg.setText("Select destination directory");
+                dlg.setMessage("Select a directory");
+                
+                return dlg.open();
+            }
+            
+            @Override
+            public void widgetSelected(SelectionEvent e)
+            {
+                Button parentBtn = (Button)e.widget;
+                
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new BuildDownload((URL) parentBtn.getData(), getDirectory()));
+            }
+            
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+            }
+        });
+        colTwoEditor.setEditor(dwlButton, newItem, 1);
+
+        TableEditor colThreeEditor = new TableEditor(m_remoteBuildsList);
+        colThreeEditor.grabHorizontal = true;        
+        Label prjStatusLabel = new Label(m_remoteBuildsList, SWT.RIGHT);
+        prjStatusLabel.setText(projectBuild.getBuildStatus().toString());
+        colThreeEditor.setEditor(prjStatusLabel, newItem, 2);
+    }
+    
     public void createControl(Composite parent) 
     {   
         Composite container = new Composite(parent, SWT.NULL);
@@ -217,6 +409,28 @@ public class BuildSettingPage extends WizardPage
         
         initialize();
         setControl(container);
+    }
+    
+    private void initializeProjectBuildsTable() throws JSONException, MalformedURLException
+    {
+        if (m_remoteProjectBuilds == null || m_remoteProjectBuilds.size() == 0)
+        {
+            DialogUtils.error("Connect error", "Rhohub server is not avaialible. Please try run build sometime later.");
+            
+            m_comboPlatforms.setEnabled(false);
+            m_comboPlatformVersions.setEnabled(false);            
+            this.getShell().close();
+            
+            return;
+        }
+        else
+        {
+            for (RemoteAppBuildDesc prjDesc : m_remoteProjectBuilds)
+            {
+                TableItem newItem = new TableItem(m_remoteBuildsList, SWT.NONE);
+                addTableLine(newItem, prjDesc);
+            }
+        }
     }
     
     private void initializePlatformsCombo()
@@ -272,11 +486,13 @@ public class BuildSettingPage extends WizardPage
         m_comboPlatformVersions.setEnabled(true);
         
         // run async request to rhohub server
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        m_getPlatfomListFuture = executor.submit(new RemotePlatformAdapter(m_project));
-
-        m_textRhodesBranch.setText("3.3.2");
-        m_textAppBranch.setText("master");
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        
+        m_getPlatfomListFuture   = executor.submit(new RemotePlatformAdapter(m_project));
+        m_getProjectBuildsFuture = executor.submit(new RemoteAppBuildsAdapter(m_project));
+        
+        m_textRhodesBranch.setText("3.3.2"); //TODO move to preferences
+        m_textAppBranch.setText("master");   //TODO move to preferences
     }
 
     /**

@@ -24,6 +24,7 @@ import org.json.JSONException;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.rhohub.AppListTask;
 import rhogenwizard.sdk.task.rhohub.BuildApp;
+import rhogenwizard.sdk.task.rhohub.BuildListTask;
 import rhogenwizard.sdk.task.rhohub.CreateAppTask;
 import rhogenwizard.sdk.task.rhohub.PlatformListTask;
 import rhogenwizard.sdk.task.rhohub.ShowBuildTask;
@@ -336,5 +337,16 @@ public class RhoHub implements IRhoHub
         }
         
         return null;
+    }
+
+    @Override
+    public RemoteAppBuildsList getBuildsList(IProject project) throws JSONException
+    {
+        IRemoteProjectDesc remoteProject = findRemoteApp(project);
+
+        BuildListTask task = new BuildListTask(rhohubConfiguration, remoteProject.getId());
+        task.run();
+        
+        return new RemoteAppBuildsList(task.getOutputAsJSON());
     }
 }
