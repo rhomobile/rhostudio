@@ -6,19 +6,21 @@ import java.util.List;
 import org.eclipse.debug.core.ILaunch;
 
 import rhogenwizard.PlatformType;
+import rhogenwizard.WinMobileSdk;
 import rhogenwizard.sdk.task.RubyDebugTask;
 
 public class RunDebugRhodesAppTask extends RubyDebugTask
 {
     public RunDebugRhodesAppTask(ILaunch launch, String workDir, String appName, PlatformType platformType,
-        boolean isReloadCode, boolean isTrace, String startPathOverride, String[] additionalRubyExtensions)
+        boolean isReloadCode, boolean isTrace, String startPathOverride, String wmSdkVersion,
+        String[] additionalRubyExtensions)
     {
         super(launch, appName, workDir, getArgs(platformType, isTrace, isReloadCode, startPathOverride,
-            additionalRubyExtensions));
+            wmSdkVersion, additionalRubyExtensions));
     }
 
     private static String[] getArgs(PlatformType platformType, boolean isReloadCode, boolean isTrace,
-        String startPathOverride, String[] additionalRubyExtensions)
+        String startPathOverride, String wmSdkVersion, String[] additionalRubyExtensions)
     {
         List<String> args = new ArrayList<String>();
         args.add("rake");
@@ -35,6 +37,11 @@ public class RunDebugRhodesAppTask extends RubyDebugTask
         if (startPathOverride != null)
         {
             args.add("rho_override_start_path=\'" + startPathOverride + "\'");
+        }
+
+        if (platformType == PlatformType.eWm && wmSdkVersion != null)
+        {
+            args.add("rho_wm_sdk=\'" + WinMobileSdk.fromVersion(wmSdkVersion).sdkId + "\'");
         }
 
         if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)

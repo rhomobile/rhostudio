@@ -26,6 +26,7 @@ import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
+import rhogenwizard.WinMobileSdk;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.RhogenDebugTarget;
@@ -44,6 +45,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	private boolean           m_isClean       = false;
 	private boolean           m_isReloadCode  = false;
 	private boolean           m_isTrace       = false;
+    private String            m_wmSdkVersion  = null;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	private IProcess          m_debugProcess  = null;
 	private final String      m_startPathOverride;
@@ -140,7 +142,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
 		    PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace, m_startPathOverride,
-		    m_additionalRubyExtensions);
+		    m_wmSdkVersion, m_additionalRubyExtensions);
 		task.run();
 		return task.isOk();
 	}
@@ -149,7 +151,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, currProject.getLocation().toOSString(),
 		    currProject.getName(), PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace,
-		    m_startPathOverride, m_additionalRubyExtensions);
+		    m_startPathOverride, m_wmSdkVersion, m_additionalRubyExtensions);
 		task.run();
 		return task.getDebugProcess();
 	}
@@ -161,7 +163,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 		m_runType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
-		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);		
+		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
+		m_wmSdkVersion  = configuration.getAttribute(ConfigurationConstants.wmVersionAttribute, WinMobileSdk.v6_0.version);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor)

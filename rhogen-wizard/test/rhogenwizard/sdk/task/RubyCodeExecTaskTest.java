@@ -63,9 +63,7 @@ public class RubyCodeExecTaskTest extends TestCase
         RubyCodeExecTask task = new RubyCodeExecTask("a");
         task.run();
 
-        String error = (OSHelper.isWindows())
-            ? "-e:1:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n"
-            : "-e:1: undefined local variable or method `a' for main:Object (NameError)\n";
+        String error = "-e:1:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n";
         check(false, 1, error, "", task);
     }
 
@@ -85,7 +83,7 @@ public class RubyCodeExecTaskTest extends TestCase
 
         String error = (OSHelper.isWindows())
             ? "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n"
-            : "-e:2: undefined local variable or method `a' for main:Object (NameError)\n";
+            : "-e:2:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n";
         String output = (OSHelper.isWindows()) ? "" : "The 'a' value is\n";
         check(false, 1, error, output, task);
     }
@@ -98,7 +96,7 @@ public class RubyCodeExecTaskTest extends TestCase
 
         String error = (OSHelper.isWindows())
             ? "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n"
-            : "-e:2: undefined local variable or method `a' for main:Object (NameError)\n";
+            : "-e:2:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n";
         String output = (OSHelper.isWindows()) ? "" : "The 'a' value is\n";
         check(false, 1, error, output, task);
     }

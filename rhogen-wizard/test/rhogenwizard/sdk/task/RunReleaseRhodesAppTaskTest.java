@@ -74,7 +74,7 @@ public class RunReleaseRhodesAppTaskTest
                 + "/rholog.txt\"");
 
             RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eIPhone,
-                RunType.eEmulator, false, false, null, null);
+                RunType.eEmulator, false, false, null, null, null);
             task.run();
             assertTrue(task.isOk());
 
@@ -92,7 +92,7 @@ public class RunReleaseRhodesAppTaskTest
             ProcessListViewer plv = new ProcessListViewer(signature);
 
             RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eAndroid,
-                RunType.eEmulator, false, false, null, null);
+                RunType.eEmulator, false, false, null, null, null);
             task.run();
             assertTrue(task.isOk());
 
@@ -110,12 +110,13 @@ public class RunReleaseRhodesAppTaskTest
             }
 
             String signature = (OSValidator.isWindows()) ? "rhosimulator.exe -approot=\'"
-                + unixSlashes(projectLocation) + "\'" : "RhoSimulator -approot=/private" + projectLocation;
+                + unixSlashes(projectLocation) + "\'" : "RhoSimulator -approot='/private" + projectLocation
+                + "'";
 
             ProcessListViewer plv = new ProcessListViewer(signature);
 
             RunTask task = new RunReleaseRhodesAppTask(projectLocation, platformType, RunType.eRhoEmulator,
-                false, false, null, null);
+                false, false, null, null, null);
             task.run();
             assertTrue("for " + platformType, task.isOk());
 
