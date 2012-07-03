@@ -38,7 +38,7 @@ public class OSHelper extends OSValidator
         }
         try
         {
-            new SysCommandExecutor().runCommand(cmdLine);
+            new SysCommandExecutor().runCommand(SysCommandExecutor.CRT, cmdLine);
         }
         catch (IOException e)
         {
@@ -78,7 +78,7 @@ public class OSHelper extends OSValidator
         }
 
         SysCommandExecutor executor = new SysCommandExecutor();
-        executor.runCommand(cmdLine);
+        executor.runCommand(SysCommandExecutor.CRT, cmdLine);
     }
 
     public static void deleteFolder(String pathToRootFolder)
@@ -155,7 +155,7 @@ public class OSHelper extends OSValidator
         executor.setErrorLogDevice(nullLogDevice);
         try
         {
-            executor.runCommand(cmdLine);
+            executor.runCommand(SysCommandExecutor.CRT, cmdLine);
         }
         catch (IOException e)
         {

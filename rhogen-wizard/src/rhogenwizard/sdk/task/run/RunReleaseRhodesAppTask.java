@@ -5,6 +5,7 @@ import java.util.List;
 
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.WinMobileSdk;
 import rhogenwizard.sdk.task.RubyExecTask;
 
@@ -63,8 +64,8 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
         boolean isReloadCode, boolean isTrace, String startPathOverride, String wmSdkVersion,
         String[] additionalRubyExtensions)
     {
-        super(workDir, getArgs(platformType, runType, isReloadCode, isTrace, startPathOverride, wmSdkVersion,
-            additionalRubyExtensions));
+        super(workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType, runType, isReloadCode, isTrace,
+            startPathOverride, wmSdkVersion, additionalRubyExtensions));
     }
 
     private static String join(String delimiter, String... text)

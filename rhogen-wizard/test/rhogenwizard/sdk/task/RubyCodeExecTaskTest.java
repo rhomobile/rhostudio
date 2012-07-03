@@ -43,18 +43,28 @@ public class RubyCodeExecTaskTest extends TestCase
     }
 
     @Test
+    public void testSingleQuotes()
+    {
+        RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'");
+        task.run();
+        check(true, 0, "", "The 'a' value is\n", task);
+    }
+
+    @Test
     public void testMultyLineCode()
     {
         RubyCodeExecTask task = new RubyCodeExecTask("a = 4\nb = 5\nputs a + b");
-        task.run();
-        if (OSHelper.isWindows())
+        try
         {
-            check(true, 0, "", "", task);
+            task.run();
         }
-        else
+        catch (IllegalArgumentException e)
         {
-            check(true, 0, "", "9\n", task);
+            assertTrue(OSHelper.isWindows());
+            return;
         }
+        assertFalse(OSHelper.isWindows());
+        check(true, 0, "", "9\n", task);
     }
 
     @Test
@@ -63,8 +73,9 @@ public class RubyCodeExecTaskTest extends TestCase
         RubyCodeExecTask task = new RubyCodeExecTask("a");
         task.run();
 
-        String error = "-e:1:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n";
-        check(false, 1, error, "", task);
+        check(false, 1,
+            "-e:1:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n", "",
+            task);
     }
 
     @Test
@@ -81,24 +92,29 @@ public class RubyCodeExecTaskTest extends TestCase
         RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'", "puts a");
         task.run();
 
-        String error = (OSHelper.isWindows())
-            ? "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n"
-            : "-e:2:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n";
-        String output = (OSHelper.isWindows()) ? "" : "The 'a' value is\n";
-        check(false, 1, error, output, task);
+        check(false, 1,
+            "-e:2:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n",
+            "The 'a' value is\n", task);
     }
 
     @Test
     public void testPartialSuccessForMultyLineCode()
     {
         RubyCodeExecTask task = new RubyCodeExecTask("puts 'The \\'a\\' value is'\nputs a");
-        task.run();
 
-        String error = (OSHelper.isWindows())
-            ? "-e:1: syntax error, unexpected tIDENTIFIER, expecting $end\nputs 'The \\\\'a\\\\' value is'\n              ^\n"
-            : "-e:2:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n";
-        String output = (OSHelper.isWindows()) ? "" : "The 'a' value is\n";
-        check(false, 1, error, output, task);
+        try
+        {
+            task.run();
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertTrue(OSHelper.isWindows());
+            return;
+        }
+        assertFalse(OSHelper.isWindows());
+        check(false, 1,
+            "-e:2:in `<main>': undefined local variable or method `a' for main:Object (NameError)\n",
+            "The 'a' value is\n", task);
     }
 
     private static void check(boolean ok, int exitValue, String error, String output, RubyExecTask task)

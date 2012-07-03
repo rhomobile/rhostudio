@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.debug.core.ILaunch;
 
 import rhogenwizard.PlatformType;
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.WinMobileSdk;
 import rhogenwizard.sdk.task.RubyDebugTask;
 
@@ -15,8 +16,8 @@ public class RunDebugRhodesAppTask extends RubyDebugTask
         boolean isReloadCode, boolean isTrace, String startPathOverride, String wmSdkVersion,
         String[] additionalRubyExtensions)
     {
-        super(launch, appName, workDir, getArgs(platformType, isTrace, isReloadCode, startPathOverride,
-            wmSdkVersion, additionalRubyExtensions));
+        super(launch, appName, workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType, isTrace,
+            isReloadCode, startPathOverride, wmSdkVersion, additionalRubyExtensions));
     }
 
     private static String[] getArgs(PlatformType platformType, boolean isReloadCode, boolean isTrace,

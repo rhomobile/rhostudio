@@ -5,6 +5,7 @@ import java.io.File;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.constants.ConfigurationConstants;
 
 public class StopSyncAppTask extends SeqRunTask
@@ -31,8 +32,10 @@ public class StopSyncAppTask extends SeqRunTask
         if (!appFolder.exists())
             return empty;
 
-        RunTask stopRhoconnectTask = new RubyExecTask(prevRunningRhoconnectApp, "rake", "rhoconnect:stop");
-        RunTask stopRedisTask = new RubyExecTask(prevRunningRhoconnectApp, "rake", "redis:stop");
+        RunTask stopRhoconnectTask = new RubyExecTask(prevRunningRhoconnectApp, SysCommandExecutor.RUBY_BAT,
+            "rake", "rhoconnect:stop");
+        RunTask stopRedisTask = new RubyExecTask(prevRunningRhoconnectApp, SysCommandExecutor.RUBY_BAT,
+            "rake", "redis:stop");
         return new RunTask[] { stopRhoconnectTask, stopRedisTask };
     }
 

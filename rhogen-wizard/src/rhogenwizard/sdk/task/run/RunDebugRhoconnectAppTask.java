@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyDebugTask;
 import rhogenwizard.sdk.task.RubyExecTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -18,10 +19,11 @@ public class RunDebugRhoconnectAppTask extends RunTask
 
     public RunDebugRhoconnectAppTask(String workDir, String appName, ILaunch launch)
     {
-        RunTask redisStartbgTask = new RubyExecTask(workDir, "rake", "redis:startbg");
+        RunTask redisStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake",
+            "redis:startbg");
 
-        m_rhoconnectStartdebugTask = new RubyDebugTask(launch, appName, workDir, "rake",
-            "rhoconnect:startdebug");
+        m_rhoconnectStartdebugTask = new RubyDebugTask(launch, appName, workDir, SysCommandExecutor.RUBY_BAT,
+            "rake", "rhoconnect:startdebug");
 
         m_task = new SeqRunTask(new StopSyncAppTask(), new StoreLastSyncRunAppTask(workDir),
             redisStartbgTask, m_rhoconnectStartdebugTask);

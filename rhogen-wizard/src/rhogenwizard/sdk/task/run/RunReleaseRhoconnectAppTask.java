@@ -1,5 +1,6 @@
 package rhogenwizard.sdk.task.run;
 
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.SeqRunTask;
@@ -10,8 +11,10 @@ public class RunReleaseRhoconnectAppTask extends SeqRunTask
 {
     private static RunTask[] getTasks(final String workDir)
     {
-        RunTask redisStartbgTask = new RubyExecTask(workDir, "rake", "redis:startbg");
-        RunTask rhoconnectStartbgTask = new RubyExecTask(workDir, "rake", "rhoconnect:startbg");
+        RunTask redisStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake",
+            "redis:startbg");
+        RunTask rhoconnectStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake",
+            "rhoconnect:startbg");
 
         return new RunTask[] { new StopSyncAppTask(), new StoreLastSyncRunAppTask(workDir), redisStartbgTask,
             rhoconnectStartbgTask };
