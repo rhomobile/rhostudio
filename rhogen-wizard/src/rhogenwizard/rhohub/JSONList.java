@@ -5,18 +5,21 @@ import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-public class RemotePlatformList extends AbstractCollection<RemotePlatformDesc>
+public class JSONList<T extends BaseRemoteDesc> extends AbstractCollection<T> 
 {
-    private static class ProjectsListIterator implements Iterator<RemotePlatformDesc>
+    private static class ListIterator<I extends BaseRemoteDesc> implements Iterator<I>
     {
-        JSONArray m_descs = null;
-        int       m_index = 0 ;
-                
-        ProjectsListIterator(JSONArray descs, int index)
+        JSONArray              m_descs = null;
+        int                    m_index = 0 ;
+        JsonAbstractFactory<I> m_factory = null;
+        
+        ListIterator(JSONArray descs, JsonAbstractFactory<I> objFactory, int index)
         {
-            m_descs = descs;
-            m_index = index;
+            m_descs   = descs;
+            m_index   = index;
+            m_factory = objFactory;
         }
         
         @Override
@@ -36,7 +39,7 @@ public class RemotePlatformList extends AbstractCollection<RemotePlatformDesc>
         }
 
         @Override
-        public RemotePlatformDesc next()
+        public I next()
         {
             if (m_descs == null)
                 return null;
@@ -46,7 +49,7 @@ public class RemotePlatformList extends AbstractCollection<RemotePlatformDesc>
                 int currPos = m_index;
                 ++m_index;
 
-                return new RemotePlatformDesc(m_descs.get(currPos));
+                return (I) m_factory.getInstance((JSONObject) m_descs.get(currPos));
             }
             catch (JSONException e)
             {
@@ -65,25 +68,27 @@ public class RemotePlatformList extends AbstractCollection<RemotePlatformDesc>
         }
     }
     
-    private JSONArray m_projectDescs = null; 
+    private JsonAbstractFactory<T> m_objFactory = null;
+    private JSONArray              m_buildsDescs = null; 
     
-    public RemotePlatformList(JSONArray in)
+    public JSONList(JSONArray in, JsonAbstractFactory<T> objFactory)
     {
-        m_projectDescs = in;
+        m_objFactory = objFactory;
+        m_buildsDescs = in;
     }
     
     @Override
-    public Iterator<RemotePlatformDesc> iterator()
+    public Iterator<T> iterator()
     {
-        return new ProjectsListIterator(m_projectDescs, 0);
+        return new ListIterator<T>(m_buildsDescs, m_objFactory, 0);
     }
 
     @Override
     public int size()
     {
-        if (m_projectDescs == null)
+        if (m_buildsDescs == null)
             return 0;
         
-        return m_projectDescs.length();
+        return m_buildsDescs.length();
     }
 }

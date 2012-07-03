@@ -13,7 +13,6 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.rhohub.GitCredentialsProvider;
-import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;

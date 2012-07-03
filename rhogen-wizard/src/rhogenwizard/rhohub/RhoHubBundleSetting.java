@@ -69,7 +69,14 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getRhodesBranch()
     {
-        return m_projectSetting.get(rhoHubSelectedRhodesVesion, "");
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        if (store == null)
+            return "";
+        
+        String selVer = store.getString(rhoHubSelectedRhodesVesion);
+        
+        return selVer == "" ? "3.3.2" : selVer;
     }
 
     @Override
@@ -110,8 +117,12 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public void setRhodesBranch(String value) throws BackingStoreException
     {
-        m_projectSetting.put(rhoHubSelectedRhodesVesion, value);
-        m_projectSetting.flush();
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        
+        if (store == null)
+            return;
+        
+        store.setValue(rhoHubSelectedRhodesVesion, value);
     }
 
     @Override

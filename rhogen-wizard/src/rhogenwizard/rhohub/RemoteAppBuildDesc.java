@@ -6,17 +6,24 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RemoteAppBuildDesc
+public class RemoteAppBuildDesc extends BaseRemoteDesc
 {
+    public static class RemoteAppBuildDescFactory implements JsonAbstractFactory<RemoteAppBuildDesc>
+    {
+        @Override
+        public RemoteAppBuildDesc getInstance(JSONObject object)
+        {
+            return new RemoteAppBuildDesc(object);
+        }
+    }
+
     private static String idTag           = "id";
     private static String statusTag       = "status";
     private static String downloadLinkTag = "download_link";
     
-    private JSONObject m_baseObject        = null;
-    
-    public RemoteAppBuildDesc(Object object)
+    public RemoteAppBuildDesc(JSONObject object)
     {
-        m_baseObject = (JSONObject) object;
+        super(object);
     }
     
     public RemoteStatus getStatus() throws JSONException
@@ -37,5 +44,19 @@ public class RemoteAppBuildDesc
     public URL getBuildResultUrl() throws JSONException, MalformedURLException
     {
         return new URL((String)m_baseObject.get(downloadLinkTag));
+    }
+    
+    public String getBuildResultFileName() throws JSONException
+    {
+        String dwlLink = (String)m_baseObject.get(downloadLinkTag);
+          
+        int nameStartIdx = dwlLink.lastIndexOf("/");
+          
+        if (nameStartIdx != -1)
+        {
+            return dwlLink.substring(nameStartIdx);    
+        }
+          
+        return null;
     }
 }

@@ -8,13 +8,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
+
 import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.RemoteAppBuildDesc;
+import rhogenwizard.rhohub.RemoteProjectDesc;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.sdk.task.rhohub.CheckBuildStatusTask;
@@ -50,13 +54,15 @@ public class BuildWizard extends BaseAppWizard
      */
     public boolean performFinish()
     {
+        final String dstDir = getSelectedDirectory();
+        
         IRunnableWithProgress op = new IRunnableWithProgress()
         {
             public void run(IProgressMonitor monitor) throws InvocationTargetException
             {
                 try
                 {
-                    doFinish(monitor);
+                    doFinish(dstDir, monitor);
                 }
                 catch (CoreException e)
                 {
@@ -91,13 +97,24 @@ public class BuildWizard extends BaseAppWizard
         return true;
     }
 
+    private String getSelectedDirectory()
+    {
+        DirectoryDialog dlg = new DirectoryDialog(Display.getCurrent().getActiveShell());
+
+        dlg.setFilterPath("C:");
+        dlg.setText("Select destination directory");
+        dlg.setMessage("Select a directory");
+
+        return dlg.open();
+    }
+    
     /**
      * @throws ProjectNotFoundExtension
      *             The worker method. It will find the container, create the
      *             file if missing or just replace its contents, and open the
      *             editor on the newly created file.
      */
-    private void doFinish(IProgressMonitor monitor) throws CoreException, ProjectNotFoundException
+    private void doFinish(final String dstDir, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException
     {
         try
         {
@@ -128,20 +145,25 @@ public class BuildWizard extends BaseAppWizard
 
             if (store != null)
             {
-                IRemoteProjectDesc projectDesc = RhoHub.getInstance(store).findRemoteApp(m_selectedProject);
+                RemoteProjectDesc  projectDesc = RhoHub.getInstance(store).findRemoteApp(m_selectedProject);
+                RemoteAppBuildDesc buildInfo   = null;
                 
                 if (projectDesc != null)
                 {
-                    if (!RhoHub.getInstance(store).buildRemoteApp(projectDesc))
+                    buildInfo = RhoHub.getInstance(store).buildRemoteApp(projectDesc);
+                    
+                    if (buildInfo == null)
                     {
                         DialogUtils.error("Error", "Build is failed.");
+                        monitor.done();
+                        return;
                     }
                 }                       
                 monitor.worked(1);
                 
                 monitor.beginTask("Start checking build on rhohub server", 1);
 
-                CheckBuildStatusTask checkTask = new CheckBuildStatusTask(projectDesc);
+                CheckBuildStatusTask checkTask = new CheckBuildStatusTask(projectDesc, buildInfo, dstDir);
                 Job checkJob = checkTask.makeJob("Checking remote build status");
                 checkJob.schedule();
             }

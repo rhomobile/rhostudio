@@ -13,7 +13,7 @@ import rhogenwizard.buildfile.converter.IStructureConverter;
 public class YmlFile
 {
 	private String              m_filePath = null;
-	private Map                 m_dataStorage = null;
+	private Map<Object, Object> m_dataStorage = null;
 	private IStructureConverter m_dataConverter = new CustomConverter();
 	
 	public YmlFile(String ymlFileName) throws FileNotFoundException
@@ -137,15 +137,15 @@ public class YmlFile
 	{
 		try
 		{
-			Map comSection =  (Map) m_dataStorage.get(commonSection);
+			Map<Object, Object> comSection =  (Map<Object, Object>) m_dataStorage.get(commonSection);
 			
 			if (comSection != null)
 			{			
-				Map mSection = (Map) comSection.get(mainSection);
+				Map<Object, Object> mSection = (Map<Object, Object>) comSection.get(mainSection);
 				
 				if (null != mSection)
 				{
-					Map section = (Map) mSection.get(sectionName);
+					Map<Object, Object> section = (Map<Object, Object>) mSection.get(sectionName);
 					
 					if (null != section)
 					{
@@ -153,7 +153,7 @@ public class YmlFile
 					}
 					else
 					{
-						LinkedHashMap m = new LinkedHashMap();
+						LinkedHashMap<Object, Object> m = new LinkedHashMap<Object, Object>();
 						m.put(paramName, value);
 						mSection.put(sectionName, m);
 					}
@@ -237,7 +237,7 @@ public class YmlFile
 
 	public void set(String sectionName, String param, String value) 
 	{
-		Map mSection = (Map) m_dataStorage.get(sectionName);
+		Map<Object, Object> mSection = (Map<Object, Object>) m_dataStorage.get(sectionName);
 		
 		if (null != mSection)
 		{
@@ -245,7 +245,7 @@ public class YmlFile
 		}
 		else
 		{
-			LinkedHashMap m = new LinkedHashMap();
+			LinkedHashMap<Object, Object> m = new LinkedHashMap<Object, Object>();
 			m.put(param, value);
 			m_dataStorage.put(sectionName, m);
 		}

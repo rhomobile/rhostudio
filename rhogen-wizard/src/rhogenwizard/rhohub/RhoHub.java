@@ -31,8 +31,8 @@ import rhogenwizard.sdk.task.rhohub.ShowBuildTask;
 
 public class RhoHub implements IRhoHub
 {
-    private static IRhoHub          rhoApi = null;    
-    private static IRhoHubSetting   rhohubConfiguration = null;
+    private static IRhoHub        rhoApi = null;    
+    private static IRhoHubSetting rhohubConfiguration = null;
     
     public static IRhoHub getInstance(IRhoHubSetting configuration)
     {
@@ -80,18 +80,18 @@ public class RhoHub implements IRhoHub
     }
     
     @Override
-    public IRemoteProjectDesc findRemoteApp(IProject project)
+    public RemoteProjectDesc findRemoteApp(IProject project)
     {
         try
         {
-            RemoteProjectsList projectList = new RemoteProjectsList (getAppList());
+            JSONList<RemoteProjectDesc> projectList = new JSONList<RemoteProjectDesc> (getAppList(), new RemoteProjectDesc.RemoteProjectDescFactory());
             
             Git localRepo = Git.open(new File(project.getLocation().toOSString()));
             StoredConfig repoConfig = localRepo.getRepository().getConfig();
             
             String localRepoUrl = repoConfig.getString("remote", "origin", "url");
             
-            for (IRemoteProjectDesc remoteProject : projectList)
+            for (RemoteProjectDesc remoteProject : projectList)
             {
                 if (remoteProject.getGitLink().equals(localRepoUrl))
                 {
@@ -123,15 +123,17 @@ public class RhoHub implements IRhoHub
     }
 
     @Override
-    public boolean buildRemoteApp(IRemoteProjectDesc project)
+    public RemoteAppBuildDesc buildRemoteApp(RemoteProjectDesc project)
     {
         BuildApp task = new BuildApp(project, rhohubConfiguration);
         task.run();
         
         try
         {
-            RemoteProjectDesc desc = (RemoteProjectDesc) project;
-            desc.setBuildInfo(task.getOutputAsJSON());
+            if (!task.isOk())
+                return null;
+            
+            return new RemoteAppBuildDesc(task.getOutputAsJSON());
         }
         catch (JSONException e)
         {
@@ -139,7 +141,7 @@ public class RhoHub implements IRhoHub
             System.out.print(task.getError());
         }
         
-        return task.isOk();
+        return null;
     }
     
     private boolean replaceRemoteSourcesFromLocal(IProject project, final String remoteGitRepo, final CredentialsProvider credProvider) throws InvalidRemoteException
@@ -209,7 +211,7 @@ public class RhoHub implements IRhoHub
     }
     
     @Override
-    public boolean pushSourcesToRemote(IRemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException
+    public boolean pushSourcesToRemote(RemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException
     {
         try
         {
@@ -235,21 +237,20 @@ public class RhoHub implements IRhoHub
     }
 
     @Override
-    public boolean checkProjectBuildStatus(IRemoteProjectDesc project)
+    public boolean checkProjectBuildStatus(RemoteProjectDesc projectInfo, RemoteAppBuildDesc buildInfo)
     {
         if (rhohubConfiguration == null)
             return false;
         
         try
         {
-            ShowBuildTask task = new ShowBuildTask(rhohubConfiguration, project.getId(), project.getBuildId());
+            ShowBuildTask task = new ShowBuildTask(rhohubConfiguration, projectInfo.getId(), buildInfo.getId());
             task.run();
             
             if (!task.isOk())
                 return false;
                         
-            RemoteProjectDesc prjDesc = (RemoteProjectDesc) project;
-            prjDesc.setBuildInfo(task.getOutputAsJSON());
+            buildInfo.setJsonObject(task.getOutputAsJSON());
             
             return true;
         }
@@ -262,11 +263,11 @@ public class RhoHub implements IRhoHub
     }
 
     @Override
-    public RemotePlatformList getPlatformList()
+    public JSONList<RemotePlatformDesc>  getPlatformList()
     {
         try
         {
-            return new RemotePlatformList(getRemotePlatformList());
+            return new JSONList<RemotePlatformDesc>(getRemotePlatformList(), new RemotePlatformDesc.RemotePlatformDescFactory());
         }
         catch (CoreException e)
         {
@@ -291,16 +292,9 @@ public class RhoHub implements IRhoHub
     }
 
     @Override
-    public RemoteProjectsList getProjectsList() throws CoreException, JSONException, InterruptedException
+    public JSONList<RemoteProjectDesc> getProjectsList() throws CoreException, JSONException, InterruptedException
     {
-        return new RemoteProjectsList (getAppList());
-    }
-
-    @Override
-    public boolean pullRemoteAppSources(IRemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException
-    {
-        // TODO Auto-generated method stub
-        return false;
+        return new JSONList<RemoteProjectDesc> (getAppList(), new RemoteProjectDesc.RemoteProjectDescFactory());
     }
 
     private NewRemoteProjectDesc createRemoteApp(IProject project) throws JSONException
@@ -312,7 +306,7 @@ public class RhoHub implements IRhoHub
     }
     
     @Override
-    public IRemoteProjectDesc createRemoteAppFromLocalSources(IProject project, final CredentialsProvider credProvider) throws InvalidRemoteException
+    public RemoteProjectDesc createRemoteAppFromLocalSources(IProject project, final CredentialsProvider credProvider) throws InvalidRemoteException
     {
         try
         {
@@ -329,7 +323,7 @@ public class RhoHub implements IRhoHub
     }
 
     @Override
-    public IRemoteProjectDesc updateRemoteAppFromLocalSources(IProject project, String gitRepoUrl, CredentialsProvider credProvider) throws InvalidRemoteException
+    public RemoteProjectDesc updateRemoteAppFromLocalSources(IProject project, String gitRepoUrl, CredentialsProvider credProvider) throws InvalidRemoteException
     {
         if (replaceRemoteSourcesFromLocal(project, gitRepoUrl, credProvider))
         {
@@ -340,13 +334,13 @@ public class RhoHub implements IRhoHub
     }
 
     @Override
-    public RemoteAppBuildsList getBuildsList(IProject project) throws JSONException
+    public JSONList<RemoteAppBuildDesc> getBuildsList(IProject project) throws JSONException
     {
-        IRemoteProjectDesc remoteProject = findRemoteApp(project);
+        RemoteProjectDesc remoteProject = findRemoteApp(project);
 
         BuildListTask task = new BuildListTask(rhohubConfiguration, remoteProject.getId());
         task.run();
         
-        return new RemoteAppBuildsList(task.getOutputAsJSON());
+        return new JSONList<RemoteAppBuildDesc>(task.getOutputAsJSON(), new RemoteAppBuildDesc.RemoteAppBuildDescFactory());
     }
 }

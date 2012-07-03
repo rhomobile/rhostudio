@@ -45,6 +45,9 @@ public class PreferencesPageRhoHub extends BasePreferencePage
                 
         addField(new StringFieldEditor(IRhoHubSetting.rhoHubToken, 
                 "&User token:", getFieldEditorParent()));
+
+        addField(new StringFieldEditor(IRhoHubSetting.rhoHubSelectedRhodesVesion, 
+            "&Default rhodes version:", getFieldEditorParent()));
     }
 
     public void init(IWorkbench workbench) 

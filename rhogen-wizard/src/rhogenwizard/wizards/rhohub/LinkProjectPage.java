@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.json.JSONException;
 
 import rhogenwizard.DialogUtils;
-import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.rhohub.RemoteProjectsList;
+import rhogenwizard.rhohub.JSONList;
+import rhogenwizard.rhohub.RemoteProjectDesc;
 import rhogenwizard.rhohub.RhoHub;
 
 public class LinkProjectPage extends WizardPage 
@@ -28,7 +28,6 @@ public class LinkProjectPage extends WizardPage
     private static int nameColIdx = 0;
     private static int urlColIdx = 1;
     
-    private IProject       m_project = null;
     private IRhoHubSetting m_setting = null;
     private boolean        m_isNewProject = true;
     
@@ -46,7 +45,6 @@ public class LinkProjectPage extends WizardPage
         setTitle("Link application with rhohub project wizard");
         setDescription("Link application with rhohub project wizard");
         
-        m_project = project;
         m_setting = setting;
     }
 
@@ -118,7 +116,7 @@ public class LinkProjectPage extends WizardPage
 
         try
         {
-            RemoteProjectsList remoteProjects = RhoHub.getInstance(m_setting).getProjectsList();
+            JSONList<RemoteProjectDesc> remoteProjects = RhoHub.getInstance(m_setting).getProjectsList();
 
             if (remoteProjects.size() == 0)
             {
@@ -128,7 +126,7 @@ public class LinkProjectPage extends WizardPage
             }
             else
             {
-                for (IRemoteProjectDesc project : remoteProjects)
+                for (RemoteProjectDesc project : remoteProjects)
                 {
                     TableItem item = new TableItem(m_remoteProjectsList, SWT.NONE);
                     

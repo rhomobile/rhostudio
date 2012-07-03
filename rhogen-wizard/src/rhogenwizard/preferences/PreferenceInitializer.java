@@ -9,44 +9,47 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+
 import rhogenwizard.Activator;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
+import rhogenwizard.rhohub.IRhoHubSetting;
 
 /**
  * Class used to initialize default preference values.
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer 
 {	
-	static PreferenceInitializer m_initPref = null;
+    static String                rhodesDefaultVersion = "3.3.2";
+	static PreferenceInitializer initPref = null;
 	
-	private String       m_defaultBbVer = null;
-	private SdkYmlFile   m_ymlFile = null;
-	private List<String> m_bbVers = null;
-	private IProject     m_currProject = null;
+	private String       m_defaultBbVer   = null;
+	private SdkYmlFile   m_ymlFile        = null;
+	private List<String> m_bbVers         = null;
+	private IProject     m_currProject    = null;
 	private String       m_currRhodesPath = null;
 	
 	static PreferenceInitializer getInstance()
 	{
 		try 
 		{
-			if (m_initPref != null)
+			if (initPref != null)
 			{
-				m_initPref.initFromFirstProject();
+				initPref.initFromFirstProject();
 				
-				return m_initPref;
+				return initPref;
 			}
 			
-			m_initPref = new PreferenceInitializer();
+			initPref = new PreferenceInitializer();
 		
-			m_initPref.initFromFirstProject();
+			initPref.initFromFirstProject();
 		}
 		catch (Exception e) 
 		{
 		    Activator.logError(e);
 		}
 		
-		return m_initPref;
+		return initPref;
 	}
 	
 	private void initFromFirstProject() 
@@ -78,19 +81,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		return m_bbVers;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
 	public void initializeDefaultPreferences() 
 	{
+	    IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+	    
 		try 
 		{
 			if (m_ymlFile != null)
 			{
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				
 				String cabWizPath     = m_ymlFile.getCabWizPath() != null ? m_ymlFile.getCabWizPath() : "";
 				String vcbuildPath    = m_ymlFile.getVcBuildPath() != null ? m_ymlFile.getVcBuildPath() : "";
 				String androidSdkPath = m_ymlFile.getAndroidSdkPath() != null ? m_ymlFile.getAndroidSdkPath() : "";
@@ -125,6 +123,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		{
 			e.printStackTrace();
 		}
+		
+		store.setDefault(IRhoHubSetting.rhoHubUrl, "");
+		store.setDefault(IRhoHubSetting.rhoHubToken, "");
+		store.setDefault(IRhoHubSetting.rhoHubSelectedRhodesVesion, rhodesDefaultVersion);
 	}
 	
 	public void savePreferences()
@@ -223,28 +225,5 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	private boolean isRhodesPathChanged()
-	{
-		try 
-		{
-			AppYmlFile appYmlFile;
-			
-			appYmlFile = AppYmlFile.createFromProject(m_currProject);
-			
-			String sdkPath = appYmlFile.getSdkConfigPath();
-			
-			if (m_currRhodesPath != null)
-			{
-				return !sdkPath.equals(m_currRhodesPath);
-			}
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return false;
 	}
 }
