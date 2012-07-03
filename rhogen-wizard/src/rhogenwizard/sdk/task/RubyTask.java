@@ -6,21 +6,26 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.OSHelper;
+import rhogenwizard.SysCommandExecutor;
 
 public abstract class RubyTask extends RunTask
 {
-    protected final String       m_workDir;
-    protected final List<String> m_cmdLine;
+    protected final String                       m_workDir;
+    protected final SysCommandExecutor.Decorator m_decorator;
+    protected final List<String>                 m_cmdLine;
 
-    public RubyTask(String workDir, String... args)
+    public RubyTask(String workDir, SysCommandExecutor.Decorator decorator, String... args)
     {
         m_workDir = workDir;
+        m_decorator = decorator;
         m_cmdLine = Arrays.asList(args);
     }
 
     @Override
     public void run(IProgressMonitor monitor)
     {
+        final RuntimeException[] exceptions = { null };
+
         if (monitor.isCanceled())
         {
             throw new StoppedException();
@@ -31,7 +36,14 @@ public abstract class RubyTask extends RunTask
             @Override
             public void run()
             {
-                exec();
+                try
+                {
+                    exec();
+                }
+                catch (RuntimeException e)
+                {
+                    exceptions[0] = e;
+                }
             }
         });
         thread.start();
@@ -52,6 +64,11 @@ public abstract class RubyTask extends RunTask
                 stop();
                 throw new StoppedException();
             }
+        }
+
+        if (exceptions[0] != null)
+        {
+            throw exceptions[0];
         }
     }
 

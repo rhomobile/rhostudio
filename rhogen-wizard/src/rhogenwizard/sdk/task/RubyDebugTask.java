@@ -20,9 +20,10 @@ public class RubyDebugTask extends RubyTask
     private final ConsoleHelper.Console m_console;
     private IProcess                    m_debugProcess;
 
-    public RubyDebugTask(ILaunch launch, String appName, String workDir, String... args)
+    public RubyDebugTask(ILaunch launch, String appName, String workDir,
+        SysCommandExecutor.Decorator decorator, String... args)
     {
-        super(workDir, args);
+        super(workDir, decorator, args);
 
         m_launch = launch;
         m_appName = appName;
@@ -57,7 +58,7 @@ public class RubyDebugTask extends RubyTask
         Process process;
         try
         {
-            process = executor.startCommand(m_cmdLine);
+            process = executor.startCommand(m_decorator, m_cmdLine);
         }
         catch (IOException e)
         {

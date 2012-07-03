@@ -3,11 +3,13 @@ package rhogenwizard.sdk.task;
 import java.util.Arrays;
 import java.util.List;
 
+import rhogenwizard.SysCommandExecutor;
+
 public class CompileRubyPartTask extends RubyExecTask
 {
     public CompileRubyPartTask(String workDir)
     {
-        super(workDir, "rake", "build:bundle:rhostudio");
+        super(workDir, SysCommandExecutor.RUBY_BAT, "rake", "build:bundle:rhostudio");
         disableConsole();
     }
 

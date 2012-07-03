@@ -241,7 +241,8 @@ public class LogFileHelper
 	
 	private String getLogFilePath(IProject project, String taskName) throws Exception
 	{
-		RubyExecTask task = new RubyExecTask(project.getLocation().toOSString(), "rake", taskName);
+		RubyExecTask task = new RubyExecTask(project.getLocation().toOSString(), SysCommandExecutor.RUBY_BAT,
+		    "rake", taskName);
 		task.run();
 		String output = task.getOutput();
 		

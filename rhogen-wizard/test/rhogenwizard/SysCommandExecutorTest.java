@@ -32,31 +32,44 @@ public class SysCommandExecutorTest
     @Test
     public void testSingleQuotes() throws IOException, InterruptedException
     {
-        runTest("Hello, World!\n", "", "ruby", "-e", "puts 'Hello, World!'");
+        runTest("Hello, World!\n", "", SysCommandExecutor.RUBY, "ruby", "-e", "puts 'Hello, World!'");
     }
 
     @Test
     public void testBackslash() throws IOException, InterruptedException
     {
-        runTest("a\\b\n", "", "ruby", "-e", "puts 'a\\b'");
+        runTest("a\\b\n", "", SysCommandExecutor.RUBY, "ruby", "-e", "puts 'a\\b'");
     }
 
     @Test
     public void testDoubleQuotes() throws IOException, InterruptedException
     {
-        runTest("Hello, World!\n", "", "ruby", "-e", "puts \"Hello, World!\"");
+        runTest("Hello, World!\n", "", SysCommandExecutor.RUBY, "ruby", "-e", "puts \"Hello, World!\"");
     }
 
     @Test
     public void testBackslashAndDoubleQuote() throws IOException, InterruptedException
     {
-        runTest("a\\\"b\n", "", "ruby", "-e", "puts 'a\\\"b'");
+        runTest("a\\\"b\n", "", SysCommandExecutor.RUBY, "ruby", "-e", "puts 'a\\\"b'");
     }
 
-    private void runTest(String output, String error, String... commandLine) throws IOException,
-        InterruptedException
+    @Test
+    public void testALotOfDoubleQuotes() throws IOException, InterruptedException
     {
-        assertEquals(0, m_executor.runCommand(Arrays.asList(commandLine)));
+        runTest("\"\"\"\"\"\"\"\"\n", "", SysCommandExecutor.RUBY, "ruby", "-e",
+            "puts \"\\\"\\\"\\\"\\\"\\\"\\\"\\\"\\\"\"");
+    }
+
+    @Test
+    public void testSingleWordCommand() throws IOException, InterruptedException
+    {
+        runTest("ECHO is on.\n", "", SysCommandExecutor.CRT, "echo");
+    }
+
+    private void runTest(String output, String error, SysCommandExecutor.Decorator decorator,
+        String... commandLine) throws IOException, InterruptedException
+    {
+        assertEquals(0, m_executor.runCommand(decorator, Arrays.asList(commandLine)));
         assertEquals(output.replaceAll("\n", nl), m_executor.getCommandOutput());
         assertEquals(error.replaceAll("\n", nl), m_executor.getCommandError());
     }

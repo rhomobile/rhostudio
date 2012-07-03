@@ -1,12 +1,14 @@
 package rhogenwizard.sdk.task.generate;
 
+import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
 
 public class GenerateRhodesModelTask extends RubyExecTask
 {
     public GenerateRhodesModelTask(String workDir, String modelName, String modelFields)
     {
-        super(workDir, "rhodes", "model", modelName, prepareModelAttributes(modelFields));
+        super(workDir, SysCommandExecutor.RUBY_BAT, "rhodes", "model", modelName,
+            prepareModelAttributes(modelFields));
     }
 
     private static String prepareModelAttributes(String modelAttr)

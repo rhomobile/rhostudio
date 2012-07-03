@@ -2,6 +2,7 @@ package rhogenwizard.buildfile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import rhogenwizard.OSValidator;
@@ -9,25 +10,11 @@ import rhogenwizard.SysCommandExecutor;
 
 public class SdkYmlAdapter
 {
-	private static final String sdkPathSetupCommandUnix = "set-rhodes-sdk";
-	private static final String sdkPathSetupCommandWin  = "set-rhodes-sdk.bat";
-	
 	private static String getPathToYaml() throws Exception
 	{
 		SysCommandExecutor executor = new SysCommandExecutor();
 		
-		List<String> cmdArgs = new ArrayList<String>();
-		
-		if (OSValidator.isWindows()) 
-		{
-			cmdArgs.add(sdkPathSetupCommandWin);
-		}
-		else 
-		{
-			cmdArgs.add(sdkPathSetupCommandUnix);
-		}
-		
-		int ret = executor.runCommand(cmdArgs);
+		int ret = executor.runCommand(SysCommandExecutor.RUBY_BAT, Arrays.asList("set-rhodes-sdk"));
 		
 		if (ret != 0) 
 		{
@@ -68,19 +55,6 @@ public class SdkYmlAdapter
 	{
 		SysCommandExecutor executor = new SysCommandExecutor();
 		
-		List<String> cmdArgs = new ArrayList<String>();
-		
-		if (OSValidator.isWindows()) 
-		{
-			cmdArgs.add(sdkPathSetupCommandWin);
-		}
-		else 
-		{
-			cmdArgs.add(sdkPathSetupCommandUnix);
-		}
-		
-		cmdArgs.add(path);
-		
-		executor.runCommand(cmdArgs);
+		executor.runCommand(SysCommandExecutor.RUBY_BAT, Arrays.asList("set-rhodes-sdk", path));
 	}
 }
