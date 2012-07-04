@@ -16,16 +16,20 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
     {
         String task;
         if (runType == RunType.eDevice)
-            if (platformType == PlatformType.eIPhone)
-                task = "device:iphone:production";
-            else if (platformType == PlatformType.eBb) // FIX for bb
-                task = "device:bb:production";
-            else
-                task = "run:" + platformType + ":device";
+            switch (platformType) {
+            case eIPhone:
+            case eBb:
+            case eWin32:
+                task = "device:" + platformType.id + ":production";
+                break;
+            default:
+                task = "run:" + platformType.id + ":device";
+                break;
+            }
         else if (runType == RunType.eRhoEmulator)
-            task = "run:" + platformType + ":rhosimulator";
+            task = "run:" + platformType.id + ":rhosimulator";
         else
-            task = "run:" + platformType;
+            task = "run:" + platformType.id;
 
         List<String> cmdLine = new ArrayList<String>();
         cmdLine.add("rake");
@@ -49,7 +53,7 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
 
         if (platformType == PlatformType.eWm && wmSdkVersion != null)
         {
-            cmdLine.add("rho_wm_sdk=\'" + WinMobileSdk.fromVersion(wmSdkVersion).sdkId + "\'");
+            cmdLine.add("rho_wm_sdk=" + WinMobileSdk.fromVersion(wmSdkVersion).sdkId);
         }
 
         if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)

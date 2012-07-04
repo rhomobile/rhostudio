@@ -42,7 +42,7 @@ public class RunDebugRhodesAppTask extends RubyDebugTask
 
         if (platformType == PlatformType.eWm && wmSdkVersion != null)
         {
-            args.add("rho_wm_sdk=\'" + WinMobileSdk.fromVersion(wmSdkVersion).sdkId + "\'");
+            args.add("rho_wm_sdk=" + WinMobileSdk.fromVersion(wmSdkVersion).sdkId);
         }
 
         if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
