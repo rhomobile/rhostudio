@@ -22,7 +22,7 @@ import rhogenwizard.sdk.task.RunTask;
 
 public class CheckBuildStatusTask extends RunTask
 {
-    private static int waitSleep = 100;
+    private static int waitSleep = 500;
     
     private RemoteProjectDesc  m_project = null;
     private RemoteAppBuildDesc m_buildInfo = null;
@@ -80,7 +80,7 @@ public class CheckBuildStatusTask extends RunTask
                     
                     monitor.worked(1);
                     
-                    if (DialogUtils.confirm("Build result", "File with application build is download to your computer, open file?"))
+                    if (DialogUtils.confirm("Build result", "Application build is download to your computer, open the file?"))
                     {
                         Desktop.getDesktop().open(resultFile);
                     }                    

@@ -18,12 +18,12 @@ public class SnakeConverter extends AbstractStructureConverter
 	}
 
 	@Override
-	public Map getDataStorage(String filePath) throws FileNotFoundException 
+	public Map<Object, Object> getDataStorage(String filePath) throws FileNotFoundException 
 	{
 		File      ymlFile = new File(filePath);
 		Yaml       yaml   = new Yaml();		
 		FileReader fr     = new FileReader(ymlFile);
 
-		return (Map) yaml.load(fr);		
+		return (Map<Object, Object>) yaml.load(fr);		
 	}
 }

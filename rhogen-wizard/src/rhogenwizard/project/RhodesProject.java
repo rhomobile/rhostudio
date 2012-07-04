@@ -94,14 +94,14 @@ public class RhodesProject extends RhomobileProject
 	{
 		super.refreshProject();
 		
-//		try 
-//		{
-//			AppYmlFile ymlFile = (AppYmlFile)this.getSettingFile();
-//			linkFolder("framework", ymlFile.getFrameworkPath());
-//		} 
-//		catch (FileNotFoundException e) 
-//		{
-//			e.printStackTrace();
-//		}
+		try 
+		{
+			AppYmlFile ymlFile = (AppYmlFile)this.getSettingFile();
+			linkFolder("framework", ymlFile.getFrameworkPath());
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }

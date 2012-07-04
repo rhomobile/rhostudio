@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Text;
 public class ExtensionWizardPage extends WizardPage 
 {
 	private Text       m_extName   = null;
-	private ISelection m_selection = null;
 
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -26,7 +25,6 @@ public class ExtensionWizardPage extends WizardPage
 		super("wizardPage");
 		setTitle("Native extension information");
 		setDescription("Native extension create");
-		this.m_selection = selection;
 	}
 
 	public void createControl(Composite parent) 

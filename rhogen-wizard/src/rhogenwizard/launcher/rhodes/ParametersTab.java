@@ -1,9 +1,6 @@
 package rhogenwizard.launcher.rhodes;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -40,6 +37,7 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 
+@SuppressWarnings("restriction")
 public class ParametersTab extends  JavaLaunchTab 
 {
 	private static int    minTabSize      = 650;
@@ -86,7 +84,6 @@ public class ParametersTab extends  JavaLaunchTab
 	
 	protected AppYmlFile     m_ymlFile = null;
 	
-	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(final Composite parent)
 	{

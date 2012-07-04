@@ -214,6 +214,7 @@ public class SysCommandExecutor
         StringBuilder sb = new StringBuilder();
 
         boolean first = true;
+
         for (String arg : args)
         {
             if (first)
@@ -224,6 +225,7 @@ public class SysCommandExecutor
             {
                 sb.append(' ');
             }
+            
             sb.append(decorator.decorate(arg));
         }
 
@@ -247,6 +249,7 @@ public class SysCommandExecutor
             if (!containsAny(arg, " \t\n"))
             {
                 String candidate = decorate("", "'\"", arg);
+                
                 if (candidate.length() <= shortest.length())
                 {
                     shortest = candidate;
@@ -282,10 +285,12 @@ public class SysCommandExecutor
 
             sb.append(decor);
             Escaper e = new Escaper(sb, quotes);
+            
             for (int i = 0; i < text.length(); i++)
             {
                 e.append(text.charAt(i));
             }
+            
             e.flush(decor.length() == 1 && quotes.contains(decor));
             sb.append(decor);
 
@@ -298,13 +303,12 @@ public class SysCommandExecutor
     {
         private final StringBuilder m_sb;
         private final String        m_quotes;
-        private int                 m_nBackSlashes;
+        private int                 m_nBackSlashes = 0;
 
         public Escaper(StringBuilder sb, String quotes)
         {
-            m_sb = sb;
-            m_quotes = quotes;
-            m_nBackSlashes = 0;
+            m_sb           = sb;
+            m_quotes       = quotes;
         }
 
         public void append(char c)
@@ -333,10 +337,12 @@ public class SysCommandExecutor
         public void flush(boolean withQuote)
         {
             int n = (withQuote) ? 2 * m_nBackSlashes : m_nBackSlashes;
+            
             for (int i = 0; i < n; i++)
             {
                 m_sb.append('\\');
             }
+            
             m_nBackSlashes = 0;
         }
     }
@@ -350,6 +356,7 @@ public class SysCommandExecutor
                 return true;
             }
         }
+        
         return false;
     }
 }

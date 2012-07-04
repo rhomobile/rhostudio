@@ -90,11 +90,13 @@ public class RubyExecTask extends RubyTask
         stream.print("RET: " + m_exitValue + "\n");
     }
 
+    @SuppressWarnings("unused")
     private String showWorkingDir()
     {
         return m_workDir;
     }
 
+    @SuppressWarnings("unused")
     private String showCommandLine()
     {
         StringBuilder sb = new StringBuilder();

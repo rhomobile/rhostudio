@@ -27,7 +27,6 @@ import rhogenwizard.wizards.BaseAppWizard;
 public class BuildWizard extends BaseAppWizard
 {
     private BuildSettingPage    m_pageSetting = null;
-    
     private IProject            m_selectedProject = null;
     
     public BuildWizard(IProject project)

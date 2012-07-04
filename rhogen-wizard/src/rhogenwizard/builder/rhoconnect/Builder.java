@@ -111,7 +111,7 @@ public class Builder extends IncrementalProjectBuilder
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-    protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException
+    protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args, IProgressMonitor monitor) throws CoreException
 	{
 		/*
 		if (kind == FULL_BUILD) {

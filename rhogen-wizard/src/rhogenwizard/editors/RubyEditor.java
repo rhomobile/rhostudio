@@ -107,7 +107,8 @@ public class RubyEditor extends MultiPageEditorPart implements IResourceChangeLi
 	 * The <code>MultiPageEditorExample</code> implementation of this method
 	 * checks that the input is an instance of <code>IFileEditorInput</code>.
 	 */
-	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException 
+	@SuppressWarnings("deprecation")
+    public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException 
 	{
 		if (!(editorInput instanceof IFileEditorInput))
 			throw new PartInitException("Invalid Input: Must be IFileEditorInput");

@@ -4,7 +4,9 @@ import org.eclipse.core.resources.IProject;
 
 public class CheckProjectException extends Exception
 {
-	private IProject m_project = null;
+    private static final long serialVersionUID = -1443243798511289105L;
+
+    private IProject m_project = null;
 	
 	public CheckProjectException(IProject project)
 	{

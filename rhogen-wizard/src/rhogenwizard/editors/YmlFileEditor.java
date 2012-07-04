@@ -4,29 +4,20 @@ package rhogenwizard.editors;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -37,12 +28,9 @@ import org.eclipse.ui.*;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.ide.IDE;
-
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
-import rhogenwizard.project.RhomobileProject;
 import rhogenwizard.project.extension.BadProjectTagException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 
@@ -57,7 +45,6 @@ import rhogenwizard.project.extension.ProjectNotFoundException;
  */
 public class YmlFileEditor extends MultiPageEditorPart implements IResourceChangeListener
 {
-	private static final int textWidth = 300;
 	private static final int labelWidht = 120;
 	private static final int buttonWidht = 60;
 	
@@ -68,8 +55,6 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 	private Text 		m_rhodesPathText = null;
 	private Text		m_capabText	     = null;
 	private Text		m_appNameText    = null;
-	private Button 		m_applyButton    = null;
-	
 	/**
 	 * Creates a multi-page editor example.
 	 */
@@ -348,7 +333,8 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 	 * The <code>MultiPageEditorExample</code> implementation of this method
 	 * checks that the input is an instance of <code>IFileEditorInput</code>.
 	 */
-	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException 
+	@SuppressWarnings("deprecation")
+    public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException 
 	{
 		if (!(editorInput instanceof IFileEditorInput))
 			throw new PartInitException("Invalid Input: Must be IFileEditorInput");

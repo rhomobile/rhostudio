@@ -28,8 +28,6 @@ import rhogenwizard.sdk.task.generate.GenerateRhoconnectAppTask;
 
 public class AppWizard extends Wizard implements INewWizard
 {
-    private static final String okRhodesVersionFlag = "1";
-
     private AppWizardPage        m_pageApp = null;
     private IStructuredSelection m_selection = null;
 

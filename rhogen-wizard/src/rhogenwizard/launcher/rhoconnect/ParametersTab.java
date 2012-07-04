@@ -20,33 +20,28 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
-import rhogenwizard.project.RhodesProject;
-import rhogenwizard.project.nature.RhoconnectNature;
 
+@SuppressWarnings("restriction")
 public class ParametersTab extends  JavaLaunchTab 
 {
 	private static int    minTabSize      = 650;
 	
-	private static String bbVersions[] = {};
-	
-	Composite 	m_comp = null;
-	Combo 	  	m_selectPlatformCombo = null;
+	Composite 	m_comp                       = null;
+	Combo 	  	m_selectPlatformCombo        = null;
 	Combo       m_selectPlatformVersionCombo = null;
-	Text 		m_appNameText = null;
+	Text 		m_appNameText                = null;
 
 	String    	m_platformName = null;
 	IProject 	m_selProject  = null;
 	
 	ILaunchConfigurationWorkingCopy m_configuration;
 	
-	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(final Composite parent)
 	{
@@ -56,7 +51,7 @@ public class ParametersTab extends  JavaLaunchTab
 		Composite namecomp = SWTFactory.createComposite(composite, composite.getFont(), 3, 1, GridData.FILL_HORIZONTAL, 0, 0);
 		
 		// 1 row
-		Label label = SWTFactory.createLabel(namecomp, "&Project name:", 1);
+		SWTFactory.createLabel(namecomp, "&Project name:", 1);
 
 		m_appNameText = SWTFactory.createText(namecomp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY, 1);	
 		m_appNameText.addModifyListener(new ModifyListener() 
@@ -79,7 +74,6 @@ public class ParametersTab extends  JavaLaunchTab
 				selectProjectDialog();
 			}
 		});
-	
 	}
 	
 	@Override

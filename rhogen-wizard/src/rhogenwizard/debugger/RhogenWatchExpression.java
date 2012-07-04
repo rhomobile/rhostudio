@@ -3,6 +3,7 @@ package rhogenwizard.debugger;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.debug.internal.core.WatchExpression;
 
+@SuppressWarnings("restriction")
 public class RhogenWatchExpression extends WatchExpression
 {
 	public RhogenWatchExpression(String expression) 

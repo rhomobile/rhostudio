@@ -73,7 +73,7 @@ public class JSONList<T extends BaseRemoteDesc> extends AbstractCollection<T>
     
     public JSONList(JSONArray in, JsonAbstractFactory<T> objFactory)
     {
-        m_objFactory = objFactory;
+        m_objFactory  = objFactory;
         m_buildsDescs = in;
     }
     

@@ -2,10 +2,12 @@ package rhogenwizard.wizards.rhodes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+
 import rhogenwizard.BuildInfoHolder;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.RunExeHelper;
@@ -18,7 +20,6 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.generate.GenerateRhoelementsAppTask;

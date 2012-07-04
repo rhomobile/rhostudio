@@ -2,14 +2,11 @@ package rhogenwizard.project.extension;
 
 public class BadProjectTagException extends Exception 
 {
-	private Class m_tag = null;
-	
-	/**
-	 * 
-	 */
+	private Class<?> m_tag = null;
+
 	private static final long serialVersionUID = 2576187748604698201L;
 	
-	public BadProjectTagException(Class tag)
+	public BadProjectTagException(Class<?> tag)
 	{
 		m_tag = tag; 	
 	}

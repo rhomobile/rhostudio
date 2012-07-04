@@ -30,12 +30,12 @@ import rhogenwizard.sdk.task.StopSyncAppTask;
 import rhogenwizard.sdk.task.run.RunDebugRhoconnectAppTask;
 import rhogenwizard.sdk.task.run.RunReleaseRhoconnectAppTask;
 
+@SuppressWarnings("restriction")
 public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	private String        m_projectName = null;
-	private String        m_platformName = null;
 	private AtomicBoolean m_buildFinished = new AtomicBoolean();
 	private IProcess      m_debugProcess = null;
 		
@@ -110,7 +110,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	@SuppressWarnings("deprecation")
 	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{	
 		try

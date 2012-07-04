@@ -82,7 +82,7 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getAppBranch()
     {
-        return "master"; //projectSetting.getString(rhoHubUrl);
+        return "master";
     }
 
     @Override
@@ -128,7 +128,6 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public void setAppBranch(String value)
     {
-        //projectSetting.put(, value);
     }
 
     @Override
