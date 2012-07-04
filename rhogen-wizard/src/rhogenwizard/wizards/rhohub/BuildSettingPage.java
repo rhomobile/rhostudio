@@ -21,11 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -45,10 +40,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.progress.UIJob;
 import org.json.JSONException;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -56,14 +47,13 @@ import rhogenwizard.DialogUtils;
 import rhogenwizard.HttpDownload;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
+import rhogenwizard.rhohub.JSONList;
 import rhogenwizard.rhohub.RemoteAppBuildDesc;
-import rhogenwizard.rhohub.RemoteAppBuildsList;
 import rhogenwizard.rhohub.RemotePlatformDesc;
-import rhogenwizard.rhohub.RemotePlatformList;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 
-class RemotePlatformAdapter implements Callable<RemotePlatformList>
+class RemotePlatformAdapter implements Callable<JSONList<RemotePlatformDesc>>
 {    
     IProject m_project = null;
     
@@ -73,7 +63,7 @@ class RemotePlatformAdapter implements Callable<RemotePlatformList>
     }
     
     @Override
-    public RemotePlatformList call() throws Exception
+    public JSONList<RemotePlatformDesc> call() throws Exception
     {
         IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_project);
 
@@ -84,7 +74,7 @@ class RemotePlatformAdapter implements Callable<RemotePlatformList>
     }
 }
 
-class RemoteAppBuildsAdapter implements Callable<RemoteAppBuildsList>
+class RemoteAppBuildsAdapter implements Callable<JSONList<RemoteAppBuildDesc>>
 {    
     IProject m_project = null;
     
@@ -94,7 +84,7 @@ class RemoteAppBuildsAdapter implements Callable<RemoteAppBuildsList>
     }
     
     @Override
-    public RemoteAppBuildsList call() throws Exception
+    public JSONList<RemoteAppBuildDesc> call() throws Exception
     {
         IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_project);
 
@@ -184,10 +174,10 @@ public class BuildSettingPage extends WizardPage
     private Text  m_textRhodesBranch       = null;
     private Table m_remoteBuildsList       = null;
     
-    private RemotePlatformList          m_remotePlatforms = null;
-    private RemoteAppBuildsList         m_remoteProjectBuilds = null;
-    private Future<RemotePlatformList>  m_getPlatfomListFuture = null;
-    private Future<RemoteAppBuildsList> m_getProjectBuildsFuture = null;
+    private JSONList<RemotePlatformDesc>           m_remotePlatforms = null;
+    private JSONList<RemoteAppBuildDesc>           m_remoteProjectBuilds = null;
+    private Future<JSONList<RemotePlatformDesc> >  m_getPlatfomListFuture = null;
+    private Future<JSONList<RemoteAppBuildDesc>>   m_getProjectBuildsFuture = null;
     
     void enableControls(boolean enable)
     {
@@ -195,6 +185,7 @@ public class BuildSettingPage extends WizardPage
         m_comboPlatformVersions.setEnabled(enable);
         m_textAppBranch.setEnabled(enable);
         m_textRhodesBranch.setEnabled(enable);
+        m_remoteBuildsList.setEnabled(enable);
     }
     
     /**
@@ -339,13 +330,13 @@ public class BuildSettingPage extends WizardPage
         
         TableColumn colName = new TableColumn(m_remoteBuildsList, SWT.LEFT);
         colName.setText("Project name");
-        colName.setWidth(350);
+        colName.setWidth(150);
         
         TableColumn colUrl  = new TableColumn(m_remoteBuildsList, SWT.LEFT);        
         colUrl.setText("Download link");
         colUrl.setWidth(150);
 
-        TableColumn colStatus  = new TableColumn(m_remoteBuildsList, SWT.LEFT);        
+        TableColumn colStatus  = new TableColumn(m_remoteBuildsList, SWT.RIGHT);        
         colStatus.setText("Status");
         colStatus.setWidth(200);
         
@@ -491,8 +482,10 @@ public class BuildSettingPage extends WizardPage
         m_getPlatfomListFuture   = executor.submit(new RemotePlatformAdapter(m_project));
         m_getProjectBuildsFuture = executor.submit(new RemoteAppBuildsAdapter(m_project));
         
-        m_textRhodesBranch.setText("3.3.2"); //TODO move to preferences
-        m_textAppBranch.setText("master");   //TODO move to preferences
+        IRhoHubSetting setting = RhoHubBundleSetting.createGetter(m_project);
+        
+        m_textRhodesBranch.setText(setting.getRhodesBranch());
+        m_textAppBranch.setText(setting.getAppBranch());   //TODO move to preferences
     }
 
     /**

@@ -32,17 +32,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.generateSpecAction">
          </action>
-         
-         <!-- move to wizards
-         <action
-               label="Generate spec"
-               icon="icons/sample16.png"
-               class="rhogenwizard.actions.GenerateSpecAction"
-               tooltip="Generate rhodes test framewrk files"
-               menubarPath="rhomobileMenu/rhomobileGroup"               
-               id="rhostudio.actions.generateSpecAction">
-         </action>
-         -->         
+                
       </actionSet>
    </extension>
 

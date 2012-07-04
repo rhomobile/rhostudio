@@ -1,37 +1,24 @@
 package rhogenwizard.sdk.task.rhohub;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.RemoteProjectDesc;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 
 public class BuildApp extends RubyCodeExecTask
 {
     private static class BuildAppArgsHelper
     {
-        IRemoteProjectDesc m_project = null;
-        JSONObject         m_buildObj = null;
+        RemoteProjectDesc m_project = null;
+        IRhoHubSetting     m_setting = null;
         
-        public BuildAppArgsHelper(IRemoteProjectDesc project, IRhoHubSetting setting)
+        public BuildAppArgsHelper(RemoteProjectDesc project, IRhoHubSetting setting)
         {
-            try
-            {
-                m_project = project;
-                
-                JSONObject buildOptions = new JSONObject();        
-                buildOptions.put("target_device", setting.getSelectedPlatform());
-                buildOptions.put("version_tag", setting.getAppBranch());
-                buildOptions.put("rhodes_version", setting.getRhodesBranch());
-                
-                m_buildObj = new JSONObject();
-                m_buildObj.put("build", buildOptions);
-            }
-            catch (JSONException e)
-            {
-                m_buildObj = null;
-            }                
+            m_project  = project;
+            m_setting  = setting;
         }
 
         @Override
@@ -43,7 +30,11 @@ public class BuildApp extends RubyCodeExecTask
             {
                 sb.append("puts Rhohub::Build.create(");
                 sb.append("{:app_id =>" + m_project.getId() + "},");
-                sb.append("\"" + m_buildObj.toString().replaceAll("\\\"", "\\\\\"") + "\")");
+                sb.append("{ :build => {");
+                sb.append(" \"target_device\"" + " => " + "\"" + m_setting.getSelectedPlatform() + "\",");
+                sb.append(" \"version_tag\"" + " => " + "\"" + m_setting.getAppBranch() + "\",");
+                sb.append(" \"rhodes_version\"" + " => " + "\"" + m_setting.getRhodesBranch() + "\"");
+                sb.append("}})");
             }
             catch (JSONException e)
             {
@@ -56,10 +47,14 @@ public class BuildApp extends RubyCodeExecTask
     
     public JSONObject getOutputAsJSON() throws JSONException
     {
-        return new JSONObject(super.getOutput());
+        String listOfApps = this.getOutput();
+        
+        listOfApps = listOfApps.replaceAll("\\p{Cntrl}", " ");
+               
+        return new JSONObject(listOfApps);
     }
 
-    public BuildApp(IRemoteProjectDesc project, IRhoHubSetting setting)
+    public BuildApp(RemoteProjectDesc project, IRhoHubSetting setting)
     {        
         super("require 'rhohub'", 
               "Rhohub.token = \"" + setting.getToken() + "\"", 

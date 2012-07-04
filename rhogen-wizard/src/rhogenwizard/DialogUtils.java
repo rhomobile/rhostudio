@@ -45,6 +45,18 @@ public class DialogUtils
         return ok[0];
     }
     
+    public static void information(final String title, final String message)
+    {
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                MessageDialog.openQuestion(null, title, message);
+            }
+        });
+    }
+    
     public static boolean quetsion(final String title, final String message)
     {
         final boolean ok[] = new boolean[1];

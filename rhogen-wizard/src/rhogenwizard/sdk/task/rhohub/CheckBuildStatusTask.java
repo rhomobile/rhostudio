@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
 import org.json.JSONException;
 
 import rhogenwizard.DialogUtils;
 import rhogenwizard.HttpDownload;
-import rhogenwizard.rhohub.IRemoteProjectDesc;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.RemoteAppBuildDesc;
+import rhogenwizard.rhohub.RemoteProjectDesc;
 import rhogenwizard.rhohub.RemoteStatus;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
@@ -25,12 +24,17 @@ public class CheckBuildStatusTask extends RunTask
 {
     private static int waitSleep = 100;
     
-    private IRemoteProjectDesc m_project = null;
+    private RemoteProjectDesc  m_project = null;
+    private RemoteAppBuildDesc m_buildInfo = null;
     private AtomicBoolean      m_status = new AtomicBoolean(false);
     
-    public CheckBuildStatusTask(IRemoteProjectDesc project)
+    private final String m_dstDir;
+    
+    public CheckBuildStatusTask(RemoteProjectDesc project, RemoteAppBuildDesc buildInfo, final String dstDir)
     {
-        m_project = project;
+        m_project   = project;
+        m_buildInfo = buildInfo;
+        m_dstDir    = dstDir;
     }
     
     @Override
@@ -39,17 +43,6 @@ public class CheckBuildStatusTask extends RunTask
         return m_status.get();
     }
 
-    private String getSelectedDirectory()
-    {
-        DirectoryDialog dlg = new DirectoryDialog(Display.getCurrent().getActiveShell());
-
-        dlg.setFilterPath("C:");
-        dlg.setText("Select destination directory");
-        dlg.setMessage("Select a directory");
-
-        return dlg.open();
-    }
-    
     @Override
     public void run(IProgressMonitor monitor)
     {
@@ -61,9 +54,9 @@ public class CheckBuildStatusTask extends RunTask
             {
                 monitor.beginTask("Build status", 3);
                 
-                while(m_project.getBuildStatus() == RemoteStatus.eQueued || m_project.getBuildStatus() == RemoteStatus.eStarted)
+                while(m_buildInfo.getStatus() == RemoteStatus.eQueued || m_buildInfo.getStatus() == RemoteStatus.eStarted)
                 {
-                    m_status.getAndSet(RhoHub.getInstance(store).checkProjectBuildStatus(m_project));
+                    m_status.getAndSet(RhoHub.getInstance(store).checkProjectBuildStatus(m_project, m_buildInfo));
 
                     if(monitor.isCanceled())
                         break;
@@ -75,10 +68,10 @@ public class CheckBuildStatusTask extends RunTask
                 if (m_status.get())
                 {
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    HttpDownload hd = new HttpDownload(m_project.getBuildResultUrl(), os);
+                    HttpDownload hd = new HttpDownload(m_buildInfo.getBuildResultUrl(), os);
                     hd.join(0);
                     
-                    File resultFile = new File(getSelectedDirectory() + File.separator + m_project.getBuildResultFileName());
+                    File resultFile = new File(m_dstDir + File.separator + m_buildInfo.getBuildResultFileName());
                     FileOutputStream foStream = new FileOutputStream(resultFile);
                     os.writeTo(foStream);
                     

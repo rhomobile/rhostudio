@@ -9,25 +9,23 @@ import org.json.JSONException;
 public interface IRhoHub
 {
     //
-    IRemoteProjectDesc findRemoteApp(IProject project);
+    RemoteProjectDesc findRemoteApp(IProject project);
     //
-    RemotePlatformList getPlatformList();
+    JSONList<RemotePlatformDesc> getPlatformList();
     //
-    RemoteProjectsList getProjectsList() throws CoreException, JSONException, InterruptedException;
+    JSONList<RemoteProjectDesc> getProjectsList() throws CoreException, JSONException, InterruptedException;
     //
-    boolean buildRemoteApp(IRemoteProjectDesc project);
+    RemoteAppBuildDesc buildRemoteApp(RemoteProjectDesc project);
     //
-    boolean pullRemoteAppSources(IRemoteProjectDesc project, final CredentialsProvider credProvider)  throws InvalidRemoteException;
+    boolean pushSourcesToRemote(RemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException;
     //
-    boolean pushSourcesToRemote(IRemoteProjectDesc project, final CredentialsProvider credProvider) throws InvalidRemoteException;
-    //
-    boolean checkProjectBuildStatus(IRemoteProjectDesc project);
+    boolean checkProjectBuildStatus(RemoteProjectDesc projectInfo, RemoteAppBuildDesc buildInfo);
     //
     boolean isRemoteProjectExist(IProject project);
     //
-    IRemoteProjectDesc createRemoteAppFromLocalSources(IProject project, final CredentialsProvider credProvider) throws InvalidRemoteException;
+    RemoteProjectDesc createRemoteAppFromLocalSources(IProject project, final CredentialsProvider credProvider) throws InvalidRemoteException;
     //
-    IRemoteProjectDesc updateRemoteAppFromLocalSources(IProject project, String gitRepo, final CredentialsProvider credProvider) throws InvalidRemoteException;
+    RemoteProjectDesc updateRemoteAppFromLocalSources(IProject project, String gitRepo, final CredentialsProvider credProvider) throws InvalidRemoteException;
     //
-    RemoteAppBuildsList getBuildsList(IProject project) throws JSONException;
+    JSONList<RemoteAppBuildDesc> getBuildsList(IProject project) throws JSONException;
 }

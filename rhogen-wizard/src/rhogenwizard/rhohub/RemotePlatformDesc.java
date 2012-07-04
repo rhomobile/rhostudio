@@ -4,21 +4,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RemotePlatformDesc
+public class RemotePlatformDesc extends BaseRemoteDesc
 {
-    private JSONObject m_baseObject = null;
+    public static class RemotePlatformDescFactory implements JsonAbstractFactory<RemotePlatformDesc>
+    {
+        @Override
+        public RemotePlatformDesc getInstance(JSONObject object)
+        {
+            return new RemotePlatformDesc(object);
+        }
+    }
+    
     private String     m_intName    = null;
     private String     m_publicName = null;
     
-    public RemotePlatformDesc(Object object)
+    public RemotePlatformDesc(JSONObject object)
     {
-        m_baseObject = (JSONObject) object;
-        
-        JSONArray a = m_baseObject.names();
+        super(object);
                 
         try
         {
-            m_publicName = (String)a.get(0);
+            JSONArray plInfo = m_baseObject.names();
+            
+            m_publicName = (String)plInfo.get(0);
             m_intName    = m_baseObject.getString(m_publicName);
         }
         catch (JSONException e)
