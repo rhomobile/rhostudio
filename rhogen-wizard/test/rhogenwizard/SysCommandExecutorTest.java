@@ -53,7 +53,7 @@ public class SysCommandExecutorTest
     {
         try
         {
-            runTest("", "", SysCommandExecutor.CRT, "echo", "a\nb");
+            runTest("a\nb\n", "", SysCommandExecutor.CRT, "echo", "a\nb");
         }
         catch (IllegalArgumentException e)
         {
@@ -111,19 +111,17 @@ public class SysCommandExecutorTest
 
     private void runCrtTest(String literal) throws Exception
     {
-        // System.out.println("test crt  [" + literal + "]");
-        runTest(SysCommandExecutor.CRT, "check_pattern", literal, pattern(literal));
+        String command = ((OSHelper.isWindows()) ? "" : "./") + "check_pattern";
+        runTest(SysCommandExecutor.CRT, command, literal, pattern(literal));
     }
 
     private void runRubyTest(String literal) throws Exception
     {
-        // System.out.println("test ruby [" + literal + "]");
         runTest(SysCommandExecutor.RUBY, "ruby", "check_pattern.rb", literal, pattern(literal));
     }
 
     private void runRakeTest(String literal) throws Exception
     {
-        // System.out.println("test rake [" + literal + "]");
         runTest(SysCommandExecutor.RUBY_BAT, "rake", "check_pattern", "literal=" + literal, "pattern="
             + pattern(literal));
     }
