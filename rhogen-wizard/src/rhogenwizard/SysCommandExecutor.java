@@ -27,7 +27,8 @@ public class SysCommandExecutor
                                                           }
                                                       };
 
-    // Some Ruby commands on Windows are batches. This decorator is for rake, gem and so on.
+    // Some Ruby commands on Windows are batches. This decorator is for rake,
+    // gem and so on.
     public static Decorator      RUBY_BAT             = new Decorator(2)
                                                       {
                                                           public String decorate(String arg)
@@ -225,7 +226,7 @@ public class SysCommandExecutor
             {
                 sb.append(' ');
             }
-            
+
             sb.append(decorator.decorate(arg));
         }
 
@@ -249,7 +250,7 @@ public class SysCommandExecutor
             if (!containsAny(arg, " \t\n"))
             {
                 String candidate = decorate("", "'\"", arg);
-                
+
                 if (candidate.length() <= shortest.length())
                 {
                     shortest = candidate;
@@ -258,7 +259,7 @@ public class SysCommandExecutor
 
             if (!arg.contains("'"))
             {
-                String candidate = decorate("'", "'", arg);
+                String candidate = decorate("'", "", arg);
                 if (candidate.length() < shortest.length())
                 {
                     shortest = candidate;
@@ -285,12 +286,12 @@ public class SysCommandExecutor
 
             sb.append(decor);
             Escaper e = new Escaper(sb, quotes);
-            
+
             for (int i = 0; i < text.length(); i++)
             {
                 e.append(text.charAt(i));
             }
-            
+
             e.flush(decor.length() == 1 && quotes.contains(decor));
             sb.append(decor);
 
@@ -307,8 +308,8 @@ public class SysCommandExecutor
 
         public Escaper(StringBuilder sb, String quotes)
         {
-            m_sb           = sb;
-            m_quotes       = quotes;
+            m_sb = sb;
+            m_quotes = quotes;
         }
 
         public void append(char c)
@@ -337,12 +338,12 @@ public class SysCommandExecutor
         public void flush(boolean withQuote)
         {
             int n = (withQuote) ? 2 * m_nBackSlashes : m_nBackSlashes;
-            
+
             for (int i = 0; i < n; i++)
             {
                 m_sb.append('\\');
             }
-            
+
             m_nBackSlashes = 0;
         }
     }
@@ -356,7 +357,7 @@ public class SysCommandExecutor
                 return true;
             }
         }
-        
+
         return false;
     }
 }
