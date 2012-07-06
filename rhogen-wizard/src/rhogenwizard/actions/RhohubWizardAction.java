@@ -52,6 +52,14 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             return;
         }
 
+        IRhoHubSetting setting = RhoHubBundleSetting.createGetter(project);
+        
+        if (setting.getToken().isEmpty() || setting.getServerUrl().isEmpty())
+        {
+            DialogUtils.error("Error", "Before use Rhohub build specify user token and server url in preferences settings.");
+            return;
+        }
+        
         if (!checkProjectProperties(project))
         {
             if (DialogUtils.confirm("Project setting", "For project " + project.getName() + 
