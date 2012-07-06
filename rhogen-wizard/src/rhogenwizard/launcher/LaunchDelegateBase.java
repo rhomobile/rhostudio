@@ -74,7 +74,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
         Activator activator = Activator.getDefault();
         activator.killProcessesForForRunReleaseRhodesAppTask();
 
-        ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe -approot=\'");
+        ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe \"-approot=\'");
 
         if (!runSelectedBuildConfiguration(project, type))
         {
