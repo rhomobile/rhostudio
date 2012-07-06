@@ -63,7 +63,6 @@ public class RunReleaseRhodesAppTaskTest
             RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
             assertTrue(task.isOk());
-
         }
 
         // run release Rhodes application [iphone] [simulator]
@@ -109,7 +108,7 @@ public class RunReleaseRhodesAppTaskTest
                 continue;
             }
 
-            String signature = (OSValidator.isWindows()) ? "rhosimulator.exe -approot=\'"
+            String signature = (OSValidator.isWindows()) ? "rhosimulator.exe \"-approot=\'"
                 + unixSlashes(projectLocation) + "\'" : "RhoSimulator -approot='/private" + projectLocation
                 + "'";
 
