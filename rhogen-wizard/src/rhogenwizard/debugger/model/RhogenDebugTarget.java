@@ -11,8 +11,15 @@
  *******************************************************************************/
 package rhogenwizard.debugger.model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -31,6 +38,7 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.DialogUtils;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.RhogenWatchExpression;
@@ -266,6 +274,39 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
     public void suspend() throws DebugException
     {
     }
+    
+    //TODO - hot fix 
+    private boolean isFucntionDefinition(ScriptLineBreakpoint lineBp)
+    {
+        IFile file = (IFile) lineBp.getResource();
+        
+		try 
+		{
+			InputStream contentsStream = file.getContents();
+			        
+	    	BufferedReader contentBuffer = new BufferedReader(new InputStreamReader(contentsStream));
+	    	
+	    	String buf = null;
+    	
+    		for (int i=0; i < lineBp.getLineNumber(); i++)
+    		{
+    			buf = contentBuffer.readLine();
+    		}
+    		
+    		if (buf.contains("def"))
+    			return true;
+		} 
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+    	catch (IOException e) 
+    	{
+			e.printStackTrace();
+		}	
+		
+		return false;
+    }
 
     public void breakpointAdded(IBreakpoint breakpoint)
     {
@@ -279,10 +320,17 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
                 {
                     ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 
-                    int lineNum = lineBr.getLineNumber();
-                    String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
-
-                    m_debugServer.debugBreakpoint(srcFile, lineNum);
+                    if (!isFucntionDefinition(lineBr))
+                    {
+	                    int lineNum = lineBr.getLineNumber();
+	                    String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
+	
+	                    m_debugServer.debugBreakpoint(srcFile, lineNum);
+                    }
+                    else
+                    {
+                    	breakpoint.setEnabled(false);
+                    }
                 }
             }
             catch (CoreException e)
