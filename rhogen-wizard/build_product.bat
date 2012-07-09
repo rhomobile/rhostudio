@@ -1,0 +1,1 @@
+java -jar "C:\Android\installer\eclipse/plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar" -application org.eclipse.ant.core.antRunner -buildfile "C:\Android\installer\eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/scripts/productBuild/productBuild.xml" -Dbuilder="C:\Android\rhostudio\rhogen-wizard\build-setting"
