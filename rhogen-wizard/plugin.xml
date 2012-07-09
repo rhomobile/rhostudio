@@ -406,7 +406,7 @@
           </property>
           <property
                 name="windowImages"
-                value="icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
+                value="icons/sample.png">
           </property>
           <property
                 name="preferenceCustomization"
