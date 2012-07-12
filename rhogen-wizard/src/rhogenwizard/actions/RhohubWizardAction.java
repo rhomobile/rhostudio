@@ -56,7 +56,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
         
         if (setting.getToken().isEmpty() || setting.getServerUrl().isEmpty())
         {
-            DialogUtils.error("Error", "Before use Rhohub build specify user token and server url in preferences settings.");
+            DialogUtils.error("Error", "Before use Rhohub specify user token and server url in preferences settings.");
             return;
         }
         

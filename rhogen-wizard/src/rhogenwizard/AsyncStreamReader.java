@@ -60,31 +60,36 @@ public class AsyncStreamReader extends Thread
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));
 		String line = null;
 		
-		while (m_stopFlag == false)
+		try
 		{
-			if (bufOut.ready())
+			while (m_stopFlag == false)
 			{
-				line = bufOut.readLine();
-				m_buffer.append(line + fNewLine);
-				printToDisplayDevice(line);				
-			}
-			else
-			{
-				int timeCounter = 0;
-				
-				while(timeCounter < maxWaitingTimeForReadFile)
+				if (bufOut.ready())
 				{
-					Thread.sleep(waitingTimePortion);
-					timeCounter += waitingTimePortion;
+					line = bufOut.readLine();
+					m_buffer.append(line + fNewLine);
+					printToDisplayDevice(line);				
+				}
+				else
+				{
+					int timeCounter = 0;
 					
-					if (m_stopFlag)
-						break;
+					while(timeCounter < maxWaitingTimeForReadFile)
+					{
+						Thread.sleep(waitingTimePortion);
+						timeCounter += waitingTimePortion;
+						
+						if (m_stopFlag)
+							break;
+					}
 				}
 			}
 		}
-		
-		bufOut.close();
-		m_inputStream.close(); //TODO -- need test it
+		finally
+		{
+			bufOut.close();
+			m_inputStream.close(); //TODO -- need test it
+		}
 	}
 	
 	private void readCommandOutput() throws IOException
