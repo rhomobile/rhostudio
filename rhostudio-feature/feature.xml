@@ -115,11 +115,14 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <import plugin="org.eclipse.dltk.ui" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.dltk.debug" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.dltk.debug.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.console" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="com.ibm.icu"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.core.variables"/>
       <import plugin="org.eclipse.jdt.ui"/>
-      <import plugin="org.eclipse.dltk.console" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.junit"/>
+      <import plugin="com.jcraft.jsch" version="0.1.41" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.egit.ui"/>
    </requires>
 
    <plugin
