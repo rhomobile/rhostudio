@@ -186,6 +186,8 @@ public class BuildSettingPage extends WizardPage
         m_textAppBranch.setEnabled(enable);
         m_textRhodesBranch.setEnabled(enable);
         m_remoteBuildsList.setEnabled(enable);
+        m_comboPlatforms.setEnabled(enable);
+        m_comboPlatformVersions.setEnabled(enable);
     }
     
     /**
@@ -220,26 +222,31 @@ public class BuildSettingPage extends WizardPage
         catch (InterruptedException e)
         {
             e.printStackTrace();
+            return;
         }
         catch (ExecutionException e)
         {
             DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
             e.printStackTrace();
+            return;
         }
         catch (TimeoutException e)
         {
             DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
             e.printStackTrace();
+            return;
         }
         catch (JSONException e)
         {
             DialogUtils.error("Connect error", "The information from Rhohub server was corrupted. Please try run build sometime later.");
             e.printStackTrace();
+            return;
         }
         catch (MalformedURLException e)
         {
             DialogUtils.error("Connect error", "Download link is broken. Please try it sometime later.");
             e.printStackTrace();
+            return;
         }
  
         enableControls(true);

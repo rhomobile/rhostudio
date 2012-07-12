@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
+//import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 import rhogenwizard.DialogUtils;
@@ -85,7 +85,7 @@ public class LinkWizard extends BaseAppWizard
         catch (InvocationTargetException e)
         {
             Throwable realException = e.getTargetException();
-            MessageDialog.openError(getShell(), "Error", realException.getMessage());
+            //MessageDialog.openError(getShell(), "Error", realException.getMessage());
             return false;
         }
 
@@ -110,14 +110,17 @@ public class LinkWizard extends BaseAppWizard
             }
             else
             {
-                if (DialogUtils.quetsion("RhoHub", "Sources from remote project on RhoHub will be replaced on local sources. Contionue?"))
+                if (DialogUtils.quetsion("RhoHub", "Sources from remote project on RhoHub will be replaced on local sources. Continue?"))
                 {
                     RhoHub.getInstance(m_setting).updateRemoteAppFromLocalSources(m_selectedProject, m_pageLink.getSelectedProjectUrl(), new GitCredentialsProvider());
                 }
+                else
+                {
+                	return;
+                }
             }
             
-            ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective",
-                UiConstants.rhodesPerspectiveId);
+            ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
             job.schedule();
 
             monitor.done();

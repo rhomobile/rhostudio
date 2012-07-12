@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TreeItem;
 import org.json.JSONException;
 
 import rhogenwizard.DialogUtils;
@@ -28,8 +29,9 @@ public class LinkProjectPage extends WizardPage
     private static int nameColIdx = 0;
     private static int urlColIdx = 1;
     
-    private IRhoHubSetting m_setting = null;
+    private IRhoHubSetting m_setting      = null;
     private boolean        m_isNewProject = true;
+    private String         m_selectedUrl  = null;
     
     private Table  m_remoteProjectsList = null;
     private Button m_newAppCheckBox     = null;
@@ -85,6 +87,13 @@ public class LinkProjectPage extends WizardPage
         m_remoteProjectsList.setEnabled(true);
         m_remoteProjectsList.setHeaderVisible(true);
         m_remoteProjectsList.setLinesVisible(true);
+        m_remoteProjectsList.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(SelectionEvent e)
+            {
+                dialogChanged();
+            }
+        });
         
         TableColumn colName = new TableColumn(m_remoteProjectsList, SWT.LEFT);
         colName.setText("Project name");
@@ -156,7 +165,13 @@ public class LinkProjectPage extends WizardPage
     {
         m_remoteProjectsList.setEnabled(!m_newAppCheckBox.getSelection());
         
+        if (m_remoteProjectsList.getColumnCount() == 0 || m_remoteProjectsList.getItemCount() == 0 || m_remoteProjectsList.getSelection().length == 0)
+        	return;
+
+        TableItem[] selItem = m_remoteProjectsList.getSelection();
+        
         m_isNewProject = m_newAppCheckBox.getSelection();
+        m_selectedUrl  = selItem[0].getText(urlColIdx);
         
         updateStatus("Press finish for link remote project with local sources");
         updateStatus(null);
@@ -175,6 +190,6 @@ public class LinkProjectPage extends WizardPage
     
     public String getSelectedProjectUrl()
     {
-        return m_remoteProjectsList.getSelection()[urlColIdx].toString();
+        return m_selectedUrl;
     }
 }
