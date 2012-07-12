@@ -282,9 +282,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
         
 		try 
 		{
-			InputStream contentsStream = file.getContents();
-			        
-	    	BufferedReader contentBuffer = new BufferedReader(new InputStreamReader(contentsStream));
+	    	BufferedReader contentBuffer = new BufferedReader(new InputStreamReader(file.getContents()));
 	    	
 	    	String buf = null;
     	
@@ -322,7 +320,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 
                     if (!isFucntionDefinition(lineBr))
                     {
-	                    int lineNum = lineBr.getLineNumber();
+	                    int    lineNum = lineBr.getLineNumber();
 	                    String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
 	
 	                    m_debugServer.debugBreakpoint(srcFile, lineNum);
@@ -351,7 +349,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
             {
                 ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 
-                int lineNum = lineBr.getLineNumber();
+                int    lineNum = lineBr.getLineNumber();
                 String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
 
                 m_debugServer.debugRemoveBreakpoint(srcFile, lineNum);
@@ -361,7 +359,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
             }
             catch (BadProjectTagException e)
             {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
