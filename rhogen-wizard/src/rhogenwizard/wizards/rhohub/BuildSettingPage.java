@@ -411,7 +411,7 @@ public class BuildSettingPage extends WizardPage
     
     private void initializeProjectBuildsTable() throws JSONException, MalformedURLException
     {
-        if (m_remoteProjectBuilds == null || m_remoteProjectBuilds.size() == 0)
+        if (m_remoteProjectBuilds == null)
         {
             DialogUtils.error("Connect error", "Rhohub server is not avaialible. Please try run build sometime later.");
             
