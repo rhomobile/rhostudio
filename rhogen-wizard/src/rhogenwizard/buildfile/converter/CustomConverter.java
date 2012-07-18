@@ -122,7 +122,7 @@ public class CustomConverter extends AbstractStructureConverter
 		sb.append(crCode);
 	}
 	
-	private void saveList(StringBuilder sb, String prefix, String name, List l)
+	private void saveList(StringBuilder sb, String prefix, String name, List<Object> l)
 	{
 		sb.append(prefix);
 		sb.append(name);
@@ -159,7 +159,7 @@ public class CustomConverter extends AbstractStructureConverter
 		}
 	}
 	
-	private void saveMap(StringBuilder sb, String prefix, String name,  Map m)
+	private void saveMap(StringBuilder sb, String prefix, String name,  Map<Object, Object> m)
 	{
 		if (name != null)
 		{
