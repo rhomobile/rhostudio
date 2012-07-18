@@ -24,12 +24,17 @@ public class ResourceNameSelector implements IResourceNameSelector
 	{	
 		if (projectTag.equals(RhodesProject.class))
 		{
-			IResName rhodesName     = new RhodesResName(breakpoint); 
-			IResName fwName         = new FrameworkResName(breakpoint);
-
+			IResName rhodesName = new RhodesResName(breakpoint); 
+			IResName fwName     = new FrameworkResName(breakpoint);
+			IResName extName    = new ExtensionsResName(breakpoint);
+			
 			if(rhodesName.getResName() != null)
 			{
 				return rhodesName.getResName();
+			}
+			else if (extName.getResName() != null)
+			{
+				return extName.getResName();
 			}
 			else if (fwName.getResName() != null)
 			{
