@@ -14,6 +14,7 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.rhohub.GitCredentialsProvider;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.wizards.BaseAppWizard;
@@ -84,8 +85,6 @@ public class LinkWizard extends BaseAppWizard
         }
         catch (InvocationTargetException e)
         {
-            Throwable realException = e.getTargetException();
-            //MessageDialog.openError(getShell(), "Error", realException.getMessage());
             return false;
         }
 
@@ -106,7 +105,13 @@ public class LinkWizard extends BaseAppWizard
 
             if (m_pageLink.isNewProject())
             {
-                RhoHub.getInstance(m_setting).createRemoteAppFromLocalSources(m_selectedProject, new GitCredentialsProvider());
+                if (RhoHub.getInstance(m_setting).createRemoteAppFromLocalSources(m_selectedProject, new GitCredentialsProvider()) == null)
+                {
+                	DialogUtils.error("Error", "Error in git user password or in the network connection.");
+                	IRhoHubSettingSetter setter = (IRhoHubSettingSetter) m_setting;
+                	setter.unsetLinking();
+                	return;
+                }
             }
             else
             {

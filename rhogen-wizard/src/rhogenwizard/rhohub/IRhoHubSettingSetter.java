@@ -5,7 +5,9 @@ import org.osgi.service.prefs.BackingStoreException;
 public interface IRhoHubSettingSetter
 {
     //
-    public void setLinking() throws BackingStoreException;
+	public void setLinking() throws BackingStoreException;
+	//
+	public void unsetLinking() throws BackingStoreException;
     //
     public void setToken(String value) throws BackingStoreException;
     //

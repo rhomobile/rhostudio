@@ -127,21 +127,12 @@ public class LinkProjectPage extends WizardPage
         {
             JSONList<RemoteProjectDesc> remoteProjects = RhoHub.getInstance(m_setting).getProjectsList();
 
-            if (remoteProjects.size() == 0)
+            for (RemoteProjectDesc project : remoteProjects)
             {
-                DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
-                this.getShell().close();
-                return;
-            }
-            else
-            {
-                for (RemoteProjectDesc project : remoteProjects)
-                {
-                    TableItem item = new TableItem(m_remoteProjectsList, SWT.NONE);
-                    
-                    item.setText(nameColIdx, project.getName());
-                    item.setText(urlColIdx, project.getGitLink());
-                }
+                TableItem item = new TableItem(m_remoteProjectsList, SWT.NONE);
+                
+                item.setText(nameColIdx, project.getName());
+                item.setText(urlColIdx, project.getGitLink());
             }
         }
         catch (CoreException e)

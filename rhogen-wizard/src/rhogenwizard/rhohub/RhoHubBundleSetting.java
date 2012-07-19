@@ -136,4 +136,11 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
         m_projectSetting.put(isRhoHubLink, "");   
         m_projectSetting.flush();
     }
+
+	@Override
+	public void unsetLinking() throws BackingStoreException
+	{
+        m_projectSetting.remove(isRhoHubLink);   
+        m_projectSetting.flush();		
+	}
 }

@@ -16,6 +16,7 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.json.JSONArray;
@@ -57,7 +58,9 @@ public class RhoHub implements IRhoHub
             return null;
         
         AppListTask task = new AppListTask(rhohubConfiguration);
-        task.runAndWaitJob("Getting remote applications list");
+        task.run();
+        
+        String s  = task.getError();
         
         if (!task.isOk())
             return null;
