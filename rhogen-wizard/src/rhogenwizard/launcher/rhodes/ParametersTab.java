@@ -171,7 +171,6 @@ public class ParametersTab extends  JavaLaunchTab
 				    {
 				        DialogUtils.warning("Warning", "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.");
 				        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
-				        //return;
 				    }
 				    
                     // for win32
@@ -179,8 +178,7 @@ public class ParametersTab extends  JavaLaunchTab
                         m_selectPlatformCombo.getText().equals(PlatformType.eWin32.publicId))
                     {
                         DialogUtils.warning("Warning", "For Win32 platform we can run only simulator build.");
-                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformSim)); // select device 
-                        //return;
+                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformSim)); // select simulator 
                     }
                     
 					encodePlatformTypeCombo(m_platformTypeCombo.getText());
