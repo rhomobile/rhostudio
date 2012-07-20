@@ -19,11 +19,11 @@ public class RunDebugRhoconnectAppTask extends RunTask
 
     public RunDebugRhoconnectAppTask(String workDir, String appName, ILaunch launch)
     {
-        RunTask redisStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake",
-            "redis:startbg");
+        RunTask redisStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rhoconnect",
+            "redis-startbg");
 
         m_rhoconnectStartdebugTask = new RubyDebugTask(launch, appName, workDir, SysCommandExecutor.RUBY_BAT,
-            "rake", "rhoconnect:startdebug");
+            "rhoconnect", "startdebug");
 
         m_task = new SeqRunTask(new StopSyncAppTask(), new StoreLastSyncRunAppTask(workDir),
             redisStartbgTask, m_rhoconnectStartdebugTask);

@@ -33,9 +33,9 @@ public class StopSyncAppTask extends SeqRunTask
             return empty;
 
         RunTask stopRhoconnectTask = new RubyExecTask(prevRunningRhoconnectApp, SysCommandExecutor.RUBY_BAT,
-            "rake", "rhoconnect:stop");
+            "rhoconnect", "stop");
         RunTask stopRedisTask = new RubyExecTask(prevRunningRhoconnectApp, SysCommandExecutor.RUBY_BAT,
-            "rake", "redis:stop");
+            "rhoconnect", "redis-stop");
         return new RunTask[] { stopRhoconnectTask, stopRedisTask };
     }
 
