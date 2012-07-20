@@ -1,5 +1,6 @@
 package rhogenwizard.wizards.rhohub;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
@@ -9,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 import rhogenwizard.DialogUtils;
+import rhogenwizard.OSHelper;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
@@ -109,7 +111,8 @@ public class LinkWizard extends BaseAppWizard
                 {
                 	DialogUtils.error("Error", "Error in git user password or in the network connection.");
                 	IRhoHubSettingSetter setter = (IRhoHubSettingSetter) m_setting;
-                	setter.unsetLinking();
+                	setter.unsetLinking();                	
+                	OSHelper.deleteFolder(new File(m_selectedProject.getLocation().toOSString() + File.separator + ".git"));
                 	return;
                 }
             }

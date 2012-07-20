@@ -52,7 +52,7 @@ public class DialogUtils
             @Override
             public void run()
             {
-                MessageDialog.openQuestion(null, title, message);
+                MessageDialog.openInformation(null, title, message);
             }
         });
     }
