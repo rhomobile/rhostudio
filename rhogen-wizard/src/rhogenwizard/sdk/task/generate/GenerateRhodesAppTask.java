@@ -23,28 +23,38 @@ public class GenerateRhodesAppTask extends RubyExecTask
 	@Override
 	public void run(IProgressMonitor monitor) 
 	{
-		if (DialogUtils.quetsion("Wrong directory", "In destination directory folder with name \'" + m_appName + "\' is exist. Delete the folder?"))
+		File checkFile = new File(m_workDir + File.separator + m_appName);
+		
+		if (checkFile.exists())
 		{
-			OSHelper.deleteFolder(m_workDir + File.separator + m_appName);
+			if (DialogUtils.quetsion("Wrong directory", "In destination directory folder with name \'" + m_appName + "\' is exist. Delete the folder?"))
+			{
+				OSHelper.deleteFolder(m_workDir + File.separator + m_appName);
+			}
+			else
+			{
+				return;
+			}
 		}
-		else
-		{
-			return;
-		}
-
+		
 		super.run(monitor);
 	}
 
 	@Override
 	public void run() 
 	{
-		if (DialogUtils.quetsion("Wrong directory", "In destination directory folder with name \'" + m_appName + "\' is exist. Delete the folder?"))
+		File checkFile = new File(m_workDir + File.separator + m_appName);
+		
+		if (checkFile.exists())
 		{
-			OSHelper.deleteFolder(m_workDir + File.separator + m_appName);
-		}
-		else
-		{
-			return;
+			if (DialogUtils.quetsion("Wrong directory", "In destination directory folder with name \'" + m_appName + "\' is exist. Delete the folder?"))
+			{
+				OSHelper.deleteFolder(m_workDir + File.separator + m_appName);
+			}
+			else
+			{
+				return;
+			}
 		}
 		
 		super.run();
