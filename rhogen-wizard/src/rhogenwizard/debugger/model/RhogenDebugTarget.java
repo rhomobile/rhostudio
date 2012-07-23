@@ -13,13 +13,12 @@ package rhogenwizard.debugger.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -38,7 +37,6 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 import rhogenwizard.ConsoleHelper;
-import rhogenwizard.DialogUtils;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.RhogenWatchExpression;
@@ -59,6 +57,8 @@ import rhogenwizard.sdk.task.StopSyncAppTask;
  */
 public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
 {
+	private static String fwTag = "framework";
+	
     private IProject           m_debugProject  = null;
 
     // associated system process (VM)
@@ -525,11 +525,35 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
         }
     }
 
+    boolean isFoundFramework()
+    {
+    	IFolder fwFodler = m_debugProject.getFolder(fwTag);
+
+		return fwFodler.exists();
+    }
+    
     @Override
     public void stopped(DebugState state, String file, int line, String className, String method)
     {
         waitDebugProcessing();
 
+    	if (file.contains(fwTag))
+    	{
+    		if (!isFoundFramework())
+    		{
+    			try 
+    			{
+					resume();
+				}
+    			catch (DebugException e) 
+    			{
+					e.printStackTrace();
+				}
+    			
+    			return;
+    		}
+    	}
+    	
         cleanState();
 
         installDeferredWatchs();
