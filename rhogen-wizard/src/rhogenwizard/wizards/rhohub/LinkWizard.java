@@ -79,7 +79,7 @@ public class LinkWizard extends BaseAppWizard
 
         try
         {
-            getContainer().run(true, true, op);
+            getContainer().run(true, false, op);
         }
         catch (InterruptedException e)
         {
@@ -130,6 +130,8 @@ public class LinkWizard extends BaseAppWizard
                 	return;
                 }
             }
+            
+            setter.setLinking();
             
             ShowPerspectiveJob job = new ShowPerspectiveJob("show rhodes perspective", UiConstants.rhodesPerspectiveId);
             job.schedule();

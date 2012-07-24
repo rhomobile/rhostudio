@@ -80,7 +80,7 @@ public class BuildWizard extends BaseAppWizard
 
         try
         {
-            getContainer().run(true, true, op);
+            getContainer().run(true, false, op);
         }
         catch (InterruptedException e)
         {
