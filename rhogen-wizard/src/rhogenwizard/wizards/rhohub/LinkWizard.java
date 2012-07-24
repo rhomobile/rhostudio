@@ -1,5 +1,6 @@
 package rhogenwizard.wizards.rhohub;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
@@ -9,11 +10,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 import rhogenwizard.DialogUtils;
+import rhogenwizard.OSHelper;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.rhohub.GitCredentialsProvider;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
 import rhogenwizard.wizards.BaseAppWizard;
@@ -84,8 +87,6 @@ public class LinkWizard extends BaseAppWizard
         }
         catch (InvocationTargetException e)
         {
-            Throwable realException = e.getTargetException();
-            //MessageDialog.openError(getShell(), "Error", realException.getMessage());
             return false;
         }
 
@@ -104,9 +105,19 @@ public class LinkWizard extends BaseAppWizard
         {
             monitor.beginTask("Start building on rhohub server", 1);
 
+            IRhoHubSettingSetter setter = (IRhoHubSettingSetter) m_setting;
+            
             if (m_pageLink.isNewProject())
             {
-                RhoHub.getInstance(m_setting).createRemoteAppFromLocalSources(m_selectedProject, new GitCredentialsProvider());
+                if (RhoHub.getInstance(m_setting).createRemoteAppFromLocalSources(m_selectedProject, new GitCredentialsProvider()) == null)
+                {
+                	DialogUtils.error("Error", "Error in git user password or in the network connection.");
+                	
+                	setter.unsetLinking();
+                	
+                	OSHelper.deleteFolder(new File(m_selectedProject.getLocation().toOSString() + File.separator + ".git"));
+                	return;
+                }
             }
             else
             {

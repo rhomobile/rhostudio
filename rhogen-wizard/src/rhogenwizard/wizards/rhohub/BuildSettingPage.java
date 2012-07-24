@@ -186,8 +186,6 @@ public class BuildSettingPage extends WizardPage
         m_textAppBranch.setEnabled(enable);
         m_textRhodesBranch.setEnabled(enable);
         m_remoteBuildsList.setEnabled(enable);
-        m_comboPlatforms.setEnabled(enable);
-        m_comboPlatformVersions.setEnabled(enable);
     }
     
     /**
@@ -492,7 +490,7 @@ public class BuildSettingPage extends WizardPage
         IRhoHubSetting setting = RhoHubBundleSetting.createGetter(m_project);
         
         m_textRhodesBranch.setText(setting.getRhodesBranch());
-        m_textAppBranch.setText(setting.getAppBranch());   //TODO move to preferences
+        m_textAppBranch.setText(setting.getAppBranch()); 
     }
 
     /**

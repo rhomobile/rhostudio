@@ -16,11 +16,13 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import rhogenwizard.DialogUtils;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.rhohub.AppListTask;
 import rhogenwizard.sdk.task.rhohub.BuildApp;
@@ -57,7 +59,9 @@ public class RhoHub implements IRhoHub
             return null;
         
         AppListTask task = new AppListTask(rhohubConfiguration);
-        task.runAndWaitJob("Getting remote applications list");
+        task.run();
+        
+        String s  = task.getError();
         
         if (!task.isOk())
             return null;
@@ -200,6 +204,7 @@ public class RhoHub implements IRhoHub
         }
         catch (JGitInternalException e)
         {
+        	DialogUtils.error("Git", e.toString());
             e.printStackTrace();
         }
         catch (WrongRepositoryStateException e)

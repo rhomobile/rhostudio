@@ -1,5 +1,7 @@
 package rhogenwizard.wizards.rhohub;
 
+import java.awt.Dialog;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogPage;
@@ -15,7 +17,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.TreeItem;
 import org.json.JSONException;
 
 import rhogenwizard.DialogUtils;
@@ -73,6 +74,13 @@ public class LinkProjectPage extends WizardPage
         {
             public void widgetSelected(SelectionEvent e)
             {
+            	if (m_remoteProjectsList != null && m_remoteProjectsList.getItemCount() == 0)
+            	{
+            		DialogUtils.information("Revert", "You can't select existing project because list of remote application is empty.");
+            		m_newAppCheckBox.setSelection(true);
+            		return;
+            	}
+            	
                 dialogChanged();
             }
         });
@@ -127,21 +135,12 @@ public class LinkProjectPage extends WizardPage
         {
             JSONList<RemoteProjectDesc> remoteProjects = RhoHub.getInstance(m_setting).getProjectsList();
 
-            if (remoteProjects.size() == 0)
+            for (RemoteProjectDesc project : remoteProjects)
             {
-                DialogUtils.error("Connect error", "Not response from Rhohub server. Please try run build sometime later.");
-                this.getShell().close();
-                return;
-            }
-            else
-            {
-                for (RemoteProjectDesc project : remoteProjects)
-                {
-                    TableItem item = new TableItem(m_remoteProjectsList, SWT.NONE);
-                    
-                    item.setText(nameColIdx, project.getName());
-                    item.setText(urlColIdx, project.getGitLink());
-                }
+                TableItem item = new TableItem(m_remoteProjectsList, SWT.NONE);
+                
+                item.setText(nameColIdx, project.getName());
+                item.setText(urlColIdx, project.getGitLink());
             }
         }
         catch (CoreException e)

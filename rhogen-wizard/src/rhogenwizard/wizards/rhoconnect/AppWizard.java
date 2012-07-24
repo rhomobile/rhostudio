@@ -140,12 +140,12 @@ public class AppWizard extends Wizard implements INewWizard
             monitor.worked(1);
             monitor.setTaskName("Create project...");
 
-            newProject = ProjectFactory.getInstance().createProject(RhoconnectProject.class, infoHolder);
-
             if (!infoHolder.existCreate)
             {
                 createProjectFiles(infoHolder, monitor);
             }
+            
+            newProject = ProjectFactory.getInstance().createProject(RhoconnectProject.class, infoHolder);
 
             newProject.refreshProject();
 

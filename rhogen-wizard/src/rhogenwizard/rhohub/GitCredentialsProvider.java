@@ -8,38 +8,49 @@ import org.eclipse.jgit.transport.URIish;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
+import rhogenwizard.DialogUtils;
+
 public class GitCredentialsProvider extends CredentialsProvider
 {
     @Override
     public boolean get(URIish arg0, final CredentialItem... arg1) throws UnsupportedCredentialItem
     {
-    	Display.getDefault().syncExec(new Runnable() 
+    	if (arg1[0] instanceof CredentialItem.YesNoType)
     	{
-    		public void run() 
-    		{
-    			try 
-    			{
-			        InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), 
-			            "Git password", "Please enter you git password.", "", null) 
-			        {
-			            @Override
-			            protected int getInputTextStyle() 
-			            {
-			                return SWT.SINGLE | SWT.BORDER ;
-			            }
-			        };
-			        dlg.open();
-			        
-			        CredentialItem.StringType pwdCred = (CredentialItem.StringType )arg1[0];
-			        pwdCred.setValue(dlg.getValue());
-    			} 
-    			catch (Exception ex) 
-    			{
-    				ex.printStackTrace();
-    			}
-    		}
-    	});
-    			
+    		CredentialItem.YesNoType yesnoCred = (CredentialItem.YesNoType)arg1[0];
+    		
+    		yesnoCred.setValue(DialogUtils.quetsion("Git", arg1[0].getPromptText()));
+    	}
+    	else if (arg1[0] instanceof CredentialItem.StringType)
+    	{
+	    	Display.getDefault().syncExec(new Runnable() 
+	    	{
+	    		public void run() 
+	    		{
+	    			try 
+	    			{
+				        InputDialog dlg = new InputDialog(Display.getCurrent().getActiveShell(), 
+				            "Git password", "Please enter you git password.", "", null) 
+				        {
+				            @Override
+				            protected int getInputTextStyle() 
+				            {
+				                return SWT.SINGLE | SWT.BORDER | SWT.PASSWORD;
+				            }
+				        };
+				        dlg.open();
+				        
+				        CredentialItem.StringType pwdCred = (CredentialItem.StringType)arg1[0];
+				        pwdCred.setValue(dlg.getValue());
+	    			} 
+	    			catch (Exception ex) 
+	    			{
+	    				ex.printStackTrace();
+	    			}
+	    		}
+	    	});
+    	}
+    	
         return true;
     }
 

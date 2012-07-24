@@ -1,12 +1,63 @@
 package rhogenwizard.sdk.task.generate;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+
+import rhogenwizard.DialogUtils;
+import rhogenwizard.OSHelper;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
 
 public class GenerateRhoconnectAppTask extends RubyExecTask
 {
+	private final String m_appName;
+	
     public GenerateRhoconnectAppTask(String workDir, String appName)
     {
         super(workDir, SysCommandExecutor.RUBY_BAT, "rhoconnect", "app", appName);
+        
+        m_appName = appName;
     }
+    
+	@Override
+	public void run(IProgressMonitor monitor) 
+	{
+		File checkFile = new File(m_workDir + File.separator + m_appName);
+		
+		if (checkFile.exists())
+		{
+			if (DialogUtils.quetsion("Wrong directory", "In destination directory folder with name \'" + m_appName + "\' is exist. Delete the folder?"))
+			{
+				OSHelper.deleteFolder(m_workDir + File.separator + m_appName);
+			}
+			else
+			{
+				return;
+			}
+		}
+		
+		super.run(monitor);
+	}
+
+	@Override
+	public void run() 
+	{
+		File checkFile = new File(m_workDir + File.separator + m_appName);
+		
+		if (checkFile.exists())
+		{
+			if (DialogUtils.quetsion("Wrong directory", "In destination directory folder with name \'" + m_appName + "\' is exist. Delete the folder?"))
+			{
+				OSHelper.deleteFolder(m_workDir + File.separator + m_appName);
+			}
+			else
+			{
+				return;
+			}
+		}
+		
+		
+		super.run();
+	}
 }
