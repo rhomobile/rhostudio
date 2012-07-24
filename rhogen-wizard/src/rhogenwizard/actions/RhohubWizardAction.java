@@ -76,7 +76,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             }
         }
         
-        if (checkProjectProperties(project))
+        if (setting.isLinking())
         {
         	BuildWizard  buildWizard =  new BuildWizard(project);
         	createWizardDialog(buildWizard);
