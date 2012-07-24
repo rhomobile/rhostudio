@@ -22,6 +22,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import rhogenwizard.DialogUtils;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.rhohub.AppListTask;
 import rhogenwizard.sdk.task.rhohub.BuildApp;
@@ -203,6 +204,7 @@ public class RhoHub implements IRhoHub
         }
         catch (JGitInternalException e)
         {
+        	DialogUtils.error("Git", e.toString());
             e.printStackTrace();
         }
         catch (WrongRepositoryStateException e)

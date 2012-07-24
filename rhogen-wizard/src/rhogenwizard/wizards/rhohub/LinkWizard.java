@@ -105,13 +105,14 @@ public class LinkWizard extends BaseAppWizard
         {
             monitor.beginTask("Start building on rhohub server", 1);
 
+            IRhoHubSettingSetter setter = (IRhoHubSettingSetter) m_setting;
+            
             if (m_pageLink.isNewProject())
             {
                 if (RhoHub.getInstance(m_setting).createRemoteAppFromLocalSources(m_selectedProject, new GitCredentialsProvider()) == null)
                 {
                 	DialogUtils.error("Error", "Error in git user password or in the network connection.");
                 	
-                	IRhoHubSettingSetter setter = (IRhoHubSettingSetter) m_setting;
                 	setter.unsetLinking();
                 	
                 	OSHelper.deleteFolder(new File(m_selectedProject.getLocation().toOSString() + File.separator + ".git"));
