@@ -36,7 +36,10 @@ public abstract class BaseAppWizard extends Wizard implements INewWizard
         
         String[] pathAppSegs = pathToApp.split("\\\\");
         
-        return pathAppSegs[pathAppSegs.length - 1];
+        if (pathAppSegs.length < 2)
+        	return "";
+        
+        return pathAppSegs[pathAppSegs.length - 1].trim();
     }
     
     public String getProjectPathFromGitRepo()
@@ -73,7 +76,7 @@ public abstract class BaseAppWizard extends Wizard implements INewWizard
             sb.append(it + File.separator);
         }
         
-        return sb.toString();
+        return sb.toString().trim();
     }
     
     /**
