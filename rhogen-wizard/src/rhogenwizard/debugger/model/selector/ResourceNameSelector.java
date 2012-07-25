@@ -20,7 +20,7 @@ public class ResourceNameSelector implements IResourceNameSelector
 	}
 	
 	@Override
-	public String convertBpName(Class projectTag, ScriptLineBreakpoint breakpoint) 
+	public String convertBpName(Class<?> projectTag, ScriptLineBreakpoint breakpoint)
 	{	
 		if (projectTag.equals(RhodesProject.class))
 		{

@@ -185,7 +185,7 @@ public class ProjectFactory implements IProjectFactory
 	}
 	
 	@Override
-	public Class typeFromProject(IProject project) throws BadProjectTagException 
+	public Class<?> typeFromProject(IProject project) throws BadProjectTagException
 	{
 		if (RhodesProject.checkNature(project))
 		{

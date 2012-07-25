@@ -20,7 +20,7 @@ public interface IProjectFactory
 	//
 	boolean isProjectLocationInWorkspace(final String projectPath);
 	//
-	Class typeFromProject(IProject project) throws BadProjectTagException;
+	Class<?> typeFromProject(IProject project) throws BadProjectTagException;
 	//
 	IPath getWorkspaceDir();
 }
