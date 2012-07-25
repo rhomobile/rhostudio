@@ -212,6 +212,8 @@ public class AppWizardPage extends WizardPage
 		    
 		    m_appNameText.setText(m_parentWizard.getProjectNameFromGitRepo());
 		    m_appFolderText.setText(m_parentWizard.getProjectPathFromGitRepo());
+		    
+		    //dialogChanged();
 		}
 	}
 
@@ -259,18 +261,18 @@ public class AppWizardPage extends WizardPage
 		else
 			m_appNameText.setEditable(true);
 				
-		if (!isDefultPath && (!appFolderFile.isDirectory() || (m_appFolderText.getText().length() == 0))) 
-		{
-			updateStatus("Application folder must be specified");
-			return;
-		}
-	
 		if (m_appNameText.getText().length() == 0) 
 		{
 			updateStatus("Project name must be specified");
 			return;
 		}
 		
+		if (!isDefultPath && (!appFolderFile.isDirectory() || (m_appFolderText.getText().length() == 0))) 
+		{
+			updateStatus("Application folder must be specified");
+			return;
+		}
+	
 		updateStatus("Press finish for creation of project");
 		
 		updateStatus(null);
