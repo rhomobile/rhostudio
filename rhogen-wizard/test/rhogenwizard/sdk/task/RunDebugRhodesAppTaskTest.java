@@ -349,30 +349,6 @@ public class RunDebugRhodesAppTaskTest
         return sb.toString();
     }
 
-    private static String readTextFile(String filename) throws IOException
-    {
-        FileReader fr = new FileReader(filename);
-        try
-        {
-            StringBuilder sb = new StringBuilder();
-            char[] buffer = new char[16 * 1024];
-            while (true)
-            {
-                int read = fr.read(buffer);
-                if (read == -1)
-                {
-                    break;
-                }
-                sb.append(buffer, 0, read);
-            }
-            return sb.toString();
-        }
-        finally
-        {
-            fr.close();
-        }
-    }
-
     private static void writeTextFile(String filename, String text) throws IOException
     {
         FileWriter fw = new FileWriter(filename);

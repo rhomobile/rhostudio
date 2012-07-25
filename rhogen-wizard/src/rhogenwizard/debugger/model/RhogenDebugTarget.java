@@ -665,8 +665,6 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 
         for (IExpression currExp : modelExps)
         {
-            String s = currExp.getExpressionText();
-
             if (currExp.getExpressionText().equals(code))
             {
                 if (currExp instanceof RhogenWatchExpression)

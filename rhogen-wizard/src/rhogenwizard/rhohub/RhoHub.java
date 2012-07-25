@@ -2,6 +2,7 @@ package rhogenwizard.rhohub;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jgit.api.AddCommand;
@@ -16,7 +17,6 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
-import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.json.JSONArray;
@@ -60,8 +60,6 @@ public class RhoHub implements IRhoHub
         
         AppListTask task = new AppListTask(rhohubConfiguration);
         task.run();
-        
-        String s  = task.getError();
         
         if (!task.isOk())
             return null;

@@ -1,8 +1,6 @@
 package rhogenwizard.sdk.task;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -76,8 +74,6 @@ public class RhodesCreationTest extends TestCase
 
         // create application
         {
-            Map<String, Object> params = new HashMap<String, Object>();
-
             RunTask task = new GenerateRhodesAppTask(workspaceFolder, appName);
             task.run();
             assertTrue(task.isOk());
