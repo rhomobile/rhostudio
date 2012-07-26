@@ -277,10 +277,7 @@ public class ParametersTab extends  JavaLaunchTab
 					}
 					else 
 					{				
-						if (emuName == null || !emuName.equals(""))
-						{
-							m_ymlFile.removeAndroidEmuName();
-						}
+						m_ymlFile.removeAndroidEmuName();
 					}
 					
 					m_ymlFile.save();
@@ -385,7 +382,7 @@ public class ParametersTab extends  JavaLaunchTab
 
 			SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
 			
-			if (sdkFile != null && sdkFile.getBbSimPort(bbVer) != null)
+			if (sdkFile.getBbSimPort(bbVer) != null)
 				m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
 			else
 				m_adroidEmuNameText.setText("Simulator name is not define in rhobuild.yml file");
@@ -733,11 +730,6 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 		catch(CoreException e)
 		{
-			e.printStackTrace();
-		}
-		catch (FileNotFoundException e) 
-		{
-			MessageDialog.openError(getShell(), "Error", "File build.yml not exists or corrupted. Project - " + getSelectProject().getName());
 			e.printStackTrace();
 		}
 	}
