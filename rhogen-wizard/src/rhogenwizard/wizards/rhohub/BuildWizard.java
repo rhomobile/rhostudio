@@ -3,7 +3,6 @@ package rhogenwizard.wizards.rhohub;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -15,7 +14,6 @@ import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.CommonConstants;
 import rhogenwizard.constants.UiConstants;
-import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.RemoteAppBuildDesc;
 import rhogenwizard.rhohub.RemoteProjectDesc;
@@ -63,14 +61,6 @@ public class BuildWizard extends BaseAppWizard
                 {
                     doFinish(dstDir, monitor);
                 }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
-                catch (ProjectNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
                 finally
                 {
                     monitor.done();
@@ -113,7 +103,7 @@ public class BuildWizard extends BaseAppWizard
      *             file if missing or just replace its contents, and open the
      *             editor on the newly created file.
      */
-    private void doFinish(final String dstDir, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException
+    private void doFinish(final String dstDir, IProgressMonitor monitor)
     {
         try
         {
