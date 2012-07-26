@@ -90,10 +90,6 @@ public class ModelWizard extends Wizard implements INewWizard
                 {
                     doFinish(modelName, modelParams, monitor);
                 }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
                 finally
                 {
                     monitor.done();
@@ -124,7 +120,7 @@ public class ModelWizard extends Wizard implements INewWizard
      * or just replace its contents, and open the editor on the newly created
      * file.
      */ 
-    private void doFinish(String modelName, String modelParams, IProgressMonitor monitor) throws CoreException
+    private void doFinish(String modelName, String modelParams, IProgressMonitor monitor)
     {
         try
         {
