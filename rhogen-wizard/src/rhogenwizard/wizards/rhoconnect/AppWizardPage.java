@@ -3,7 +3,6 @@ package rhogenwizard.wizards.rhoconnect;
 import java.io.File;
 
 import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -41,7 +40,7 @@ public class AppWizardPage extends WizardPage
 	 * 
 	 * @param pageName
 	 */
-	public AppWizardPage(ISelection selection) 
+	public AppWizardPage()
 	{
 		super("wizardPage");
 		setTitle("Rhoconnect application generator wizard");
