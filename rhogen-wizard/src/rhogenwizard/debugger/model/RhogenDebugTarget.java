@@ -276,7 +276,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
     }
     
     //TODO - hot fix 
-    private boolean isFucntionDefinition(ScriptLineBreakpoint lineBp)
+    private boolean isFunctionDefinition(ScriptLineBreakpoint lineBp)
     {
         IFile file = (IFile) lineBp.getResource();
         
@@ -284,15 +284,14 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 		{
 	    	BufferedReader contentBuffer = new BufferedReader(new InputStreamReader(file.getContents()));
 	    	
-	    	String buf = null;
+	    	String buf = "";
     	
     		for (int i=0; i < lineBp.getLineNumber(); i++)
     		{
     			buf = contentBuffer.readLine();
     		}
     		
-    		if (buf.contains("def"))
-    			return true;
+    		return buf.matches("^\\s*def\\s.*$");
 		} 
 		catch (CoreException e) 
 		{
@@ -318,7 +317,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
                 {
                     ScriptLineBreakpoint lineBr = (ScriptLineBreakpoint) breakpoint;
 
-                    if (!isFucntionDefinition(lineBr))
+                    if (!isFunctionDefinition(lineBr))
                     {
 	                    int    lineNum = lineBr.getLineNumber();
 	                    String srcFile = ResourceNameSelector.getInstance().convertBpName(ProjectFactory.getInstance().typeFromProject(m_debugProject), lineBr);
