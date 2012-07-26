@@ -53,7 +53,7 @@ public class RhoHub implements IRhoHub
         return task.isOk();
     }
         
-    private JSONArray getAppList() throws CoreException, JSONException, InterruptedException
+    private JSONArray getAppList() throws JSONException
     {
         if (rhohubConfiguration == null)
             return null;
@@ -67,7 +67,7 @@ public class RhoHub implements IRhoHub
         return task.getOutputAsJSON();
     }
     
-    private JSONArray getRemotePlatformList() throws CoreException, JSONException, InterruptedException
+    private JSONArray getRemotePlatformList() throws JSONException
     {
         if (rhohubConfiguration == null)
             return null;
@@ -104,19 +104,11 @@ public class RhoHub implements IRhoHub
                 }
             }
         }
-        catch (CoreException e)
-        {
-            e.printStackTrace();
-        }
         catch (JSONException e)
         {
             e.printStackTrace();
         }
         catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (InterruptedException e)
         {
             e.printStackTrace();
         }
@@ -272,15 +264,7 @@ public class RhoHub implements IRhoHub
         {
             return new JSONList<RemotePlatformDesc>(getRemotePlatformList(), new RemotePlatformDesc.RemotePlatformDescFactory());
         }
-        catch (CoreException e)
-        {
-            e.printStackTrace();
-        }
         catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-        catch (InterruptedException e)
         {
             e.printStackTrace();
         }
