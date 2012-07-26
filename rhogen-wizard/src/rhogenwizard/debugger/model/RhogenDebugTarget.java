@@ -79,7 +79,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
 
     private static DebugServer m_debugServer   = null;
 
-    public RhogenDebugTarget(ILaunch launch, IProcess process, IProject debugProject) throws CoreException
+    public RhogenDebugTarget(ILaunch launch, IProcess process, IProject debugProject)
     {
         super(null);
 
