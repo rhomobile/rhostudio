@@ -34,7 +34,7 @@ public final class SdkYmlFile extends YmlFile
 
 	public void setAndroidNdkPath(String newNdkPath)
 	{
-		super.set("env", "paths", "android-ndk", (Object)newNdkPath);
+		super.set("env", "paths", "android-ndk", newNdkPath);
 	}
 
 	public String getAndroidSdkPath()
@@ -44,7 +44,7 @@ public final class SdkYmlFile extends YmlFile
 	
 	public void setAndroidSdkPath(String newSdkPath)
 	{
-		super.set("env", "paths", "android", (Object)newSdkPath);
+		super.set("env", "paths", "android", newSdkPath);
 	}
 
 	public String getJavaPath()
@@ -54,7 +54,7 @@ public final class SdkYmlFile extends YmlFile
 	
 	public void setJavaPath(String newJavaPath)
 	{
-		super.set("env", "paths", "java", (Object)newJavaPath);
+		super.set("env", "paths", "java", newJavaPath);
 	}
 	
 	public String getCabWizPath()
@@ -64,7 +64,7 @@ public final class SdkYmlFile extends YmlFile
 	
 	public void setCabWizPath(String newCabWizPath)
 	{
-		super.set("env", "paths", "cabwiz", (Object)newCabWizPath);
+		super.set("env", "paths", "cabwiz", newCabWizPath);
 	}
 
 	public String getVcBuildPath()
@@ -74,7 +74,7 @@ public final class SdkYmlFile extends YmlFile
 	
 	public void setVcBuildPath(String newVcBuildPath)
 	{
-		super.set("env", "paths", "vcbuild", (Object)newVcBuildPath);
+		super.set("env", "paths", "vcbuild", newVcBuildPath);
 	}
 	
 	public String getBbJdkPath(String version)
@@ -132,9 +132,9 @@ public final class SdkYmlFile extends YmlFile
 	{
 		List<String> versions = new ArrayList<String>();
 		
-		Map pathItems = (Map) super.getObject("env", "paths");
+		Map<?, ?> pathItems = (Map<?, ?>) super.getObject("env", "paths");
 		
-		Set keys = pathItems.keySet();
+		Set<?> keys = pathItems.keySet();
 		
 		for (Object s : keys)
 		{
@@ -142,7 +142,7 @@ public final class SdkYmlFile extends YmlFile
 			
 			if (item instanceof Map)
 			{
-				Map mapItem = (Map)item;
+				Map<?, ?> mapItem = (Map<?, ?>)item;
 				
 				if (mapItem.keySet().contains("mds"))
 				{
