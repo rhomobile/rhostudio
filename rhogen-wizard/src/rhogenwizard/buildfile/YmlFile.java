@@ -37,7 +37,7 @@ public class YmlFile
 		return m_filePath;
 	}
 	
-	public Map getData()
+	public Map<?, ?> getData()
 	{
 		return m_dataStorage;
 	}
@@ -49,7 +49,7 @@ public class YmlFile
 	
 	public String get(String sectionName, String paramName)
 	{
-		Map section = (Map) m_dataStorage.get(sectionName);
+		Map<?, ?> section = (Map<?, ?>) m_dataStorage.get(sectionName);
 		
 		if (null != section)
 		{
@@ -61,7 +61,7 @@ public class YmlFile
 	
 	public void remove(String sectionName, String paramName)
 	{
-		Map section = (Map) m_dataStorage.get(sectionName);
+		Map<?, ?> section = (Map<?, ?>) m_dataStorage.get(sectionName);
 		
 		if (null != section)
 		{
@@ -71,11 +71,11 @@ public class YmlFile
 	
 	public String get(String mainSection, String sectionName, String paramName)
 	{
-		Map mSection = (Map) m_dataStorage.get(mainSection);
+		Map<?, ?> mSection = (Map<?, ?>) m_dataStorage.get(mainSection);
 		
 		if (null != mSection)
 		{
-			Map section = (Map) mSection.get(sectionName);
+			Map<?, ?> section = (Map<?, ?>) mSection.get(sectionName);
 			
 			if (null != section)
 			{
@@ -89,7 +89,7 @@ public class YmlFile
 
 	public Object getObject(String mainSection, String sectionName)
 	{
-		Map mSection = (Map) m_dataStorage.get(mainSection);
+		Map<?, ?> mSection = (Map<?, ?>) m_dataStorage.get(mainSection);
 		
 		if (null != mSection)
 		{
@@ -103,27 +103,27 @@ public class YmlFile
 	{
 		try
 		{
-			Map comSection =  (Map) m_dataStorage.get(commonSection);
+			Map<?, ?> comSection =  (Map<?, ?>) m_dataStorage.get(commonSection);
 			
 			if (comSection == null)
 				return null;
 			
-			Map mSection = (Map) comSection.get(mainSection);
+			Map<?, ?> mSection = (Map<?, ?>) comSection.get(mainSection);
 			
 			if (null != mSection)
 			{
-				Map section = (Map) mSection.get(sectionName);
+				Map<?, ?> section = (Map<?, ?>) mSection.get(sectionName);
 				
 				if (null != section)
 				{
-					return (String) section.get(paramName).toString();
+					return section.get(paramName).toString();
 				}
 				
-				section = (Map) mSection.get(new Double(sectionName));
+				section = (Map<?, ?>) mSection.get(new Double(sectionName));
 				
 				if (null != section)
 				{
-					return (String) section.get(paramName).toString();
+					return section.get(paramName).toString();
 				}
 			}
 		}
@@ -137,15 +137,15 @@ public class YmlFile
 	{
 		try
 		{
-			Map<Object, Object> comSection =  (Map<Object, Object>) m_dataStorage.get(commonSection);
+			Map<?, ?> comSection =  (Map<?, ?>) m_dataStorage.get(commonSection);
 			
 			if (comSection != null)
 			{			
-				Map<Object, Object> mSection = (Map<Object, Object>) comSection.get(mainSection);
+			    Map mSection = (Map<?, ?>) comSection.get(mainSection);
 				
 				if (null != mSection)
 				{
-					Map<Object, Object> section = (Map<Object, Object>) mSection.get(sectionName);
+					Map section = (Map<?, ?>) mSection.get(sectionName);
 					
 					if (null != section)
 					{
@@ -176,17 +176,17 @@ public class YmlFile
 	
 	public Object getObject(String sectionName)
 	{
-		Object section = (Object) m_dataStorage.get(sectionName);
+		Object section = m_dataStorage.get(sectionName);
 		return section;
 	}
 
 	public void set(String mainSection, String subSection, String paramName, Object value) 
 	{
-		Map mSection = (Map) m_dataStorage.get(mainSection);
+		Map<?, ?> mSection = (Map<?, ?>) m_dataStorage.get(mainSection);
 		
 		if (null != mSection)
 		{
-			Map section = (Map) mSection.get(subSection);
+			Map section = (Map<?, ?>) mSection.get(subSection);
 			
 			if (null != section)
 			{
@@ -200,7 +200,7 @@ public class YmlFile
 		m_dataStorage.put(sectionName, value);
 	}
 	
-	public void save() throws FileNotFoundException
+	public void save()
 	{
 		try 
 		{
@@ -224,7 +224,7 @@ public class YmlFile
 		}
 	}
 	
-	public void saveTo(String newPath) throws FileNotFoundException
+	public void saveTo(String newPath)
 	{
 		m_filePath = newPath;
 		save();
@@ -237,7 +237,7 @@ public class YmlFile
 
 	public void set(String sectionName, String param, String value) 
 	{
-		Map<Object, Object> mSection = (Map<Object, Object>) m_dataStorage.get(sectionName);
+		Map mSection = (Map<?, ?>) m_dataStorage.get(sectionName);
 		
 		if (null != mSection)
 		{
