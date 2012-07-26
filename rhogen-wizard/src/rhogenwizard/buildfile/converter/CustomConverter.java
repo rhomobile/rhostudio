@@ -81,11 +81,11 @@ public class CustomConverter extends AbstractStructureConverter
 		
         if (val instanceof List)
         {
-        	saveList(sb, prefix, name, (List)val);
+        	saveList(sb, prefix, name, (List<?>)val);
         }
         else if (val instanceof Map)
         {
-        	saveMap(sb, prefix, name, (Map)val);
+        	saveMap(sb, prefix, name, (Map<?, ?>)val);
         }
         else
         {
@@ -122,7 +122,7 @@ public class CustomConverter extends AbstractStructureConverter
 		sb.append(crCode);
 	}
 	
-	private void saveList(StringBuilder sb, String prefix, String name, List<Object> l)
+	private void saveList(StringBuilder sb, String prefix, String name, List<?> l)
 	{
 		sb.append(prefix);
 		sb.append(name);
@@ -159,7 +159,7 @@ public class CustomConverter extends AbstractStructureConverter
 		}
 	}
 	
-	private void saveMap(StringBuilder sb, String prefix, String name,  Map<Object, Object> m)
+	private void saveMap(StringBuilder sb, String prefix, String name,  Map<?, ?> m)
 	{
 		if (name != null)
 		{
@@ -169,13 +169,13 @@ public class CustomConverter extends AbstractStructureConverter
 			sb.append(crCode);
 		}
 		
-	    Iterator it = m.entrySet().iterator();
+	    Iterator<?> it = m.entrySet().iterator();
 	    
 	    while (it.hasNext()) 
 	    {
-	        Map.Entry pairs = (Map.Entry)it.next();
+	        Map.Entry<?, ?> pairs = (Map.Entry<?, ?>)it.next();
 	        
-	        Object key = (Object) pairs.getKey();
+	        Object key = pairs.getKey();
 	        Object val = pairs.getValue();
 	        
 	        saveSelector(sb, prefix + shiftLevel, key.toString(), val);
