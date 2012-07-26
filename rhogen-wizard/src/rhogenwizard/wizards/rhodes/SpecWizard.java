@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -100,10 +99,6 @@ public class SpecWizard extends Wizard implements INewWizard
                 {
                     doFinish(monitor);
                 }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
                 finally
                 {
                     monitor.done();
@@ -145,7 +140,7 @@ public class SpecWizard extends Wizard implements INewWizard
      * or just replace its contents, and open the editor on the newly created
      * file.
      */
-    private void doFinish(IProgressMonitor monitor) throws CoreException
+    private void doFinish(IProgressMonitor monitor)
     {
         try
         {
