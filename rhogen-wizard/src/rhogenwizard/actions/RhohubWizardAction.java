@@ -2,10 +2,19 @@ package rhogenwizard.actions;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogLabelKeys;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -62,12 +71,12 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
         
         if (!checkProjectProperties(project))
         {
-            if (DialogUtils.confirm("Project setting", "For project " + project.getName() + 
-                    " not found infomation on RhoHub. Link the project with project on RhoHub server?"))
+            if (DialogUtils.confirm("Error", "Application " + project.getName() + 
+                    " was not found on RhoHub.  Would you like to add " + project.getName() + " to RhoHub?"))
             {
                 LinkWizard linkWizard = new LinkWizard(project);
                 
-                if (createWizardDialog(linkWizard) == Window.CANCEL)
+                if (createWizardDialog(linkWizard, "Link") == Window.CANCEL)
                     return;
             }
             else
@@ -79,15 +88,63 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
         if (setting.isLinking())
         {
         	BuildWizard  buildWizard =  new BuildWizard(project);
-        	createWizardDialog(buildWizard);
+        	createWizardDialog(buildWizard, "Build");
         }
     }
     
-    int createWizardDialog(IWizard wizard)
+    int createWizardDialog(IWizard wizard, final String finishButtonTitle)
     {
         WizardDialog buildWizardDialog = new WizardDialog(window.getShell(), wizard) 
         {
+        	private Button m_finishButton;
+        	private Button m_cancelButton;
+        	private SelectionAdapter m_cancelListener;
+         	
+        	private Button createCancelButton(Composite parent) 
+        	{
+        		m_cancelListener = new SelectionAdapter()
+        		{
+        			public void widgetSelected(SelectionEvent e) 
+        			{
+        				cancelPressed();
+        			}
+        		};
+        		
+        		// increment the number of columns in the button bar
+        		((GridLayout) parent.getLayout()).numColumns++;
+        		Button button = new Button(parent, SWT.PUSH);
+        		button.setText(IDialogConstants.CANCEL_LABEL);
+        		setButtonLayoutData(button);
+        		button.setFont(parent.getFont());
+        		button.setData(new Integer(IDialogConstants.CANCEL_ID));
+        		button.addSelectionListener(m_cancelListener);
+        		return button;
+        	}
+        	
             @Override
+			public void updateButtons()
+            {
+        		boolean canFinish = getWizard().canFinish();
+        		
+        		m_finishButton.setEnabled(canFinish);
+			}
+
+			@Override
+			protected void createButtonsForButtonBar(Composite parent) 
+            {
+				m_finishButton = createButton(parent, IDialogConstants.FINISH_ID, finishButtonTitle, true);
+        		
+        		m_cancelButton = createCancelButton(parent);
+        		
+        		if (parent.getDisplay().getDismissalAlignment() == SWT.RIGHT)
+        		{
+                    // Make the default button the right-most button.
+                    // See also special code in org.eclipse.jface.dialogs.Dialog#initializeBounds()
+        			m_finishButton.moveBelow(null);
+        		}
+			}
+
+			@Override
             protected void configureShell(Shell newShell) 
             {
                 super.configureShell(newShell);

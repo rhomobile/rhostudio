@@ -43,8 +43,8 @@ public class LinkProjectPage extends WizardPage
     public LinkProjectPage(IProject project, IRhoHubSetting setting) 
     {
         super("wizardPage");
-        setTitle("Link application with rhohub project wizard");
-        setDescription("Link application with rhohub project wizard");
+        setTitle("RhoHub Application Wizard");
+        setDescription("RhoHub Application Wizard");
         
         m_setting = setting;
     }
@@ -65,7 +65,7 @@ public class LinkProjectPage extends WizardPage
         
         // 1 row
         m_newAppCheckBox = new Button(composite, SWT.CHECK);
-        m_newAppCheckBox.setText("Create new project on RhoHub server");
+        m_newAppCheckBox.setText("Create new application on RhoHub");
         m_newAppCheckBox.setSelection(m_isNewProject);
         m_newAppCheckBox.setLayoutData(checkBoxAligment);
         m_newAppCheckBox.addSelectionListener(new SelectionAdapter() 
@@ -85,7 +85,7 @@ public class LinkProjectPage extends WizardPage
         
         // 2 row
         Label label = new Label(composite, SWT.NULL);
-        label.setText("Select project on RhoHub for linking:");
+        label.setText("Link to existing application on RhoHub:");
 
         // 3 row
         m_remoteProjectsList = new Table (composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
@@ -102,11 +102,11 @@ public class LinkProjectPage extends WizardPage
         });
         
         TableColumn colName = new TableColumn(m_remoteProjectsList, SWT.LEFT);
-        colName.setText("Project name");
+        colName.setText("Application");
         colName.setWidth(350);
         
         TableColumn colUrl  = new TableColumn(m_remoteProjectsList, SWT.LEFT);        
-        colUrl.setText("Project url");
+        colUrl.setText("Git URL");
         colUrl.setWidth(400);
     }
 

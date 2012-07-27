@@ -107,7 +107,7 @@ public class BuildWizard extends BaseAppWizard
     {
         try
         {
-            monitor.beginTask("Start building on rhohub server", 1);
+            monitor.beginTask("Starting build on RhoHub...", 1);
             
             if (CommonConstants.checkRhohubVersion)
             {

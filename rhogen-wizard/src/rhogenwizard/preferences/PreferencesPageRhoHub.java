@@ -5,7 +5,6 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
-import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.rhohub.IRhoHubSetting;
 
 public class PreferencesPageRhoHub extends BasePreferencePage 
@@ -16,7 +15,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
     {
         super(GRID);
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
-        setDescription(MsgConstants.preferencesRhoHubTitle);
+        setDescription("");
     }
     
     @Override
@@ -41,13 +40,10 @@ public class PreferencesPageRhoHub extends BasePreferencePage
         checkRhodesSdk();
         
         addField(new StringFieldEditor(IRhoHubSetting.rhoHubUrl, 
-                "&RhoHub server url:", getFieldEditorParent()));
+                "&RhoHub API Endpoint (advanced):", getFieldEditorParent()));
                 
         addField(new StringFieldEditor(IRhoHubSetting.rhoHubToken, 
-                "&User token:", getFieldEditorParent()));
-
-        addField(new StringFieldEditor(IRhoHubSetting.rhoHubSelectedRhodesVesion, 
-            "&Default rhodes version:", getFieldEditorParent()));
+                "&API Token:", getFieldEditorParent()));
     }
 
     public void init(IWorkbench workbench) 

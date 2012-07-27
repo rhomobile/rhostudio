@@ -92,7 +92,7 @@ public class LinkWizard extends BaseAppWizard
     {
         try
         {
-            monitor.beginTask("Start building on rhohub server", 1);
+            monitor.beginTask("Setting up application on RhoHub...", 1);
 
             IRhoHubSettingSetter setter = (IRhoHubSettingSetter) m_setting;
             

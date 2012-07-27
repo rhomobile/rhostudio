@@ -114,11 +114,11 @@ public class CapabDialog extends Dialog
 		    
 		  shell.addListener(SWT.Traverse, new Listener() 
 		  {
-			      public void handleEvent(Event event) 
-			      {
-			        if(event.detail == SWT.TRAVERSE_ESCAPE)
-			          event.doit = false;
-			      }
+		      public void handleEvent(Event event) 
+		      {
+		        if(event.detail == SWT.TRAVERSE_ESCAPE)
+		          event.doit = false;
+		      }
 		  });
 		
 		  // init

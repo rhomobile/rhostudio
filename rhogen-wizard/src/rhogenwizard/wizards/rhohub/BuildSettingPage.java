@@ -196,8 +196,8 @@ public class BuildSettingPage extends WizardPage
     public BuildSettingPage(IProject project) 
     {
         super("wizardPage");
-        setTitle("RhoHub build application wizard");
-        setDescription("RhoHub build application wizard");
+        setTitle("RhoHub Application Build Wizard");
+        setDescription("RhoHub Application Build Wizard");
         
         m_project = project;
     }
@@ -265,16 +265,16 @@ public class BuildSettingPage extends WizardPage
         
         // 1 row
         Label label = new Label(composite, SWT.NULL);
-        label.setText("&App branch:");
+        label.setText("&App Git Revision:");
 
         label = new Label(composite, SWT.NULL);
-        label.setText("&Rhodes branch:");
+        label.setText("&Rhodes Git Revision:");
 
         label = new Label(composite, SWT.NULL);
-        label.setText("&Targer device:");
+        label.setText("&Target Device:");
 
         label = new Label(composite, SWT.NULL);
-        label.setText("&Platform version:");
+        label.setText("&Platform Version:");
 
         // 2 row
         m_textAppBranch = new Text(composite, SWT.BORDER | SWT.SINGLE);
@@ -333,10 +333,6 @@ public class BuildSettingPage extends WizardPage
         m_remoteBuildsList.setHeaderVisible(true);
         m_remoteBuildsList.setLinesVisible(true);
         
-        TableColumn colName = new TableColumn(m_remoteBuildsList, SWT.LEFT);
-        colName.setText("Project name");
-        colName.setWidth(150);
-        
         TableColumn colUrl  = new TableColumn(m_remoteBuildsList, SWT.LEFT);        
         colUrl.setText("Download link");
         colUrl.setWidth(150);
@@ -350,12 +346,6 @@ public class BuildSettingPage extends WizardPage
     
     private void addTableLine(TableItem newItem, RemoteAppBuildDesc projectBuild) throws JSONException, MalformedURLException
     {
-        TableEditor colOneEditor = new TableEditor(m_remoteBuildsList);
-        colOneEditor.grabHorizontal = true;        
-        Label prjNameLabel = new Label(m_remoteBuildsList, SWT.LEFT);
-        prjNameLabel.setText(projectBuild.getId().toString());
-        colOneEditor.setEditor(prjNameLabel, newItem, 0);
-
         TableEditor colTwoEditor = new TableEditor(m_remoteBuildsList);
         colTwoEditor.grabHorizontal = true;
         Button dwlButton = new Button(m_remoteBuildsList, SWT.PUSH | SWT.VIRTUAL);
@@ -388,13 +378,13 @@ public class BuildSettingPage extends WizardPage
             {
             }
         });
-        colTwoEditor.setEditor(dwlButton, newItem, 1);
+        colTwoEditor.setEditor(dwlButton, newItem, 0);
 
         TableEditor colThreeEditor = new TableEditor(m_remoteBuildsList);
         colThreeEditor.grabHorizontal = true;        
         Label prjStatusLabel = new Label(m_remoteBuildsList, SWT.RIGHT);
-        prjStatusLabel.setText(projectBuild.getBuildStatus().toString());
-        colThreeEditor.setEditor(prjStatusLabel, newItem, 2);
+        prjStatusLabel.setText(projectBuild.getBuildStatus().toString() + " ");
+        colThreeEditor.setEditor(prjStatusLabel, newItem, 1);
     }
     
     public void createControl(Composite parent) 
