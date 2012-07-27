@@ -28,6 +28,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -36,10 +38,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.json.JSONException;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -163,7 +170,9 @@ public class BuildSettingPage extends WizardPage
         public RemotePlatformDesc remotePlatform = null;
     }
 
-    private static int waitTimeOutRhoHubServer = 5;
+    private static int waitTimeOutRhoHubServer  = 5;
+    private static int dwlListFirstColumnWitdh  = 550;
+    private static int dwlListSecondColumnWitdh = 205;
     
     private IProject m_project = null;
     private Map<String, List<PlatfromInfoHolder>> m_platformsInfo = null;
@@ -332,14 +341,14 @@ public class BuildSettingPage extends WizardPage
         m_remoteBuildsList.setEnabled(true);
         m_remoteBuildsList.setHeaderVisible(true);
         m_remoteBuildsList.setLinesVisible(true);
-        
+                
         TableColumn colUrl  = new TableColumn(m_remoteBuildsList, SWT.LEFT);        
         colUrl.setText("Download link");
-        colUrl.setWidth(150);
+        colUrl.setWidth(dwlListFirstColumnWitdh);
 
         TableColumn colStatus  = new TableColumn(m_remoteBuildsList, SWT.RIGHT);        
         colStatus.setText("Status");
-        colStatus.setWidth(200);
+        colStatus.setWidth(dwlListSecondColumnWitdh);
         
         enableControls(false);
     }
@@ -348,12 +357,26 @@ public class BuildSettingPage extends WizardPage
     {
         TableEditor colTwoEditor = new TableEditor(m_remoteBuildsList);
         colTwoEditor.grabHorizontal = true;
-        Button dwlButton = new Button(m_remoteBuildsList, SWT.PUSH | SWT.VIRTUAL);
-        dwlButton.setText("Download");
-        dwlButton.setData(projectBuild.getBuildResultUrl());
-        dwlButton.addSelectionListener(new SelectionListener()
+        
+        Hyperlink dwlLink = new Hyperlink(m_remoteBuildsList, SWT.NONE);
+        dwlLink.setData(projectBuild.getBuildResultUrl());
+        dwlLink.setText(projectBuild.getBuildResultUrl().toString());
+        dwlLink.setTouchEnabled(true);
+        dwlLink.setForeground(new Color(PlatformUI.getWorkbench().getDisplay(), 0, 0, 255));
+        dwlLink.addHyperlinkListener(new HyperlinkAdapter()
         {
-            private String getDirectory()
+            @Override
+			public void linkActivated(HyperlinkEvent e) 
+            {
+            	Hyperlink parentBtn = (Hyperlink)e.widget;
+                
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new BuildDownload((URL) parentBtn.getData(), getDirectory()));
+
+				super.linkActivated(e);
+			}
+
+			private String getDirectory()
             {
                 DirectoryDialog dlg = new DirectoryDialog(Display.getCurrent().getActiveShell());
 
@@ -362,26 +385,12 @@ public class BuildSettingPage extends WizardPage
                 dlg.setMessage("Select a directory");
                 
                 return dlg.open();
-            }
-            
-            @Override
-            public void widgetSelected(SelectionEvent e)
-            {
-                Button parentBtn = (Button)e.widget;
-                
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new BuildDownload((URL) parentBtn.getData(), getDirectory()));
-            }
-            
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-            }
+            }            
         });
-        colTwoEditor.setEditor(dwlButton, newItem, 0);
+        colTwoEditor.setEditor(dwlLink, newItem, 0);
 
         TableEditor colThreeEditor = new TableEditor(m_remoteBuildsList);
-        colThreeEditor.grabHorizontal = true;        
+        colThreeEditor.grabHorizontal = true;
         Label prjStatusLabel = new Label(m_remoteBuildsList, SWT.RIGHT);
         prjStatusLabel.setText(projectBuild.getBuildStatus().toString() + " ");
         colThreeEditor.setEditor(prjStatusLabel, newItem, 1);
@@ -514,7 +523,6 @@ public class BuildSettingPage extends WizardPage
         }
         
         updateStatus(null);
-        setMessage("Press finish for start remote project build");
     }
 
     private void updateStatus(String message)

@@ -80,7 +80,7 @@ public class CheckBuildStatusTask extends RunTask
                     
                     monitor.worked(1);
                     
-                    if (DialogUtils.confirm("Build Finished", m_project.getName() + " RhoHub build is complete. Open the build?"))
+                    if (DialogUtils.confirm("Build Finished", m_project.getProject() == null ? m_project.getName() : m_project.getProject().getName() + " RhoHub build is complete. Open the build?"))
                     {
                         Desktop.getDesktop().open(resultFile);
                     }                    
