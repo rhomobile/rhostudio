@@ -97,7 +97,12 @@ public final class AppYmlFile extends YmlFile
 	
 	public List<String> getGeneralExtension()
 	{
-	    return copyList(super.getObject("extensions"));
+		List<String> extList = (List<String>)super.getObject("extensions");
+		
+		if (extList == null)
+			super.set("extensions", new ArrayList<String>());
+			
+		return (List<String>)super.getObject("extensions");
 	}
 	
 	public void setGeneralExtension(List<String> extList)
@@ -107,7 +112,7 @@ public final class AppYmlFile extends YmlFile
 	
 	public List<String> getCapabilities()
 	{
-        return copyList(super.getObject("capabilities"));
+		return (List<String>)super.getObject("capabilities");
 	}
 	
 	public String getAppName()
@@ -169,8 +174,8 @@ public final class AppYmlFile extends YmlFile
 	{
 		remove("android", "emulator");
 	}
-	public boolean isRhoelements()
 
+	public boolean isRhoelements()
 	{
 		String appType = super.getString("app_type");
 		
@@ -189,17 +194,4 @@ public final class AppYmlFile extends YmlFile
 	{
 		super.remove("app_type", "rhodes");
 	}
-
-    private static List<String> copyList(Object list)
-    {
-        List<String> copy = new ArrayList<String>();
-        if (list != null)
-        {
-            for (Object item : (List<?>) list)
-            {
-                copy.add((String) item);
-            }
-        }
-        return copy;
-    }
 }
