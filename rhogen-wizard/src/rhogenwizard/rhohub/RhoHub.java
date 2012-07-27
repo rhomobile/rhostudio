@@ -61,8 +61,6 @@ public class RhoHub implements IRhoHub
         AppListTask task = new AppListTask(rhohubConfiguration);
         task.run();
         
-        String s  = task.getError();
-        
         if (!task.isOk())
             return null;
         
