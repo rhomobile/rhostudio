@@ -46,7 +46,7 @@ public class Activator extends AbstractUIPlugin
         // get location of workspace (java.io.File)
         File workspaceDirectory = workspace.getRoot().getLocation().toFile();
 
-        IEclipsePreferences instanceNode = new InstanceScope().getNode(egitPluginId);
+        IEclipsePreferences instanceNode = InstanceScope.INSTANCE.getNode(egitPluginId);
         instanceNode.put(UIPreferences.DEFAULT_REPO_DIR, workspaceDirectory.toString());
     }
 

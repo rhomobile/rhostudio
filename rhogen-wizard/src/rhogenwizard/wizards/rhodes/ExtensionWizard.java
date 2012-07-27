@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -24,7 +23,6 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
-import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhodesExtensionTask;
 import rhogenwizard.wizards.ZeroPage;
@@ -91,14 +89,6 @@ public class ExtensionWizard extends Wizard implements INewWizard
                 {
                     doFinish(extName, monitor);
                 }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
-                catch (ProjectNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
                 finally
                 {
                     monitor.done();
@@ -141,7 +131,7 @@ public class ExtensionWizard extends Wizard implements INewWizard
      *             editor on the newly created file.
      * @throws
      */
-    private void doFinish(final String extName, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException
+    private void doFinish(final String extName, IProgressMonitor monitor)
     {
         try
         {

@@ -192,10 +192,6 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 		{
 			e.printStackTrace();
 		}
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
 		catch (BadProjectTagException e) 
 		{
 			e.printStackTrace();

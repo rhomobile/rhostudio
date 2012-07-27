@@ -1,11 +1,8 @@
 package rhogenwizard.buildfile;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import rhogenwizard.OSValidator;
 import rhogenwizard.SysCommandExecutor;
 
 public class SdkYmlAdapter

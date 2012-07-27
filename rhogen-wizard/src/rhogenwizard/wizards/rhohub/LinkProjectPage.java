@@ -1,7 +1,5 @@
 package rhogenwizard.wizards.rhohub;
 
-import java.awt.Dialog;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogPage;

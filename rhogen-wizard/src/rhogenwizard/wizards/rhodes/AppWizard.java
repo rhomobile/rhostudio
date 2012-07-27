@@ -3,7 +3,6 @@ package rhogenwizard.wizards.rhodes;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -19,7 +18,6 @@ import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
-import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.generate.GenerateRhoelementsAppTask;
@@ -59,14 +57,6 @@ public class AppWizard extends BaseAppWizard
                 try
                 {
                     doFinish(holder, monitor);
-                }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
-                catch (ProjectNotFoundException e)
-                {
-                    e.printStackTrace();
                 }
                 finally
                 {
@@ -133,7 +123,7 @@ public class AppWizard extends BaseAppWizard
      *             editor on the newly created file.
      * @throws
      */
-    private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor) throws CoreException, ProjectNotFoundException
+    private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor)
     {
         try
         {

@@ -3,7 +3,6 @@ package rhogenwizard.wizards.rhoconnect;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -22,14 +21,12 @@ import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.project.extension.AlredyCreatedException;
-import rhogenwizard.project.extension.ProjectNotFoundException;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhoconnectAppTask;
 
 public class AppWizard extends Wizard implements INewWizard
 {
-    private AppWizardPage        m_pageApp = null;
-    private IStructuredSelection m_selection = null;
+    private AppWizardPage m_pageApp = null;
 
     /**
      * Constructor for SampleNewWizard.
@@ -45,7 +42,7 @@ public class AppWizard extends Wizard implements INewWizard
      */
     public void addPages()
     {
-        m_pageApp = new AppWizardPage(m_selection);
+        m_pageApp = new AppWizardPage();
         addPage(m_pageApp);
     }
 
@@ -64,14 +61,6 @@ public class AppWizard extends Wizard implements INewWizard
                 try
                 {
                     doFinish(holder, monitor);
-                }
-                catch (CoreException e)
-                {
-                    throw new InvocationTargetException(e);
-                }
-                catch (ProjectNotFoundException e)
-                {
-                    e.printStackTrace();
                 }
                 finally
                 {
@@ -130,10 +119,7 @@ public class AppWizard extends Wizard implements INewWizard
      * @throws ProjectNotFoundExtension
      */
     private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor)
-            throws CoreException, ProjectNotFoundException
     {
-        IRhomobileProject newProject = null;
-
         try
         {
             monitor.beginTask("Creating " + infoHolder.appName, 2);
@@ -145,7 +131,8 @@ public class AppWizard extends Wizard implements INewWizard
                 createProjectFiles(infoHolder, monitor);
             }
             
-            newProject = ProjectFactory.getInstance().createProject(RhoconnectProject.class, infoHolder);
+            IRhomobileProject newProject = ProjectFactory.getInstance().createProject(
+                RhoconnectProject.class, infoHolder);
 
             newProject.refreshProject();
 
@@ -157,7 +144,6 @@ public class AppWizard extends Wizard implements INewWizard
         }
         catch (IOException e)
         {
-            newProject.deleteProjectFiles();
             DialogUtils.error("Error", MsgConstants.errFindRhosync);
         }
         catch (AlredyCreatedException e)
@@ -178,6 +164,5 @@ public class AppWizard extends Wizard implements INewWizard
      */
     public void init(IWorkbench workbench, IStructuredSelection selection)
     {
-        this.m_selection = selection;
     }
 }
