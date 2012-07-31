@@ -124,7 +124,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 			e.printStackTrace();
 		}
 		
-		store.setDefault(IRhoHubSetting.rhoHubUrl, "");
+		store.setDefault(IRhoHubSetting.rhoHubUrl, "https://app.rhohub.com/api/v1");
 		store.setDefault(IRhoHubSetting.rhoHubToken, "");
 		store.setDefault(IRhoHubSetting.rhoHubSelectedRhodesVesion, rhodesDefaultVersion);
 	}
