@@ -167,9 +167,19 @@ public class AppWizard extends BaseAppWizard
         }
         catch (IOException e)
         {
-            String msg = "Cannot find Rhodes, need rhodes version equal or greater " 
-                + CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
-            DialogUtils.error("Error", msg);
+        	String msg = null;
+        	
+        	if (infoHolder.isRhoelementsApp)
+        	{
+                msg = "Cannot find Rhoelements, install the gem before generate Rhoelements applications."; 
+        	}
+        	else
+        	{
+                msg = "Cannot find Rhodes, need version equal or greater " 
+                        + CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
+        	}
+
+        	DialogUtils.error("Error", msg);
         }
         catch (AlredyCreatedException e)
         {
