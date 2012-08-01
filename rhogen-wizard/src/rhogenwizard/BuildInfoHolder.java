@@ -16,6 +16,13 @@ public class BuildInfoHolder
 	public boolean isInDefaultWs = false;
 	public boolean isRhoelementsApp = false;
 	
+	public boolean isProjectPathValid()
+	{
+		String path = getProjectLocationFullPath();
+		
+		return !path.contains(" ");
+	}
+	
 	public String getProjectLocationFullPath()
 	{
 		if (isInDefaultWs)

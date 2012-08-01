@@ -120,6 +120,13 @@ public class AppWizard extends Wizard implements INewWizard
      */
     private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor)
     {
+    	if (!infoHolder.isProjectPathValid())
+    	{
+    		DialogUtils.error("Error", "You can't create application on path with spaces. Change applicaiton name or path to workspace.");
+    		monitor.done();
+    		return;
+    	}
+    	
         try
         {
             monitor.beginTask("Creating " + infoHolder.appName, 2);
