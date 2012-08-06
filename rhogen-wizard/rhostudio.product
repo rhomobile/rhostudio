@@ -93,16 +93,16 @@
       <plugin id="org.eclipse.dltk.core.index"/>
       <plugin id="org.eclipse.dltk.core.index.sql"/>
       <plugin id="org.eclipse.dltk.core.index.sql.h2"/>
+      <plugin id="org.eclipse.dltk.core.manipulation"/>
       <plugin id="org.eclipse.dltk.core.source"/>
       <plugin id="org.eclipse.dltk.debug"/>
       <plugin id="org.eclipse.dltk.debug.ui"/>
       <plugin id="org.eclipse.dltk.formatter"/>
       <plugin id="org.eclipse.dltk.itcl"/>
       <plugin id="org.eclipse.dltk.itcl.core"/>
-      <plugin id="org.eclipse.dltk.itcl.source"/>
       <plugin id="org.eclipse.dltk.itcl.ui"/>
       <plugin id="org.eclipse.dltk.javascript.core"/>
-      <plugin id="org.eclipse.dltk.javascript.core.dom.support"/>
+      <plugin id="org.eclipse.dltk.javascript.core.manipulation"/>
       <plugin id="org.eclipse.dltk.javascript.debug"/>
       <plugin id="org.eclipse.dltk.javascript.debug.ui"/>
       <plugin id="org.eclipse.dltk.javascript.formatter"/>
@@ -112,20 +112,16 @@
       <plugin id="org.eclipse.dltk.javascript.parser"/>
       <plugin id="org.eclipse.dltk.javascript.rhino"/>
       <plugin id="org.eclipse.dltk.javascript.rhino.dbgp"/>
-      <plugin id="org.eclipse.dltk.javascript.source"/>
       <plugin id="org.eclipse.dltk.javascript.ui"/>
       <plugin id="org.eclipse.dltk.launching"/>
       <plugin id="org.eclipse.dltk.mylyn"/>
-      <plugin id="org.eclipse.dltk.mylyn.source"/>
       <plugin id="org.eclipse.dltk.python.activestatedebugger"/>
       <plugin id="org.eclipse.dltk.python.core"/>
       <plugin id="org.eclipse.dltk.python.debug"/>
       <plugin id="org.eclipse.dltk.python.debug.ui"/>
       <plugin id="org.eclipse.dltk.python.launching"/>
-      <plugin id="org.eclipse.dltk.python.source"/>
       <plugin id="org.eclipse.dltk.python.ui"/>
       <plugin id="org.eclipse.dltk.rse.core"/>
-      <plugin id="org.eclipse.dltk.rse.source"/>
       <plugin id="org.eclipse.dltk.rse.ui"/>
       <plugin id="org.eclipse.dltk.ruby"/>
       <plugin id="org.eclipse.dltk.ruby.abstractdebugger"/>
@@ -137,7 +133,6 @@
       <plugin id="org.eclipse.dltk.ruby.fastdebugger"/>
       <plugin id="org.eclipse.dltk.ruby.formatter"/>
       <plugin id="org.eclipse.dltk.ruby.launching"/>
-      <plugin id="org.eclipse.dltk.ruby.source"/>
       <plugin id="org.eclipse.dltk.ruby.testing"/>
       <plugin id="org.eclipse.dltk.ruby.ui"/>
       <plugin id="org.eclipse.dltk.ssh.core"/>
@@ -150,7 +145,6 @@
       <plugin id="org.eclipse.dltk.tcl.formatter"/>
       <plugin id="org.eclipse.dltk.tcl.launching"/>
       <plugin id="org.eclipse.dltk.tcl.parser"/>
-      <plugin id="org.eclipse.dltk.tcl.source"/>
       <plugin id="org.eclipse.dltk.tcl.tclchecker"/>
       <plugin id="org.eclipse.dltk.tcl.tcllib"/>
       <plugin id="org.eclipse.dltk.tcl.testing"/>
@@ -164,7 +158,6 @@
       <plugin id="org.eclipse.dltk.validators.ui"/>
       <plugin id="org.eclipse.dltk.xotcl"/>
       <plugin id="org.eclipse.dltk.xotcl.core"/>
-      <plugin id="org.eclipse.dltk.xotcl.source"/>
       <plugin id="org.eclipse.dltk.xotcl.testing.xounit"/>
       <plugin id="org.eclipse.dltk.xotcl.ui"/>
       <plugin id="org.eclipse.ecf"/>
@@ -422,16 +415,16 @@
       <plugin id="org.eclipse.dltk.core.index.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.core.index.sql" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.core.index.sql.h2" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.dltk.core.manipulation" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.core.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.debug" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.debug.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.formatter" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.itcl" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.itcl.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.itcl.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.itcl.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.javascript.core.dom.support" autoStart="false" startLevel="0" />
+      <plugin id="org.eclipse.dltk.javascript.core.manipulation" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.debug" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.debug.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.formatter" autoStart="false" startLevel="0" />
@@ -441,20 +434,16 @@
       <plugin id="org.eclipse.dltk.javascript.parser" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.rhino" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.rhino.dbgp" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.javascript.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.javascript.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.launching" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.mylyn" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.mylyn.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.python.activestatedebugger" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.python.core" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.python.debug" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.python.debug.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.python.launching" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.python.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.python.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.rse.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.rse.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.rse.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ruby" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ruby.abstractdebugger" autoStart="false" startLevel="0" />
@@ -466,7 +455,6 @@
       <plugin id="org.eclipse.dltk.ruby.fastdebugger" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ruby.formatter" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ruby.launching" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.ruby.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ruby.testing" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ruby.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.ssh.core" autoStart="false" startLevel="0" />
@@ -479,7 +467,6 @@
       <plugin id="org.eclipse.dltk.tcl.formatter" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.tcl.launching" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.tcl.parser" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.tcl.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.tcl.tclchecker" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.tcl.tcllib" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.tcl.testing" autoStart="false" startLevel="0" />
@@ -493,7 +480,6 @@
       <plugin id="org.eclipse.dltk.validators.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.xotcl" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.xotcl.core" autoStart="false" startLevel="0" />
-      <plugin id="org.eclipse.dltk.xotcl.source" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.xotcl.testing.xounit" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.dltk.xotcl.ui" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.ecf" autoStart="false" startLevel="0" />
