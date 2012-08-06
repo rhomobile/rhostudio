@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -527,8 +528,19 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
     boolean isFoundFramework()
     {
     	IFolder fwFodler = m_debugProject.getFolder(fwTag);
-
-		return fwFodler.exists();
+    	
+		try
+		{
+			IResource[] childRes = fwFodler.members();
+			
+			return fwFodler.exists() && childRes.length != 0;
+		} 
+		catch (CoreException e) 
+		{
+			e.printStackTrace();
+		}
+    	
+		return false;
     }
     
     @Override
