@@ -12,13 +12,13 @@ public class RunReleaseRhoconnectAppTask extends SeqRunTask
 {
     private static RunTask[] getTasks(final String workDir)
     {
-        RunTask redisStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rhoconnect",
-            "redis-startbg");
-        RunTask rhoconnectStartbgTask;
+        RunTask redisStartbgTask      = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rhoconnect", "redis-startbg");
+        RunTask rhoconnectStartbgTask = null;
+        
         if (OSHelper.isWindows())
         {
-            rhoconnectStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "start",
-                "rhoconnect", "start");
+            rhoconnectStartbgTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "start", "cmd", "/c",
+                "rhoconnect", "start&&exit");
         }
         else
         {
