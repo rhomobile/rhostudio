@@ -10,6 +10,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.OSHelper;
 import rhogenwizard.ShowPerspectiveJob;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.rhohub.GitCredentialsProvider;
 import rhogenwizard.rhohub.IRhoHubSetting;
@@ -28,7 +29,8 @@ public class LinkWizard extends BaseAppWizard
     public LinkWizard(IProject project)
     {
         super();
-        setNeedsProgressMonitor(true);
+        setNeedsProgressMonitor(true);        
+        setWindowTitle(MsgConstants.rhohubLinkWizardTitle);
         
         m_selectedProject = project;
         

@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Display;
 
 import rhogenwizard.DialogUtils;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.constants.CommonConstants;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.constants.UiConstants;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.RemoteAppBuildDesc;
@@ -31,6 +31,7 @@ public class BuildWizard extends BaseAppWizard
     {
         super();
         setNeedsProgressMonitor(true);
+        setWindowTitle(MsgConstants.rhohubBuildWizardTitle);
         
         m_selectedProject = project;
     }
@@ -108,27 +109,6 @@ public class BuildWizard extends BaseAppWizard
         try
         {
             monitor.beginTask("Starting build on RhoHub...", 1);
-            
-            if (CommonConstants.checkRhohubVersion)
-            {
-//                monitor.setTaskName("Check Rhodes version...");
-//
-//                try
-//                {
-//                    if (!RunExeHelper.checkRhodesVersion(CommonConstants.rhodesVersion))
-//                    {
-//                        throw new IOException();
-//                    }
-//                }
-//                catch (IOException e)
-//                {
-//                    String msg = "Installed Rhohub have old version, need rhodes version equal or greater " 
-//                        + CommonConstants.rhodesVersion + " Please reinstall it (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
-//                    DialogUtils.error("Error", msg);
-//                    return;
-//                }
-            }            
-            monitor.worked(1);
             
             IRhoHubSetting store = RhoHubBundleSetting.createGetter(m_selectedProject);
 

@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.json.JSONException;
 
 import rhogenwizard.DialogUtils;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.JSONList;
 import rhogenwizard.rhohub.RemoteProjectDesc;
@@ -43,8 +44,8 @@ public class LinkProjectPage extends WizardPage
     public LinkProjectPage(IProject project, IRhoHubSetting setting) 
     {
         super("wizardPage");
-        setTitle("RhoHub Application Wizard");
-        setDescription("RhoHub Application Wizard");
+        setTitle(MsgConstants.rhohubLinkWizardTitle);
+        setDescription(MsgConstants.rhohubLinkWizardTitle);
         
         m_setting = setting;
     }

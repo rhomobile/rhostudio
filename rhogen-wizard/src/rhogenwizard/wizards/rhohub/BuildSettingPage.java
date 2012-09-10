@@ -26,19 +26,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -52,6 +47,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.DialogUtils;
 import rhogenwizard.HttpDownload;
+import rhogenwizard.constants.MsgConstants;
 import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.JSONList;
@@ -205,8 +201,8 @@ public class BuildSettingPage extends WizardPage
     public BuildSettingPage(IProject project) 
     {
         super("wizardPage");
-        setTitle("RhoHub Application Build Wizard");
-        setDescription("RhoHub Application Build Wizard");
+        setTitle(MsgConstants.rhohubBuildWizardTitle);
+        setDescription(MsgConstants.rhohubBuildWizardTitle);
         
         m_project = project;
     }
