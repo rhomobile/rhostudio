@@ -24,6 +24,8 @@ import rhogenwizard.debugger.backend.DebugVariable;
 
 public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame 
 {
+	private static final String linePrefix = " Line: ";
+	
 	private RhogenThread    m_currThread = null;
 	private String          m_name = null;
 	private int             m_codeLine;
@@ -141,7 +143,7 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public String getName() throws DebugException 
 	{
-		return m_name;
+		return m_name + linePrefix + m_codeLine;
 	}
 	
 	/* (non-Javadoc)
