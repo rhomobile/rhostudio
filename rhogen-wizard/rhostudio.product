@@ -4,10 +4,7 @@
 <product name="RhoStudio" uid="rhostudio_id" id="com.rhomobile.rhostudio.rhostudio_id" application="org.eclipse.ui.ide.workbench" version="2.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/RhogenWizard/icons/sample.png"/>
-      <text>
-         Rhomobile RhoStudio
-      </text>
+      <image path="/RhogenWizard/icons/about_rhostudio.png"/>
    </aboutInfo>
 
    <configIni use="default">
@@ -21,13 +18,15 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i128="/RhogenWizard/icons/sample.png"/>
+   <windowImages i16="/RhogenWizard/icons/rhostudio_icon16.png" i32="/RhogenWizard/icons/rhostudio_icon32.png" i48="/RhogenWizard/icons/rhostudio_icon48.png" i64="/RhogenWizard/icons/rhostudio_icon64.png" i128="/RhogenWizard/icons/rhostudio_icon128.png"/>
 
    <splash
       location="com.rhomobile.rhostudio" />
    <launcher name="RhoStudio">
+      <macosx icon="/RhogenWizard/icons/rho_rhostudio.icns"/>
       <solaris/>
-      <win useIco="false">
+      <win useIco="true">
+         <ico path="/RhogenWizard/icons/rho_rhostudio.ico"/>
          <bmp/>
       </win>
    </launcher>

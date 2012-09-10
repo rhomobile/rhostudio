@@ -17,7 +17,7 @@
          
          <action
                label="Production build"
-               icon="icons/sample16.png"
+               icon="icons/rhodes_icon16.png"
                class="rhogenwizard.actions.ProductionBuildAction"
                tooltip="Build production version of application"
                menubarPath="rhomobileMenu/rhomobileGroup"               
@@ -26,7 +26,7 @@
          
          <action
                label="Rhohub build"
-               icon="icons/sample16.png"
+               icon="icons/rhohub_icon16.png"
                class="rhogenwizard.actions.RhohubWizardAction"
                tooltip=""
                menubarPath="rhomobileMenu/rhomobileGroup"               
@@ -46,7 +46,7 @@
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.AppWizard"
-            icon="icons/sample16.png"
+            icon="icons/rhodes_icon16.png"
             id="rhogenwizard.wizards.RhogenWizard"
             name="RhoMobile application"
             project="true"> 
@@ -55,7 +55,7 @@
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhoconnect.AppWizard"
-            icon="icons/sample16.png"
+            icon="icons/rhoconnect_icon16.png"
             id="rhogenwizard.wizards.RhogenSyncAppWizard"
             name="RhoConnect application"
             project="true"> 
@@ -64,7 +64,7 @@
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.ModelWizard"
-            icon="icons/sample16.png"
+            icon="icons/rhodes_icon16.png"
             id="rhogenwizard.wizards.ModelWizard"
             name="RhoMobile model"> 
       </wizard>
@@ -72,7 +72,7 @@
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.ExtensionWizard"
-            icon="icons/sample16.png"
+            icon="icons/rhodes_icon16.png"
             id="rhogenwizard.wizards.ExtensionWizard"
             name="RhoMobile extension"> 
       </wizard>
@@ -80,7 +80,7 @@
       <wizard
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhodes.SpecWizard"
-            icon="icons/sample16.png"
+            icon="icons/rhodes_icon16.png"
             id="rhogenwizard.wizards.SpecWizard"
             name="RhoMobile spec"> 
       </wizard>
@@ -89,7 +89,7 @@
             category="RhogenAppWizard"
             class="rhogenwizard.wizards.rhoconnect.SourceAdapterWizard"
             finalPerspective="rhogenwizard.perspectives.RhostudioPerspective"
-            icon="icons/sample16.png"
+            icon="icons/rhoconnect_icon16.png"
             id="rhogenwizard.wizards.SourceAdapterWizard"
             name="RhoConnect source adapter"> 
       </wizard>
@@ -101,7 +101,7 @@
             class="rhogenwizard.editors.YmlFileEditor"
             extensions="yml"
             filenames="rhobuild"
-            icon="icons/sample16.png"
+            icon="icons/rhodes_icon16.png"
             id="rhogenwizard.editors.RhodesEditor"
             name="RhoMobile Yaml File Editor">
       </editor>
@@ -198,7 +198,7 @@
     <!-- ************************** launch images **************************************** -->
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
-	        icon="icons/sample16.png"
+	        icon="icons/rhodes_icon16.png"
 	        configTypeID="rhogenwizard.launcher.rhodesApp"
 	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
 	    </launchConfigurationTypeImage>
@@ -207,14 +207,14 @@
 	 <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
         <launchConfigurationTypeImage
             configTypeID="rhogenwizard.launcher.rhodesSpec"
-            icon="icons/sample16.png"
+            icon="icons/rhodes_icon16.png"
             id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
         </launchConfigurationTypeImage>
     </extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
-	        icon="icons/sample16.png"
+	        icon="icons/rhoconnect_icon16.png"
 	        configTypeID="rhogenwizard.launcher.rhosyncApp"
 	        id="org.eclipse.jdt.debug.ui.launchConfigurationTypeImage.javaApplet">
 	    </launchConfigurationTypeImage>
@@ -398,15 +398,11 @@
           </property>
           <property
                 name="aboutImage"
-                value="icons/sample.png">
-          </property>
-          <property
-                name="aboutText"
-                value="Rhomobile RhoStudio">
+                value="icons/about_rhostudio.png">
           </property>
           <property
                 name="windowImages"
-                value="icons/sample.png">
+                value="icons/rhostudio_icon16.png,icons/rhostudio_icon32.png,icons/rhostudio_icon48.png,icons/rhostudio_icon64.png,icons/rhostudio_icon128.png">
           </property>
           <property
                 name="preferenceCustomization"
@@ -418,7 +414,7 @@
    <extension point="org.eclipse.ui.perspectives">
       <perspective
             class="rhogenwizard.perspectives.RhostudioPerspective"
-            icon="icons/sample16.png"
+            icon="icons/rhostudio_icon16.png"
             id="rhogenwizard.perspectives.RhostudioPerspective"
             name="RhoStudio">
       </perspective>
@@ -505,7 +501,7 @@
             name="RhoStudio">
          <property
                name="windowImages"
-               value="icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png,icons/sample.png">
+               value="icons/rhodes_icon128.png,icons/rhodes_icon128.png,icons/rhodes_icon128.png,icons/rhodes_icon128.png,icons/rhodes_icon128.png">
          </property>
          <property
                name="aboutText"
@@ -513,7 +509,7 @@
          </property>
          <property
                name="aboutImage"
-               value="icons/sample.png">
+               value="icons/about_rhostudio.png">
          </property>
          <property
                name="appName"
