@@ -24,7 +24,7 @@ import rhogenwizard.LogFileHelper;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
-import rhogenwizard.debugger.model.RhogenDebugTarget;
+import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.StopSyncAppTask;
 import rhogenwizard.sdk.task.run.RunDebugRhoconnectAppTask;
@@ -114,7 +114,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 	{	
 		try
 		{
-			RhogenDebugTarget target = null;
+			DebugTarget target = null;
 			setProcessFinished(false); 
 			
 			rhodesLogHelper.stopLog();
@@ -145,7 +145,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 					job.schedule();
 					
-					target = new RhogenDebugTarget(launch, null, project/*RhogenDebugTarget.EDebugPlatfrom.eRhosync*/);
+					target = new DebugTarget(launch, null, project);
 				}
 			
 				startBuildThread(project, mode, launch);
