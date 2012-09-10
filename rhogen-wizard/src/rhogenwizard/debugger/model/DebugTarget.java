@@ -56,7 +56,7 @@ import rhogenwizard.sdk.task.StopSyncAppTask;
 /**
  * PDA Debug Target
  */
-public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
+public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCallback, IExpressionListener
 {
 	private static String fwTag = "framework";
 	
@@ -75,12 +75,12 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
     private boolean            m_isSuspended   = true;
 
     // threads
-    private RhogenThread       m_threadHandle  = null;
+    private DebugThread        m_threadHandle  = null;
     private IThread[]          m_allThreads    = null;
 
     private static DebugServer m_debugServer   = null;
 
-    public RhogenDebugTarget(ILaunch launch, IProcess process, IProject debugProject)
+    public DebugTarget(ILaunch launch, IProcess process, IProject debugProject)
     {
         super(null);
 
@@ -89,8 +89,8 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
         m_debugTarget = this;
         m_processHandle = process;
 
-        m_threadHandle = new RhogenThread(this);
-        m_allThreads = new IThread[] { m_threadHandle };
+        m_threadHandle = new DebugThread(this);
+        m_allThreads   = new IThread[] { m_threadHandle };
 
         DebugServer.setDebugOutputStream(System.out);
 
@@ -492,7 +492,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
             try
             {
                 stackData.m_currVariables = m_debugServer.debugWatchList();
-                theFrames[0] = new RhogenStackFrame(m_threadHandle, stackData, 0);
+                theFrames[0] = new DebugStackFrame(m_threadHandle, stackData, 0);
                 break;
             }
             catch (DebugServerException e)
@@ -680,7 +680,7 @@ public class RhogenDebugTarget extends RhogenDebugElement implements IDebugTarge
             {
                 if (currExp instanceof RhogenWatchExpression)
                 {
-                    IValue watchVal = new RhogenValue(this, value);
+                    IValue watchVal = new DebugValue(this, value);
                     RhogenWatchExpression watchExp = (RhogenWatchExpression) currExp;
                     watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
                 }

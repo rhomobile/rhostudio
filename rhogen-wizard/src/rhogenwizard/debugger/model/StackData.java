@@ -1,13 +1,12 @@
 package rhogenwizard.debugger.model;
 
 import java.util.List;
-import rhogenwizard.debugger.backend.DebugVariable;
 
 public class StackData
 {
 	public String              m_resName;
 	public int                 m_codeLine;
-	public List<DebugVariable> m_currVariables;
+	public List<rhogenwizard.debugger.backend.DebugVariable> m_currVariables;
 
 	public StackData(String resName, int line)
 	{

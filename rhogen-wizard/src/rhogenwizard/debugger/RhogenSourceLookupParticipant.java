@@ -14,7 +14,8 @@ package rhogenwizard.debugger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupParticipant;
 
-import rhogenwizard.debugger.model.RhogenStackFrame;
+import rhogenwizard.debugger.model.DebugStackFrame;
+
 
 /**
  * The PDA source lookup participant knows how to translate a 
@@ -27,9 +28,9 @@ public class RhogenSourceLookupParticipant extends AbstractSourceLookupParticipa
 	 */
 	public String getSourceName(Object object) throws CoreException 
 	{
-		if (object instanceof RhogenStackFrame) 
+		if (object instanceof DebugStackFrame) 
 		{
-			return ((RhogenStackFrame)object).getSourceName();
+			return ((DebugStackFrame)object).getSourceName();
 		}
 	
 		return null;

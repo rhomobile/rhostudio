@@ -20,13 +20,11 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 
-import rhogenwizard.debugger.backend.DebugVariable;
-
-public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame 
+public class DebugStackFrame extends DebugElement implements IStackFrame 
 {
 	private static final String linePrefix = " Line: ";
 	
-	private RhogenThread    m_currThread = null;
+	private DebugThread     m_currThread = null;
 	private String          m_name = null;
 	private int             m_codeLine;
 	private String          m_fileName = null;
@@ -41,9 +39,9 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 * @param data frame data
 	 * @param id stack frame id (0 is the bottom of the stack)
 	 */
-	public RhogenStackFrame(RhogenThread thread, StackData stackData, int id) 
+	public DebugStackFrame(DebugThread thread, StackData stackData, int id) 
 	{
-		super((RhogenDebugTarget) thread.getDebugTarget());
+		super((DebugTarget) thread.getDebugTarget());
 		
 		m_id         = id;
 		m_currThread = thread;
@@ -64,13 +62,13 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 		
 		if (stackData.m_currVariables != null)
 		{
-			for (DebugVariable var : stackData.m_currVariables)
+			for (rhogenwizard.debugger.backend.DebugVariable var : stackData.m_currVariables)
 			{
 				try 
 				{
-					RhogenVariable stackVar = new RhogenVariable((RhogenDebugTarget) this.getDebugTarget(), var.variable());
+					DebugVariable stackVar = new DebugVariable((DebugTarget) this.getDebugTarget(), var.variable());
 					
-					stackVar.setValue(new RhogenValue(m_debugTarget, var.value()));
+					stackVar.setValue(new DebugValue(m_debugTarget, var.value()));
 					m_variablesList.add(stackVar);
 				} 
 				catch (DebugException e) 
@@ -275,9 +273,9 @@ public class RhogenStackFrame extends RhogenDebugElement implements IStackFrame
 	 */
 	public boolean equals(Object obj) 
 	{
-		if (obj instanceof RhogenStackFrame) 
+		if (obj instanceof DebugStackFrame) 
 		{
-			RhogenStackFrame sf = (RhogenStackFrame)obj;
+			DebugStackFrame sf = (DebugStackFrame)obj;
 			
 			try 
 			{

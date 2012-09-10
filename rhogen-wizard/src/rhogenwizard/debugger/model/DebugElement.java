@@ -26,10 +26,10 @@ import rhogenwizard.constants.DebugConstants;
 /**
  * Common function of PDA debug model elements
  */
-public abstract class RhogenDebugElement extends PlatformObject implements IDebugElement
+public abstract class DebugElement extends PlatformObject implements IDebugElement
 {
 	// containing target 
-	protected RhogenDebugTarget m_debugTarget;
+	protected DebugTarget m_debugTarget;
 	
 	/**
 	 * Constructs a new debug element contained in the given
@@ -37,7 +37,7 @@ public abstract class RhogenDebugElement extends PlatformObject implements IDebu
 	 * 
 	 * @param target debug target (PDA VM)
 	 */
-	public RhogenDebugElement(RhogenDebugTarget target) 
+	public DebugElement(DebugTarget target) 
 	{
 		m_debugTarget = target;
 	}

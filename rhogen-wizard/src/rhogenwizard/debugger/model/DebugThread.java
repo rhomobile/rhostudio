@@ -19,7 +19,7 @@ import org.eclipse.debug.core.model.IThread;
 /**
  * A PDA VM thread. A PDA VM is single threaded.
  */
-public class RhogenThread extends RhogenDebugElement implements IThread
+public class DebugThread extends DebugElement implements IThread
 {	
 	/**
 	 * Breakpoints this thread is suspended at or <code>null</code>
@@ -37,7 +37,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 * 
 	 * @param target VM
 	 */
-	public RhogenThread(RhogenDebugTarget target)
+	public DebugThread(DebugTarget target)
 	{
 		super(target);
 	}
@@ -49,11 +49,11 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	{
 		if (isSuspended()) 
 		{
-			IStackFrame[] stacks = ((RhogenDebugTarget)getDebugTarget()).getStackFrames();
+			IStackFrame[] stacks = ((DebugTarget)getDebugTarget()).getStackFrames();
 			
-			if (stacks[0] instanceof RhogenStackFrame)
+			if (stacks[0] instanceof DebugStackFrame)
 			{
-				RhogenStackFrame frame = (RhogenStackFrame)stacks[0];
+				DebugStackFrame frame = (DebugStackFrame)stacks[0];
 				
 				if (frame.getSourceName().equals(""))
 					return new IStackFrame[0];
@@ -209,7 +209,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public void stepInto() throws DebugException 
 	{
-		((RhogenDebugTarget)getDebugTarget()).stepInto();
+		((DebugTarget)getDebugTarget()).stepInto();
 	}
 	
 	/* (non-Javadoc)
@@ -217,7 +217,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public void stepOver() throws DebugException 
 	{
-		((RhogenDebugTarget)getDebugTarget()).stepOver();
+		((DebugTarget)getDebugTarget()).stepOver();
 	}
 	
 	/* (non-Javadoc)
@@ -225,7 +225,7 @@ public class RhogenThread extends RhogenDebugElement implements IThread
 	 */
 	public void stepReturn() throws DebugException 
 	{
-		((RhogenDebugTarget)getDebugTarget()).stepReturn();
+		((DebugTarget)getDebugTarget()).stepReturn();
 	}
 	
 	/* (non-Javadoc)
