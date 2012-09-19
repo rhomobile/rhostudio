@@ -6,6 +6,7 @@ import java.util.List;
 public enum PlatformType
 {
     eWm("wm", "Windows Mobile"),
+    eWCE("wince", "Windows CE"),
     eAndroid("android", "Android"),
     eBb("bb", "BlackBerry"),
     eIPhone("iphone", "iPhone"),
@@ -29,6 +30,7 @@ public enum PlatformType
     public static String[] getPublicIds()
     {
         List<String> list = new ArrayList<String>();
+        
         for (PlatformType pt : PlatformType.values())
         {
             if (pt.publicId != null)
@@ -36,6 +38,7 @@ public enum PlatformType
                 list.add(pt.publicId);
             }
         }
+        
         return list.toArray(new String[0]);
     }
 
@@ -54,6 +57,7 @@ public enum PlatformType
                 return pt;
             }
         }
+        
         return PlatformType.eUnknown;
     }
 
@@ -66,6 +70,7 @@ public enum PlatformType
                 return pt;
             }
         }
+        
         return PlatformType.eUnknown;
     }
 }
