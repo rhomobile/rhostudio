@@ -29,7 +29,7 @@ import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.WinMobileSdk;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
-import rhogenwizard.debugger.model.RhogenDebugTarget;
+import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
@@ -189,7 +189,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		try
 		{
-			RhogenDebugTarget target = null;
+			DebugTarget target = null;
 			setProcessFinished(false); 
 			
 			rhodesLogHelper.stopLog();
@@ -233,7 +233,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					e.printStackTrace();
 				}
 				
-				target = new RhogenDebugTarget(launch, null, project);
+				target = new DebugTarget(launch, null, project);
 			}
 			
 			try

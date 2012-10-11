@@ -7,14 +7,14 @@ import org.eclipse.debug.core.model.IValue;
 
 import rhogenwizard.constants.DebugConstants;
 
-public class RhogenExpression implements IExpression
+public class DebugExpression implements IExpression
 {
 	IDebugTarget m_target;
 	ILaunch      m_launch;
 	String       m_expName;
 	IValue       m_expValue;
 	
-	RhogenExpression(IDebugTarget target, ILaunch launch, String name, IValue value)
+	DebugExpression(IDebugTarget target, ILaunch launch, String name, IValue value)
 	{
 		m_target = target;
 		m_launch = launch;

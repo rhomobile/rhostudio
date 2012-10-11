@@ -28,7 +28,7 @@ import rhogenwizard.editors.RubyEditor;
 /**
  * Adapter to create breakpoints in PDA files.
  */
-public class RhogenLineBreakpointAdapter implements IToggleBreakpointsTarget
+public class DebugLineBreakpointAdapter implements IToggleBreakpointsTarget
 {
 	public void toggleLineBreakpoints(IWorkbenchPart part, ISelection selection) throws CoreException 
 	{
@@ -57,7 +57,7 @@ public class RhogenLineBreakpointAdapter implements IToggleBreakpointsTarget
 			}
 			
 			// create line breakpoint (doc line numbers start at 0)
-			RhogenLineBreakpoint lineBreakpoint = new RhogenLineBreakpoint(resource, lineNumber + 1);
+			DebugLineBreakpoint lineBreakpoint = new DebugLineBreakpoint(resource, lineNumber + 1);
 			DebugPlugin.getDefault().getBreakpointManager().addBreakpoint(lineBreakpoint);
 		}
 	}

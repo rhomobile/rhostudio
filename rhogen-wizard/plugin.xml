@@ -440,7 +440,7 @@
    <extension
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint
-            class="rhogenwizard.debugger.model.RhogenLineBreakpoint"
+            class="rhogenwizard.debugger.model.DebugLineBreakpoint"
             id="lineBreakpoint"
             markerType="com.rhomobile.rhostudio.lineBreakpoint_marker"
             name="PDA line breakpoint">
@@ -469,7 +469,7 @@
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
-            class="rhogenwizard.debugger.model.RhogenBreakpointAdapterFactory"
+            class="rhogenwizard.debugger.model.DebugBreakpointAdapterFactory"
             adaptableType="rhogenwizard.editors.RubyEditor">
          <adapter
                type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget">

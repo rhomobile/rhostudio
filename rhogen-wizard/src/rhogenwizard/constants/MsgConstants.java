@@ -18,4 +18,8 @@ public class MsgConstants
 	public static final String preferencesPageTitle = "RhoMobile rhobuild.yml preferences";
 	
 	public static final String preferencesRhoHubTitle = "RhoHub settings preferences";
+	
+	public static final String rhohubLinkWizardTitle = "RhoHub Application Wizard";
+	
+	public static final String rhohubBuildWizardTitle = "RhoHub Application Build Wizard";
 }

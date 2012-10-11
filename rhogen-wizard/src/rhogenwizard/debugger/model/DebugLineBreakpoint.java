@@ -25,13 +25,13 @@ import rhogenwizard.constants.DebugConstants;
 /**
  * PDA line breakpoint
  */
-public class RhogenLineBreakpoint extends LineBreakpoint 
+public class DebugLineBreakpoint extends LineBreakpoint 
 {	
-	public RhogenLineBreakpoint() 
+	public DebugLineBreakpoint() 
 	{
 	}
 	
-	public RhogenLineBreakpoint(final IResource resource, final int lineNumber) throws CoreException 
+	public DebugLineBreakpoint(final IResource resource, final int lineNumber) throws CoreException 
 	{
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() 
 		{

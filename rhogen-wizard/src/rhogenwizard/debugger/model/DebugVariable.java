@@ -18,12 +18,12 @@ import org.eclipse.debug.core.model.IVariable;
 /**
  * A variable in a PDA stack frame
  */
-public class RhogenVariable extends RhogenDebugElement implements IVariable 
+public class DebugVariable extends DebugElement implements IVariable 
 {
 	// name & stack frmae
-	private String 			  m_varName    = null;
-	private RhogenDebugTarget m_stackFrame = null;
-	private IValue            m_varValue   = null;
+	private String 		m_varName    = null;
+	private DebugTarget m_stackFrame = null;
+	private IValue      m_varValue   = null;
 	
 	/**
 	 * Constructs a variable contained in the given stack frame
@@ -32,9 +32,10 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 * @param frame owning stack frame
 	 * @param name variable name
 	 */
-	public RhogenVariable(RhogenDebugTarget frame, String name) 
+	public DebugVariable(DebugTarget frame, String name) 
 	{
 		super(frame);
+		
 		m_stackFrame = frame;
 		m_varName = name;
 		m_varValue = null;
@@ -119,8 +120,8 @@ public class RhogenVariable extends RhogenDebugElement implements IVariable
 	 * @return the stack frame owning this variable
 	 * @throws DebugException 
 	 */
-	protected RhogenStackFrame getStackFrame() throws DebugException 
+	protected DebugStackFrame getStackFrame() throws DebugException 
 	{
-		return (RhogenStackFrame) m_stackFrame.getStackFrames()[0];
+		return (DebugStackFrame) m_stackFrame.getStackFrames()[0];
 	}
 }

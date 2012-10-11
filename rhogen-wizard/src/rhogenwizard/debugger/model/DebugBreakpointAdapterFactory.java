@@ -19,7 +19,7 @@ import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
 /**
  * Creates a toggle breakpoint adapter
  */
-public class RhogenBreakpointAdapterFactory implements IAdapterFactory 
+public class DebugBreakpointAdapterFactory implements IAdapterFactory 
 {
 	public Object getAdapter(Object adaptableObject, Class adapterType) 
 	{
@@ -35,7 +35,7 @@ public class RhogenBreakpointAdapterFactory implements IAdapterFactory
 				
 				if (extension != null && extension.equals("rb")) 
 				{
-					return new RhogenLineBreakpointAdapter();
+					return new DebugLineBreakpointAdapter();
 				}
 			}			
 		}
@@ -43,7 +43,7 @@ public class RhogenBreakpointAdapterFactory implements IAdapterFactory
 		return null;
 	}
 
-	public Class[] getAdapterList() 
+	public Class<?>[] getAdapterList() 
 	{
 		return new Class[] { IToggleBreakpointsTarget.class };
 	}

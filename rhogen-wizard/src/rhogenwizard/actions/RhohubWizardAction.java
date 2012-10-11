@@ -96,8 +96,8 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
     {
         WizardDialog buildWizardDialog = new WizardDialog(window.getShell(), wizard) 
         {
-        	private Button m_finishButton;
-        	private Button m_cancelButton;
+        	private Button           m_finishButton;
+        	private Button           m_cancelButton;
         	private SelectionAdapter m_cancelListener;
          	
         	private Button createCancelButton(Composite parent) 
