@@ -128,6 +128,7 @@ public class LogFileHelper
 			switch(m_platformName)
 			{
 			case eWm:
+			case eWCE:
 				wmLog(project);
 				break;
 			case eAndroid:
