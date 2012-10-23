@@ -194,7 +194,6 @@ public class RhoHub implements IRhoHub
         }
         catch (JGitInternalException e)
         {
-        	DialogUtils.error("Git", e.toString());
             e.printStackTrace();
         }
         catch (WrongRepositoryStateException e)
