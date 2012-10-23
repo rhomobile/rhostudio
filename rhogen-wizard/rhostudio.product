@@ -23,11 +23,16 @@
    <splash
       location="com.rhomobile.rhostudio" />
    <launcher name="RhoStudio">
-      <macosx icon="/RhogenWizard/icons/rho_rhostudio.icns"/>
+      <macosx icon="/RhogenWizard/icons/rhostudio_icon.icns"/>
       <solaris/>
-      <win useIco="true">
-         <ico path="/RhogenWizard/icons/rho_rhostudio.ico"/>
-         <bmp/>
+      <win useIco="false">
+         <bmp
+            winSmallHigh="/RhogenWizard/icons/rhostudio_icon16_32.bmp"
+            winSmallLow="/RhogenWizard/icons/rhostudio_icon16_8.bmp"
+            winMediumHigh="/RhogenWizard/icons/rhostudio_icon32_32.bmp"
+            winMediumLow="/RhogenWizard/icons/rhostudio_icon32_8.bmp"
+            winLargeHigh="/RhogenWizard/icons/rhostudio_icon48_32.bmp"
+            winLargeLow="/RhogenWizard/icons/rhostudio_icon48_8.bmp"/>
       </win>
    </launcher>
 
