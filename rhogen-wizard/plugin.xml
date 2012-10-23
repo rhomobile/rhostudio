@@ -2,6 +2,12 @@
 <?eclipse version="3.4"?>
 <plugin>
 
+   <extension point="org.eclipse.ui.startup">
+     <startup class="rhogenwizard.StartupImpl"/>
+   </extension>
+
+   <!-- ************************** actions **************************************** -->
+
    <extension point="org.eclipse.ui.actionSets">
       <actionSet
             label="RhoMobile"
@@ -37,6 +43,7 @@
    </extension>
 
    <!-- ************************** wizards **************************************** -->
+   
    <extension point="org.eclipse.ui.newWizards">
       <category
             id="RhogenAppWizard"
