@@ -1,10 +1,17 @@
 package rhogenwizard;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IStartup;
 
 import rhogenwizard.project.IRhomobileProject;
@@ -13,54 +20,108 @@ import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.BadProjectTagException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
-import rhogenwizard.sdk.task.RunTask;
 
 public class StartupImpl implements IStartup 
 {
-	private static class UpdateRhoProjectsTask extends RunTask
+	private static class UpdateRhomobileProject
 	{
-		@Override
-		public boolean isOk() 
+		private static int refreshDelay = 1;
+		
+		private static void deferredRefresh(final IProject project)
 		{
-			return true;
+			final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
+			
+			Runnable task = new Runnable() 
+			{
+				public void run() 
+				{
+					UpdateRhomobileProject.update(project);
+				}
+			};
+			
+			worker.schedule(task, refreshDelay, TimeUnit.SECONDS);
 		}
 
-		@Override
-		public void run(IProgressMonitor monitor) 
+		public static void update(IProject project)
 		{
-			IProject[] workspaceProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-			
-			for (IProject project : workspaceProjects) 
+			try 
 			{
-				try 
+				if (RhodesProject.checkNature(project) || RhoelementsProject.checkNature(project))
 				{
-					if (RhodesProject.checkNature(project) || RhoelementsProject.checkNature(project))
-					{
-						IRhomobileProject rhoProject = ProjectFactory.getInstance().convertFromProject(project);
-						rhoProject.refreshProject();
-					}
-				}
-				catch (BadProjectTagException e) 
-				{
-					e.printStackTrace();
-				}
-				catch (ProjectNotFoundException e) 
-				{
-					e.printStackTrace();
-				} 
-				catch (CoreException e) 
-				{
-					e.printStackTrace();
+					IRhomobileProject rhoProject = ProjectFactory.getInstance().convertFromProject(project);
+					rhoProject.refreshProject();
 				}
 			}
-		}		
+			catch (ResourceException e)
+			{
+				deferredRefresh(project);
+			}
+			catch (BadProjectTagException e) 
+			{
+				e.printStackTrace();
+			}
+			catch (ProjectNotFoundException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (CoreException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private static class ResourceChangeListener implements IResourceChangeListener
+	{
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) 
+		{
+			if (event.getType() != IResourceChangeEvent.POST_CHANGE)
+				return;
+			
+			IResourceDelta   mainDelta = event.getDelta();			
+			IResourceDelta[] resDeltas = mainDelta.getAffectedChildren(IResourceDelta.ADDED);
+			
+			for (IResourceDelta resDelta : resDeltas)
+			{
+				IResource resource = resDelta.getResource();
+				
+				if (resource instanceof IProject)
+				{
+					UpdateRhomobileProject.update((IProject) resource);
+				}	
+			}
+		}
 	}
 	
 	@Override
 	public void earlyStartup() 
 	{
-		UpdateRhoProjectsTask task = new UpdateRhoProjectsTask();
-		Job refreshJob = task.makeJob("Refresh Rhodes and Rhoelements project");
-		refreshJob.schedule();
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
