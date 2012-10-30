@@ -371,7 +371,7 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 				m_ymlFile = null;
 				m_ymlFile = new AppYmlFile(pathToFile);
 				
-				String sdk = m_ymlFile.getSdkPath();
+				String sdk     = m_ymlFile.getSdkPath();
 				String appName = m_ymlFile.getAppName();
 				String logName = m_ymlFile.getAppLog();
 				

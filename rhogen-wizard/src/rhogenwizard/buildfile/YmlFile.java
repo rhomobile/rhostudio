@@ -21,7 +21,8 @@ public class YmlFile
 		m_filePath = ymlFileName;
 		File ymlFile = new File(ymlFileName);
 		
-		if (ymlFile.exists()) {
+		if (ymlFile.exists()) 
+		{
 			load(ymlFileName);
 		}
 	}
