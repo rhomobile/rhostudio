@@ -2,6 +2,8 @@ package rhogenwizard.launcher;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.core.internal.registry.Extension;
+import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +39,21 @@ import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
 
 public class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
+	private static class FailBuildExtension extends Throwable
+	{
+		private final String m_runCommand; 
+		
+		public FailBuildExtension(String runCommand) 
+		{			
+			m_runCommand = runCommand;
+		}		
+		
+		public String getCommand()
+		{
+			return m_runCommand;
+		}
+	}
+	
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	protected String          m_projectName   = null;
@@ -67,10 +84,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		return m_buildFinished.get();
 	}
 
-	private void releaseBuild(IProject project, RunType type) throws Exception
+	private void releaseBuild(IProject project, RunType type) throws Exception, FailBuildExtension
 	{
-	    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
-	    
         Activator activator = Activator.getDefault();
         activator.killProcessesForForRunReleaseRhodesAppTask();
 
@@ -78,24 +93,19 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 
         if (!runSelectedBuildConfiguration(project, type))
         {
-            stream.println("Error in build application");
-            setProcessFinished(true);
-            return;
+            throw new FailBuildExtension("");
         }
 
         activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
 	}
 	
-	private IProcess debugBuild(IProject project, RunType type, ILaunch launch) throws Exception
+	private IProcess debugBuild(IProject project, RunType type, ILaunch launch) throws Exception, FailBuildExtension
 	{
-	    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
-	    
         m_debugProcess = debugSelectedBuildConfiguration(project, type, launch);
         
         if (m_debugProcess == null)
         {
-            stream.println("Error in build application");
-            setProcessFinished(true);
+            throw new FailBuildExtension("");
         }
 
         return m_debugProcess;        
@@ -125,13 +135,19 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					}
 					
 					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, type);
+					
+	                ConsoleHelper.getAppConsole().show();
 				} 
+				catch (FailBuildExtension e) 
+				{
+					ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
+					stream.println("Error in build application. Build is terminated.");
+				}
 				catch (Exception e) 
 				{
 					e.printStackTrace();
 				}
 				
-                ConsoleHelper.getAppConsole().show();
 				setProcessFinished(true);
 			}
 		});
