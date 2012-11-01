@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.Activator;
 import rhogenwizard.PlatformType;
+import rhogenwizard.WinMobileSdk;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -41,8 +42,8 @@ public class Builder extends IncrementalProjectBuilder
             case eUnknown:
                 continue;
             }
-
-            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
+             
+            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType, WinMobileSdk.v6_0.version);
             task.run(monitor);
         }
 

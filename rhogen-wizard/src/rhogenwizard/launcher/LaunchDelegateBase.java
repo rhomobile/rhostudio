@@ -190,31 +190,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		if (isClean) 
 		{			
-			PlatformType currPlatform  = PlatformType.fromId(m_platformType);
-			
-			if (currPlatform == PlatformType.eWm)
-			{
-				String     oldWmPlatform = null;
-				AppYmlFile ymlFile       = AppYmlFile.createFromProject(project);
-				
-				WinMobileSdk wmSdk = WinMobileSdk.fromVersion(m_wmSdkVersion);
-				
-				oldWmPlatform = ymlFile.getWmSdk();
-				
-				ymlFile.setWmSdk(wmSdk.sdkId);
-				ymlFile.save();
-				
-				RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), currPlatform);
-				task.run(monitor);
-
-				ymlFile.setWmSdk(oldWmPlatform);
-				ymlFile.save();				
-			}
-			else
-			{
-				RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), currPlatform);
-				task.run(monitor);
-			}			
+			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), PlatformType.fromId(m_platformType), m_wmSdkVersion);
+			task.run(monitor);		
 		}
 	}
 
