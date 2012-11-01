@@ -12,6 +12,8 @@ public class ShowBuildTask extends RubyCodeExecTask
     public ShowBuildTask(IRhoHubSetting setting, Integer appId, Integer buildId)
     {
         super("require 'rhohub'", 
+          	  "require 'rest_client'",
+          	  "RestClient.proxy = \"" + setting.getHttpProxy() + "\"",
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               "puts Rhohub::Build.show({ :app_id => " + appId.toString() + ", :id =>" + buildId.toString() +  "})");

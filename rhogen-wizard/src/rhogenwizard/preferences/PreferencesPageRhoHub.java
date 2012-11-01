@@ -44,6 +44,9 @@ public class PreferencesPageRhoHub extends BasePreferencePage
                 
         addField(new StringFieldEditor(IRhoHubSetting.rhoHubToken, 
                 "&API Token:", getFieldEditorParent()));
+        
+        addField(new StringFieldEditor(IRhoHubSetting.rhoHubProxy, 
+                "&HTTP proxy:", getFieldEditorParent()));
     }
 
     public void init(IWorkbench workbench) 

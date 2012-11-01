@@ -143,4 +143,15 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
         m_projectSetting.remove(isRhoHubLink);   
         m_projectSetting.flush();		
 	}
+
+	@Override
+	public String getHttpProxy() 
+	{
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        if (store == null)
+            return "";
+        
+        return store.getString(rhoHubProxy);
+	}
 }

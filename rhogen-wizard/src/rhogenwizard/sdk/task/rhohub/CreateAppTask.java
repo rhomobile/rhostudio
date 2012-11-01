@@ -10,7 +10,9 @@ public class CreateAppTask extends RubyCodeExecTask
 {
     public CreateAppTask(IRhoHubSetting setting, String appName)
     {
-        super("require 'rhohub'", 
+        super("require 'rhohub'",
+          	  "require 'rest_client'",
+          	  "RestClient.proxy = \"" + setting.getHttpProxy() + "\"",
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               "puts Rhohub::App.create({:app => {:name => \'" + appName + "\', :app_type => \'rhodes\'}})");

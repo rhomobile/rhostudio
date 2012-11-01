@@ -10,7 +10,9 @@ public class AppListTask extends RubyCodeExecTask
 {
     public AppListTask(IRhoHubSetting setting)
     {
-        super("require 'rhohub'", 
+        super("require 'rhohub'",
+        	  "require 'rest_client'",
+        	  "RestClient.proxy = \"" + setting.getHttpProxy() + "\"",
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               "puts Rhohub::App.list()");

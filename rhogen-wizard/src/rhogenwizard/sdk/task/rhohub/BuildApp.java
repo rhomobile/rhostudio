@@ -56,6 +56,8 @@ public class BuildApp extends RubyCodeExecTask
     public BuildApp(RemoteProjectDesc project, IRhoHubSetting setting)
     {        
         super("require 'rhohub'", 
+          	  "require 'rest_client'",
+          	  "RestClient.proxy = \"" + setting.getHttpProxy() + "\"",
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               new BuildAppArgsHelper(project, setting).toString());

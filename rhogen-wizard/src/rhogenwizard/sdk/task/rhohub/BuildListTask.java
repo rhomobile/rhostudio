@@ -11,6 +11,8 @@ public class BuildListTask extends RubyCodeExecTask
     public BuildListTask(IRhoHubSetting setting, Integer appId)
     {
         super("require 'rhohub'", 
+          	  "require 'rest_client'",
+          	  "RestClient.proxy = \"" + setting.getHttpProxy() + "\"",
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               "puts Rhohub::Build.list({:app_id => " + appId.toString() + "})");

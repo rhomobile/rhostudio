@@ -11,6 +11,8 @@ public class PlatformListTask extends RubyCodeExecTask
     public PlatformListTask(IRhoHubSetting setting)
     {
         super("require 'rhohub'", 
+          	  "require 'rest_client'",
+          	  "RestClient.proxy = \"" + setting.getHttpProxy() + "\"",
               "Rhohub.token = \"" + setting.getToken() + "\"", 
               "Rhohub.url = \"" + setting.getServerUrl() + "\"", 
               "puts Rhohub::Build.platforms()");

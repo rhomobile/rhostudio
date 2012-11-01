@@ -126,6 +126,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		
 		store.setDefault(IRhoHubSetting.rhoHubUrl, "https://app.rhohub.com/api/v1");
 		store.setDefault(IRhoHubSetting.rhoHubToken, "");
+		store.setDefault(IRhoHubSetting.rhoHubProxy, "");
 		store.setDefault(IRhoHubSetting.rhoHubSelectedRhodesVesion, rhodesDefaultVersion);
 	}
 	
