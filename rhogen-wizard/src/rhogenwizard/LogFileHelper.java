@@ -40,21 +40,26 @@ class AppLogAdapter implements ILogDevice
 	}
 }
 
-public class LogFileHelper
+interface ILogFileHelper
+{
+	void endWaitLog(IProject project, RunType type) throws Exception;
+}
+
+public class LogFileHelper implements ILogFileHelper
 {
 	class LogFileWaiter implements Runnable
 	{
-		private IProject 	  m_project = null;
-		private LogFileHelper m_helper = null;
-		private String        m_logFilePath = null;
-		private RunType       m_type = null;
+		private IProject 	   m_project     = null;
+		private ILogFileHelper m_helper      = null;
+		private String         m_logFilePath = null;
+		private RunType        m_type        = null;
 		
-		public LogFileWaiter(IProject project, LogFileHelper helper, String logFilePath, RunType type) throws Exception 
+		public LogFileWaiter(IProject project, ILogFileHelper helper, String logFilePath, RunType type) throws Exception 
 		{
-			m_project = project;
-			m_helper  = helper;
+			m_project     = project;
+			m_helper      = helper;
 			m_logFilePath = logFilePath;
-			m_type = type;
+			m_type        = type;
 		}
 
 		@Override
