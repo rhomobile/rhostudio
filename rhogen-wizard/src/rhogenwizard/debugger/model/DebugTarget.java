@@ -38,6 +38,7 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.ShowOnlyHidePerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.RhogenWatchExpression;
@@ -543,11 +544,18 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
 		return false;
     }
     
+    private void showDebugPerspective()
+    {
+    	ShowOnlyHidePerspectiveJob job = new ShowOnlyHidePerspectiveJob("Show debug perspective", DebugConstants.debugPerspectiveId);
+    	job.schedule();
+    }
+
     @Override
     public void stopped(DebugState state, String file, int line, String className, String method)
     {
         waitDebugProcessing();
-
+        showDebugPerspective();
+        
     	if (file.contains(fwTag))
     	{
     		if (!isFoundFramework())
