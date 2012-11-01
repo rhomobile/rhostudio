@@ -28,6 +28,7 @@ public class OSHelper extends OSValidator
     public static void killProcess(int pid) throws InterruptedException
     {
         List<String> cmdLine;
+        
         if (OSValidator.OSType.WINDOWS == OSValidator.detect())
         {
             cmdLine = Arrays.asList("taskkill.exe", "/F", "/PID", Integer.toString(pid));
@@ -54,12 +55,12 @@ public class OSHelper extends OSValidator
         }
     }
 
-    public static void killProcess(String processName) throws Exception
+    public static void killProcess(String processName) throws IOException, InterruptedException
     {
         killProcess(processName, processName + ".exe");
     }
 
-    public static void killProcess(String unixName, String wndName) throws Exception
+    public static void killProcess(String unixName, String wndName) throws IOException, InterruptedException
     {
         List<String> cmdLine = new ArrayList<String>();
 

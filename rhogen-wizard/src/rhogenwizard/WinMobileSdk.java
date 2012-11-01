@@ -11,7 +11,7 @@ public enum WinMobileSdk
     // it's comment because wince moved to separate platform
     //vCE_5_0("CE5.0", "MC3000c50b (ARMV4I)"); 
 
-    public final String version;
+	public final String version;
     public final String sdkId;
 
     private WinMobileSdk(String version, String sdkId)
@@ -43,5 +43,10 @@ public enum WinMobileSdk
         }
         
         throw new IllegalArgumentException("Unknown version [" + version + "]");
+    }
+    
+    public String getSdk()
+    {
+    	return sdkId;
     }
 }

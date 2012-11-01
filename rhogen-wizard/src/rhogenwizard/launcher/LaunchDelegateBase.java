@@ -1,9 +1,9 @@
 package rhogenwizard.launcher;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.core.internal.registry.Extension;
-import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -29,6 +29,7 @@ import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.WinMobileSdk;
+import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
@@ -41,6 +42,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 {		
 	private static class FailBuildExtension extends Throwable
 	{
+		private static final long serialVersionUID = 5907642700379669820L;
+
 		private final String m_runCommand; 
 		
 		public FailBuildExtension(String runCommand) 
@@ -183,12 +186,35 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		m_wmSdkVersion  = configuration.getAttribute(ConfigurationConstants.wmVersionAttribute, WinMobileSdk.v6_0.version);
 	}
 	
-	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor)
+	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor) throws FileNotFoundException
 	{
 		if (isClean) 
-		{
-			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), PlatformType.fromId(m_platformType));
-			task.run(monitor);
+		{			
+			PlatformType currPlatform  = PlatformType.fromId(m_platformType);
+			
+			if (currPlatform == PlatformType.eWm)
+			{
+				String     oldWmPlatform = null;
+				AppYmlFile ymlFile       = AppYmlFile.createFromProject(project);
+				
+				WinMobileSdk wmSdk = WinMobileSdk.fromVersion(m_wmSdkVersion);
+				
+				oldWmPlatform = ymlFile.getWmSdk();
+				
+				ymlFile.setWmSdk(wmSdk.sdkId);
+				ymlFile.save();
+				
+				RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), currPlatform);
+				task.run(monitor);
+
+				ymlFile.setWmSdk(oldWmPlatform);
+				ymlFile.save();				
+			}
+			else
+			{
+				RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), currPlatform);
+				task.run(monitor);
+			}			
 		}
 	}
 
@@ -260,34 +286,34 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	
 				while(true)
 				{
-					try 
+					if (monitor.isCanceled()) 
 				    {
-						if (monitor.isCanceled()) 
-					    {
-							OSHelper.killProcess("ruby");
-							return;
-					    }
-						
-						if (getProcessFinished())
-						{
-							break;
-						}
-	
-						Thread.sleep(100);
+						OSHelper.killProcess("ruby");
+						return;
 				    }
-				    catch (InterruptedException e) 
-				    {
-				    	e.printStackTrace();
-				    }
+					
+					if (getProcessFinished())
+					{
+						break;
+					}
+
+					Thread.sleep(100);
 				}
 			}
-			catch(IllegalArgumentException e)
+		    catch (InterruptedException e) 
+		    {
+		    	e.printStackTrace();
+		    	Activator.logError(e);
+		    }
+			catch (FileNotFoundException e) 
 			{
-			    Activator.logError(e);
+				DialogUtils.error("Missing build.yml", "Configuration file build.yml is not found in application folder. Build was terminated.");
+				Activator.logError(e);
 			}
-			catch (Exception e) 
-			{
+			catch (IOException e) 
+		    {
 				e.printStackTrace();
+				Activator.logError(e);
 			}
 			
 			monitor.done();

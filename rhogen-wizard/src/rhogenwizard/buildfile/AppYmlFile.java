@@ -194,4 +194,14 @@ public final class AppYmlFile extends YmlFile
 	{
 		super.remove("app_type", "rhodes");
 	}
+	
+	public void setWmSdk(String sdk)
+	{
+		super.set("wm", "sdk", sdk);
+	}
+	
+	public String getWmSdk()
+	{
+		return super.get("wm", "sdk");
+	}
 }
