@@ -133,6 +133,7 @@ public class AppWizardPage extends WizardPage
 	{
 		boolean enableDefPath = m_exitsCreateButton.getSelection();
 		
+		m_defaultPathButton.setSelection(!enableDefPath);
 		m_defaultPathButton.setEnabled(!enableDefPath);
 		m_browseButton.setEnabled(enableDefPath);
 		m_appFolderText.setEnabled(enableDefPath);
