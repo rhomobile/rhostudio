@@ -1,6 +1,5 @@
 package rhogenwizard.debugger.model.selector;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 public class RhoconnectResName implements IResName
@@ -15,34 +14,18 @@ public class RhoconnectResName implements IResName
 	@Override
 	public String getResName() 
 	{
-		String srcName = null;
-		
-		try 
-		{
-			srcName = m_bp.getResourceName();
-		}
-		catch (CoreException e)
-		{
-			srcName = new String();
-		}
-		
-		srcName = srcName.replace('\\', '/');
-		srcName = srcName.substring(1, srcName.length());
-		String[] srcPath = srcName.split("/");
-		
-		if (srcPath.length < 1)
-			return "";
-		
+		String[] srcName = m_bp.getResourcePath().segments();
+
 		StringBuilder sb = new StringBuilder();
-		sb.append("/");
+		sb.append('/');
 		
-		for (int i=1; i<srcPath.length; ++i)
+		for (int i=1; i<srcName.length; i++)
 		{
-			sb.append(srcPath[i]);
-		
-			if (i+1 < srcPath.length)
-				sb.append('/');
+			sb.append(srcName[i]);
+			sb.append('/');
 		}
+		
+		sb.deleteCharAt(sb.length() - 1);
 		
 		return sb.toString();
 	}
