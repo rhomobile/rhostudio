@@ -1,0 +1,9 @@
+namespace "junit" do
+
+  task :config do
+  end
+
+  task :run do
+  end
+
+end

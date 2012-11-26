@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="child list">
+			<Node name="item0">
+				<Node name="config">
+					<Node name="runmodeparams">
+						<Node name="simple">
+							<Prp name="filename" type="S" value="RhoStudio.exe"/>
+							<Prp name="filepath" type="S" value="C:\MotorolaRhoMobileSuite2.2.1.12\rhostudio\win32.win32.x86\"/>
+						</Node>
+						<Prp name="activerunmode" type="S" value="Simple"/>
+					</Node>
+					<Prp name="autorunonrecording" type="B" value="-1"/>
+					<Prp name="node name" type="S" value="RhoStudio"/>
+					<Prp name="usefeaturedruntimeobject" type="B" value="-1"/>
+					<Prp name="userchangename" type="B" value="-1"/>
+				</Node>
+				<Node name="data"/>
+				<Node name="test data"/>
+				<Prp name="key" type="S" value="{C1D0047B-6E01-4021-BA66-820AADB9F83C}"/>
+				<Prp name="type" type="S" value="{FD30A383-63C2-4C25-948C-2595C0F81320}"/>
+				<Prp name="typename" type="S" value="Tested Application"/>
+			</Node>
+			<Prp name="item count" type="I" value="1"/>
+		</Node>
+		<Node name="config">
+			<Prp name="node name" type="S" value="TestedApps"/>
+		</Node>
+		<Node name="data"/>
+		<Node name="folders">
+			<Node name="folders"/>
+		</Node>
+		<Node name="test data"/>
+		<Prp name="key" type="S" value="{51433C4F-9134-4E94-88C4-DECA19ADCF14}"/>
+		<Prp name="signature" type="S" value="{90D101C8-80C7-48D4-9055-2E451B9BCD75}"/>
+		<Prp name="type" type="S" value="{90D101C8-80C7-48D4-9055-2E451B9BCD75}"/>
+		<Prp name="typename" type="S" value="Tested Applications"/>
+		<Prp name="version" type="I" value="910"/>
+	</Node>
+</Nodes>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="child list">
+			<Node name="item0000000000">
+				<Node name="item data">
+					<Prp name="relpath" type="S" value="DebuggerTest01.tcKDTest"/>
+				</Node>
+				<Prp name="index" type="I" value="0"/>
+				<Prp name="key" type="S" value="{48E4F292-D9CC-4E00-9E27-51648CB3DED2}"/>
+				<Prp name="pluginname" type="S" value="Keyword Testing"/>
+				<Prp name="type" type="S" value="{B9D9273E-7266-43E0-BF02-97F168593604}"/>
+				<Prp name="typename" type="S" value="Keyword Test"/>
+			</Node>
+			<Node name="item0000000001">
+				<Node name="item data">
+					<Prp name="relpath" type="S" value="ModelTest01.tcKDTest"/>
+				</Node>
+				<Prp name="index" type="I" value="1"/>
+				<Prp name="key" type="S" value="{B9B7F637-FA36-49D3-ABA8-9D49B3B5154F}"/>
+				<Prp name="pluginname" type="S" value="Keyword Testing"/>
+				<Prp name="type" type="S" value="{B9D9273E-7266-43E0-BF02-97F168593604}"/>
+				<Prp name="typename" type="S" value="Keyword Test"/>
+			</Node>
+		</Node>
+		<Node name="folders">
+			<Node name="folders"/>
+		</Node>
+		<Node name="settings">
+			<Prp name="settingsversion" type="S" value="9.10"/>
+		</Node>
+		<Prp name="signature" type="S" value="{9576DAFD-0ADD-41A8-9897-C72F150AF6BB}"/>
+		<Prp name="version" type="S" value="9.0"/>
+	</Node>
+</Nodes>

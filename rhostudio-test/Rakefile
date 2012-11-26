@@ -1,0 +1,159 @@
+require 'pathname'
+require 'yaml'
+
+# *****************************************************
+# Jake class
+
+class Jake
+  def self.config(configfile)
+    conf = YAML::load(configfile)
+    res = self.config_parse(conf)
+    res
+  end
+
+  def self.config_parse(conf)
+    if conf.is_a?(Array)
+      conf.collect! do |x|
+        if x.is_a?(Hash) or x.is_a?(Array)
+          x = config_parse(x)
+          x
+        else
+          if x =~ /%(.*?)%/
+            x.gsub!(/%.*?%/, conf.fetch_r($1).to_s)
+          end
+          s = x.to_s
+          if File.exists? s
+            s.gsub!(/\\/, '/')
+  	      end
+  	      s
+        end
+      end
+    elsif conf.is_a?(Hash)
+      newhash = Hash.new
+
+      conf.each do |k,x|
+        if x.is_a?(Hash) or x.is_a?(Array)
+          newhash[k.to_s] = config_parse(x)
+        else
+          s = x.to_s
+          if File.exists? s
+            s.gsub!(/\\/, '/')
+          end
+          newhash[k.to_s] = s
+        end
+      end
+      conf = newhash
+
+      conf
+    end
+
+    conf
+  end
+
+
+  def self.run(command, cd = nil, env = {})
+      set_list = []
+      env.each_pair do |k, v|
+          set_list << "set \"#{k}=#{v}\"&&"
+      end
+
+      toPrint = command
+      toRun = set_list.join('') + command
+      if !cd.nil?
+          toPrint = "#{cd}>#{toPrint}"
+
+          if RUBY_PLATFORM =~ /(win|w)32$/
+              cd_ = cd.gsub('/', "\\")
+              toRun = "cd /d \"#{cd_}\"&&#{toRun}"
+          else
+              toRun = "cd '#{cd}'&&#{toRun}"
+          end
+      end
+
+      puts
+      puts toPrint
+      exit 1 if !system(toRun)
+  end
+end
+
+# *****************************************************
+
+chdir File.dirname(__FILE__)
+
+load File.join(pwd, 'ui/rakefile')
+load File.join(pwd, 'unit-tests/rakefile')
+
+$rhostudioTemplate = ""
+
+namespace "autotest" do
+
+  def getPathByTemplate(startDir, templateName)
+    chdir startDir
+    items = Dir.glob(templateName)
+
+    if items.length > 1
+      puts "Error: Several items '#{glob}' are found:"
+      items.each do |item|
+         puts "    '#{item}'"
+      end
+      exit 1
+    elsif items.length == 0
+      puts 'item not found'
+      exit 1
+    end
+
+    findPath = File.absolute_path(items[0])
+    chdir File.dirname(__FILE__)
+    return findPath
+  end
+
+  task :config do
+    puts 'start config'
+
+    $ymlFile             = 'config.yml'
+    $silentInstallerFlag = "/S"
+
+    $config = Jake.config(File.open($ymlFile))
+    puts $config.to_s
+  end
+
+  namespace "install" do
+
+    task :rhostudio do
+      startPathTo = $config["paths"]["rhostudio"]
+      rmsTemplate = "RMS_*"
+      pathTo      = getPathByTemplate(startPathTo, rmsTemplate)
+
+      Jake.run(pathTo + " " + $silentInstallerFlag)
+    end
+
+  end
+
+  namespace "uninstall" do
+
+    def runUnistall(pathToDir)
+      uninstallNameTemplate = "uninstall*"
+      unItems               = getPathByTemplate(pathToDir, uninstallNameTemplate)
+
+      Jake.run(unItems + " " + $silentInstallerFlag)
+    end
+
+    task :rhostudio do      
+      startInstallDrive = "c:\\"      
+      suiteNameTemplate = "MotorolaRhoMobileSuite*" 
+
+      findItem = getPathByTemplate(startInstallDrive, $suiteNameTemplate)
+
+      runUnistall File.absolute_path(findItem)
+    end
+
+  end
+
+  task :shutdown do
+    Jake.run("shutdown /s /f /t 5")
+  end
+
+  task :test => ["autotest:config", "autotest:install:rhostudio"] do
+  end
+
+end

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="message 5">
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="2"/>
+			<Prp name="line no" type="I" value="8"/>
+			<Prp name="id" type="I" value="5"/>
+			<Prp name="picture" type="S" value=""/>
+			<Prp name="as html" type="B" value="-1"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="&lt;html&gt;&lt;style&gt;body {font-family : Courier New, Arial; font-size : 10pt; font-weight : normal; padding : 14px 8px 8px 14px; margin : 0 0 0 0;} p {margin : 4px 0 4px 0; padding : 0 0 0 0;} &lt;/style&gt;&lt;body&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;There are several objects in the system that match the recognition attributes of the &quot;&lt;a href=&quot;namemapping://{D9914FE7-CD72-4E5E-8EA8-4BE2712B49E5}.{553B1A06-B4C5-485E-A8AA-C6EE9D347056}&quot;&gt;Shell6&lt;/a&gt;&quot; mapped object.&lt;/p&gt;&lt;p&gt;This may cause the &quot;Object not found&quot; error.&lt;/p&gt;&lt;p style=&quot;margin-top : 12px;&quot;&gt;&lt;b&gt;&lt;u&gt;Objects&lt;/u&gt;&lt;/b&gt;&lt;/p&gt;&lt;div style=&quot;margin-left: 24px;&quot;&gt;&lt;p&gt;Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;&quot;, 2)&lt;/p&gt;&lt;p&gt;Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;New Project&quot;)&lt;/p&gt;&lt;/div&gt;&lt;p style=&quot;margin-top: 12px;&quot;&gt;To solve the problem, you may need to modify mapping settings for the &quot;&lt;a href=&quot;namemapping://{D9914FE7-CD72-4E5E-8EA8-4BE2712B49E5}.{553B1A06-B4C5-485E-A8AA-C6EE9D347056}&quot;&gt;Shell6&lt;/a&gt;&quot; object or one of its parent objects.&lt;/p&gt;&lt;p style=&quot;margin-top: 12px;&quot;&gt;&lt;a href=&quot;aqa-help://2204&quot;&gt;See Help for more information&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"/>
+			<Prp name="message" type="S" value="Ambiguous recognition of the tested object."/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7493385995"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="message 0">
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="0"/>
+			<Prp name="line no" type="I" value="0"/>
+			<Prp name="id" type="I" value="0"/>
+			<Prp name="picture" type="S" value=""/>
+			<Prp name="as html" type="B" value="0"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="The process ID is 7056."/>
+			<Prp name="message" type="S" value="The application &quot;C:\MotorolaRhoMobileSuite2.2.1.12\rhostudio\win32.win32.x86\RhoStudio.exe&quot; started."/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7491379977"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="message 3">
+			<Node name="visualizer">
+				<Node name="current">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell5.Composite.Composite.Composite.Composite.Composite.Composite.Composite.FilteredTree.Composite.Tree"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="142"/>
+					<Prp name="object left" type="I" value="18"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="272"/>
+					<Prp name="object top" type="I" value="153"/>
+					<Prp name="line #" type="I" value="4"/>
+					<Prp name="image file name" type="S" value="visImage3.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="507"/>
+					<Prp name="datetime" type="D" value="41235.7491988773"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="375"/>
+				</Node>
+				<Node name="diff">
+					<Prp name="object name" type="S" value=""/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="line #" type="I" value="4"/>
+					<Prp name="image file name" type="S" value="visImage3_Dif.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="0"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="-1"/>
+				</Node>
+				<Node name="original">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell5.Composite.Composite.Composite.Composite.Composite.Composite.Composite.FilteredTree.Composite.Tree"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="105"/>
+					<Prp name="object left" type="I" value="18"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="271"/>
+					<Prp name="object top" type="I" value="153"/>
+					<Prp name="line #" type="I" value="4"/>
+					<Prp name="image file name" type="S" value="tcvi30649.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="507"/>
+					<Prp name="datetime" type="D" value="41235.485"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="375"/>
+				</Node>
+			</Node>
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="1"/>
+			<Prp name="line no" type="I" value="4"/>
+			<Prp name="id" type="I" value="3"/>
+			<Prp name="picture" type="S" value=""/>
+			<Prp name="as html" type="B" value="0"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="A click with no key pressed.&#xA;&#xA;Tested object:&#xA;Aliases.RhoStudio.Shell5.Composite.Composite.Composite.Composite.Composite.Composite.Composite.FilteredTree.Composite.Tree&#xA;(Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;New Project&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 1).SWTObject(&quot;Composite&quot;, &quot;&quot;, 1).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 1).SWTObject(&quot;FilteredTree&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 2).SWTObject(&quot;Tree&quot;, &quot;&quot;))"/>
+			<Prp name="message" type="S" value="The tree node 'RhoMobile|RhoMobile application' was clicked with the left mouse button."/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7492009607"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="message 7">
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="3"/>
+			<Prp name="line no" type="I" value="8"/>
+			<Prp name="id" type="I" value="7"/>
+			<Prp name="picture" type="S" value="Picture2.png"/>
+			<Prp name="as html" type="B" value="0"/>
+			<Prp name="stack beginning" type="I" value="1"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="Possible reasons:&#xA; - An error or warning occurred during the test run. See the preceding log entries to locate and identify the error.&#xA; - The test run was stopped manually.&#xA; - The test run was terminated as a result of the Runner.Halt method call."/>
+			<Prp name="message" type="S" value="The test execution was interrupted."/>
+			<Prp name="stack end" type="I" value="1"/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7493528356"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="child data"/>
+		<Node name="item 1">
+			<Prp name="unit id" type="I" value="0"/>
+			<Prp name="stacktext" type="S" value="DebuggerTest01()"/>
+			<Prp name="line no" type="I" value="8"/>
+		</Node>
+		<Node name="message 6">
+			<Prp name="priority" type="I" value="400"/>
+			<Prp name="type" type="I" value="3"/>
+			<Prp name="line no" type="I" value="8"/>
+			<Prp name="id" type="I" value="6"/>
+			<Prp name="picture" type="S" value="Picture1.png"/>
+			<Prp name="as html" type="B" value="-1"/>
+			<Prp name="stack beginning" type="I" value="0"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="&lt;html&gt;&lt;style&gt;body {font-family : Courier New, Arial; font-size : 10pt; font-weight : normal; padding : 14px 8px 8px 14px; margin : 0 0 0 0;} p {margin : 4px 0 4px 0; padding : 0 0 0 0;} h4 {font-size: 10pt; font-weight : bold; margin : 12px 0 0 16px; padding : 0 0 0 0;} table {margin-left : 16px; border-top: 1px solid grey;} td {font-size : 10pt; font-weight : normal; padding-left : 8px;} &lt;/style&gt;&lt;body&gt;&lt;p&gt;An error occurred while accessing the &quot;ClickButton&quot; method or property of the &quot;&lt;a href=&quot;lnamemapping://{D9914FE7-CD72-4E5E-8EA8-4BE2712B49E5}.{09423F65-07AB-4F99-A568-D5516EF0CD49}&quot;&gt;Button&lt;/a&gt;&quot; object.&lt;br/&gt;The object or one of its parent objects was not found.&lt;/p&gt;&lt;h4&gt;Object Whose Method or Property Was Accesssed&lt;/h4&gt;&lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; noborder&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Alias:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Aliases.RhoStudio.Shell6.Composite.Composite.Composite.Composite.Button&lt;/td&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Name mapping item:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;NameMapping.Sys.RhoStudio.Shell6.Composite.Composite.Composite.Composite.Button&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;h4&gt;Object That Was Not Found&lt;/h4&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Alias:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;lnamemapping://{D9914FE7-CD72-4E5E-8EA8-4BE2712B49E5}.{51FAFF8D-A46A-40A7-86DE-9E7F90D78174}&quot;&gt;Aliases.RhoStudio.Shell6.Composite&lt;/a&gt;&lt;/td&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Name mapping item:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;namemapping://{D9914FE7-CD72-4E5E-8EA8-4BE2712B49E5}.{FC8E66CF-31FF-4F12-8E6E-CF994E4A8A06}&quot;&gt;NameMapping.Sys.RhoStudio.Shell6.Composite&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p style=&quot;margin-top: 12px;&quot;&gt;Click the link above to view and configure mapping settings for the missing object.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;aqa-help://2201&quot;&gt;Learn about possible causes of the error&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"/>
+			<Prp name="message" type="S" value="The object does not exist. See Additional Information for details."/>
+			<Prp name="stack end" type="I" value="0"/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7493443866"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="stack"/>
+		<Node name="units">
+			<Prp name="unit 0" type="S" value="{48E4F292-D9CC-4E00-9E27-51648CB3DED2}"/>
+		</Node>
+		<Node name="message 2">
+			<Node name="visualizer">
+				<Node name="current">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell2"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="line #" type="I" value="2"/>
+					<Prp name="image file name" type="S" value="visImage2.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="datetime" type="D" value="41235.749181169"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="768"/>
+				</Node>
+				<Node name="diff">
+					<Prp name="object name" type="S" value=""/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="line #" type="I" value="2"/>
+					<Prp name="image file name" type="S" value="visImage2_Dif.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="0"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="-1"/>
+				</Node>
+				<Node name="original">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell2"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="-251"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="-251"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="line #" type="I" value="2"/>
+					<Prp name="image file name" type="S" value="tcvi30647.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="datetime" type="D" value="41235.4849652778"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="768"/>
+				</Node>
+			</Node>
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="1"/>
+			<Prp name="line no" type="I" value="2"/>
+			<Prp name="id" type="I" value="2"/>
+			<Prp name="picture" type="S" value=""/>
+			<Prp name="as html" type="B" value="0"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="Tested object:&#xA;Aliases.RhoStudio.Shell2.MainMenu&#xA;(Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;RhoStudio - RhoStudio&quot;).MainMenu)"/>
+			<Prp name="message" type="S" value="The menu item 'File|New|Project...' was clicked."/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7491824421"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="message 1">
+			<Node name="visualizer">
+				<Node name="current">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell4.Composite.Composite.Composite.Composite.Button"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="462"/>
+					<Prp name="object left" type="I" value="416"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="252"/>
+					<Prp name="object top" type="I" value="240"/>
+					<Prp name="line #" type="I" value="1"/>
+					<Prp name="image file name" type="S" value="visImage0.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="508"/>
+					<Prp name="datetime" type="D" value="41235.7491473727"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="265"/>
+				</Node>
+				<Node name="diff">
+					<Prp name="object name" type="S" value=""/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="line #" type="I" value="1"/>
+					<Prp name="image file name" type="S" value="visImage0_Dif.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="0"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="-1"/>
+				</Node>
+				<Node name="original">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell4.Composite.Composite.Composite.Composite.Button"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="421"/>
+					<Prp name="object left" type="I" value="416"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="248"/>
+					<Prp name="object top" type="I" value="240"/>
+					<Prp name="line #" type="I" value="1"/>
+					<Prp name="image file name" type="S" value="tcvi30641.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="508"/>
+					<Prp name="datetime" type="D" value="41235.4848611111"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="265"/>
+				</Node>
+			</Node>
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="1"/>
+			<Prp name="line no" type="I" value="1"/>
+			<Prp name="id" type="I" value="1"/>
+			<Prp name="picture" type="S" value=""/>
+			<Prp name="as html" type="B" value="0"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="Tested object:&#xA;Aliases.RhoStudio.Shell4.Composite.Composite.Composite.Composite.Button&#xA;(Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;Workspace Launcher&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 2).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Button&quot;, &quot;OK&quot;))"/>
+			<Prp name="message" type="S" value="The button was clicked with the left mouse button."/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7491481829"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Node name="item 0">
+			<Prp name="unit id" type="I" value="0"/>
+			<Prp name="stacktext" type="S" value="DebuggerTest01()"/>
+			<Prp name="line no" type="I" value="8"/>
+		</Node>
+		<Node name="message 4">
+			<Node name="visualizer">
+				<Node name="current">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell5.Composite.Composite.Composite1.Composite.Composite.Button"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="264"/>
+					<Prp name="object left" type="I" value="218"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="466"/>
+					<Prp name="object top" type="I" value="454"/>
+					<Prp name="line #" type="I" value="6"/>
+					<Prp name="image file name" type="S" value="visImage4.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="310"/>
+					<Prp name="datetime" type="D" value="41235.7492087153"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="479"/>
+				</Node>
+				<Node name="diff">
+					<Prp name="object name" type="S" value=""/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="line #" type="I" value="6"/>
+					<Prp name="image file name" type="S" value="visImage4_Dif.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="0"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="-1"/>
+				</Node>
+				<Node name="original">
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell5.Composite.Composite.Composite1.Composite.Composite.Button"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="click point x" type="I" value="244"/>
+					<Prp name="object left" type="I" value="218"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="click point y" type="I" value="465"/>
+					<Prp name="object top" type="I" value="454"/>
+					<Prp name="line #" type="I" value="6"/>
+					<Prp name="image file name" type="S" value="tcvi306410.png"/>
+					<Prp name="version" type="I" value="1"/>
+					<Prp name="object right" type="I" value="310"/>
+					<Prp name="datetime" type="D" value="41235.4850231481"/>
+					<Prp name="storage file name" type="S" value=""/>
+					<Prp name="object bottom" type="I" value="479"/>
+				</Node>
+			</Node>
+			<Prp name="priority" type="I" value="300"/>
+			<Prp name="type" type="I" value="1"/>
+			<Prp name="line no" type="I" value="6"/>
+			<Prp name="id" type="I" value="4"/>
+			<Prp name="picture" type="S" value=""/>
+			<Prp name="as html" type="B" value="0"/>
+			<Prp name="owner id" type="I" value="-1"/>
+			<Prp name="link" type="S" value=""/>
+			<Prp name="remarks" type="S" value="Tested object:&#xA;Aliases.RhoStudio.Shell5.Composite.Composite.Composite1.Composite.Composite.Button&#xA;(Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;New Project&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 2).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Button&quot;, &quot;&amp;Next &gt;&quot;))"/>
+			<Prp name="message" type="S" value="The button was clicked with the left mouse button."/>
+			<Prp name="child index" type="I" value="-1"/>
+			<Prp name="date" type="D" value="41235.7492101042"/>
+			<Prp name="unit id" type="I" value="0"/>
+		</Node>
+		<Prp name="status" type="I" value="2"/>
+	</Node>
+</Nodes>

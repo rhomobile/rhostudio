@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="summary">
+			<Node name="warning">
+				<Prp name="total (sum)" type="I" value="0"/>
+			</Node>
+			<Node name="failed">
+				<Prp name="total (sum)" type="I" value="1"/>
+			</Node>
+			<Node name="executed">
+				<Prp name="total (sum)" type="I" value="1"/>
+			</Node>
+			<Node name="total">
+				<Prp name="total (sum)" type="I" value="1"/>
+			</Node>
+			<Node name="passed">
+				<Prp name="total (sum)" type="I" value="0"/>
+			</Node>
+			<Prp name="test" type="S" value="RhoStudio"/>
+			<Prp name="host" type="S" value="ANTON-MAC"/>
+			<Prp name="stop date" type="D" value="41235.7493565509"/>
+			<Prp name="user" type="S" value="anton"/>
+			<Prp name="start date" type="D" value="41235.7491187269"/>
+			<Prp name="log status" type="I" value="0"/>
+		</Node>
+		<Node name="log data">
+			<Node name="row0">
+				<Node name="messages"/>
+				<Prp name="end time" type="D" value="41235.7493565509"/>
+				<Prp name="ownerid" type="I" value="-1"/>
+				<Prp name="index" type="I" value="0"/>
+				<Prp name="start time" type="D" value="41235.7491187269"/>
+				<Prp name="details" type="S" value="{E1212C91-466F-4728-9EC0-6929898F1C6D}"/>
+				<Prp name="status" type="I" value="2"/>
+				<Prp name="testdata item" type="B" value="-1"/>
+				<Prp name="name" type="S" value="Debugger01"/>
+			</Node>
+		</Node>
+		<Prp name="hassummary" type="B" value="-1"/>
+	</Node>
+</Nodes>

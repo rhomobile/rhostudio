@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="analysis">
+			<Prp name="key" type="S" value="{6A944187-9390-4F86-A769-1FCC7AB43B41}"/>
+		</Node>
+		<Node name="child list">
+			<Node name="item0000000000">
+				<Node name="item data">
+					<Prp name="relpath" type="S" value="Stores\Stores.tcStores"/>
+				</Node>
+				<Prp name="index" type="I" value="0"/>
+				<Prp name="key" type="S" value="{424CD97D-711F-4707-9B3B-F21209349C32}"/>
+				<Prp name="pluginname" type="S" value="Stores"/>
+				<Prp name="type" type="S" value="{5238AF17-5FE2-48FF-8BCC-9803A975A4F4}"/>
+				<Prp name="typename" type="S" value="Stores"/>
+			</Node>
+			<Node name="item0000000001">
+				<Node name="item data">
+					<Prp name="storage" type="S" value="TestedApps\TestedApps.tcTAs"/>
+				</Node>
+				<Prp name="index" type="I" value="1"/>
+				<Prp name="key" type="S" value="{51433C4F-9134-4E94-88C4-DECA19ADCF14}"/>
+				<Prp name="pluginname" type="S" value=""/>
+				<Prp name="type" type="S" value="{90D101C8-80C7-48D4-9055-2E451B9BCD75}"/>
+				<Prp name="typename" type="S" value="Tested Applications"/>
+			</Node>
+			<Node name="item0000000002">
+				<Node name="item data">
+					<Prp name="relpath" type="S" value="NameMapping\NameMapping.tcNM"/>
+				</Node>
+				<Prp name="index" type="I" value="2"/>
+				<Prp name="key" type="S" value="{D9914FE7-CD72-4E5E-8EA8-4BE2712B49E5}"/>
+				<Prp name="pluginname" type="S" value="NameMapping"/>
+				<Prp name="type" type="S" value="{5DCBAC3B-D39C-497C-9BE8-744CBADD37AA}"/>
+				<Prp name="typename" type="S" value="Name Mapping"/>
+			</Node>
+			<Node name="item0000000003">
+				<Node name="item data">
+					<Prp name="relpath" type="S" value="Script\Script.tcScript"/>
+				</Node>
+				<Prp name="index" type="I" value="3"/>
+				<Prp name="key" type="S" value="{28C06360-0B1F-4B03-BE5A-0AA6914E347C}"/>
+				<Prp name="pluginname" type="S" value="Script"/>
+				<Prp name="type" type="S" value="{9252F941-DB23-4FCA-AA50-858B33BB4A19}"/>
+				<Prp name="typename" type="S" value="Script"/>
+			</Node>
+			<Node name="item0000000004">
+				<Node name="item data">
+					<Prp name="relpath" type="S" value="KeywordTests\KeywordTests.tcKDT"/>
+				</Node>
+				<Prp name="index" type="I" value="4"/>
+				<Prp name="key" type="S" value="{B3F77B60-B134-4863-9758-6749757EE241}"/>
+				<Prp name="pluginname" type="S" value="Keyword Testing"/>
+				<Prp name="type" type="S" value="{9576DAFD-0ADD-41A8-9897-C72F150AF6BB}"/>
+				<Prp name="typename" type="S" value="Keyword Testing"/>
+			</Node>
+		</Node>
+		<Node name="config">
+			<Prp name="language" type="S" value="{E42909F2-4390-4F5D-94B8-FABF59BABFCE}"/>
+		</Node>
+		<Node name="files">
+			<Node name="keywordtests\debuggertest01.tckdtest">
+				<Prp name="relpath" type="S" value="KeywordTests\DebuggerTest01.tcKDTest"/>
+			</Node>
+			<Node name="keywordtests\keywordtests.tckdt">
+				<Prp name="relpath" type="S" value="KeywordTests\KeywordTests.tcKDT"/>
+			</Node>
+			<Node name="keywordtests\modeltest01.tckdtest">
+				<Prp name="relpath" type="S" value="KeywordTests\ModelTest01.tcKDTest"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\debuggertest01.tckdtest.tcvis">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\DebuggerTest01.tcKDTest.tcVis"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi30641.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi30641.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi30641.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi30641.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306410.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306410.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306410.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306410.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306411.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306411.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306411.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306411.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306415.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306415.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306415.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306415.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306416.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306416.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306416.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306416.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306417.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306417.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306417.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306417.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306418.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306418.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306418.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306418.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306419.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306419.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306419.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306419.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306423.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306423.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306423.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306423.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306425.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306425.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306425.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306425.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306426.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306426.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306426.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306426.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306430.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306430.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306430.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306430.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306431.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306431.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306431.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306431.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306432.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306432.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306432.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306432.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306433.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306433.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306433.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306433.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306437.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306437.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306437.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306437.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306438.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306438.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306438.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306438.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306439.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306439.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306439.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306439.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306440.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306440.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306440.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306440.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306441.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306441.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306441.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306441.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306442.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306442.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi306442.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi306442.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi30647.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi30647.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi30647.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi30647.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi30649.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi30649.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi30649.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi30649.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi66680.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi66680.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi66680.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi66680.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi66681.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi66681.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi66681.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi66681.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi66682.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi66682.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\tcvi66682.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\tcvi66682.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\modeltest01.tckdtest.tcvis">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\ModelTest01.tcKDTest.tcVis"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52361.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52361.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52361.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52361.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523612.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523612.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523612.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523612.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523615.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523615.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523615.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523615.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523616.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523616.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523616.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523616.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523617.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523617.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523617.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523617.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523618.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523618.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523618.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523618.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523619.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523619.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523619.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523619.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523623.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523623.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523623.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523623.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523625.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523625.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523625.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523625.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523628.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523628.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523628.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523628.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523630.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523630.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523630.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523630.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523631.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523631.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523631.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523631.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523640.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523640.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523640.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523640.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523641.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523641.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523641.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523641.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523642.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523642.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi523642.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi523642.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52365.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52365.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52365.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52365.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52368.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52368.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52368.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52368.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52369.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52369.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52369.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52369.xml"/>
+			</Node>
+			<Node name="namemapping\namemapping.tcnm">
+				<Prp name="relpath" type="S" value="NameMapping\NameMapping.tcNM"/>
+			</Node>
+			<Node name="rhostudio.mds">
+				<Prp name="relpath" type="S" value="RhoStudio.mds"/>
+			</Node>
+			<Node name="script\script.tcscript">
+				<Prp name="relpath" type="S" value="Script\Script.tcScript"/>
+			</Node>
+			<Node name="script\unit1.sj">
+				<Prp name="relpath" type="S" value="Script\Unit1.sj"/>
+			</Node>
+			<Node name="stores\stores.tcstores">
+				<Prp name="relpath" type="S" value="Stores\Stores.tcStores"/>
+			</Node>
+			<Node name="testedapps\testedapps.tctas">
+				<Prp name="relpath" type="S" value="TestedApps\TestedApps.tcTAs"/>
+			</Node>
+		</Node>
+		<Node name="folders">
+			<Node name="folders">
+				<Node name="folder0000000000">
+					<Node name="folders"/>
+					<Node name="references">
+						<Node name="ref0000000000">
+							<Prp name="index" type="I" value="0"/>
+							<Prp name="key" type="S" value="{28C06360-0B1F-4B03-BE5A-0AA6914E347C}"/>
+						</Node>
+					</Node>
+					<Prp name="caption" type="S" value="Advanced"/>
+					<Prp name="description" type="S" value="A logical folder that is used to organize project items and elements."/>
+					<Prp name="index" type="I" value="0"/>
+					<Prp name="moniker" type="S" value="{69583268-92F3-49FA-B573-C831F5ABC27B}"/>
+				</Node>
+			</Node>
+		</Node>
+		<Node name="issue tracking">
+			<Prp name="key" type="S" value="{2B655965-FDAB-43B7-AC01-131AE02BDE91}"/>
+		</Node>
+		<Node name="scc"/>
+		<Node name="settings">
+			<Node name="{0787aa13-4c49-418a-a688-b23be9f226f4}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{0bd6ae2e-e5d9-4ad0-9bf3-2483d329b22a}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{0be15905-46a9-40d6-9be2-892ec4aabbd4}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{0cc2421a-8395-402e-b303-80ae4d4658a4}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{0def6033-13d4-4335-97e9-cc6f1fc04342}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{1398b0be-92b7-4650-a467-751b8faab738}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="2"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="Update existing frames and capture new frames, if needed"/>
+				<Prp name="val0x1" type="S" value="Update existing frames only"/>
+			</Node>
+			<Node name="{15c8845f-53e4-4045-9800-74766abc4b34}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="0"/>
+			</Node>
+			<Node name="{18fd096e-e6b8-4d3d-9619-71670fc81d48}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{1db8307d-fa4b-43e7-8e11-9f8f41abd7e9}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{2044dc7f-423e-4668-8114-68d23ae97ad6}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="50"/>
+			</Node>
+			<Node name="{239ae5e0-d898-415d-8ecb-ebeb31d3f66f}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="1"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="2"/>
+				<Prp name="colindex" type="I" value="1"/>
+				<Prp name="rowcount" type="I" value="1"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="B" value="0"/>
+				<Prp name="val1x0" type="S" value="*"/>
+			</Node>
+			<Node name="{24db98d6-5ef8-47bf-977e-c2fd2c5f5fb3}">
+				<Prp name="type" type="I" value="5"/>
+				<Prp name="value" type="S" value="Log"/>
+			</Node>
+			<Node name="{2fcb2eb2-336e-4fd4-96a3-8710a73addd8}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{323facda-38e8-4c1b-b22c-99e0ab90eadc}">
+				<Prp name="type" type="I" value="5"/>
+				<Prp name="value" type="S" value=""/>
+			</Node>
+			<Node name="{33c0a94e-7f58-493c-bccc-91685352f9b4}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="1"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="*"/>
+			</Node>
+			<Node name="{3ae91bbd-f37d-40e6-b49d-d2f1ef68e285}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{3b76535b-58ad-456c-837e-091a5c480f6c}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{3baa9083-ae46-48ce-bff4-a656decf8e2f}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{3e8baa4f-ea09-4dd1-bd8e-da765c8cf39b}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{3eadafe2-0cd4-4b1e-a2a9-b184e94fdcc7}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="4"/>
+				<Prp name="rowindex" type="I" value="3"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="UTF-16"/>
+				<Prp name="val0x1" type="S" value="UTF-8"/>
+				<Prp name="val0x2" type="S" value="ANSI"/>
+				<Prp name="val0x3" type="S" value="Auto"/>
+			</Node>
+			<Node name="{3eddd87d-14fb-46fb-9609-cede76c0ced7}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{3fc03b2f-1b76-433d-86ae-20b18b2ca600}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{3fc2a7b4-f4af-4807-8d37-c3ee096dd330}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="1024"/>
+			</Node>
+			<Node name="{45ae3709-5569-4f74-bd85-c222c71981ed}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{47a56f4f-f2d3-4697-bec8-632b29d5a344}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="1"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="2"/>
+				<Prp name="colindex" type="I" value="1"/>
+				<Prp name="rowcount" type="I" value="12"/>
+				<Prp name="rowindex" type="I" value="11"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="B" value="0"/>
+				<Prp name="val0x1" type="B" value="-1"/>
+				<Prp name="val0x10" type="B" value="-1"/>
+				<Prp name="val0x11" type="B" value="-1"/>
+				<Prp name="val0x2" type="B" value="-1"/>
+				<Prp name="val0x3" type="B" value="-1"/>
+				<Prp name="val0x4" type="B" value="-1"/>
+				<Prp name="val0x5" type="B" value="-1"/>
+				<Prp name="val0x6" type="B" value="0"/>
+				<Prp name="val0x7" type="B" value="-1"/>
+				<Prp name="val0x8" type="B" value="-1"/>
+				<Prp name="val0x9" type="B" value="-1"/>
+				<Prp name="val1x0" type="S" value="*"/>
+				<Prp name="val1x1" type="S" value="MsoCommandBar*"/>
+				<Prp name="val1x10" type="S" value="XTPReport"/>
+				<Prp name="val1x11" type="S" value="XTPPopupBar"/>
+				<Prp name="val1x2" type="S" value="_Ww*"/>
+				<Prp name="val1x3" type="S" value="OpusApp"/>
+				<Prp name="val1x4" type="S" value="Vfp*"/>
+				<Prp name="val1x5" type="S" value="bosa_sdm_Microsoft Word *"/>
+				<Prp name="val1x6" type="S" value="Internet Explorer_Server"/>
+				<Prp name="val1x7" type="S" value="XTPToolBar"/>
+				<Prp name="val1x8" type="S" value="XTPDockingPaneTabbedContainer"/>
+				<Prp name="val1x9" type="S" value="XTPTaskPanel"/>
+			</Node>
+			<Node name="{4fd668cc-c8c3-46b4-a220-8dde5cd7a39f}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="1"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="col2enabled" type="B" value="-1"/>
+				<Prp name="col2type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="3"/>
+				<Prp name="colindex" type="I" value="2"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="{542b9fa0-35ea-4c4d-bf0b-661005cb94e9}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="60000"/>
+			</Node>
+			<Node name="{596ca0d0-27cb-40d3-baa5-bc1cecff25ac}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="1"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="col2enabled" type="B" value="-1"/>
+				<Prp name="col2type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="3"/>
+				<Prp name="colindex" type="I" value="2"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="{6ba39d6a-88c9-49b1-a310-a31f46136dfb}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{6be019a2-a836-4b31-84d9-f9de78869d51}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="2"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="Tree"/>
+				<Prp name="val0x1" type="S" value="Flat"/>
+			</Node>
+			<Node name="{74cc9f3b-2e52-4b16-844a-9ee33532b51e}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{7e9d3e8b-dff5-4737-a877-e94b6b932bcd}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{85cd048a-29ff-4abf-95a6-b915aea2c10d}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{890c6d5a-4706-498e-a6ea-ca765851bb97}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="4"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="Use all processes"/>
+				<Prp name="val0x1" type="S" value="Use only tested applications"/>
+				<Prp name="val0x2" type="S" value="Use only selected processes"/>
+				<Prp name="val0x3" type="S" value="Ignore selected processes"/>
+			</Node>
+			<Node name="{90fd1116-f071-44c8-ab72-f1916c2b3a1b}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{9273e75a-1d1d-4f5f-9421-28a4bd60d485}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{94ace9b9-2204-49e3-89a5-87766c9a615e}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="{95e3327a-7433-4a00-9257-6e9a4b4f1795}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="2"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="ID"/>
+				<Prp name="val0x1" type="S" value="Name"/>
+			</Node>
+			<Node name="{98c6a210-59ef-4cd6-aa7e-b41953dec74a}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{9eb8e8e6-d2f2-4a8a-adfb-492e8c0eafef}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="10000"/>
+			</Node>
+			<Node name="{a2568cc8-7e8e-42c5-a87d-b69684a1e616}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{a4d0b1b0-14da-4afa-8afc-e82d0400e7e9}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{abe9c069-5d2d-4fba-b1b0-ff96c0f0b1f6}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="4"/>
+				<Prp name="rowindex" type="I" value="3"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="DOM"/>
+				<Prp name="val0x1" type="S" value="Tag"/>
+				<Prp name="val0x2" type="S" value="Hybrid"/>
+				<Prp name="val0x3" type="S" value="Tree"/>
+			</Node>
+			<Node name="{ae3f26d8-a5bd-4172-9f50-f2b9d1d03611}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{bc2725ab-c90d-4761-beb2-abace30fe554}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{be6d588c-bdc7-42e0-8bae-3e3d8b0f7e83}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{bf9b6482-cea1-4402-ba61-9702404f1f12}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{c3267834-69e4-4cd8-b16a-b60a9bb8a3b4}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{c32b04f8-59f6-4f95-8e50-12818e0decc7}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="5"/>
+				<Prp name="rowindex" type="I" value="3"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="pmLowest"/>
+				<Prp name="val0x1" type="S" value="pmLower"/>
+				<Prp name="val0x2" type="S" value="pmNormal"/>
+				<Prp name="val0x3" type="S" value="pmHigher"/>
+				<Prp name="val0x4" type="S" value="pmHighest"/>
+			</Node>
+			<Node name="{c8f95d39-4ac0-4855-9d60-6e7e3bd87b30}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{ce0b0b5b-f813-482e-bbec-6e12a96d3b83}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{d5773345-4407-4a8a-ace6-0f0a9c8787c8}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="{d80391d4-892f-4cec-865e-b7facb3fac84}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="10"/>
+			</Node>
+			<Node name="{e3ac1830-9216-4dc9-ab7b-884f3b0e9a48}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="0"/>
+			</Node>
+			<Node name="{e47a2931-ee5d-42d2-8cb7-3796de597aa1}">
+				<Prp name="type" type="I" value="5"/>
+				<Prp name="value" type="S" value=""/>
+			</Node>
+			<Node name="{e5242a20-9b70-4540-aefd-7012791d3284}">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="{ef07b18f-c1b0-489e-84ef-a6a0a578c45c}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="2"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="Top-level parent"/>
+				<Prp name="val0x1" type="S" value="Desktop"/>
+			</Node>
+			<Node name="{ef65967b-5d67-41d0-9e90-1e07d7ece759}">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="14"/>
+				<Prp name="rowindex" type="I" value="13"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="NativeSlObject"/>
+				<Prp name="val0x1" type="S" value="NativeWebObject"/>
+				<Prp name="val0x10" type="S" value="NativeJavaFXObject"/>
+				<Prp name="val0x11" type="S" value="NativeQtObject"/>
+				<Prp name="val0x12" type="S" value="NativeUIAObject"/>
+				<Prp name="val0x13" type="S" value="NativeMSAA"/>
+				<Prp name="val0x2" type="S" value="NativeVBObject"/>
+				<Prp name="val0x3" type="S" value="NativeDelphiObject"/>
+				<Prp name="val0x4" type="S" value="NativeTextObject"/>
+				<Prp name="val0x5" type="S" value="NativeJavaObject"/>
+				<Prp name="val0x6" type="S" value="NativeChromeObject"/>
+				<Prp name="val0x7" type="S" value="NativeClrObject"/>
+				<Prp name="val0x8" type="S" value="NativeCPPObject"/>
+				<Prp name="val0x9" type="S" value="NativeFirefoxObject"/>
+			</Node>
+			<Node name="{f544bc81-7a86-4230-b1fc-1b685211a0b4}">
+				<Prp name="type" type="I" value="5"/>
+				<Prp name="value" type="S" value="Format: PNG; Compression level: 4"/>
+			</Node>
+			<Node name="{fb1caf99-7fa6-447c-b963-d862ca8bff89}">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="3000"/>
+			</Node>
+			<Node name="{fe195f25-7dc0-457f-9336-71ed39243753}">
+				<Prp name="type" type="I" value="5"/>
+				<Prp name="value" type="S" value="126_0_0_0_97_113_115_111_1_0_0_0_4_0_0_0_114_0_111_0_111_0_116_0_1_0_0_0_9_0_0_0_102_0_111_0_114_0_109_0_97_0_116_0_107_0_101_0_121_0_1_0_0_0_38_0_0_0_123_0_66_0_65_0_55_0_52_0_53_0_49_0_54_0_57_0_45_0_70_0_51_0_52_0_68_0_45_0_52_0_55_0_49_0_48_0_45_0_66_0_51_0_55_0_70_0_45_0_68_0_53_0_69_0_70_0_69_0_56_0_65_0_53_0_49_0_51_0_51_0_57_0_125_0_1_0_0_0_16_0_0_0_112_0_110_0_103_0_99_0_111_0_110_0_102_0_105_0_103_0_117_0_114_0_97_0_116_0_105_0_111_0_110_0_2_0_0_0_16_0_0_0_99_0_111_0_109_0_112_0_114_0_101_0_115_0_115_0_105_0_111_0_110_0_108_0_101_0_118_0_101_0_108_0_0_0_0_0_4_0_0_0_10_0_0_0_105_0_110_0_116_0_101_0_114_0_108_0_97_0_99_0_101_0_100_0_5_0_0_0_0_0_0_0_0_0_"/>
+			</Node>
+			<Node name="agopenapp_extendedsilverlightobjecttree">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="applicationhangingprocessfiltermode">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="5"/>
+				<Prp name="rowindex" type="I" value="4"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="Use all processes"/>
+				<Prp name="val0x1" type="S" value="Use only tested applications"/>
+				<Prp name="val0x2" type="S" value="Use only selected processes"/>
+				<Prp name="val0x3" type="S" value="Ignore selected processes"/>
+				<Prp name="val0x4" type="S" value="Ignore all processes"/>
+			</Node>
+			<Node name="applicationhangingprocesslist">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="applicationhangingtimeout">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="30000"/>
+			</Node>
+			<Node name="clrbridge_preferredapartmentmodel">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="3"/>
+				<Prp name="rowindex" type="I" value="0"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="Does not matter"/>
+				<Prp name="val0x1" type="S" value="Single-threaded apartment"/>
+				<Prp name="val0x2" type="S" value="Multi-threaded apartment"/>
+			</Node>
+			<Node name="clrbridge_preferredarchitecture">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="3"/>
+				<Prp name="rowindex" type="I" value="1"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="The same as the operating system"/>
+				<Prp name="val0x1" type="S" value="32-bit"/>
+				<Prp name="val0x2" type="S" value="64-bit"/>
+			</Node>
+			<Node name="clrbridge_selectedcomponents">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="1"/>
+				<Prp name="colcount" type="I" value="2"/>
+				<Prp name="colindex" type="I" value="1"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="countprocessesofallusers">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="draggingdelay">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="5"/>
+			</Node>
+			<Node name="javabridge_classes">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="javabridge_classpaths">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="javafxopenapp_donotrecognizejavafxstageasawtcomponent">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="-1"/>
+			</Node>
+			<Node name="javafxopenapp_exposedcustomnodes">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="1"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="col2enabled" type="B" value="-1"/>
+				<Prp name="col2type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="3"/>
+				<Prp name="colindex" type="I" value="2"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="javaopenapp_donotrecognizechildswtasparent">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="keypressingdelay">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="0"/>
+			</Node>
+			<Node name="mousemovementdelay">
+				<Prp name="type" type="I" value="2"/>
+				<Prp name="value" type="I" value="0"/>
+			</Node>
+			<Node name="namemapping_storecodecompletion">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="1"/>
+				<Prp name="colindex" type="I" value="0"/>
+				<Prp name="rowcount" type="I" value="3"/>
+				<Prp name="rowindex" type="I" value="1"/>
+				<Prp name="type" type="I" value="6"/>
+				<Prp name="val0x0" type="S" value="None"/>
+				<Prp name="val0x1" type="S" value="Brief"/>
+				<Prp name="val0x2" type="S" value="Full"/>
+			</Node>
+			<Node name="objectmapping_objects">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="5"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="col2enabled" type="B" value="-1"/>
+				<Prp name="col2type" type="I" value="2"/>
+				<Prp name="col3enabled" type="B" value="-1"/>
+				<Prp name="col3type" type="I" value="2"/>
+				<Prp name="colcount" type="I" value="4"/>
+				<Prp name="colindex" type="I" value="3"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Node name="recording_testedappsonly">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="recreateactivexobjects">
+				<Prp name="type" type="I" value="1"/>
+				<Prp name="value" type="B" value="0"/>
+			</Node>
+			<Node name="textrecognizer_acceptedwindows">
+				<Prp name="col0enabled" type="B" value="-1"/>
+				<Prp name="col0type" type="I" value="1"/>
+				<Prp name="col1enabled" type="B" value="-1"/>
+				<Prp name="col1type" type="I" value="5"/>
+				<Prp name="colcount" type="I" value="2"/>
+				<Prp name="colindex" type="I" value="1"/>
+				<Prp name="rowcount" type="I" value="0"/>
+				<Prp name="rowindex" type="I" value="-1"/>
+				<Prp name="type" type="I" value="6"/>
+			</Node>
+			<Prp name="key" type="S" value="{63B9F7EB-36EF-4937-B579-BD6D7FFA807B}"/>
+			<Prp name="settingsversion" type="S" value="9.10"/>
+		</Node>
+		<Node name="test data">
+			<Node name="child list">
+				<Node name="item0000000000">
+					<Node name="child list"/>
+					<Node name="test parameters"/>
+					<Prp name="count" type="I" value="1"/>
+					<Prp name="description" type="S" value=""/>
+					<Prp name="enabled" type="B" value="-1"/>
+					<Prp name="group" type="B" value="0"/>
+					<Prp name="index" type="I" value="0"/>
+					<Prp name="key" type="S" value="{60427ABB-98BE-46D5-B055-75A68B0B7630}"/>
+					<Prp name="name" type="S" value="Debugger01"/>
+					<Prp name="stoponerror" type="I" value="2"/>
+					<Prp name="stoponexception" type="I" value="2"/>
+					<Prp name="test moniker" type="S" value="KDT\{48E4F292-D9CC-4E00-9E27-51648CB3DED2}"/>
+					<Prp name="timeout" type="I" value="0"/>
+				</Node>
+			</Node>
+			<Prp name="key" type="S" value="{8B9875FC-B3AB-46A0-B2FC-FCFFC7EE9EEF}"/>
+		</Node>
+		<Node name="variables">
+			<Prp name="key" type="S" value="{72506441-F975-4381-BE10-106AE671B2F8}"/>
+		</Node>
+		<Prp name="signature" type="S" value="{362A8EE5-675E-43A9-869D-06ECE80B0CB4}"/>
+		<Prp name="version" type="S" value="9.0"/>
+	</Node>
+</Nodes>

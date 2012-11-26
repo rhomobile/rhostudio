@@ -1,0 +1,47 @@
+require 'xmlsimple'
+
+namespace "ui" do
+ 
+  task :config do
+  end
+
+  task :run do
+  end
+
+  def getNodeChild(node, childName)
+    node.each { |node|
+      if !node['name'].nil? 
+        if node['name'].to_s == childName
+          return node
+        end
+      end
+    }
+
+    return nil    
+  end
+
+  def decorateNode(nodeObject, name)
+    return getNodeChild(nodeObject['Node'], name)
+  end
+
+  def changeToActualPath(path)
+    configFile = './RhoStudio/RhoStudio/TestedApps/TestedApps.tcTAs'
+    f    = File.readlines(configFile)
+    fout = File.new("./a.xml", 'w+')
+
+    f.each do |line| 
+       if line.include?('<Prp name="filepath" type="S" value="')       
+         fout.puts '							<Prp name="filepath" type="S" value="' + path + '"/>'
+       else
+         fout.puts line
+       end 
+    end
+
+    fout.close
+  end
+
+  task :test do
+    changeToActualPath('C:/MotorolaRhoMobileSuite2.2.1.12/rhostudio/win32.win32.x86_11111/')
+
+  end
+end

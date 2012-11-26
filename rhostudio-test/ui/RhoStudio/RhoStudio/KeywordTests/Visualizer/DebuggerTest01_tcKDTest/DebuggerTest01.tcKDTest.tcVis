@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="data">
+			<Node name="item0000000000">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="421"/>
+					<Prp name="click point y" type="I" value="248"/>
+					<Prp name="datetime" type="D" value="41235.4848611111"/>
+					<Prp name="image file name" type="S" value="tcvi30641.png"/>
+					<Prp name="line #" type="I" value="2"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="265"/>
+					<Prp name="object left" type="I" value="416"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell4.Composite.Composite.Composite.Composite.Button"/>
+					<Prp name="object right" type="I" value="508"/>
+					<Prp name="object top" type="I" value="240"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi30641.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="0"/>
+			</Node>
+			<Node name="item0000000001">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-251"/>
+					<Prp name="click point y" type="I" value="-251"/>
+					<Prp name="datetime" type="D" value="41235.4849652778"/>
+					<Prp name="image file name" type="S" value="tcvi30647.png"/>
+					<Prp name="line #" type="I" value="3"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="768"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell2"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi30647.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="1"/>
+			</Node>
+			<Node name="item0000000002">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="105"/>
+					<Prp name="click point y" type="I" value="271"/>
+					<Prp name="datetime" type="D" value="41235.485"/>
+					<Prp name="image file name" type="S" value="tcvi30649.png"/>
+					<Prp name="line #" type="I" value="5"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="375"/>
+					<Prp name="object left" type="I" value="18"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell5.Composite.Composite.Composite.Composite.Composite.Composite.Composite.FilteredTree.Composite.Tree"/>
+					<Prp name="object right" type="I" value="507"/>
+					<Prp name="object top" type="I" value="153"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi30649.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="2"/>
+			</Node>
+			<Node name="item0000000003">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="244"/>
+					<Prp name="click point y" type="I" value="465"/>
+					<Prp name="datetime" type="D" value="41235.4850231481"/>
+					<Prp name="image file name" type="S" value="tcvi306410.png"/>
+					<Prp name="line #" type="I" value="7"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="479"/>
+					<Prp name="object left" type="I" value="218"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell5.Composite.Composite.Composite1.Composite.Composite.Button"/>
+					<Prp name="object right" type="I" value="310"/>
+					<Prp name="object top" type="I" value="454"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306410.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="3"/>
+			</Node>
+			<Node name="item0000000004">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="41235.4850578704"/>
+					<Prp name="image file name" type="S" value="tcvi306411.png"/>
+					<Prp name="line #" type="I" value="9"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell6.Composite.Composite.Composite.Composite.Button"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306411.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="4"/>
+			</Node>
+			<Node name="item0000000005">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-251"/>
+					<Prp name="click point y" type="I" value="-251"/>
+					<Prp name="datetime" type="D" value="41235.485150463"/>
+					<Prp name="image file name" type="S" value="tcvi306415.png"/>
+					<Prp name="line #" type="I" value="10"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="768"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell2"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306415.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="5"/>
+			</Node>
+			<Node name="item0000000006">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="76"/>
+					<Prp name="click point y" type="I" value="323"/>
+					<Prp name="datetime" type="D" value="41235.4851736111"/>
+					<Prp name="image file name" type="S" value="tcvi306416.png"/>
+					<Prp name="line #" type="I" value="11"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="550"/>
+					<Prp name="object left" type="I" value="19"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell3.Composite.Composite.Composite.Composite.SashForm.Composite.ViewForm.Composite.LaunchConfigurationFilteredTree.Composite.Tree"/>
+					<Prp name="object right" type="I" value="188"/>
+					<Prp name="object top" type="I" value="158"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306416.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="6"/>
+			</Node>
+			<Node name="item0000000007">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="25"/>
+					<Prp name="click point y" type="I" value="117"/>
+					<Prp name="datetime" type="D" value="41235.4851851852"/>
+					<Prp name="image file name" type="S" value="tcvi306417.png"/>
+					<Prp name="line #" type="I" value="12"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="126"/>
+					<Prp name="object left" type="I" value="14"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell3.Composite.Composite.Composite.Composite.SashForm.Composite.ViewForm.ToolBar"/>
+					<Prp name="object right" type="I" value="193"/>
+					<Prp name="object top" type="I" value="104"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306417.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="7"/>
+			</Node>
+			<Node name="item0000000008">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="791"/>
+					<Prp name="click point y" type="I" value="751"/>
+					<Prp name="datetime" type="D" value="41235.4852314815"/>
+					<Prp name="image file name" type="S" value="tcvi306418.png"/>
+					<Prp name="line #" type="I" value="13"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="759"/>
+					<Prp name="object left" type="I" value="740"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell3.Composite.Composite.Composite1.Composite.Composite.Button"/>
+					<Prp name="object right" type="I" value="832"/>
+					<Prp name="object top" type="I" value="734"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306418.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="8"/>
+			</Node>
+			<Node name="item0000000009">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="471"/>
+					<Prp name="click point y" type="I" value="490"/>
+					<Prp name="datetime" type="D" value="41235.4853125"/>
+					<Prp name="image file name" type="S" value="tcvi306419.png"/>
+					<Prp name="line #" type="I" value="14"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="562"/>
+					<Prp name="object left" type="I" value="15"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell.Composite.Composite.Composite1.CTabFolder.ViewForm"/>
+					<Prp name="object right" type="I" value="756"/>
+					<Prp name="object top" type="I" value="330"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306419.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="9"/>
+			</Node>
+			<Node name="item0000000010">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-251"/>
+					<Prp name="click point y" type="I" value="-251"/>
+					<Prp name="datetime" type="D" value="41235.4853935185"/>
+					<Prp name="image file name" type="S" value="tcvi306423.png"/>
+					<Prp name="line #" type="I" value="15"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="768"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306423.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="10"/>
+			</Node>
+			<Node name="item0000000011">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="93"/>
+					<Prp name="click point y" type="I" value="182"/>
+					<Prp name="datetime" type="D" value="41235.4854976852"/>
+					<Prp name="image file name" type="S" value="tcvi306425.png"/>
+					<Prp name="line #" type="I" value="17"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="343"/>
+					<Prp name="object left" type="I" value="19"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell7.Composite.Composite.FilteredTree.Composite.Tree"/>
+					<Prp name="object right" type="I" value="292"/>
+					<Prp name="object top" type="I" value="68"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306425.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="11"/>
+			</Node>
+			<Node name="item0000000012">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="116"/>
+					<Prp name="click point y" type="I" value="406"/>
+					<Prp name="datetime" type="D" value="41235.4855092593"/>
+					<Prp name="image file name" type="S" value="tcvi306426.png"/>
+					<Prp name="line #" type="I" value="19"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="417"/>
+					<Prp name="object left" type="I" value="102"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell7.Composite.Composite1.Button"/>
+					<Prp name="object right" type="I" value="194"/>
+					<Prp name="object top" type="I" value="392"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306426.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="12"/>
+			</Node>
+			<Node name="item0000000013">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="113"/>
+					<Prp name="click point y" type="I" value="138"/>
+					<Prp name="datetime" type="D" value="41235.4855787037"/>
+					<Prp name="image file name" type="S" value="tcvi306430.png"/>
+					<Prp name="line #" type="I" value="20"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="298"/>
+					<Prp name="object left" type="I" value="15"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell.Composite.Composite.Composite.Composite.Tree"/>
+					<Prp name="object right" type="I" value="508"/>
+					<Prp name="object top" type="I" value="109"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306430.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="13"/>
+			</Node>
+			<Node name="item0000000014">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="113"/>
+					<Prp name="click point y" type="I" value="138"/>
+					<Prp name="datetime" type="D" value="41235.4855902778"/>
+					<Prp name="image file name" type="S" value="tcvi306431.png"/>
+					<Prp name="line #" type="I" value="21"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="298"/>
+					<Prp name="object left" type="I" value="15"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell.Composite.Composite.Composite.Composite.Tree"/>
+					<Prp name="object right" type="I" value="508"/>
+					<Prp name="object top" type="I" value="109"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306431.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="14"/>
+			</Node>
+			<Node name="item0000000015">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="113"/>
+					<Prp name="click point y" type="I" value="138"/>
+					<Prp name="datetime" type="D" value="41235.4856018519"/>
+					<Prp name="image file name" type="S" value="tcvi306432.png"/>
+					<Prp name="line #" type="I" value="22"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="298"/>
+					<Prp name="object left" type="I" value="15"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell.Composite.Composite.Composite.Composite.Tree"/>
+					<Prp name="object right" type="I" value="508"/>
+					<Prp name="object top" type="I" value="109"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306432.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="15"/>
+			</Node>
+			<Node name="item0000000016">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="53"/>
+					<Prp name="click point y" type="I" value="504"/>
+					<Prp name="datetime" type="D" value="41235.4856597222"/>
+					<Prp name="image file name" type="S" value="tcvi306433.png"/>
+					<Prp name="line #" type="I" value="24"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="562"/>
+					<Prp name="object left" type="I" value="45"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell1.Composite.Composite.Composite.Composite.Composite.Composite.Composite.Canvas.StyledText"/>
+					<Prp name="object right" type="I" value="743"/>
+					<Prp name="object top" type="I" value="330"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306433.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="16"/>
+			</Node>
+			<Node name="item0000000017">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-251"/>
+					<Prp name="click point y" type="I" value="-251"/>
+					<Prp name="datetime" type="D" value="41235.485775463"/>
+					<Prp name="image file name" type="S" value="tcvi306437.png"/>
+					<Prp name="line #" type="I" value="25"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="768"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell1"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306437.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="17"/>
+			</Node>
+			<Node name="item0000000018">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="41235.4858101852"/>
+					<Prp name="image file name" type="S" value="tcvi66680.png"/>
+					<Prp name="line #" type="I" value="26"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object name" type="S" value="Aliases.RhoSimulator.QtObject(&quot;QtMainWindow&quot;).QtObject(&quot;centralWidget&quot;).QtObject(&quot;webView&quot;)"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi66680.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="18"/>
+			</Node>
+			<Node name="item0000000019">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="41235.4858217593"/>
+					<Prp name="image file name" type="S" value="tcvi66681.png"/>
+					<Prp name="line #" type="I" value="27"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object name" type="S" value="Aliases.RhoSimulator.QtObject(&quot;QtMainWindow&quot;).QtObject(&quot;centralWidget&quot;).QtObject(&quot;webView&quot;)"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi66681.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="19"/>
+			</Node>
+			<Node name="item0000000020">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="277"/>
+					<Prp name="click point y" type="I" value="24"/>
+					<Prp name="datetime" type="D" value="41235.4858564815"/>
+					<Prp name="image file name" type="S" value="tcvi306438.png"/>
+					<Prp name="line #" type="I" value="28"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="768"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell1"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306438.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="20"/>
+			</Node>
+			<Node name="item0000000021">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="46"/>
+					<Prp name="click point y" type="I" value="99"/>
+					<Prp name="datetime" type="D" value="41235.4858912037"/>
+					<Prp name="image file name" type="S" value="tcvi306439.png"/>
+					<Prp name="line #" type="I" value="29"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="301"/>
+					<Prp name="object left" type="I" value="12"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell1.Composite.Composite.CTabFolder"/>
+					<Prp name="object right" type="I" value="511"/>
+					<Prp name="object top" type="I" value="83"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306439.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="21"/>
+			</Node>
+			<Node name="item0000000022">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="247"/>
+					<Prp name="click point y" type="I" value="121"/>
+					<Prp name="datetime" type="D" value="41235.4859027778"/>
+					<Prp name="image file name" type="S" value="tcvi306440.png"/>
+					<Prp name="line #" type="I" value="30"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="131"/>
+					<Prp name="object left" type="I" value="212"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell1.Composite.Composite.ToolBar"/>
+					<Prp name="object right" type="I" value="489"/>
+					<Prp name="object top" type="I" value="109"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306440.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="22"/>
+			</Node>
+			<Node name="item0000000023">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="41235.4859375"/>
+					<Prp name="image file name" type="S" value="tcvi66682.png"/>
+					<Prp name="line #" type="I" value="32"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="-1"/>
+					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object name" type="S" value="Aliases.RhoSimulator"/>
+					<Prp name="object right" type="I" value="-1"/>
+					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi66682.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="23"/>
+			</Node>
+			<Node name="item0000000024">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="datetime" type="D" value="41235.4860069444"/>
+					<Prp name="image file name" type="S" value="tcvi306441.png"/>
+					<Prp name="line #" type="I" value="34"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="768"/>
+					<Prp name="object left" type="I" value="0"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell1"/>
+					<Prp name="object right" type="I" value="1024"/>
+					<Prp name="object top" type="I" value="0"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306441.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="24"/>
+			</Node>
+			<Node name="item0000000025">
+				<Node name="data">
+					<Prp name="click point x" type="I" value="349"/>
+					<Prp name="click point y" type="I" value="133"/>
+					<Prp name="datetime" type="D" value="41235.4860185185"/>
+					<Prp name="image file name" type="S" value="tcvi306442.png"/>
+					<Prp name="line #" type="I" value="35"/>
+					<Prp name="need update" type="B" value="0"/>
+					<Prp name="object bottom" type="I" value="147"/>
+					<Prp name="object left" type="I" value="318"/>
+					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell8.Composite.Button"/>
+					<Prp name="object right" type="I" value="410"/>
+					<Prp name="object top" type="I" value="122"/>
+					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
+					<Prp name="storage file name" type="S" value="tcvi306442.xml"/>
+					<Prp name="version" type="I" value="1"/>
+				</Node>
+				<Prp name="index" type="I" value="25"/>
+			</Node>
+			<Prp name="key" type="S" value="{48E4F292-D9CC-4E00-9E27-51648CB3DED2}"/>
+		</Node>
+		<Prp name="signature" type="S" value="{42D2222C-ACA2-405F-8E67-05D5C42EB839}"/>
+		<Prp name="version" type="I" value="1"/>
+	</Node>
+</Nodes>

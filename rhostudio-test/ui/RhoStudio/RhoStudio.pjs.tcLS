@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="data">
+			<Node name="{24b6fa0b-0143-461a-9758-aeb9e9a9428b}">
+				<Prp name="default project" type="S" value="{40BBE568-AAA2-4CC9-A4C8-A2479C009791}"/>
+			</Node>
+			<Node name="{40bbe568-aaa2-4cc9-a4c8-a2479c009791}">
+				<Prp name="relpath" type="S" value="RhoStudio\RhoStudio.mds.tcLS"/>
+			</Node>
+			<Node name="{ccb0d8b6-b52e-4a65-baeb-2eb9a511c2ce}">
+				<Prp name="relpath" type="S" value="RhoStudio\RhoStudio.mds.tcLS"/>
+			</Node>
+			<Node name="logs">
+				<Prp name="key" type="S" value="{16A3AF93-1628-4DB7-937B-5FDA8C51B7A7}"/>
+				<Prp name="relpath" type="S" value="Log"/>
+			</Node>
+			<Node name="variables"/>
+		</Node>
+		<Prp name="signature" type="S" value="{71078212-FAEB-4856-A901-B237C89E6B5C}"/>
+	</Node>
+</Nodes>
