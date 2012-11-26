@@ -22,7 +22,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import rhogenwizard.DialogUtils;
+import rhogenwizard.Activator;
 import rhogenwizard.sdk.task.RubyCodeExecTask;
 import rhogenwizard.sdk.task.rhohub.AppListTask;
 import rhogenwizard.sdk.task.rhohub.BuildApp;
@@ -106,10 +106,12 @@ public class RhoHub implements IRhoHub
         }
         catch (JSONException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (IOException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
 
@@ -131,6 +133,7 @@ public class RhoHub implements IRhoHub
         }
         catch (JSONException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
             System.out.print(task.getError());
         }
@@ -174,30 +177,37 @@ public class RhoHub implements IRhoHub
         }
         catch (IOException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (NoFilepatternException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (NoHeadException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (NoMessageException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (ConcurrentRefUpdateException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (JGitInternalException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (WrongRepositoryStateException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         
@@ -220,10 +230,12 @@ public class RhoHub implements IRhoHub
         }
         catch (IOException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         catch (JGitInternalException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
 
@@ -250,6 +262,7 @@ public class RhoHub implements IRhoHub
         }
         catch (JSONException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         
@@ -302,6 +315,7 @@ public class RhoHub implements IRhoHub
         }
         catch (JSONException e)
         {
+        	Activator.logError(e);
             e.printStackTrace();
         }
         

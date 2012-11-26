@@ -29,7 +29,7 @@ public class RunReleaseRhodesAppTaskTest
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
-        ConsoleHelper.disableConsoles();
+        ConsoleHelper.setupNullConsoles();
     }
 
     @AfterClass

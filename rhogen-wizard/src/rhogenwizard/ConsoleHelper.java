@@ -216,7 +216,15 @@ public class ConsoleHelper
         private static MessageConsole findConsole(String name)
         {
             ConsolePlugin plugin = ConsolePlugin.getDefault();
+            
+            if (plugin == null)
+            	return null;
+            
             IConsoleManager conMan = plugin.getConsoleManager();
+            
+            if (conMan == null)
+            	return null;
+            
             IConsole[] existing = conMan.getConsoles();
 
             for (int i = 0; i < existing.length; i++)
@@ -235,8 +243,8 @@ public class ConsoleHelper
         }
     }
 
-    private static ConsoleImpl appConsole   = null;
-    private static ConsoleImpl buildConsole = null;
+    private static Console appConsole   = null;
+    private static Console buildConsole = null;
 
     public static void initialize()
     {
@@ -250,11 +258,21 @@ public class ConsoleHelper
         }
     }
 
+    public static void setupNullConsoles()
+    {
+    	appConsole   = nullConsole;
+    	buildConsole = nullConsole;
+    }
+    
     public static void disableConsoles()
     {
         initialize();
-        appConsole.disable();
-        buildConsole.disable();
+        
+        ConsoleImpl _appConsole  = (ConsoleImpl) appConsole;
+        _appConsole.disable();
+        
+        ConsoleImpl _buildConsole = (ConsoleImpl) buildConsole;
+        _buildConsole.disable();
     }
 
     public static Console getAppConsole()

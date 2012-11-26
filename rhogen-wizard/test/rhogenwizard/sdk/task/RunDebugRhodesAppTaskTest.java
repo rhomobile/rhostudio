@@ -123,7 +123,7 @@ public class RunDebugRhodesAppTaskTest
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
-        ConsoleHelper.disableConsoles();
+        ConsoleHelper.setupNullConsoles();
     }
 
     @AfterClass

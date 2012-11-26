@@ -4,13 +4,21 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
 
 public class RubyCodeExecTaskTest extends TestCase
 {
     private static String nl = System.getProperty("line.separator");
 
-    @Test
+    @Override
+	protected void setUp() throws Exception
+	{
+    	ConsoleHelper.setupNullConsoles();
+		super.setUp();
+	}
+    
+	@Test
     public void testHelloWorld()
     {
         RubyCodeExecTask task = new RubyCodeExecTask("puts \"Hello, World!\"");
@@ -18,7 +26,7 @@ public class RubyCodeExecTaskTest extends TestCase
         check(true, 0, "", "Hello, World!\n", task);
     }
 
-    @Test
+	@Test
     public void testArithmetics()
     {
         RubyCodeExecTask task = new RubyCodeExecTask("puts 1 + 2");
@@ -31,7 +39,7 @@ public class RubyCodeExecTaskTest extends TestCase
     {
         RubyCodeExecTask task = new RubyCodeExecTask("a = 4; b = 5; puts a + b");
         task.run();
-        check(true, 0, "", "9\n", task);
+        check(true, 0, "", "9\n", task);   
     }
 
     @Test
