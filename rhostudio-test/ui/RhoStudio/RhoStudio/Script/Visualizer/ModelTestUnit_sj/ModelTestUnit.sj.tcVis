@@ -26,7 +26,7 @@
 					<Prp name="click point y" type="I" value="253"/>
 					<Prp name="datetime" type="D" value="41239.7225694444"/>
 					<Prp name="image file name" type="S" value="tcvi52361.png"/>
-					<Prp name="line #" type="I" value="1"/>
+					<Prp name="line #" type="I" value="5"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="265"/>
 					<Prp name="object left" type="I" value="416"/>
@@ -45,7 +45,7 @@
 					<Prp name="click point y" type="I" value="-51"/>
 					<Prp name="datetime" type="D" value="41239.7226736111"/>
 					<Prp name="image file name" type="S" value="tcvi52365.png"/>
-					<Prp name="line #" type="I" value="3"/>
+					<Prp name="line #" type="I" value="7"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="768"/>
 					<Prp name="object left" type="I" value="0"/>
@@ -64,7 +64,7 @@
 					<Prp name="click point y" type="I" value="187"/>
 					<Prp name="datetime" type="D" value="41239.7227430556"/>
 					<Prp name="image file name" type="S" value="tcvi52368.png"/>
-					<Prp name="line #" type="I" value="5"/>
+					<Prp name="line #" type="I" value="9"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="343"/>
 					<Prp name="object left" type="I" value="19"/>
@@ -83,7 +83,7 @@
 					<Prp name="click point y" type="I" value="403"/>
 					<Prp name="datetime" type="D" value="41239.7227546296"/>
 					<Prp name="image file name" type="S" value="tcvi52369.png"/>
-					<Prp name="line #" type="I" value="6"/>
+					<Prp name="line #" type="I" value="11"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="417"/>
 					<Prp name="object left" type="I" value="102"/>
@@ -102,7 +102,7 @@
 					<Prp name="click point y" type="I" value="-51"/>
 					<Prp name="datetime" type="D" value="41239.7228240741"/>
 					<Prp name="image file name" type="S" value="tcvi523612.png"/>
-					<Prp name="line #" type="I" value="8"/>
+					<Prp name="line #" type="I" value="13"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="768"/>
 					<Prp name="object left" type="I" value="0"/>
@@ -121,7 +121,7 @@
 					<Prp name="click point y" type="I" value="274"/>
 					<Prp name="datetime" type="D" value="41239.7228472222"/>
 					<Prp name="image file name" type="S" value="tcvi523615.png"/>
-					<Prp name="line #" type="I" value="10"/>
+					<Prp name="line #" type="I" value="15"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="375"/>
 					<Prp name="object left" type="I" value="18"/>
@@ -140,7 +140,7 @@
 					<Prp name="click point y" type="I" value="469"/>
 					<Prp name="datetime" type="D" value="41239.7228587963"/>
 					<Prp name="image file name" type="S" value="tcvi523616.png"/>
-					<Prp name="line #" type="I" value="12"/>
+					<Prp name="line #" type="I" value="19"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="479"/>
 					<Prp name="object left" type="I" value="218"/>
@@ -155,17 +155,17 @@
 			</Node>
 			<Node name="item0000000007">
 				<Node name="data">
-					<Prp name="click point x" type="I" value="-1"/>
-					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="click point x" type="I" value="350"/>
+					<Prp name="click point y" type="I" value="461"/>
 					<Prp name="datetime" type="D" value="41239.7228703704"/>
 					<Prp name="image file name" type="S" value="tcvi523617.png"/>
-					<Prp name="line #" type="I" value="14"/>
+					<Prp name="line #" type="I" value="21"/>
 					<Prp name="need update" type="B" value="0"/>
-					<Prp name="object bottom" type="I" value="-1"/>
-					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object bottom" type="I" value="479"/>
+					<Prp name="object left" type="I" value="316"/>
 					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell6.Composite.Composite.Composite.Composite.Button"/>
-					<Prp name="object right" type="I" value="-1"/>
-					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="object right" type="I" value="408"/>
+					<Prp name="object top" type="I" value="454"/>
 					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
 					<Prp name="storage file name" type="S" value="tcvi523617.xml"/>
 					<Prp name="version" type="I" value="1"/>
@@ -178,7 +178,7 @@
 					<Prp name="click point y" type="I" value="579"/>
 					<Prp name="datetime" type="D" value="41239.7229282407"/>
 					<Prp name="image file name" type="S" value="tcvi523618.png"/>
-					<Prp name="line #" type="I" value="16"/>
+					<Prp name="line #" type="I" value="23"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="730"/>
 					<Prp name="object left" type="I" value="12"/>
@@ -193,17 +193,17 @@
 			</Node>
 			<Node name="item0000000009">
 				<Node name="data">
-					<Prp name="click point x" type="I" value="-1"/>
-					<Prp name="click point y" type="I" value="-1"/>
+					<Prp name="click point x" type="I" value="62"/>
+					<Prp name="click point y" type="I" value="601"/>
 					<Prp name="datetime" type="D" value="41239.722962963"/>
 					<Prp name="image file name" type="S" value="tcvi523619.png"/>
-					<Prp name="line #" type="I" value="17"/>
+					<Prp name="line #" type="I" value="25"/>
 					<Prp name="need update" type="B" value="0"/>
-					<Prp name="object bottom" type="I" value="-1"/>
-					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object bottom" type="I" value="727"/>
+					<Prp name="object left" type="I" value="15"/>
 					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell2.Composite.Composite.Composite.Composite.Tree"/>
-					<Prp name="object right" type="I" value="-1"/>
-					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="object right" type="I" value="1009"/>
+					<Prp name="object top" type="I" value="594"/>
 					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
 					<Prp name="storage file name" type="S" value="tcvi523619.xml"/>
 					<Prp name="version" type="I" value="1"/>
@@ -216,7 +216,7 @@
 					<Prp name="click point y" type="I" value="-51"/>
 					<Prp name="datetime" type="D" value="41239.7229861111"/>
 					<Prp name="image file name" type="S" value="tcvi523623.png"/>
-					<Prp name="line #" type="I" value="18"/>
+					<Prp name="line #" type="I" value="27"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="768"/>
 					<Prp name="object left" type="I" value="0"/>
@@ -235,7 +235,7 @@
 					<Prp name="click point y" type="I" value="459"/>
 					<Prp name="datetime" type="D" value="41239.7230324074"/>
 					<Prp name="image file name" type="S" value="tcvi523625.png"/>
-					<Prp name="line #" type="I" value="19"/>
+					<Prp name="line #" type="I" value="29"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="479"/>
 					<Prp name="object left" type="I" value="414"/>
@@ -254,7 +254,7 @@
 					<Prp name="click point y" type="I" value="-51"/>
 					<Prp name="datetime" type="D" value="41239.7230671296"/>
 					<Prp name="image file name" type="S" value="tcvi523628.png"/>
-					<Prp name="line #" type="I" value="20"/>
+					<Prp name="line #" type="I" value="31"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="768"/>
 					<Prp name="object left" type="I" value="0"/>
@@ -273,7 +273,7 @@
 					<Prp name="click point y" type="I" value="150"/>
 					<Prp name="datetime" type="D" value="41239.7230787037"/>
 					<Prp name="image file name" type="S" value="tcvi523630.png"/>
-					<Prp name="line #" type="I" value="21"/>
+					<Prp name="line #" type="I" value="33"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="159"/>
 					<Prp name="object left" type="I" value="113"/>
@@ -292,7 +292,7 @@
 					<Prp name="click point y" type="I" value="-147"/>
 					<Prp name="datetime" type="D" value="41239.7230902778"/>
 					<Prp name="image file name" type="S" value="tcvi523631.png"/>
-					<Prp name="line #" type="I" value="22"/>
+					<Prp name="line #" type="I" value="35"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="159"/>
 					<Prp name="object left" type="I" value="113"/>
@@ -311,7 +311,7 @@
 					<Prp name="click point y" type="I" value="464"/>
 					<Prp name="datetime" type="D" value="41239.7231597222"/>
 					<Prp name="image file name" type="S" value="tcvi523640.png"/>
-					<Prp name="line #" type="I" value="23"/>
+					<Prp name="line #" type="I" value="37"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="479"/>
 					<Prp name="object left" type="I" value="316"/>
@@ -330,7 +330,7 @@
 					<Prp name="click point y" type="I" value="-1"/>
 					<Prp name="datetime" type="D" value="41239.7231944444"/>
 					<Prp name="image file name" type="S" value="tcvi523641.png"/>
-					<Prp name="line #" type="I" value="24"/>
+					<Prp name="line #" type="I" value="39"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="768"/>
 					<Prp name="object left" type="I" value="0"/>
@@ -349,7 +349,7 @@
 					<Prp name="click point y" type="I" value="138"/>
 					<Prp name="datetime" type="D" value="41239.7232060185"/>
 					<Prp name="image file name" type="S" value="tcvi523642.png"/>
-					<Prp name="line #" type="I" value="25"/>
+					<Prp name="line #" type="I" value="41"/>
 					<Prp name="need update" type="B" value="0"/>
 					<Prp name="object bottom" type="I" value="147"/>
 					<Prp name="object left" type="I" value="318"/>
@@ -362,7 +362,7 @@
 				</Node>
 				<Prp name="index" type="I" value="17"/>
 			</Node>
-			<Prp name="key" type="S" value="{B9B7F637-FA36-49D3-ABA8-9D49B3B5154F}"/>
+			<Prp name="key" type="S" value="{5DA14D80-B7A4-4916-8B81-88E61C9D0F44}"/>
 		</Node>
 		<Prp name="signature" type="S" value="{42D2222C-ACA2-405F-8E67-05D5C42EB839}"/>
 		<Prp name="version" type="I" value="1"/>

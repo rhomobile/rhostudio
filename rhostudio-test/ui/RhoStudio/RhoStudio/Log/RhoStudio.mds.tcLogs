@@ -22,7 +22,28 @@
 		<Node name="folders">
 			<Node name="folders"/>
 		</Node>
-		<Node name="logs"/>
+		<Node name="logs">
+			<Node name="log0">
+				<Prp name="caption" type="S" value=""/>
+				<Prp name="datetime" type="D" value="41240.1219923032"/>
+				<Prp name="description" type="S" value=""/>
+				<Prp name="index" type="I" value="0"/>
+				<Prp name="key" type="S" value="{6AE8F1F8-D70C-4D2D-9517-DD0CC5C51BD0}"/>
+				<Prp name="nameofroot" type="S" value="Keyword Test Log [ModelTest01]"/>
+				<Prp name="relpath" type="S" value="27_11_2012_2_55_40_135\Description.tcLog"/>
+				<Prp name="status" type="I" value="0"/>
+			</Node>
+			<Node name="log1">
+				<Prp name="caption" type="S" value=""/>
+				<Prp name="datetime" type="D" value="41240.1226073264"/>
+				<Prp name="description" type="S" value=""/>
+				<Prp name="index" type="I" value="1"/>
+				<Prp name="key" type="S" value="{7D431362-0DB9-4884-8AE2-9D0C536B2810}"/>
+				<Prp name="nameofroot" type="S" value="Keyword Test Log [ModelTest01]"/>
+				<Prp name="relpath" type="S" value="27_11_2012_2_56_33_263\Description.tcLog"/>
+				<Prp name="status" type="I" value="0"/>
+			</Node>
+		</Node>
 		<Prp name="signature" type="S" value="{681DCC69-A39F-4C4D-8E7D-B2D9362FAF4F}"/>
 		<Prp name="version" type="S" value="7.0"/>
 	</Node>

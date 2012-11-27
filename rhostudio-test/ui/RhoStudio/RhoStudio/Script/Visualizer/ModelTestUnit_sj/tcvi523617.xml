@@ -1,0 +1,1572 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SysNodeInfo VersionKey="{1605F88C-9478-431C-8790-C51C5E0646CD}">
+<SysNode Left="-1" Top="-1" Right="-1" Bottom="-1">
+<SysNodeName MappedName="Sys" DefaultMappedName="Sys">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="Name" Value="Sys"/>
+<NameMappingProperty Name="Id" Value="-1"/>
+</NameMappingProperties>
+<SysNode Left="-1" Top="-1" Right="-1" Bottom="-1">
+<SysNodeName MappedName="RhoStudio" DefaultMappedName="RhoStudio">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="ProcessName" Value="RhoStudio"/>
+</NameMappingProperties>
+<SysNode Left="0" Top="0" Right="525" Bottom="500">
+<SysNodeName MappedName="Shell6" DefaultMappedName="Shell">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Shell"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Shell</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Close" InvokeKind="1" Priority="2000">
+<Description>Closes the specified Window object.</Description>
+<Param Name="WaitTimeout" VarType="3"><DefaultValue Value="2000"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Position" InvokeKind="1" Priority="1800">
+<Description>Sets the specified position and size for the specific Window object.</Description>
+<Param Name="Left" VarType="3"></Param><Param Name="Top" VarType="3"></Param><Param Name="Width" VarType="3"></Param><Param Name="Height" VarType="3"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>525</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>500</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="8" Top="30" Right="517" Bottom="492">
+<SysNodeName MappedName="Composite" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>462</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="8" Top="96" Right="517" Bottom="492">
+<SysNodeName MappedName="Composite" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>396</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="8" Top="96" Right="517" Bottom="441">
+<SysNodeName MappedName="Composite1" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="1"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>345</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="8" Top="96" Right="517" Bottom="98">
+<SysNodeName MappedName="" DefaultMappedName="Label">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Label"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Label"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="1"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Label</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>2</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="8" Top="98" Right="517" Bottom="390">
+<SysNodeName MappedName="Composite" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="1"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>292</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="13" Top="103" Right="512" Bottom="385">
+<SysNodeName MappedName="Composite" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="2"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>499</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>282</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="18" Top="111" Right="91" Bottom="126">
+<SysNodeName MappedName="" DefaultMappedName="Label">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Label"/>
+<MethodCallInfoParam Value="&amp;Project name:"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Label"/>
+<NameMappingProperty Name="WndCaption" Value="&amp;Project name:"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Label</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>73</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>15</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="121" Top="108" Right="443" Bottom="129">
+<SysNodeName MappedName="" DefaultMappedName="Text">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Text"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Text"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="1"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Text</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetText" InvokeKind="1" Priority="1700">
+<Description>Enters text in the text editor.</Description>
+<Param Name="Text" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="wText" InvokeKind="2" Priority="2000">
+<Value>RhoMobileApplication1</Value>
+<Description>Contents of the edit control, as text string.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="wSelection" InvokeKind="2" Priority="1800">
+<Value></Value>
+<Description>Retrieves the selected text.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>322</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>21</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="18" Top="138" Right="507" Bottom="154">
+<SysNodeName MappedName="" DefaultMappedName="Button">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Button"/>
+<MethodCallInfoParam Value="Use RhoElements"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Button"/>
+<NameMappingProperty Name="WndCaption" Value="Use RhoElements"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Button</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickButton" InvokeKind="1" Priority="2000">
+<Description>Moves the mouse cursor to a control and clicks it with the left mouse button until the specified state is reached.</Description>
+<Param Name="State" VarType="12"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="wState" InvokeKind="2" Priority="1900">
+<Value>0</Value>
+<Description>Gets or sets the current state of the check box, that is, cbUnchecked, cbChecked or cbGrayed.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>489</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>16</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="18" Top="163" Right="507" Bottom="179">
+<SysNodeName MappedName="" DefaultMappedName="Button">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Button"/>
+<MethodCallInfoParam Value="Create application in default workspace"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Button"/>
+<NameMappingProperty Name="WndCaption" Value="Create application in default workspace"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Button</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickButton" InvokeKind="1" Priority="2000">
+<Description>Moves the mouse cursor to a control and clicks it with the left mouse button until the specified state is reached.</Description>
+<Param Name="State" VarType="12"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="wState" InvokeKind="2" Priority="1900">
+<Value>1</Value>
+<Description>Gets or sets the current state of the check box, that is, cbUnchecked, cbChecked or cbGrayed.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>489</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>16</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+</SysNode>
+</SysNode>
+<SysNode Left="8" Top="439" Right="517" Bottom="441">
+<SysNodeName MappedName="" DefaultMappedName="Label">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Label"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Label"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="2"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Label</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>2</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+</SysNode>
+<SysNode Left="8" Top="441" Right="517" Bottom="492">
+<SysNodeName MappedName="Composite" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="2"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>509</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>51</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="19" Top="451" Right="50" Bottom="481">
+<SysNodeName MappedName="" DefaultMappedName="ToolBar">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="ToolBar"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.ToolBar"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.ToolBar</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickItem" InvokeKind="1" Priority="2000">
+<Description>Simulates a click on Item specified by index from 0 or by name, with shift keys in the state specified by Shift.</Description>
+<Param Name="Item" VarType="12"></Param><Param Name="ByPosition" VarType="11"><DefaultValue Value="True"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="wButtonCount" InvokeKind="2" Priority="1850">
+<Value>1</Value>
+<Description>Returns the total number of buttons in the tool bar control.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>31</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>30</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="115" Top="441" Right="517" Bottom="492">
+<SysNodeName MappedName="Composite" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>402</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>51</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="126" Top="454" Right="310" Bottom="479">
+<SysNodeName MappedName="" DefaultMappedName="Composite">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Composite"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Composite</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>184</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>25</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+<SysNode Left="126" Top="454" Right="218" Bottom="479">
+<SysNodeName MappedName="" DefaultMappedName="Button">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Button"/>
+<MethodCallInfoParam Value="&lt; &amp;Back"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Button"/>
+<NameMappingProperty Name="WndCaption" Value="&lt; &amp;Back"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Button</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickButton" InvokeKind="1" Priority="2000">
+<Description>Performs a single click on the specified button.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>92</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>25</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="218" Top="454" Right="310" Bottom="479">
+<SysNodeName MappedName="" DefaultMappedName="Button">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Button"/>
+<MethodCallInfoParam Value="&amp;Next &gt;"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Button"/>
+<NameMappingProperty Name="WndCaption" Value="&amp;Next &gt;"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Button</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickButton" InvokeKind="1" Priority="2000">
+<Description>Performs a single click on the specified button.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>92</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>25</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>False</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+</SysNode>
+<SysNode Left="316" Top="454" Right="408" Bottom="479">
+<SysNodeName MappedName="Button" DefaultMappedName="Button">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Button"/>
+<MethodCallInfoParam Value="&amp;Finish"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Button"/>
+<NameMappingProperty Name="WndCaption" Value="&amp;Finish"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Button</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickButton" InvokeKind="1" Priority="2000">
+<Description>Performs a single click on the specified button.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>92</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>25</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="414" Top="454" Right="506" Bottom="479">
+<SysNodeName MappedName="Button1" DefaultMappedName="Button">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="2"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Button"/>
+<MethodCallInfoParam Value="Cancel"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Button"/>
+<NameMappingProperty Name="WndCaption" Value="Cancel"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Button</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="ClickButton" InvokeKind="1" Priority="2000">
+<Description>Performs a single click on the specified button.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>92</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>25</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+</SysNode>
+</SysNode>
+</SysNode>
+<SysNode Left="442" Top="30" Right="517" Bottom="96">
+<SysNodeName MappedName="" DefaultMappedName="Label">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Label"/>
+<MethodCallInfoParam Value=""/>
+<MethodCallInfoParam Value="1"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Label"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+<NameMappingProperty Name="Index" Value="1"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Label</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>75</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>66</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="14" Top="38" Right="442" Bottom="55">
+<SysNodeName MappedName="" DefaultMappedName="Label">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Label"/>
+<MethodCallInfoParam Value="RhoMobile application generator wizard"/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Label"/>
+<NameMappingProperty Name="WndCaption" Value="RhoMobile application generator wizard"/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Label</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>428</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>17</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+<SysNode Left="19" Top="63" Right="442" Bottom="96">
+<SysNodeName MappedName="" DefaultMappedName="Text">
+<MethodCallInfo Name="Sys">
+</MethodCallInfo>
+<MethodCallInfo Name="Process">
+<MethodCallInfoParam Value="RhoStudio"/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Shell"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Composite"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+<MethodCallInfo Name="SWTObject">
+<MethodCallInfoParam Value="Text"/>
+<MethodCallInfoParam Value=""/>
+</MethodCallInfo>
+</SysNodeName>
+<NameMappingProperties>
+<NameMappingProperty Name="JavaFullClassName" Value="org.eclipse.swt.widgets.Text"/>
+<NameMappingProperty Name="WndCaption" Value=""/>
+</NameMappingProperties>
+<UserPriorityMethods>
+<UserPriorityMethod Name="JavaFullClassName" InvokeKind="2" Priority="50">
+<Value>org.eclipse.swt.widgets.Text</Value>
+<Description>The full name of the object's class.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetText" InvokeKind="1" Priority="1700">
+<Description>Enters text in the text editor.</Description>
+<Param Name="Text" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="wText" InvokeKind="2" Priority="2000">
+<Value> 
+ </Value>
+<Description>Contents of the edit control, as text string.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="wSelection" InvokeKind="2" Priority="1800">
+<Value></Value>
+<Description>Retrieves the selected text.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="SetFocus" InvokeKind="1" Priority="1100">
+<Description>Sets focus to the specified Window object.</Description>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Click" InvokeKind="1" Priority="1000">
+<Description>Simulates a left-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="ClickR" InvokeKind="1" Priority="800">
+<Description>Simulates a right-button single click in a window or control as specified (relative position, shift keys).</Description>
+<Param Name="ClientX" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="ClientY" VarType="3"><DefaultValue Value="-1"/></Param><Param Name="Shift" VarType="29"><DefaultValue Value="0"/></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Keys" InvokeKind="1" Priority="900">
+<Description>Simulates one or several keypresses.</Description>
+<Param Name="Keys" VarType="8"></Param></UserPriorityMethod>
+<UserPriorityMethod Name="Visible" InvokeKind="2" Priority="100">
+<Value>True</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Width" InvokeKind="2" Priority="110">
+<Value>423</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Height" InvokeKind="2" Priority="110">
+<Value>33</Value>
+</UserPriorityMethod>
+<UserPriorityMethod Name="Enabled" InvokeKind="2" Priority="120">
+<Value>True</Value>
+</UserPriorityMethod>
+</UserPriorityMethods>
+</SysNode>
+</SysNode>
+</SysNode>
+</SysNode>
+</SysNode>
+</SysNodeInfo>

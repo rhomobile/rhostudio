@@ -363,11 +363,284 @@
 			<Node name="rhostudio.mds">
 				<Prp name="relpath" type="S" value="RhoStudio.mds"/>
 			</Node>
+			<Node name="script\debuggertest01unit.sj">
+				<Prp name="relpath" type="S" value="Script\DebuggerTest01Unit.sj"/>
+			</Node>
+			<Node name="script\modeltestunit.sj">
+				<Prp name="relpath" type="S" value="Script\ModelTestUnit.sj"/>
+			</Node>
 			<Node name="script\script.tcscript">
 				<Prp name="relpath" type="S" value="Script\Script.tcScript"/>
 			</Node>
-			<Node name="script\unit1.sj">
-				<Prp name="relpath" type="S" value="Script\Unit1.sj"/>
+			<Node name="script\visualizer\debuggertest01unit_sj\debuggertest01unit.sj.tcvis">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\DebuggerTest01Unit.sj.tcVis"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi30641.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi30641.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi30641.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi30641.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306410.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306410.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306410.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306410.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306411.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306411.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306411.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306411.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306415.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306415.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306415.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306415.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306416.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306416.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306416.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306416.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306417.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306417.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306417.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306417.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306418.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306418.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306418.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306418.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306419.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306419.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306419.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306419.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306423.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306423.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306423.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306423.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306425.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306425.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306425.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306425.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306426.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306426.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306426.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306426.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306430.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306430.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306430.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306430.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306431.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306431.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306431.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306431.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306432.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306432.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306432.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306432.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306433.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306433.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306433.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306433.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306437.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306437.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306437.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306437.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306438.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306438.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306438.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306438.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306439.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306439.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306439.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306439.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306440.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306440.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306440.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306440.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306441.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306441.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306441.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306441.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306442.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306442.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi306442.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi306442.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi30647.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi30647.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi30647.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi30647.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi30649.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi30649.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi30649.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi30649.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi66680.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi66680.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi66680.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi66680.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi66681.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi66681.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi66681.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi66681.xml"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi66682.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi66682.png"/>
+			</Node>
+			<Node name="script\visualizer\debuggertest01unit_sj\tcvi66682.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\DebuggerTest01Unit_sj\tcvi66682.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\modeltestunit.sj.tcvis">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\ModelTestUnit.sj.tcVis"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52361.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52361.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52361.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52361.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523612.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523612.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523612.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523612.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523615.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523615.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523615.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523615.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523616.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523616.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523616.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523616.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523617.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523617.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523617.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523617.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523618.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523618.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523618.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523618.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523619.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523619.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523619.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523619.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523623.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523623.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523623.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523623.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523625.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523625.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523625.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523625.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523628.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523628.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523628.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523628.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523630.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523630.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523630.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523630.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523631.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523631.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523631.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523631.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523640.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523640.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523640.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523640.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523641.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523641.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523641.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523641.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523642.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523642.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi523642.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi523642.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52365.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52365.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52365.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52365.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52368.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52368.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52368.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52368.xml"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52369.png">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52369.png"/>
+			</Node>
+			<Node name="script\visualizer\modeltestunit_sj\tcvi52369.xml">
+				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52369.xml"/>
 			</Node>
 			<Node name="stores\stores.tcstores">
 				<Prp name="relpath" type="S" value="Stores\Stores.tcStores"/>
