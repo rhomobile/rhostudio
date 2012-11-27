@@ -1,1 +1,0 @@
-"C:\Program Files (x86)\SmartBear\TestComplete 9\Bin\TestComplete.exe" .\RhoStudio\RhoStudio.pjs /run /project:RhoStudio /exit /SilentMode /exportlog:test.mht
