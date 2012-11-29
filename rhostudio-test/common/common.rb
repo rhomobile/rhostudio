@@ -26,3 +26,12 @@ def getRhostudioSuitePath
 
   return File.absolute_path(findItem)
 end
+
+def killProgram(name)
+  begin 
+    command = 'taskkill /F /IM' + name
+    `#{command}`
+  rescue Exception => e
+    puts e.to_s
+  end  
+end
