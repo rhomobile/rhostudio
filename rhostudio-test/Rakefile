@@ -72,7 +72,9 @@ class Jake
 
       puts
       puts toPrint
-      exit 1 if !system(toRun)
+      exitCode = system(toRun)
+      exit 1 if !exitCode
+      return exitCode
   end
 end
 
@@ -114,7 +116,6 @@ namespace "autotest" do
     $silentInstallerFlag = "/S"
 
     $config = Jake.config(File.open($ymlFile))
-    puts $config.to_s
   end
 
   namespace "install" do
@@ -153,7 +154,7 @@ namespace "autotest" do
     Jake.run("shutdown /s /f /t 5")
   end
 
-  task :test => ["autotest:config", "autotest:install:rhostudio"] do
+  task :test do #=> ["autotest:config", "autotest:install:rhostudio"] do
   end
 
 end
