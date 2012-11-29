@@ -1,9 +1,14 @@
+require './common/common'
+require './common/jake'
 
 namespace "autotest" do
 
 namespace "ui" do
 
   def changeConfigToActualPath(configPath, path)
+    puts 'configPath-' + configPath
+    puts 'path-' + path
+
     config    = File.readlines(configPath)
     configOut = File.new(configPath, 'w+')
 
@@ -73,7 +78,14 @@ namespace "ui" do
   end
 
   task :run => ["autotest:ui:config"] do
-    #changeToActualPath($configFilePath, 'C:/MotorolaRhoMobileSuite2.2.1.12/rhostudio/win32.win32.x86_11111/')
+    chdir File.dirname(__FILE__)
+
+    configFilePath  = File.absolute_path(File.join(".", "RhoStudio", "RhoStudio", "TestedApps", "TestedApps.tcTAs"))
+    suiteActualPath = File.join(getRhostudioSuitePath, "rhostudio", "win32.win32.x86")
+    puts 'suiteActualPath='+suiteActualPath.to_s
+
+    changeConfigToActualPath(configFilePath, suiteActualPath)
+
     projectName = "RhoStudio"
     testsNames  = getTestsList
 
