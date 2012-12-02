@@ -1,9 +1,10 @@
 paths:
   testcomplete: "C:/Program Files (x86)/SmartBear/TestComplete 9/Bin/TestComplete.exe"
-  shared: "C:/Users/anton/Downloads"
-  rhostudio_ws: "C:/workspace11-4"
+  shared: "Z:/RhoStudioShare"
+  rhostudio_ws: "C:/Users/rhomobile/workspace"
   eclipse: ""
-
+  temp-folder: "c:/TEMP"
+  git: "C:/Program Files (x86)/Git"
 ui:
   
 unit:

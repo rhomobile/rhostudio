@@ -70,7 +70,7 @@ class Jake
       puts
       puts toPrint
       exitCode = system(toRun)
-      exit 1 if !exitCode
+      #exit 1 if !exitCode
       return exitCode
   end
 end

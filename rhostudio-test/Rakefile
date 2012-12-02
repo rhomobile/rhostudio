@@ -1,5 +1,6 @@
 require 'pathname'
 require 'yaml'
+require 'fileutils'
 require './common/common'
 require './common/jake'
 
@@ -24,11 +25,26 @@ namespace "autotest" do
   namespace "install" do
 
     task :rhostudio do
-      startPathTo = $config["paths"]["rhostudio"]
-      rmsTemplate = "RMS_*"
+      startPathTo = $config["paths"]["shared"]
+      tempPath    = $config["paths"]["temp-folder"]
+      rmsTemplate = "RMS_*.exe"
       pathTo      = getPathByTemplate(startPathTo, rmsTemplate)
 
-      Jake.run(File.join(pathTo, $silentInstallerFlag))
+      FileUtils.rm_rf tempPath
+      FileUtils.mkdir tempPath
+      FileUtils.cp pathTo, tempPath
+
+      pathTo = getPathByTemplate(tempPath, rmsTemplate)
+
+      if !pathTo.nil? && File.exist?(pathTo)
+        runCommand  = pathTo.to_s
+        runCommand += " "
+        runCommand += $silentInstallerFlag.to_s
+
+        Jake.run(runCommand)
+      else 
+        puts 'RMS not found'
+      end
     end
 
   end
@@ -36,14 +52,44 @@ namespace "autotest" do
   namespace "uninstall" do
 
     def runUnistall(pathToDir)
-      uninstallNameTemplate = "uninstall*"
+      uninstallNameTemplate = "unins*.exe"
       unItems               = getPathByTemplate(pathToDir, uninstallNameTemplate)
 
-      Jake.run(File.joun(unItems, $silentInstallerFlag))
+      runCommand  = unItems.to_s
+      runCommand += " "
+      runCommand += $silentInstallerFlag.to_s
+
+      Jake.run(runCommand)
     end
 
-    task :rhostudio do      
-      runUnistall getRhostudioSuitePath
+    task :git do
+      pathToUn = $config["paths"]["git"]
+
+      if !pathToUn.nil? && File.exist?(pathToUn)
+        runUnistall pathToUn
+      end
+    end
+
+    task :nodejs do
+      runCommand  = "C:/Windows/SysWOW64/msiexec.exe"
+      runCommand += " "
+      runCommand += "/qn"
+      runCommand += " "
+      runCommand += "/x"
+      runCommand += " "
+      runCommand += "{F2ED4FEE-55B6-4B16-B8F2-B7F9CF06354C}"
+
+      Jake.run(runCommand)
+    end
+
+    task :rhostudio => ["autotest:uninstall:git", "autotest:uninstall:nodejs"] do
+      pathToUn = getRhostudioSuitePath
+
+      if !pathToUn.nil? && File.exist?(pathToUn)
+        runUnistall pathToUn
+      else 
+        puts 'uninstall not found'
+      end     
     end
 
   end
@@ -52,7 +98,13 @@ namespace "autotest" do
     Jake.run("shutdown /s /f /t 5")
   end
 
-  task :run => ["autotest:config", "autotest:uninstall:rhostudio", "autotest:install:rhostudio", "autotest:ui:run"] do
+  task :install => ["autotest:config", "autotest:uninstall:rhostudio", "autotest:install:rhostudio"] do
+  end
+
+  task :run => ["autotest:config", "autotest:ui:run"] do
+  end
+
+  task :test  => ["autotest:config", "autotest:uninstall:git"] do
   end
 
 end
