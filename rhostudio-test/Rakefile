@@ -16,7 +16,7 @@ namespace "autotest" do
 
   def waitProcess(processName)
     while true do
-      pinfo = ProcessInfo.queryProcess('ruby')    
+      pinfo = ProcessInfo.queryProcess(processName.to_s)    
       
       if pinfo.nil? || pinfo.size == 0
         puts 'cancel waiting'
@@ -70,7 +70,7 @@ namespace "autotest" do
       uninstallNameTemplate = "unins*.exe"
       unItems               = getPathByTemplate(pathToDir, uninstallNameTemplate)
 
-      runCommand += unItems.to_s
+      runCommand  = unItems.to_s
       runCommand += " "
       runCommand += $silentInstallerFlag.to_s
 
