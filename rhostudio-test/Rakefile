@@ -3,6 +3,7 @@ require 'yaml'
 require 'fileutils'
 require './common/common'
 require './common/jake'
+require './common/pinfo'
 
 chdir File.dirname(__FILE__)
 
@@ -12,6 +13,20 @@ load File.join(pwd, 'unit-tests/rakefile')
 $rhostudioTemplate = ""
 
 namespace "autotest" do
+
+  def waitProcess(processName)
+    while true do
+      pinfo = ProcessInfo.queryProcess('ruby')    
+      
+      if pinfo.nil? || pinfo.size == 0
+        puts 'cancel waiting'
+        break
+      end
+    
+      puts 'wait 5 sec'
+      sleep 5
+    end
+  end
 
   task :config do
     puts 'start config'
@@ -55,11 +70,13 @@ namespace "autotest" do
       uninstallNameTemplate = "unins*.exe"
       unItems               = getPathByTemplate(pathToDir, uninstallNameTemplate)
 
-      runCommand  = unItems.to_s
+      runCommand += unItems.to_s
       runCommand += " "
       runCommand += $silentInstallerFlag.to_s
 
       Jake.run(runCommand)
+
+      waitProcess('Au_')
     end
 
     task :git do
@@ -98,13 +115,16 @@ namespace "autotest" do
     Jake.run("shutdown /s /f /t 5")
   end
 
-  task :install => ["autotest:config", "autotest:uninstall:rhostudio", "autotest:install:rhostudio"] do
+  task :uninstall => ["autotest:config", "autotest:uninstall:rhostudio"] do
+  end
+
+  task :install => ["autotest:config", "autotest:install:rhostudio"] do
   end
 
   task :run => ["autotest:config", "autotest:ui:run"] do
   end
 
-  task :test  => ["autotest:config", "autotest:uninstall:git"] do
+  task :test do
+ 
   end
-
 end
