@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Nodes [
+
+<!ENTITY % NameValue "CDATA">
+<!ENTITY % PropType "(I|S|D|L|H|B)">
+<!ENTITY % VersionValue "CDATA">
+
+<!ELEMENT Prp (#PCDATA)>
+<!ELEMENT Node (Node|Prp)*>
+<!ELEMENT Nodes (Node)+>
+
+<!ATTLIST Nodes version CDATA "1">
+
+<!ATTLIST Node name CDATA #REQUIRED>
+
+<!ATTLIST Prp name CDATA #REQUIRED>
+<!ATTLIST Prp type CDATA #REQUIRED>
+<!ATTLIST Prp value CDATA #REQUIRED>
+]>
+<Nodes version="1">
+	<Node name="root">
+		<Node name="children">
+			<Node name="child_0">
+				<Node name="children">
+					<Node name="child_1">
+						<Node name="children">
+							<Node name="child_1">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_1">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;qt_toolbar_ext_button&quot;)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;qt_toolbar_ext_button&quot;)"/>
+							</Node>
+							<Node name="child_0">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_2">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="2"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wChecked"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+									<Node name="property_3">
+										<Prp name="value" type="S" value=""/>
+										<Prp name="index" type="I" value="3"/>
+										<Prp name="type" type="I" value="2"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wText"/>
+									</Node>
+									<Node name="property_1">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 1)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 1)"/>
+							</Node>
+						</Node>
+						<Node name="properties">
+							<Node name="property_1">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Visible"/>
+							</Node>
+							<Node name="property_0">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Enabled"/>
+							</Node>
+						</Node>
+						<Prp name="group name" type="S" value=""/>
+						<Prp name="objecttype" type="I" value="0"/>
+						<Prp name="index" type="I" value="1"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="class name" type="S" value="QtObject(&quot;toolBar&quot;)"/>
+						<Prp name="name" type="S" value="QtObject(&quot;toolBar&quot;)"/>
+					</Node>
+					<Node name="child_0">
+						<Node name="children">
+							<Node name="child_2">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_2">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="2"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wChecked"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+									<Node name="property_3">
+										<Prp name="value" type="S" value=""/>
+										<Prp name="index" type="I" value="3"/>
+										<Prp name="type" type="I" value="2"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wText"/>
+									</Node>
+									<Node name="property_1">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="2"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 1)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 1)"/>
+							</Node>
+							<Node name="child_0">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_2">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="2"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wChecked"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+									<Node name="property_3">
+										<Prp name="value" type="S" value=""/>
+										<Prp name="index" type="I" value="3"/>
+										<Prp name="type" type="I" value="2"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wText"/>
+									</Node>
+									<Node name="property_1">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 3)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 3)"/>
+							</Node>
+							<Node name="child_1">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_2">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="2"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wChecked"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+									<Node name="property_3">
+										<Prp name="value" type="S" value=""/>
+										<Prp name="index" type="I" value="3"/>
+										<Prp name="type" type="I" value="2"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wText"/>
+									</Node>
+									<Node name="property_1">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 2)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;QToolButton&quot;, &quot;&quot;, 2)"/>
+							</Node>
+							<Node name="child_3">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_1">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="3"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;qt_toolbar_ext_button&quot;)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;qt_toolbar_ext_button&quot;)"/>
+							</Node>
+						</Node>
+						<Node name="properties">
+							<Node name="property_1">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Visible"/>
+							</Node>
+							<Node name="property_0">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Enabled"/>
+							</Node>
+						</Node>
+						<Prp name="group name" type="S" value=""/>
+						<Prp name="objecttype" type="I" value="0"/>
+						<Prp name="index" type="I" value="0"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="class name" type="S" value="QtObject(&quot;toolBarRight&quot;)"/>
+						<Prp name="name" type="S" value="QtObject(&quot;toolBarRight&quot;)"/>
+					</Node>
+					<Node name="child_2">
+						<Node name="children">
+							<Node name="child_0">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_2">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="2"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wChecked"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+									<Node name="property_3">
+										<Prp name="value" type="S" value=""/>
+										<Prp name="index" type="I" value="3"/>
+										<Prp name="type" type="I" value="2"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="category" type="S" value="Extended"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="wText"/>
+									</Node>
+									<Node name="property_1">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;qt_menubar_ext_button&quot;)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;qt_menubar_ext_button&quot;)"/>
+							</Node>
+						</Node>
+						<Node name="properties">
+							<Node name="property_1">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Visible"/>
+							</Node>
+							<Node name="property_0">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Enabled"/>
+							</Node>
+						</Node>
+						<Prp name="group name" type="S" value=""/>
+						<Prp name="objecttype" type="I" value="0"/>
+						<Prp name="index" type="I" value="2"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="class name" type="S" value="QtObject(&quot;menubar&quot;)"/>
+						<Prp name="name" type="S" value="QtObject(&quot;menubar&quot;)"/>
+					</Node>
+					<Node name="child_4">
+						<Node name="children"/>
+						<Node name="properties">
+							<Node name="property_1">
+								<Prp name="value" type="B" value="0"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Visible"/>
+							</Node>
+							<Node name="property_0">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Enabled"/>
+							</Node>
+						</Node>
+						<Prp name="group name" type="S" value=""/>
+						<Prp name="objecttype" type="I" value="0"/>
+						<Prp name="index" type="I" value="4"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="class name" type="S" value="QtObject(&quot;qt_rubberband&quot;)"/>
+						<Prp name="name" type="S" value="QtObject(&quot;qt_rubberband&quot;)"/>
+					</Node>
+					<Node name="child_3">
+						<Node name="children">
+							<Node name="child_1">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_1">
+										<Prp name="value" type="B" value="0"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;tabBar&quot;)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;tabBar&quot;)"/>
+							</Node>
+							<Node name="child_0">
+								<Node name="children"/>
+								<Node name="properties">
+									<Node name="property_1">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="1"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Visible"/>
+									</Node>
+									<Node name="property_0">
+										<Prp name="value" type="B" value="-1"/>
+										<Prp name="index" type="I" value="0"/>
+										<Prp name="type" type="I" value="3"/>
+										<Prp name="kind" type="I" value="0"/>
+										<Prp name="selected" type="B" value="-1"/>
+										<Prp name="basic" type="B" value="-1"/>
+										<Prp name="name" type="S" value="Enabled"/>
+									</Node>
+								</Node>
+								<Prp name="group name" type="S" value=""/>
+								<Prp name="objecttype" type="I" value="0"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="class name" type="S" value="QtObject(&quot;webView&quot;)"/>
+								<Prp name="name" type="S" value="QtObject(&quot;webView&quot;)"/>
+							</Node>
+						</Node>
+						<Node name="properties">
+							<Node name="property_1">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="1"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Visible"/>
+							</Node>
+							<Node name="property_0">
+								<Prp name="value" type="B" value="-1"/>
+								<Prp name="index" type="I" value="0"/>
+								<Prp name="type" type="I" value="3"/>
+								<Prp name="kind" type="I" value="0"/>
+								<Prp name="selected" type="B" value="-1"/>
+								<Prp name="basic" type="B" value="-1"/>
+								<Prp name="name" type="S" value="Enabled"/>
+							</Node>
+						</Node>
+						<Prp name="group name" type="S" value=""/>
+						<Prp name="objecttype" type="I" value="0"/>
+						<Prp name="index" type="I" value="3"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="class name" type="S" value="QtObject(&quot;centralWidget&quot;)"/>
+						<Prp name="name" type="S" value="QtObject(&quot;centralWidget&quot;)"/>
+					</Node>
+				</Node>
+				<Node name="properties">
+					<Node name="property_2">
+						<Prp name="value" type="S" value="RhoMobileApplication1"/>
+						<Prp name="index" type="I" value="2"/>
+						<Prp name="type" type="I" value="2"/>
+						<Prp name="kind" type="I" value="3"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="basic" type="B" value="-1"/>
+						<Prp name="name" type="S" value="WndCaption"/>
+					</Node>
+					<Node name="property_0">
+						<Prp name="value" type="B" value="-1"/>
+						<Prp name="index" type="I" value="0"/>
+						<Prp name="type" type="I" value="3"/>
+						<Prp name="kind" type="I" value="0"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="basic" type="B" value="-1"/>
+						<Prp name="name" type="S" value="Enabled"/>
+					</Node>
+					<Node name="property_1">
+						<Prp name="value" type="B" value="-1"/>
+						<Prp name="index" type="I" value="1"/>
+						<Prp name="type" type="I" value="3"/>
+						<Prp name="kind" type="I" value="0"/>
+						<Prp name="selected" type="B" value="-1"/>
+						<Prp name="basic" type="B" value="-1"/>
+						<Prp name="name" type="S" value="Visible"/>
+					</Node>
+				</Node>
+				<Prp name="group name" type="S" value=""/>
+				<Prp name="objecttype" type="I" value="1"/>
+				<Prp name="index" type="I" value="0"/>
+				<Prp name="selected" type="B" value="-1"/>
+				<Prp name="class name" type="S" value="QWidget"/>
+				<Prp name="name" type="S" value="QtObject(&quot;QtMainWindow&quot;)"/>
+			</Node>
+		</Node>
+		<Node name="properties"/>
+		<Prp name="group name" type="S" value=""/>
+		<Prp name="identifier" type="S" value="Stores.Objects"/>
+		<Prp name="objecttype" type="I" value="0"/>
+		<Prp name="selected" type="B" value="-1"/>
+		<Prp name="version" type="I" value="1"/>
+		<Prp name="class name" type="S" value=""/>
+		<Prp name="mode" type="I" value="6"/>
+		<Prp name="name" type="S" value=""/>
+	</Node>
+</Nodes>

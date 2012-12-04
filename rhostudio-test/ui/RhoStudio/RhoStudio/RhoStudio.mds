@@ -87,6 +87,9 @@
 			<Node name="keywordtests\modeltest01.tckdtest">
 				<Prp name="relpath" type="S" value="KeywordTests\ModelTest01.tcKDTest"/>
 			</Node>
+			<Node name="keywordtests\rhoelementstest01.tckdtest">
+				<Prp name="relpath" type="S" value="KeywordTests\RhoelementsTest01.tcKDTest"/>
+			</Node>
 			<Node name="keywordtests\visualizer\debuggertest01_tckdtest\debuggertest01.tckdtest.tcvis">
 				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\DebuggerTest01_tcKDTest\DebuggerTest01.tcKDTest.tcVis"/>
 			</Node>
@@ -356,6 +359,87 @@
 			</Node>
 			<Node name="keywordtests\visualizer\modeltest01_tckdtest\tcvi52369.xml">
 				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\ModelTest01_tcKDTest\tcvi52369.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\rhoelementstest01.tckdtest.tcvis">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\RhoelementsTest01.tcKDTest.tcVis"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi35720.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi35720.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi35720.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi35720.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi60281.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi60281.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi60281.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi60281.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi602810.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi602810.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi602810.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi602810.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi602818.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi602818.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi602818.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi602818.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi60287.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi60287.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi60287.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi60287.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi60289.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi60289.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi60289.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi60289.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi64800.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi64800.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi64800.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi64800.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71362.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71362.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71362.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71362.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71364.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71364.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71364.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71364.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71365.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71365.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71365.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71365.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71366.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71366.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71366.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71366.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71367.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71367.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71367.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71367.xml"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71368.png">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71368.png"/>
+			</Node>
+			<Node name="keywordtests\visualizer\rhoelementstest01_tckdtest\tcvi71368.xml">
+				<Prp name="relpath" type="S" value="KeywordTests\Visualizer\RhoelementsTest01_tcKDTest\tcvi71368.xml"/>
 			</Node>
 			<Node name="namemapping\namemapping.tcnm">
 				<Prp name="relpath" type="S" value="NameMapping\NameMapping.tcNM"/>
@@ -641,6 +725,12 @@
 			</Node>
 			<Node name="script\visualizer\modeltestunit_sj\tcvi52369.xml">
 				<Prp name="relpath" type="S" value="Script\Visualizer\ModelTestUnit_sj\tcvi52369.xml"/>
+			</Node>
+			<Node name="stores\objects.tcobjects">
+				<Prp name="relpath" type="S" value="Stores\Objects.tcObjects"/>
+			</Node>
+			<Node name="stores\objects\qtmainwindow.tcobject">
+				<Prp name="relpath" type="S" value="Stores\Objects\QtMainWindow.tcObject"/>
 			</Node>
 			<Node name="stores\stores.tcstores">
 				<Prp name="relpath" type="S" value="Stores\Stores.tcStores"/>

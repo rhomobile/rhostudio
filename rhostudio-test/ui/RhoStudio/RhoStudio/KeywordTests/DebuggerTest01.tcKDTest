@@ -96,7 +96,7 @@
 				</Data>
 			</Operation>
 			<Operation Type="{575D0372-CCEB-4D0F-AFE8-D2004F108913}">
-				<Data Description="Clicks the &apos;%n&apos; button." Action="ClickButton">
+				<Data Description="Performs a single click on the specified button." Action="ClickButton">
 					<ObjectSyntax LangId="{E42909F2-4390-4F5D-94B8-FABF59BABFCE}" Code="Aliases.RhoStudio.Shell6.Composite.Composite.Composite.Composite.Button;" />
 				</Data>
 			</Operation>

@@ -22,13 +22,21 @@
 		<Node name="child list">
 			<Node name="item0000000000">
 				<Node name="item data">
-					<Prp name="relpath" type="S" value="Objects.tcObjects"/>
+					<Node name="settings">
+						<Prp name="settingsversion" type="S" value="9.10"/>
+					</Node>
+					<Prp name="caption" type="S" value="QtMainWindow"/>
+					<Prp name="filename" type="S" value="Objects\QtMainWindow.tcObject"/>
+					<Prp name="id" type="S" value="{149E8E6F-2DCE-4935-8C4E-B9421DEA4F41}"/>
+					<Prp name="signature" type="S" value="{5EFCFFBB-0DF6-45A2-ADB2-4FD0BF2A280B}"/>
+					<Prp name="update" type="B" value="0"/>
+					<Prp name="version" type="S" value="9.0"/>
 				</Node>
 				<Prp name="index" type="I" value="0"/>
-				<Prp name="key" type="S" value="{BF64CB5A-75B4-4339-9323-C4C7CA1163BD}"/>
+				<Prp name="key" type="S" value="{149E8E6F-2DCE-4935-8C4E-B9421DEA4F41}"/>
 				<Prp name="pluginname" type="S" value="Stores"/>
-				<Prp name="type" type="S" value="{30501691-969F-4007-923F-BA4459E51E6A}"/>
-				<Prp name="typename" type="S" value="Objects"/>
+				<Prp name="type" type="S" value="{5EFCFFBB-0DF6-45A2-ADB2-4FD0BF2A280B}"/>
+				<Prp name="typename" type="S" value="Object"/>
 			</Node>
 		</Node>
 		<Node name="folders">
@@ -37,7 +45,7 @@
 		<Node name="settings">
 			<Prp name="settingsversion" type="S" value="9.10"/>
 		</Node>
-		<Prp name="signature" type="S" value="{5238AF17-5FE2-48FF-8BCC-9803A975A4F4}"/>
+		<Prp name="signature" type="S" value="{30501691-969F-4007-923F-BA4459E51E6A}"/>
 		<Prp name="version" type="S" value="9.0"/>
 	</Node>
 </Nodes>
