@@ -104,11 +104,11 @@
 					<Prp name="image file name" type="S" value="tcvi306411.png"/>
 					<Prp name="line #" type="I" value="9"/>
 					<Prp name="need update" type="B" value="0"/>
-					<Prp name="object bottom" type="I" value="-1"/>
-					<Prp name="object left" type="I" value="-1"/>
+					<Prp name="object bottom" type="I" value="479"/>
+					<Prp name="object left" type="I" value="316"/>
 					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell6.Composite.Composite.Composite.Composite.Button"/>
-					<Prp name="object right" type="I" value="-1"/>
-					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="object right" type="I" value="408"/>
+					<Prp name="object top" type="I" value="454"/>
 					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
 					<Prp name="storage file name" type="S" value="tcvi306411.xml"/>
 					<Prp name="version" type="I" value="1"/>

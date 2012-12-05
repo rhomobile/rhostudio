@@ -36,28 +36,12 @@
 				<Node name="workspace">
 					<Node name="0">
 						<Node name="editor">
-							<Node name="{8c45957c-f4b3-4dd7-9212-49cbd350f69f}">
-								<Prp name="key" type="S" value="{103D8CA8-4DDE-450A-97D4-C16826E0F02A}"/>
-							</Node>
-							<Node name="{90fe4d39-229d-4887-ac6f-07b02ce523fc}">
-								<Node name="main">
-									<Prp name="height" type="I" value="150"/>
-									<Prp name="minimized" type="B" value="-1"/>
-								</Node>
-								<Node name="tables">
-									<Prp name="active" type="S" value=""/>
-								</Node>
-								<Node name="toolbox">
-									<Prp name="active" type="S" value="Miscellaneous"/>
-								</Node>
-								<Prp name="key" type="S" value="{9CEE7252-C29A-4785-A43E-20280876F304}"/>
-							</Node>
-							<Prp name="editor" type="S" value="{93133B09-51BB-4203-AE05-6583413E2086}"/>
-							<Prp name="focused" type="S" value="{9CEE7252-C29A-4785-A43E-20280876F304}"/>
+							<Prp name="editor" type="S" value="{4FF2F062-FC29-421C-AE81-39364EF9C2B1}"/>
+							<Prp name="focused" type="S" value="{0E6826B7-9339-4671-9E5B-DD4352DA3055}"/>
 						</Node>
-						<Prp name="edititem" type="S" value="{8DC8ED5E-C066-4C84-B4E9-7EC69DCAE1A7}"/>
+						<Prp name="edititem" type="S" value="{25C37806-ADF4-46DA-8ACE-9899FCA45EC6}"/>
 					</Node>
-					<Prp name="docking" type="H" value="617162696E00000001000000D80100007801730C74F177F6E662800231205DC1C2C0F0890926828FEE6784C8DEF17EF6DEBDF5A3F3E2CEEB574ADFC87232860125988172BDFC359D472F7079746DE0CBD2BD5294DDFCFBFFFF2AA03890FA1F0652800A8016E307406D60700868FE09A052743E7EDD20D76E872AE1B4169EBC3B90D9691D6B6AB3A39D425B1BD049D38072DF80460621BB4C102818C490C190CF90CA9003C4B9409CC750C250CC100264150359060C86403534763BD4D9445300BF2F57A4"/>
+					<Prp name="docking" type="H" value="617162696E00000001000000CA0100007801730C74F177F6E662800231203D838D81E11B334C041FDDC80891BDE3FDECBD7BEB47E7C59DD7AF94BE91E564F4004A804C581BB9F38B78EF3FEFD5F61287F2924FC63D068A550171353B0343140B443312892982240962FE87824340F34F60E1A32947E3825CBB122A96F4E193BFE61F19A7758D96667E3F0F6D7C06149F06C46540978521BB031434C10C250C890C454052812100C84A6748058A22AB0272310165AEC5340FBF080079A64D61"/>
 					<Prp name="editorscount" type="I" value="1"/>
 					<Prp name="enabled" type="B" value="-1"/>
 				</Node>

@@ -130,7 +130,7 @@
 			<Operation Type="{6A1B4CEE-4FB8-46E2-BFBD-403C84342301}">
 				<Data Description="Delays the test execution for the specified time period.">
 					<Parameters LangId="{E42909F2-4390-4F5D-94B8-FABF59BABFCE}">
-						<Parameter Name="ms" DefVarType="3" VarType="3" ValueType="1" ValueValue="500" />
+						<Parameter Name="ms" DefVarType="3" VarType="3" ValueType="1" ValueValue="1000" />
 						<Parameter Name="Str" DefVarType="8" DefValueType="6" DefValueValue="" VarType="8" ValueType="6" ValueValue="" />
 					</Parameters>
 				</Data>
@@ -171,9 +171,10 @@
 				</Data>
 			</Operation>
 			<Operation Type="{575D0372-CCEB-4D0F-AFE8-D2004F108913}">
-				<Data Description="Clicks the %p1 item of the &apos;%n&apos; tree." Action="ClickItem">
+				<Data Description="Simulates a left-button single click in a window or control as specified (relative position, shift keys)." Action="Click">
 					<Parameters LangId="{E42909F2-4390-4F5D-94B8-FABF59BABFCE}">
-						<Parameter Name="Item" DefVarType="12" VarType="8" ValueType="6" ValueValue="|RhoMobileApplication1" />
+						<Parameter Name="ClientX" DefVarType="3" DefValueType="1" DefValueValue="-1" VarType="3" ValueType="1" ValueValue="50" />
+						<Parameter Name="ClientY" DefVarType="3" DefValueType="1" DefValueValue="-1" VarType="3" ValueType="1" ValueValue="5" />
 						<Parameter Name="Shift" DefVarType="12" DefValueType="1" DefValueValue="0" VarType="3" ValueType="1" ValueValue="0">
 							<Values IsEnum="True">
 								<Value Type="1" Value="0" Text="skNoShift" />
@@ -183,7 +184,7 @@
 							</Values>
 						</Parameter>
 					</Parameters>
-					<ObjectSyntax LangId="{E42909F2-4390-4F5D-94B8-FABF59BABFCE}" Code="Aliases.RhoStudio.Shell2.Composite.Composite.Composite.Composite.Tree;" />
+					<ObjectSyntax LangId="{E42909F2-4390-4F5D-94B8-FABF59BABFCE}" Code="Aliases.RhoStudio.Shell2.Composite.Composite.Composite_1.Composite.Tree;" />
 				</Data>
 			</Operation>
 			<Operation Type="{CE294ABA-E13B-4B94-AFC8-FA8F4249123D}">

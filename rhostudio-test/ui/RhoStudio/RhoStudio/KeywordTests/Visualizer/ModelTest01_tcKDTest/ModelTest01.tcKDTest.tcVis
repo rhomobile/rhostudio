@@ -199,11 +199,11 @@
 					<Prp name="image file name" type="S" value="tcvi523619.png"/>
 					<Prp name="line #" type="I" value="17"/>
 					<Prp name="need update" type="B" value="0"/>
-					<Prp name="object bottom" type="I" value="-1"/>
-					<Prp name="object left" type="I" value="-1"/>
-					<Prp name="object name" type="S" value="Aliases.RhoStudio.Shell2.Composite.Composite.Composite.Composite.Tree"/>
-					<Prp name="object right" type="I" value="-1"/>
-					<Prp name="object top" type="I" value="-1"/>
+					<Prp name="object bottom" type="I" value="562"/>
+					<Prp name="object left" type="I" value="15"/>
+					<Prp name="object name" type="S" value="Sys.Process(&quot;RhoStudio&quot;).SWTObject(&quot;Shell&quot;, &quot;RhoStudio - RhoStudio&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 5).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Composite&quot;, &quot;&quot;, 2).SWTObject(&quot;Composite&quot;, &quot;&quot;).SWTObject(&quot;Tree&quot;, &quot;&quot;)"/>
+					<Prp name="object right" type="I" value="259"/>
+					<Prp name="object top" type="I" value="133"/>
 					<Prp name="signature" type="S" value="{87B03792-E854-4F5D-9F33-165F1F874209}"/>
 					<Prp name="storage file name" type="S" value="tcvi523619.xml"/>
 					<Prp name="version" type="I" value="1"/>
@@ -269,8 +269,8 @@
 			</Node>
 			<Node name="item0000000013">
 				<Node name="data">
-					<Prp name="click point x" type="I" value="127"/>
-					<Prp name="click point y" type="I" value="150"/>
+					<Prp name="click point x" type="I" value="-1"/>
+					<Prp name="click point y" type="I" value="-1"/>
 					<Prp name="datetime" type="D" value="41239.7230787037"/>
 					<Prp name="image file name" type="S" value="tcvi523630.png"/>
 					<Prp name="line #" type="I" value="21"/>

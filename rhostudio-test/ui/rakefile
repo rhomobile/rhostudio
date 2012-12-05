@@ -90,8 +90,10 @@ namespace "ui" do
 
     testsNames.each { |testName|
       removeRhostudioWs
+      sleep(5)
       $testResult = runTestComplete(projectName, testName)   
-      killProgram('RhoStudio')
+      killProgram('RhoStudio*')
+      killProgram('RhoSimulator*')
     }
   end
 

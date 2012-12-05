@@ -115,10 +115,7 @@ namespace "autotest" do
     Jake.run("shutdown /s /f /t 5")
   end
 
-  task :uninstall => ["autotest:config", "autotest:uninstall:rhostudio"] do
-  end
-
-  task :install => ["autotest:config", "autotest:install:rhostudio"] do
+  task :install => ["autotest:config", "autotest:uninstall:rhostudio", "autotest:install:rhostudio"] do
   end
 
   task :run => ["autotest:config", "autotest:ui:run"] do
