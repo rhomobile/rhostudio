@@ -87,6 +87,7 @@ namespace "ui" do
 
     projectName = "RhoStudio"
     testsNames  = getTestsList
+    $testResult = false
 
     testsNames.each { |testName|
       removeRhostudioWs
@@ -95,6 +96,10 @@ namespace "ui" do
       killProgram('RhoStudio*')
       killProgram('RhoSimulator*')
     }
+
+    if $testResult == false
+      exit 1
+    end
   end
 
 end #end of 'ui'
