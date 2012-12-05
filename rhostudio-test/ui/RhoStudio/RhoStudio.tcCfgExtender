@@ -34,16 +34,7 @@
 			</Node>
 			<Node name="{415b5aa1-c6ac-4d4d-9a53-063a521a45ab}">
 				<Node name="workspace">
-					<Node name="0">
-						<Node name="editor">
-							<Prp name="editor" type="S" value="{4FF2F062-FC29-421C-AE81-39364EF9C2B1}"/>
-							<Prp name="focused" type="S" value="{0E6826B7-9339-4671-9E5B-DD4352DA3055}"/>
-						</Node>
-						<Prp name="edititem" type="S" value="{25C37806-ADF4-46DA-8ACE-9899FCA45EC6}"/>
-					</Node>
-					<Prp name="docking" type="H" value="617162696E00000001000000CA0100007801730C74F177F6E662800231203D838D81E11B334C041FDDC80891BDE3FDECBD7BEB47E7C59DD7AF94BE91E564F4004A804C581BB9F38B78EF3FEFD5F61287F2924FC63D068A550171353B0343140B443312892982240962FE87824340F34F60E1A32947E3825CBB122A96F4E193BFE61F19A7758D96667E3F0F6D7C06149F06C46540978521BB031434C10C250C890C454052812100C84A6748058A22AB0272310165AEC5340FBF080079A64D61"/>
-					<Prp name="editorscount" type="I" value="1"/>
-					<Prp name="enabled" type="B" value="-1"/>
+					<Prp name="editorscount" type="I" value="0"/>
 				</Node>
 			</Node>
 			<Node name="{78a745b3-10ae-4253-9f16-55a8bcaf43c6}">
