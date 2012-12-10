@@ -77,7 +77,7 @@ namespace "ui" do
     rm_rf wsDir 
   end
 
-  task :run => ["autotest:ui:config"] do
+  def runTest(testName)
     chdir File.dirname(__FILE__)
 
     configFilePath  = File.absolute_path(File.join(".", "RhoStudio", "RhoStudio", "TestedApps", "TestedApps.tcTAs"))
@@ -87,14 +87,41 @@ namespace "ui" do
 
     projectName = "RhoStudio"
     testsNames  = getTestsList
+    testResult = false
+
+    removeRhostudioWs
+    sleep(5)
+    testResult = runTestComplete(projectName, testName)   
+    killProgram('RhoStudio*')
+    killProgram('RhoSimulator*')
+
+    return testResult
+  end
+
+  task :run_once => ["autotest:ui:config"] do
+    $testResult = runTest(ENV['test'])
+
+    if $testResult == false
+      puts 'Test ' + testName + ' was broken'
+      exit 1
+    else
+      puts 'Test ' + testName + ' was successfuly finished'
+      exit 0
+    end
+  end
+
+  task :run => ["autotest:ui:config"] do
+    testsNames  = getTestsList
     $testResult = false
 
     testsNames.each { |testName|
-      removeRhostudioWs
-      sleep(5)
-      $testResult = runTestComplete(projectName, testName)   
-      killProgram('RhoStudio*')
-      killProgram('RhoSimulator*')
+      $testResult = runTest(testName)
+
+      if $testResult == false
+        puts 'Test ' + testName + ' was broken'
+      else
+        puts 'Test ' + testName + ' was successfully finished'
+      end
     }
 
     if $testResult == false

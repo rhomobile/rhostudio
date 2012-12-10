@@ -1,6 +1,7 @@
 require 'pathname'
 require 'yaml'
 require 'fileutils'
+
 require './common/common'
 require './common/jake'
 require './common/pinfo'
@@ -118,10 +119,10 @@ namespace "autotest" do
   task :install => ["autotest:config", "autotest:uninstall:rhostudio", "autotest:install:rhostudio"] do
   end
 
+  task :run_once => ["autotest:config", "autotest:ui:run_once"] do
+  end
+
   task :run => ["autotest:config", "autotest:ui:run"] do
   end
 
-  task :test do
- 
-  end
 end
