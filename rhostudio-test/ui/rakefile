@@ -24,6 +24,7 @@ namespace "ui" do
   end
  
   task :config => ["autotest:config"] do
+    $reportsPath = $config["ui"]["reports"]
   end
 
   def decorateQutes(path)
@@ -64,8 +65,8 @@ namespace "ui" do
     cmdLine += '/project:' + project
     cmdLine += " "
     cmdLine += '/test:' + decorateQutes('KeywordTests|' + test)
-    #cmdLine += " "
-    #cmdLine += '/exportlog:' + reportFile
+    cmdLine += " "
+    cmdLine += '/exportlog:' + File.join($reportsPath, test, reportFile)
     cmdLine += " "
     cmdLine += '/ns'
 
@@ -87,7 +88,7 @@ namespace "ui" do
 
     projectName = "RhoStudio"
     testsNames  = getTestsList
-    testResult = false
+    testResult  = false
 
     removeRhostudioWs
     sleep(5)

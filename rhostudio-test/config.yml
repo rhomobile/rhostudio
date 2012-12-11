@@ -5,6 +5,8 @@ paths:
   eclipse: ""
   temp-folder: "c:/TEMP"
   git: "C:/Program Files (x86)/Git"
+
 ui:
+  reports: "c:/TEMP"
   
 unit:
