@@ -2,6 +2,7 @@ package rhogenwizard.editors;
 
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -28,6 +29,8 @@ import org.eclipse.ui.*;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.editors.text.TextEditor;
+
+import rhogenwizard.PlatformType;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
@@ -209,15 +212,16 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 		applyChanges();
 	}
 
-	private void showCapabilitiesText(List<String> capList)
+	private void showCapabilitiesText(List<Capabilities> capList)
 	{
 		if (capList != null)
 		{
 			StringBuilder sb = new StringBuilder();
 			
-			for (String s : capList) 
+			for (Capabilities s : capList) 
 			{
-				sb.append(s);
+				
+				sb.append(s.toString());
 				sb.append(", ");
 			}
 			
@@ -265,10 +269,6 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 		}
 	}
 
-	/**
-	 * Creates page 1 of the multi-page editor,
-	 * which allows you to change the font used in page 2.
-	 */
 	void createPage1() 
 	{
 		try 
@@ -283,9 +283,6 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 		}
 	}
 	
-	/**
-	 * Creates the pages of the multi-page editor.
-	 */
 	protected void createPages() 
 	{
 		if (getFileName().equals(AppYmlFile.configFileName))
@@ -295,40 +292,23 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 		
 		createPage1();
 	}
-	
-	/**
-	 * The <code>MultiPageEditorPart</code> implementation of this 
-	 * <code>IWorkbenchPart</code> method disposes all nested editors.
-	 * Subclasses may extend.
-	 */
+
 	public void dispose() 
 	{
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		super.dispose();
 	}
-	
-	/**
-	 * Saves the multi-page editor's document.
-	 */
+
 	public void doSave(IProgressMonitor monitor)
 	{
 		m_editor.doSave(monitor);
 	}
 	
-	/**
-	 * Saves the multi-page editor's document as another file.
-	 * Also updates the text for page 0's tab, and updates this multi-page editor's input
-	 * to correspond to the nested editor's.
-	 */
 	public void doSaveAs() 
 	{
 		doSave(null);
 	}
 	
-	/**
-	 * The <code>MultiPageEditorExample</code> implementation of this method
-	 * checks that the input is an instance of <code>IFileEditorInput</code>.
-	 */
 	@SuppressWarnings("deprecation")
     public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException 
 	{
@@ -347,10 +327,7 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 	{
 		return false;
 	}
-	
-	/**
-	 * Calculates the contents of page 2 when the it is activated.
-	 */
+
 	protected void pageChange(int newPageIndex) 
 	{
 		super.pageChange(newPageIndex);

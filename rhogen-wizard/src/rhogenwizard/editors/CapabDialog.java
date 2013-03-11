@@ -17,50 +17,39 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import rhogenwizard.buildfile.AppYmlFile;
 
+import rhogenwizard.buildfile.AppYmlFile;
 
 public class CapabDialog extends Dialog 
 {
-	 List<String> capabList = null;
+	List<Capabilities> capabList = null;
 
-	 private static final int buttonWidht = 60;
-	 private static final String[] capabTypes = {
-		 "gps",
-		 "pim",
-		 "camera",
-		 "vibrate",
-		 "phone",
-		 "bluetooth",
-		 "calendar",
-		 "non_motorola_device",
-		 "native_browser",
-		 "motorola_browser",
-	 };
+ 	private static final int buttonWidht = 60;
 	 
-	  private Table      m_capabTable = null;
-	  private AppYmlFile m_ymlFile = null;
-	  /**
-	   * @param parent
-	   */
-	  public CapabDialog(Shell parent, AppYmlFile ymlFile) 
-	  {
-		  super(parent);
+	private Table      m_capabTable = null;
+	private AppYmlFile m_ymlFile = null;
+	
+	/**
+	 * @param parent
+	 */
+	public CapabDialog(Shell parent, AppYmlFile ymlFile) 
+	{
+		super(parent);
 		  
-		  m_ymlFile = ymlFile;
-	  }
-
-	  /**
-	   * @param parent
-	   * @param style
-	   */
-	  public CapabDialog(Shell parent, int style) 
-	  {
-		  super(parent, style);
-	  }
-
-	  public List<String> open() 
-	  {
+		m_ymlFile = ymlFile;
+	}
+	
+	/**
+	 * @param parent
+	 * @param style
+	 */
+	public CapabDialog(Shell parent, int style) 
+	{
+		super(parent, style);
+	}
+	
+	public List<Capabilities> open() 
+	{
 		  Shell parent = getParent();
 		  final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
 		  shell.setText("Select capabilities");
@@ -122,11 +111,14 @@ public class CapabDialog extends Dialog
 		  });
 		
 		  // init
-		  List<String> selCapabList = null;
+		  List<Capabilities> selCapabList = null;
 		  
-		  if (m_ymlFile != null) {
+		  if (m_ymlFile != null) 
+		  {
 			  selCapabList = m_ymlFile.getCapabilities();
 		  }
+		  
+		  String[] capabTypes = Capabilities.getPublicIds();
 		  
 		  for (int i = 0; i < capabTypes.length; i++) 
 		  {
@@ -135,11 +127,19 @@ public class CapabDialog extends Dialog
 			  TableItem item = new TableItem(m_capabTable, SWT.NONE);
 			  item.setText(currItemText);
 			  
-			  if (selCapabList != null) {
-				  item.setChecked(selCapabList.contains(currItemText));
+			  if (selCapabList != null) 
+			  {
+				  for (Capabilities c : selCapabList)
+				  {
+					  if (c == Capabilities.fromId(currItemText))
+					  {
+						  item.setChecked(true);
+						  break;
+					  }
+				  }
 			  }
 		  }
-
+		
 		  // show dialog
 		  shell.pack();
 		  shell.open();
@@ -148,22 +148,22 @@ public class CapabDialog extends Dialog
 		    
 		  while (!shell.isDisposed()) 
 		  {
-			      if (!display.readAndDispatch())
-			        display.sleep();
+			if (!display.readAndDispatch())
+				display.sleep();
 		  }
-		
+			
 		  return capabList;
 	}
-
+	
 	protected void nandleCancel(Event event) 
 	{
 		capabList = null;	
 	}
-
+	
 	protected void handleOk(Event event) 
 	{
 		int itemsCount = m_capabTable.getItemCount();
-		capabList = new ArrayList<String>();
+		capabList = new ArrayList<Capabilities>();
 		
 		for (int i=0; i<itemsCount; ++i)
 		{
@@ -171,7 +171,7 @@ public class CapabDialog extends Dialog
 			
 			if (item.getChecked())
 			{
-				capabList.add(item.getText());
+				capabList.add(Capabilities.fromId(item.getText()));
 			}
 		}
 	}	

@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 
+import rhogenwizard.PlatformType;
 import rhogenwizard.RunExeHelper;
+import rhogenwizard.editors.Capabilities;
 
 public final class AppYmlFile extends YmlFile 
 {
@@ -90,9 +92,21 @@ public final class AppYmlFile extends YmlFile
 		super.set("sdk", sdkPath);
 	}
 	
-	public void setCapabilities(List<String> capList)
-	{
-		super.set("capabilities", capList);
+	public void setCapabilities(List<Capabilities> capList)
+	{	
+		List<String> allPlatfromCapabilities = new ArrayList<String>();
+		List<String> androidCapabilities     = new ArrayList<String>();
+		
+		for(Capabilities c : capList)
+		{
+			if (c.platformId == PlatformType.eUnknown)
+				allPlatfromCapabilities.add(c.toString());
+			else
+				androidCapabilities.add(c.toString());
+		}
+		 
+		super.set("capabilities", allPlatfromCapabilities);		
+		super.set("android", "capabilities", androidCapabilities);
 	}
 	
 	public List<String> getGeneralExtension()
@@ -110,9 +124,17 @@ public final class AppYmlFile extends YmlFile
 		super.set("extensions", extList);
 	}
 	
-	public List<String> getCapabilities()
+	public List<Capabilities> getCapabilities()
 	{
-		return (List<String>)super.getObject("capabilities");
+		List<String> rawList     = (List<String>)super.getObject("capabilities");
+		List<String> androidList = (List<String>)super.getObject("android", "capabilities");
+		
+		if (androidList != null)
+		{
+			rawList.addAll(androidList);
+		}
+		
+		return Capabilities.getCapabilitiesList(rawList);
 	}
 	
 	public String getAppName()

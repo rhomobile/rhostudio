@@ -201,6 +201,16 @@ public class YmlFile
 		m_dataStorage.put(sectionName, value);
 	}
 	
+	public void set(String mainSection, String paramName, Object value) 
+	{
+		Map mSection = (Map<?, ?>) m_dataStorage.get(mainSection);
+		
+		if (null != mSection)
+		{
+			mSection.put(paramName, value);
+		}
+	}
+		
 	public void save()
 	{
 		try 
