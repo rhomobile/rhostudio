@@ -125,6 +125,7 @@ public class AppWizard extends BaseAppWizard
      */
     private void doFinish(BuildInfoHolder infoHolder, IProgressMonitor monitor)
     {
+    	// comment for SPR 23611
 //    	if (!infoHolder.isProjectPathValid())
 //    	{
 //    		DialogUtils.error("Error", "You can't create application on path with spaces. Change applicaiton name or path to workspace.");
