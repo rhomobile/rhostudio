@@ -221,13 +221,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			setupConfigAttributes(configuration);
 			
 			PlatformType currPlType = PlatformType.fromId(m_platformType);
-			
-			// stop blackberry simulator
-			if (OSHelper.isWindows() && currPlType == PlatformType.eBb)
-			{
-				RunExeHelper.killBbSimulator();
-			}
-	
+				
 			if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
 			{
 				throw new IllegalArgumentException("Platform and project name should be assigned");

@@ -109,15 +109,15 @@ public class LogFileHelper implements ILogFileHelper
 		{
 			rhoSimLog(project);
 		}
-		else
-		{
-			switch(m_platformName)
-			{
-			case eBb:
-				bbLog(project);
-				break;
-			}
-		}
+//		else
+//		{
+//			switch(m_platformName)
+//			{
+//			case eBb:
+//				bbLog(project);
+//				break;
+//			}
+//		}
 	}
 	
 	public void startLog(PlatformType platformName, IProject project, RunType runType) throws Exception
@@ -138,9 +138,6 @@ public class LogFileHelper implements ILogFileHelper
 				break;
 			case eAndroid:
 				adnroidLog(project);
-				break;
-			case eBb:
-				waitBbLog(project, runType);
 				break;
 			case eIPhone:
 				iphoneLog(project);

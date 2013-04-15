@@ -18,7 +18,6 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
         if (runType == RunType.eDevice)
             switch (platformType) {
             case eIPhone:
-            case eBb:
             default:
                 task = "run:" + platformType.id + ":device";
                 break;

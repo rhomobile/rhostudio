@@ -8,10 +8,8 @@ public enum PlatformType
     eWm("wm", "Windows Mobile"),
     eWCE("wince", "Windows CE"),
     eAndroid("android", "Android"),
-    eBb("bb", "BlackBerry"),
     eIPhone("iphone", "iPhone"),
-    eWp7("wp", "Windows Phone"),
-    eSymbian("symbian", "Symbian"),
+    eWp7("wp8", "Windows Phone"),    
     eWin32("win32", "Win32"),
     eRsync("", null),
     eUnknown(null, null);

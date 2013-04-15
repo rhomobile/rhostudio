@@ -291,27 +291,11 @@ public class ParametersTab extends  JavaLaunchTab
 					m_ymlFile.save();
 					showApplyButton();
 				}
-				else if (selProjectPlatform.equals(PlatformType.eBb.id))
-				{
-					String sdkPath = m_ymlFile.getSdkConfigPath();
-					String bbVer   = m_ymlFile.getBlackberryVer();
-					
-					Integer simVer = new Integer(emuName);
-					
-					SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
-					sdkFile.setBbSimPort(bbVer, simVer);
-					sdkFile.save();
-					showApplyButton();
-				}
 			} 
 			catch (NumberFormatException e)
 			{
 				e.printStackTrace();
 			}
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			} 
 			catch (CoreException e) 
 			{
 				e.printStackTrace();
@@ -368,11 +352,6 @@ public class ParametersTab extends  JavaLaunchTab
 				
 				m_androidEmuNameLabel.setText("AVD name");
 				m_adroidEmuNameText.setText(emuName);
-			}
-			else if (selProjectPlatform.equals(PlatformType.eBb.id))
-			{
-				showAndroidEmuName(true);
-				showBbEmuName();
 			}
 		}
 		catch (CoreException e) 
@@ -514,11 +493,6 @@ public class ParametersTab extends  JavaLaunchTab
 				{
 					m_ymlFile = AppYmlFile.createFromProject(m_selProject);
 				}
-
-				if (selProjectPlatform.equals(PlatformType.eBb.id) && m_ymlFile != null)
-				{
-					showBbEmuName();
-				}
 			}
 			
 			setPlatformCombo(selProjectPlatform);
@@ -583,15 +557,6 @@ public class ParametersTab extends  JavaLaunchTab
 					
                     m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selAndroidVer));
 				}
-			}
-			else if (selProjectPlatform.equals(PlatformType.eBb.id))
-			{
-                m_selectPlatformVersionCombo.setItems(getBbVersions()); 
-
-                showVersionCombo(true);
-				showAndroidEmuName(true);
-				
-                m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selBlackBarryVer));
 			}
 			else if (selProjectPlatform.equals(PlatformType.eIPhone.id))
 			{
@@ -716,14 +681,6 @@ public class ParametersTab extends  JavaLaunchTab
 				m_configuration.setAttribute(ConfigurationConstants.androidVersionAttribute, selVersion);
 				m_ymlFile.setAndroidVer(selVersion);
 				m_ymlFile.save();
-			}
-			else if (type == PlatformType.eBb)
-			{
-				m_configuration.setAttribute(ConfigurationConstants.blackberryVersionAttribute, selVersion);
-				m_ymlFile.setBbVer(selVersion);
-				m_ymlFile.save();
-				
-				showBbEmuName();
 			}
 			else if (type == PlatformType.eIPhone)
 			{

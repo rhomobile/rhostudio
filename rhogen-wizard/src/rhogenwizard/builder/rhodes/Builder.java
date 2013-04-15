@@ -37,7 +37,6 @@ public class Builder extends IncrementalProjectBuilder
         {
             switch (platformType)
             {
-            case eSymbian:
             case eRsync:
             case eUnknown:
                 continue;
