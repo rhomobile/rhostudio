@@ -18,7 +18,9 @@ public enum Capabilities
 	eNoMotoDevice("non_motorola_device", PlatformType.eUnknown),
 	eNativeBrowser("native_browser", PlatformType.eUnknown),
 	eMotoBrowser("motorola_browser", PlatformType.eUnknown),
-	eHardAccelerate("hardware_acceleration", PlatformType.eAndroid);
+	eHardAccelerate("hardware_acceleration", PlatformType.eAndroid),
+        eNetWorkState("network_state",PlatformType.eAndroid),
+	eSDCard("sdcard",PlatformType.eAndroid);
 	
 	public final String       publicId;
 	public final PlatformType platformId;
