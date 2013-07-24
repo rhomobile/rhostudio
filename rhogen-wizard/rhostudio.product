@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RhoStudio" uid="rhostudio_id" id="com.rhomobile.rhostudio.rhostudio_id" application="org.eclipse.ui.ide.workbench" version="2.0.0.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="RhoStudio" uid="rhostudio_id" id="com.rhomobile.rhostudio.rhostudio_id" application="org.eclipse.ui.ide.workbench" version="4.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/RhogenWizard/icons/about_rhostudio.png"/>
@@ -97,7 +97,7 @@
       <plugin id="org.eclipse.dltk.core.index"/>
       <plugin id="org.eclipse.dltk.core.index.sql"/>
       <plugin id="org.eclipse.dltk.core.index.sql.h2"/>
-      <plugin id="org.eclipse.dltk.core.manipulation"/>
+      <plugin id="org.eclipse.dltk.core.manipulation" fragment=""/>
       <plugin id="org.eclipse.dltk.core.source"/>
       <plugin id="org.eclipse.dltk.debug"/>
       <plugin id="org.eclipse.dltk.debug.ui"/>
@@ -106,7 +106,7 @@
       <plugin id="org.eclipse.dltk.itcl.core"/>
       <plugin id="org.eclipse.dltk.itcl.ui"/>
       <plugin id="org.eclipse.dltk.javascript.core"/>
-      <plugin id="org.eclipse.dltk.javascript.core.manipulation"/>
+      <plugin id="org.eclipse.dltk.javascript.core.manipulation" fragment=""/>
       <plugin id="org.eclipse.dltk.javascript.debug"/>
       <plugin id="org.eclipse.dltk.javascript.debug.ui"/>
       <plugin id="org.eclipse.dltk.javascript.formatter"/>
