@@ -34,6 +34,8 @@ import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.sdk.task.CleanPlatformTask;
+import rhogenwizard.sdk.task.RubyDebugTask;
+import rhogenwizard.sdk.task.RubyTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
@@ -125,6 +127,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			{
 				try 
 				{
+					ConsoleHelper.getBuildConsole().show();
+					
 				    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
 					stream.println("build started");
 					
@@ -137,9 +141,9 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					    releaseBuild(project, type);
 					}
 					
-					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, type);
+					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, type);		
 					
-	                ConsoleHelper.getAppConsole().show();
+					ConsoleHelper.getAppConsole().show();
 				} 
 				catch (FailBuildExtension e) 
 				{
@@ -168,10 +172,10 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, currProject.getLocation().toOSString(),
+		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, selType, currProject.getLocation().toOSString(),
 		    currProject.getName(), PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace,
 		    m_startPathOverride, m_wmSdkVersion, m_additionalRubyExtensions);
-		task.run();
+		task.run(); //.exec();
 		return task.getDebugProcess();
 	}
 	

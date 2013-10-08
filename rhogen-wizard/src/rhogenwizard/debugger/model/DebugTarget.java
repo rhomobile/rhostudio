@@ -14,6 +14,7 @@ package rhogenwizard.debugger.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -230,6 +231,13 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
         while (m_debugServer.debugIsProcessing())
         {
         }
+        
+        try {
+			Thread.currentThread().sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public boolean isSuspended()
@@ -492,7 +500,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
         {
             try
             {
-                stackData.m_currVariables = m_debugServer.debugWatchList();
+                stackData.m_currVariables = new ArrayList<rhogenwizard.debugger.backend.DebugVariable>(); //m_debugServer.debugWatchList();
                 theFrames[0] = new DebugStackFrame(m_threadHandle, stackData, 0);
                 break;
             }

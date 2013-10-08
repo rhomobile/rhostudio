@@ -515,18 +515,18 @@ public class ParametersTab extends  JavaLaunchTab
 	
 	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
 	{
-		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
-		{
-			m_platformTypeCombo.setEnabled(false);
-			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
-		}
-		else
-		{
+//		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
+//		{
+//			m_platformTypeCombo.setEnabled(false);
+//			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
+//		}
+//		else
+//		{
 			String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
 			m_platformTypeCombo.setEnabled(true);
             m_platformTypeCombo.select(m_platformTypeCombo.indexOf(platformType));
-		}
+//		}
 	}
 	
 	protected void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 
