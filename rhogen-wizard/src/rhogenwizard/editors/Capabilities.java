@@ -62,7 +62,9 @@ public class Capabilities
         {
             for (String pt : capabList) 
             {
-                list.add(Capabilities.fromId(pt));
+            	Capabilities temp = Capabilities.fromId(pt);
+            	if(list.indexOf(temp) == -1)
+            		list.add(Capabilities.fromId(pt));
             }
         }
         
