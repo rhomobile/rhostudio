@@ -25,9 +25,9 @@ public class RubyDebugTask extends RubyTask
     {
         super(workDir, decorator, args);
 
-        m_launch = launch;
+        m_launch  = launch;
         m_appName = appName;
-        m_console = ConsoleHelper.getAppConsole();
+        m_console = ConsoleHelper.getBuildConsole();
 
         m_debugProcess = null;
     }
@@ -44,7 +44,7 @@ public class RubyDebugTask extends RubyTask
     }
 
     @Override
-    protected void exec()
+    public void exec()
     {
         m_console.show();
         m_console.getStream().print(showCommand());

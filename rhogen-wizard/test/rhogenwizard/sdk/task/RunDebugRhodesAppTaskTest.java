@@ -218,12 +218,12 @@ public class RunDebugRhodesAppTaskTest
 
             // run debug Rhodes application [android] [rhosimulator]
             {
-                ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
-
-                RunTask task = new RunDebugRhodesAppTask(launch, projectLocation, appName,
-                    PlatformType.eAndroid, false, false, null, null, null);
-                task.run();
-                assertTrue(task.isOk());
+//                ILaunch launch = new Launch(null, ILaunchManager.DEBUG_MODE, null);
+//
+//                RunTask task = new RunDebugRhodesAppTask(launch, projectLocation, appName,
+//                    PlatformType.eAndroid, false, false, null, null, null);
+//                task.run();
+//                assertTrue(task.isOk());
             }
 
             suspend("connected");

@@ -14,6 +14,7 @@ package rhogenwizard.debugger.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -38,6 +39,8 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 import rhogenwizard.ConsoleHelper;
+import rhogenwizard.PlatformType;
+import rhogenwizard.RunType;
 import rhogenwizard.ShowOnlyHidePerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
@@ -52,6 +55,7 @@ import rhogenwizard.debugger.model.selector.ResourceNameSelector;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 import rhogenwizard.project.extension.BadProjectTagException;
+import rhogenwizard.sdk.task.StopRhodesAppTask;
 import rhogenwizard.sdk.task.StopSyncAppTask;
 
 /**
@@ -80,18 +84,23 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
     private IThread[]          m_allThreads    = null;
 
     private static DebugServer m_debugServer   = null;
+    
+    private RunType            m_runType;
+    private PlatformType       m_platformType;
 
-    public DebugTarget(ILaunch launch, IProcess process, IProject debugProject)
+    public DebugTarget(ILaunch launch, IProcess process, IProject debugProject, RunType runType, PlatformType platformType)
     {
         super(null);
 
-        m_debugProject = debugProject;
-        m_launchHandle = launch;
-        m_debugTarget = this;
+        m_platformType  = platformType;
+        m_runType       = runType;
+        m_debugProject  = debugProject;
+        m_launchHandle  = launch;
+        m_debugTarget   = this;
         m_processHandle = process;
 
-        m_threadHandle = new DebugThread(this);
-        m_allThreads   = new IThread[] { m_threadHandle };
+        m_threadHandle  = new DebugThread(this);
+        m_allThreads    = new IThread[] { m_threadHandle };
 
         DebugServer.setDebugOutputStream(System.out);
 
@@ -198,6 +207,12 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
             {
                 new StopSyncAppTask().run();
             }
+            else if (m_runType == RunType.eDevice || m_runType == RunType.eEmulator)
+            {
+            	String workDir = m_debugProject.getLocation().makeAbsolute().toString();
+            	
+            	new StopRhodesAppTask(workDir, m_platformType, m_runType).run();
+            }
 
             if (m_processHandle != null)
             {
@@ -227,9 +242,19 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
 
     private void waitDebugProcessing()
     {
-        while (m_debugServer.debugIsProcessing())
+        try 
         {
-        }
+	    	while (m_debugServer.debugIsProcessing())
+	        {
+	        }
+	        
+			Thread.currentThread();
+			Thread.sleep(100);
+		}
+        catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
     }
 
     public boolean isSuspended()
@@ -492,7 +517,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
         {
             try
             {
-                stackData.m_currVariables = m_debugServer.debugWatchList();
+                stackData.m_currVariables = new ArrayList<rhogenwizard.debugger.backend.DebugVariable>(); //m_debugServer.debugWatchList();
                 theFrames[0] = new DebugStackFrame(m_threadHandle, stackData, 0);
                 break;
             }
