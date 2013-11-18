@@ -21,6 +21,8 @@ import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.LogFileHelper;
+import rhogenwizard.PlatformType;
+import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
@@ -145,7 +147,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 					job.schedule();
 					
-					target = new DebugTarget(launch, null, project);
+					target = new DebugTarget(launch, null, project, RunType.eUnknow, PlatformType.eUnknown);
 				}
 			
 				startBuildThread(project, mode, launch);

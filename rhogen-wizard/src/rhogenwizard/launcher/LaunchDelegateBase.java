@@ -175,7 +175,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, selType, currProject.getLocation().toOSString(),
 		    currProject.getName(), PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace,
 		    m_startPathOverride, m_wmSdkVersion, m_additionalRubyExtensions);
-		task.run(); //.exec();
+		task.run();
 		return task.getDebugProcess();
 	}
 	
@@ -250,7 +250,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					e.printStackTrace();
 				}
 				
-				target = new DebugTarget(launch, null, project);
+				target = new DebugTarget(launch, null, project, RunType.fromString(m_runType), PlatformType.fromId(m_platformType));
 			}
 			
 			try
