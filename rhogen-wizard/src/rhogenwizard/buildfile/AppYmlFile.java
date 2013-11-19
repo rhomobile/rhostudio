@@ -128,10 +128,13 @@ public final class AppYmlFile extends YmlFile
 	{
 		List<String> rawList     = (List<String>)super.getObject("capabilities");
 		List<String> androidList = (List<String>)super.getObject("android", "capabilities");
-		
-		if (androidList != null)
-		{
-			rawList.addAll(androidList);
+		if(rawList != null) {
+			if (androidList != null)
+			{
+				rawList.addAll(androidList);
+			}
+		}else{
+			rawList = androidList;
 		}
 		
 		return Capabilities.getCapabilitiesList(rawList);

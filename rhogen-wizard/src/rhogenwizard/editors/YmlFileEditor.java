@@ -249,7 +249,7 @@ public class YmlFileEditor extends MultiPageEditorPart implements IResourceChang
 				applyChanges();
 			}
 		}
-		
+
 		if (appLog != null && appLog.length() != 0)
 		{
 			if (!sdkAppLog.equals(appLog))
