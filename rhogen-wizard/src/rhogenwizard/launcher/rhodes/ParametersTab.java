@@ -127,9 +127,16 @@ public class ParametersTab extends  JavaLaunchTab
 			public void widgetSelected(SelectionEvent e) 
 			{
 				if (m_configuration != null)
-				{
-					encodePlatformInformation(m_selectPlatformCombo.getText());
-					showApplyButton();
+				{			
+					try 
+					{
+						encodePlatformInformation(m_selectPlatformCombo.getText());
+						setPlatfromTypeCombo(m_configuration);
+						showApplyButton();
+					}
+					catch (CoreException e1) 
+					{
+					}
 				}
 			}
 		});
@@ -515,18 +522,20 @@ public class ParametersTab extends  JavaLaunchTab
 	
 	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
 	{
-//		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE))
-//		{
-//			m_platformTypeCombo.setEnabled(false);
-//			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
-//		}
-//		else
-//		{
+		PlatformType selProjectPlatform = PlatformType.fromId(configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, ""));
+		
+		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE) && selProjectPlatform != PlatformType.eAndroid)
+		{
+			m_platformTypeCombo.setEnabled(false);
+			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
+		}
+		else
+		{
 			String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
 			m_platformTypeCombo.setEnabled(true);
             m_platformTypeCombo.select(m_platformTypeCombo.indexOf(platformType));
-//		}
+		}
 	}
 	
 	protected void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 

@@ -8,7 +8,7 @@ public enum WinMobileSdk
     v6_0("6.0", "Windows Mobile 6 Professional SDK (ARMV4I)"),
     v6_5_3("6.5.3", "Windows Mobile 6.5.3 Professional DTK (ARMV4I)");
     
-    // it's comment because wince moved to separate platform
+    // it was commented because wince moved to separate platform
     //vCE_5_0("CE5.0", "MC3000c50b (ARMV4I)"); 
 
 	public final String version;

@@ -517,7 +517,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
         {
             try
             {
-                stackData.m_currVariables = new ArrayList<rhogenwizard.debugger.backend.DebugVariable>(); //m_debugServer.debugWatchList();
+                stackData.m_currVariables = m_debugServer.debugWatchList();
                 theFrames[0] = new DebugStackFrame(m_threadHandle, stackData, 0);
                 break;
             }
