@@ -15,12 +15,15 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 
-/**
- * A variable in a PDA stack frame
- */
 public class DebugVariable extends DebugElement implements IVariable 
 {
-	// name & stack frmae
+	@Override
+	public String toString()
+	{
+		return "";
+	}
+
+	// name & stack frame
 	private String 		m_varName    = null;
 	private DebugTarget m_stackFrame = null;
 	private IValue      m_varValue   = null;
@@ -41,74 +44,45 @@ public class DebugVariable extends DebugElement implements IVariable
 		m_varValue = null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IVariable#getValue()
-	 */
 	public IValue getValue() throws DebugException 
 	{
 		return m_varValue;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IVariable#getName()
-	 */
 	public String getName() throws DebugException 
 	{
 		return m_varName;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IVariable#getReferenceTypeName()
-	 */
 	public String getReferenceTypeName() throws DebugException 
 	{
-		// TODO Auto-generated method stub
 		return "Thing";
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IVariable#hasValueChanged()
-	 */
 	public boolean hasValueChanged() throws DebugException 
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValueModification#setValue(java.lang.String)
-	 */
 	public void setValue(String expression) throws DebugException 
 	{
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValueModification#setValue(org.eclipse.debug.core.model.IValue)
-	 */
 	public void setValue(IValue value) throws DebugException 
 	{
 		m_varValue = value;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValueModification#supportsValueModification()
-	 */
 	public boolean supportsValueModification() 
 	{
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValueModification#verifyValue(java.lang.String)
-	 */
 	public boolean verifyValue(String expression) throws DebugException 
 	{
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValueModification#verifyValue(org.eclipse.debug.core.model.IValue)
-	 */
+
 	public boolean verifyValue(IValue value) throws DebugException 
 	{
 		return false;

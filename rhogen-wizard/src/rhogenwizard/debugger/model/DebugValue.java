@@ -21,9 +21,6 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 
-/**
- * Value of a PDA variable.
- */
 public class DebugValue extends DebugElement implements IValue 
 {	
 	private String      m_currValue    = null;
@@ -53,6 +50,12 @@ public class DebugValue extends DebugElement implements IValue
 		}
 	}
 	
+	@Override
+	public String toString()
+	{
+		return m_currValue.toString();
+	}
+
 	private void parseList(DebugTarget target, String s)
 	{
 		String prepareValue = s.subSequence(1, s.length() - 1).toString();
@@ -237,9 +240,6 @@ public class DebugValue extends DebugElement implements IValue
 	    }
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValue#getReferenceTypeName()
-	 */
 	public String getReferenceTypeName() throws DebugException 
 	{
 		try 
@@ -254,25 +254,16 @@ public class DebugValue extends DebugElement implements IValue
 		return "integer";
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValue#getValueString()
-	 */
 	public String getValueString() throws DebugException 
 	{
 		return m_currValue;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValue#isAllocated()
-	 */
+
 	public boolean isAllocated() throws DebugException 
 	{
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValue#getVariables()
-	 */
 	public IVariable[] getVariables() throws DebugException 
 	{
 		if (m_hasVariables)
@@ -281,9 +272,6 @@ public class DebugValue extends DebugElement implements IValue
 			return new IVariable[0];
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.IValue#hasVariables()
-	 */
 	public boolean hasVariables() throws DebugException 
 	{
 		return m_hasVariables;
