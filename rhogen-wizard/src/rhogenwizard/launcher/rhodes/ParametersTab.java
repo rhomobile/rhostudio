@@ -524,7 +524,10 @@ public class ParametersTab extends  JavaLaunchTab
 	{
 		PlatformType selProjectPlatform = PlatformType.fromId(configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, ""));
 		
-		if (getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE) && selProjectPlatform != PlatformType.eAndroid)
+		boolean debugMode = getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE);
+		boolean android = selProjectPlatform == PlatformType.eAndroid;
+		boolean iphone = selProjectPlatform == PlatformType.eIPhone;
+		if (debugMode && !android && !iphone)
 		{
 			m_platformTypeCombo.setEnabled(false);
 			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
