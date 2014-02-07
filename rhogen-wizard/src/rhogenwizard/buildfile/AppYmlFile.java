@@ -162,7 +162,8 @@ public final class AppYmlFile extends YmlFile
 
 	public String getBlackberryVer() 
 	{
-		return super.get("bbver").toString();
+		Object bbver = super.get("bbver");
+		return (bbver == null) ? "" : bbver.toString();
 	}
 
 	public void setAndroidVer(String selVersion)
