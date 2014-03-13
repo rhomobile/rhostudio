@@ -42,7 +42,7 @@ public class Builder extends IncrementalProjectBuilder
                 continue;
             }
              
-            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType, WinMobileSdk.v6_0.version);
+            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType, null);
             task.run(monitor);
         }
 
