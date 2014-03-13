@@ -21,7 +21,7 @@ class AppLogAdapter implements ILogDevice
 	@Override
 	public void log(String str) 
 	{
-	    m_console.show();
+	    //m_console.show();
 		
 		m_currShowLines++;
 		m_console.getStream().println(prepareString(str));
