@@ -15,6 +15,7 @@ import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.task.BuildPlatformTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 {
@@ -36,6 +37,9 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             DialogUtils.error("Error", "Before run production build select RhoMobile project");
             return;
         }
+
+		if (!SubscriptionCheckTask.checkRhoHubLicense(project.getLocation().toOSString()))
+			return;
 
         if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
         {
