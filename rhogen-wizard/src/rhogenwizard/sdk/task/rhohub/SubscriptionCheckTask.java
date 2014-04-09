@@ -10,11 +10,9 @@ import rhogenwizard.sdk.task.RunTask;
 
 public class SubscriptionCheckTask extends RubyExecTask
 {
-	private static String goodResult = "1";
-	
     private static String[] getArgs()
     {
-        String task = "check:rhohub:subscription";
+        String task = "license:check";
 
         List<String> cmdLine = new ArrayList<String>();
         cmdLine.add("rake");
@@ -28,12 +26,6 @@ public class SubscriptionCheckTask extends RubyExecTask
         super(workDir, SysCommandExecutor.RUBY_BAT, getArgs());
     }
 
-	@Override
-	public boolean isOk() 
-	{
-		return getOutput().equals(goodResult); //super.isOk();
-	}
-	
 	public static boolean checkRhoHubLicense(String workDir)
 	{
 		RunTask task = new SubscriptionCheckTask(workDir);		
