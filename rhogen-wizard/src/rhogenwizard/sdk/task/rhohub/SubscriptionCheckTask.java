@@ -12,7 +12,7 @@ public class SubscriptionCheckTask extends RubyExecTask
 {
     private static String[] getArgs()
     {
-        String task = "license:check";
+        String task = "token:check";
 
         List<String> cmdLine = new ArrayList<String>();
         cmdLine.add("rake");
@@ -33,7 +33,7 @@ public class SubscriptionCheckTask extends RubyExecTask
 
 		if (!task.isOk())
 		{
-			DialogUtils.error("License subscription", "RhoHub license subscription was not found.");
+			DialogUtils.error("License subscription", "RhoHub license subscription was not found. Please set token in prefrence settings");
 		}
 		
 		return task.isOk();

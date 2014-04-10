@@ -16,6 +16,7 @@ import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.sdk.task.BuildPlatformTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
+import rhogenwizard.sdk.task.rhohub.TokenTask;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 {
