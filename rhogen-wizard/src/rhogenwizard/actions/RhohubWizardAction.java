@@ -28,6 +28,7 @@ import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
+import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
 import rhogenwizard.wizards.rhohub.BuildWizard;
 import rhogenwizard.wizards.rhohub.LinkWizard;
 
@@ -60,6 +61,9 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             DialogUtils.error("Error", "Remote build can run only for RhoMobile project's");
             return;
         }
+        
+		if (!SubscriptionCheckTask.checkRhoHubLicense(project.getLocation().toOSString()))
+			return;
 
         IRhoHubSetting setting = RhoHubBundleSetting.createGetter(project);
         

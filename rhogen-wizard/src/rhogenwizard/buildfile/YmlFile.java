@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.osgi.framework.adaptor.FilePath;
+
 import rhogenwizard.buildfile.converter.CustomConverter;
 import rhogenwizard.buildfile.converter.IStructureConverter;
 
@@ -19,6 +21,7 @@ public class YmlFile
 	public YmlFile(String ymlFileName) throws FileNotFoundException
 	{
 		m_filePath = ymlFileName;
+
 		File ymlFile = new File(ymlFileName);
 		
 		if (ymlFile.exists()) 

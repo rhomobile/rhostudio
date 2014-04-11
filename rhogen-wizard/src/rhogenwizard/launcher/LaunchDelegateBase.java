@@ -25,18 +25,15 @@ import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
-import rhogenwizard.RunExeHelper;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.WinMobileSdk;
-import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.sdk.task.CleanPlatformTask;
-import rhogenwizard.sdk.task.RubyDebugTask;
-import rhogenwizard.sdk.task.RubyTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
 import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
 
@@ -161,21 +158,31 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		cancelingThread.start();
 	}
 
+
+	
 	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
+		if (!SubscriptionCheckTask.checkRhoHubLicense(currProject.getLocation().toOSString()))
+			return false;
+		
 		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
 		    PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace, m_startPathOverride,
 		    m_wmSdkVersion, m_additionalRubyExtensions);
 		task.run();
+
 		return task.isOk();
 	}
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
+		if (!SubscriptionCheckTask.checkRhoHubLicense(currProject.getLocation().toOSString()))
+			return null;
+
 		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, selType, currProject.getLocation().toOSString(),
 		    currProject.getName(), PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace,
 		    m_startPathOverride, m_wmSdkVersion, m_additionalRubyExtensions);
 		task.run();
+		
 		return task.getDebugProcess();
 	}
 	

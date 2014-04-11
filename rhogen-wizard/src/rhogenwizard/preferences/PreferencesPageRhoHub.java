@@ -6,6 +6,7 @@ import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
 import rhogenwizard.rhohub.IRhoHubSetting;
+import rhogenwizard.sdk.task.rhohub.TokenTask;
 
 public class PreferencesPageRhoHub extends BasePreferencePage 
 {
