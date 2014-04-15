@@ -2,18 +2,15 @@ package rhogenwizard.preferences;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.rules.Token;
-import org.eclipse.osgi.framework.adaptor.FilePath;
-
 import rhogenwizard.Activator;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
@@ -32,8 +29,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 	private SdkYmlFile   m_ymlFile        = null;
 	private List<String> m_bbVers         = null;
 	private IProject     m_currProject    = null;
-	private Path         m_currRhodesPath = null;
-	
+	private IPath        m_currRhodesPath = null;
+	private String       m_rhohubToken    = null;  
+			
 	public static PreferenceInitializer getInstance()
 	{
 		try 
@@ -103,7 +101,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String bbMdsPath      = m_ymlFile.getBbMdsPath(m_defaultBbVer) != null ? m_ymlFile.getBbMdsPath(m_defaultBbVer) : "";
 				String bbSimPort      = m_ymlFile.getBbSimPort(m_defaultBbVer) != null ? m_ymlFile.getBbSimPort(m_defaultBbVer) : "";
 			
-				String rhohubToken = TokenTask.getToken(m_currProject.getLocation().toOSString());
+				if (m_rhohubToken == null)
+				{
+					m_rhohubToken = TokenTask.getToken(m_currProject.getLocation().toOSString());
+				}
 				
 				store.setDefault(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setDefault(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -114,7 +115,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				store.setDefault(PreferenceConstants.androidNdkPath, androidNdkPath);
 				store.setDefault(PreferenceConstants.cabWizardPath, cabWizPath);
 				store.setDefault(PreferenceConstants.vcBuildPath, vcbuildPath);
-				store.setDefault(IRhoHubSetting.rhoHubToken, rhohubToken);
+				store.setDefault(IRhoHubSetting.rhoHubToken, m_rhohubToken);
 				
 				store.setValue(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setValue(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -125,7 +126,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				store.setValue(PreferenceConstants.androidNdkPath, androidNdkPath);
 				store.setValue(PreferenceConstants.cabWizardPath, cabWizPath);
 				store.setValue(PreferenceConstants.vcBuildPath, vcbuildPath);
-				store.setValue(IRhoHubSetting.rhoHubToken, rhohubToken);				
+				store.setValue(IRhoHubSetting.rhoHubToken, m_rhohubToken);				
 			}			
 		} 
 		catch (Exception e) 
@@ -219,13 +220,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 			if (m_currProject.isOpen())
 			{
 				AppYmlFile appYmlFile = AppYmlFile.createFromProject(m_currProject);
-				m_currRhodesPath      = FileSystems.getDefault().getPath(appYmlFile.getSdkConfigPath());
+				m_currRhodesPath      = new Path(appYmlFile.getSdkConfigPath());// FileSystems.getDefault().getPath();
 				
 				if (!m_currRhodesPath.isAbsolute())
 				{
-					Path basePath = FileSystems.getDefault().getPath(m_currProject.getLocation().toOSString());
-					Path resolvedPath = basePath.resolve(m_currRhodesPath); 
-					m_currRhodesPath = resolvedPath.normalize();
+					IPath basePath = new Path(m_currProject.getLocation().toOSString());
+					m_currRhodesPath = basePath.append(m_currRhodesPath); 
 				}
 				
 				m_ymlFile = new SdkYmlFile(m_currRhodesPath.toFile().getAbsolutePath());
