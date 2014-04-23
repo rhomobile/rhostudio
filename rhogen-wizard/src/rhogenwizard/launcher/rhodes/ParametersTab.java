@@ -40,6 +40,8 @@ import rhogenwizard.project.RhoelementsProject;
 @SuppressWarnings("restriction")
 public class ParametersTab extends  JavaLaunchTab 
 {
+	private static final String iphoneDeviceMsg = "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.";
+
 	private static int    minTabSize      = 650;
 		
 	protected static String androidVersions[] = { "1.6",
@@ -130,9 +132,17 @@ public class ParametersTab extends  JavaLaunchTab
 				{			
 					try 
 					{
-						encodePlatformInformation(m_selectPlatformCombo.getText());
-						setPlatfromTypeCombo(m_configuration);
-						showApplyButton();
+					    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
+						    m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
+					    {
+					        DialogUtils.warning("Warning", iphoneDeviceMsg);
+					        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
+					        return;
+					    }
+
+					    encodePlatformInformation(m_selectPlatformCombo.getText());
+					    setPlatfromTypeCombo(m_configuration);
+					    showApplyButton();
 					}
 					catch (CoreException e1) 
 					{
@@ -176,7 +186,7 @@ public class ParametersTab extends  JavaLaunchTab
 				    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
 				        m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 				    {
-				        DialogUtils.warning("Warning", "For iphone platform we can't deploy application on device, use iTunes for deploy the application on device.");
+				        DialogUtils.warning("Warning", iphoneDeviceMsg);
 				        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
 				    }
 				    
