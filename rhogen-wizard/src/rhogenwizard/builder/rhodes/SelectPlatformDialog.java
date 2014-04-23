@@ -1,122 +1,86 @@
 package rhogenwizard.builder.rhodes;
 
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-
 import rhogenwizard.PlatformType;
 
-public class SelectPlatformDialog extends Dialog 
+public class SelectPlatformDialog extends TitleAreaDialog 
 {
 	private PlatformType m_selectPlaform = PlatformType.eUnknown;
-	
-	private static final int buttonWidht = 60;
-	private static final int comboWidht = 300;
-	
+		
 	private Combo  m_platfromCombo = null;
 
-	public SelectPlatformDialog(Shell parent) 
+	public SelectPlatformDialog(Shell parentShell) 
 	{
-		super(parent);
+		super(parentShell);
 	}
 
-	public PlatformType open() 
+	@Override
+	public void create() 
 	{
-		Shell parent = getParent();
-		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
-		shell.setText("Select platform");
-		shell.setLayout(new GridLayout(1, true));
-		
-		RowData buttonAligment = new RowData(buttonWidht, SWT.DEFAULT);
-		RowData comboAligment = new RowData(comboWidht, SWT.DEFAULT);
-		// 1 row
-		Label label = new Label(shell, SWT.NULL);
-		label.setText("Please select:");
-		
-		// 2 row
-		Composite rowContainer1 = new Composite(shell, SWT.NULL);
-		rowContainer1.setLayout(new RowLayout());
+		super.create();
+		setTitle("Setup token dialog");
+		setMessage("Dialog for setup new token.", IMessageProvider.INFORMATION);
+	}
 
-		m_platfromCombo = new Combo(rowContainer1, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.SIMPLE);
+	@Override
+	protected Control createDialogArea(Composite parent)
+	{
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite container = new Composite(area, SWT.NONE);
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridLayout layout = new GridLayout(2, false);
+		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		container.setLayout(layout);
+
+		createFirstName(container);
+
+		return area;
+	}
+
+	private void createFirstName(Composite container) 
+	{
+		Label tokenLabel = new Label(container, SWT.NONE);
+		tokenLabel.setText("Platform: ");
+
+		GridData dataFirstName = new GridData();
+		dataFirstName.grabExcessHorizontalSpace = true;
+		dataFirstName.horizontalAlignment = GridData.FILL;
+
+		m_platfromCombo = new Combo(container, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.SIMPLE);
 		m_platfromCombo.setItems(PlatformType.getPublicIds());
 		m_platfromCombo.select(0);
-		m_platfromCombo.setLayoutData(comboAligment);
-		
-		// 3 row
-		Composite rowContainer2 = new Composite(shell, SWT.CENTER);
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.center = true;
-		rowLayout.marginLeft = comboWidht / 2 - buttonWidht;
-		rowContainer2.setLayout(rowLayout);
-
-		// event handlers
-		final Button buttonOK = new Button(rowContainer2, SWT.PUSH);
-		buttonOK.setText("Ok");
-		buttonOK.setLayoutData(buttonAligment);
-		    
-		final Button buttonCancel = new Button(rowContainer2, SWT.PUSH);
-		buttonCancel.setText("Cancel");
-		buttonCancel.setLayoutData(buttonAligment);
-		
-		buttonOK.addListener(SWT.Selection, new Listener() 
-		{
-			public void handleEvent(Event event) 
-			{
-				handleOk();
-				shell.dispose();
-			}
-		});
-		
-		buttonCancel.addListener(SWT.Selection, new Listener() 
-		{
-			public void handleEvent(Event event) 
-			{
-				handleCancel();
-				shell.dispose();
-			}
-		});
-		  
-		shell.addListener(SWT.Traverse, new Listener() 
-		{
-			public void handleEvent(Event event) 
-			{
-				if(event.detail == SWT.TRAVERSE_ESCAPE)
-					event.doit = false;
-			}
-		});
-
-		// show dialog
-		shell.pack();
-		shell.open();
-		
-		Display display = parent.getDisplay();
-		    
-		while (!shell.isDisposed()) 
-		{
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-		
-		return m_selectPlaform;
+		m_platfromCombo.setLayoutData(dataFirstName);
 	}
-	
-	protected void handleCancel()
+
+	@Override
+	protected boolean isResizable() 
 	{
-		m_selectPlaform = PlatformType.eUnknown;	
+		return true;
 	}
-	
-	protected void handleOk()
+
+	private void saveInput() 
 	{
 		m_selectPlaform = PlatformType.fromPublicId(m_platfromCombo.getText());
-	}	
+	}
+
+	@Override
+	protected void okPressed() 
+	{
+		saveInput();
+		super.okPressed();
+	}
+
+	public PlatformType getSelectedPlatform()
+	{
+		return m_selectPlaform;
+	}
 }
