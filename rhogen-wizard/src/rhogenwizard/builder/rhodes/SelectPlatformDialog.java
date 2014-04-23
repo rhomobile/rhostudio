@@ -27,8 +27,8 @@ public class SelectPlatformDialog extends TitleAreaDialog
 	public void create() 
 	{
 		super.create();
-		setTitle("Setup token dialog");
-		setMessage("Dialog for setup new token.", IMessageProvider.INFORMATION);
+		setTitle("Production build dialog");
+		setMessage("Producion build for selected platform.", IMessageProvider.INFORMATION);
 	}
 
 	@Override
