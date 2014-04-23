@@ -3,8 +3,6 @@ package rhogenwizard.actions;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.IDialogLabelKeys;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
@@ -28,7 +26,7 @@ import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.IRhoHubSettingSetter;
 import rhogenwizard.rhohub.RhoHub;
 import rhogenwizard.rhohub.RhoHubBundleSetting;
-import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
+import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.wizards.rhohub.BuildWizard;
 import rhogenwizard.wizards.rhohub.LinkWizard;
 
@@ -62,7 +60,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             return;
         }
         
-		if (!SubscriptionCheckTask.checkRhoHubLicense(project.getLocation().toOSString()))
+		if (!TokenChecker.processToken(project.getLocation().toOSString()))
 			return;
 
         IRhoHubSetting setting = RhoHubBundleSetting.createGetter(project);

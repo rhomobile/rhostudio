@@ -1,5 +1,6 @@
 package rhogenwizard.launcher;
 
+import java.awt.Window;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,6 +32,7 @@ import rhogenwizard.WinMobileSdk;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
+import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
@@ -158,13 +160,11 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		cancelingThread.start();
 	}
 
-
-	
 	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
-		if (!SubscriptionCheckTask.checkRhoHubLicense(currProject.getLocation().toOSString()))
+		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
 			return false;
-		
+				
 		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
 		    PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace, m_startPathOverride,
 		    m_wmSdkVersion, m_additionalRubyExtensions);
@@ -175,7 +175,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		if (!SubscriptionCheckTask.checkRhoHubLicense(currProject.getLocation().toOSString()))
+		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
 			return null;
 
 		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, selType, currProject.getLocation().toOSString(),

@@ -3,7 +3,6 @@ package rhogenwizard.sdk.task.rhohub;
 import java.util.ArrayList;
 import java.util.List;
 
-import rhogenwizard.DialogUtils;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -31,11 +30,6 @@ public class SubscriptionCheckTask extends RubyExecTask
 		RunTask task = new SubscriptionCheckTask(workDir);		
 		task.run();
 
-		if (!task.isOk())
-		{
-			DialogUtils.error("License subscription", "RhoHub license subscription was not found. Please set token in prefrence settings");
-		}
-		
 		return task.isOk();
 	}
 }
