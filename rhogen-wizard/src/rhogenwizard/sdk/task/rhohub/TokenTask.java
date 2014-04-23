@@ -32,6 +32,17 @@ public class TokenTask extends RubyExecTask
 
         return cmdLine.toArray(new String[0]);
     }
+    
+    private static String[] getClearArgs()
+    {
+        String task = "token:clear";
+
+        List<String> cmdLine = new ArrayList<String>();
+        cmdLine.add("rake");
+        cmdLine.add(task);
+
+        return cmdLine.toArray(new String[0]);
+    }
 
     public TokenTask(String workDir, String newToken)
     {
@@ -41,6 +52,11 @@ public class TokenTask extends RubyExecTask
     public TokenTask(String workDir)
     {
    		super(workDir, SysCommandExecutor.RUBY_BAT, getGetArgs());
+    }
+
+    public TokenTask(String workDir, boolean isClear)
+    {
+   		super(workDir, SysCommandExecutor.RUBY_BAT, getClearArgs());
     }
 
 	public static String getToken(String workDir)
@@ -68,10 +84,12 @@ public class TokenTask extends RubyExecTask
 	public static void setToken(String workDir, String token)
 	{
 		RunTask task = new TokenTask(workDir, token);		
-		task.run();
+		task.run();	
+	}
 	
-		
-		return;
-
+	public static void clearToken(String workDir)
+	{
+		RunTask task = new TokenTask(workDir, true);		
+		task.run();	
 	}
 }

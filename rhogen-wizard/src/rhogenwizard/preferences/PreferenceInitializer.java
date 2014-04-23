@@ -73,6 +73,48 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 			}
 		}
 	}
+	
+	private File getAppSdkCongigPath(IProject project)
+	{
+		String configPath = project.getLocation() + File.separator + AppYmlFile.configFileName;
+		File cfgFile = new File(configPath);
+		return cfgFile;
+	}
+	
+	private void initFromProject(String projectName) 
+	{
+		try 
+		{
+			m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			
+			if (m_currProject.isOpen())
+			{
+				AppYmlFile appYmlFile = AppYmlFile.createFromProject(m_currProject);
+				m_currRhodesPath      = new Path(appYmlFile.getSdkConfigPath());
+				
+				if (!m_currRhodesPath.isAbsolute())
+				{
+					IPath basePath = new Path(m_currProject.getLocation().toOSString());
+					m_currRhodesPath = basePath.append(m_currRhodesPath); 
+				}
+				
+				m_ymlFile = new SdkYmlFile(m_currRhodesPath.toFile().getAbsolutePath());
+				
+				m_bbVers  = m_ymlFile.getBbVersions();
+				
+				if (m_bbVers.size() == 0)
+					m_defaultBbVer = "";
+				else
+					m_defaultBbVer = m_bbVers.get(0);
+				
+				initializeDefaultPreferences();
+			}
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 
 	public SdkYmlFile getYmlFile()
 	{
@@ -181,14 +223,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 			e.printStackTrace();
 		}
 	}
-	
-	private File getAppSdkCongigPath(IProject project)
-	{
-		String configPath = project.getLocation() + File.separator + AppYmlFile.configFileName;
-		File cfgFile = new File(configPath);
-		return cfgFile;
-	}
 
+	public String getRhodesPath()
+	{
+		return m_currRhodesPath.toFile().getParentFile().toString();
+	}
+	
 	public List<String> getRhodesProjects() 
 	{
 		List<String> namesList = new ArrayList<String>();
@@ -209,40 +249,5 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 		}
 			
 		return namesList;
-	}
-
-	public void initFromProject(String projectName) 
-	{
-		try 
-		{
-			m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-			
-			if (m_currProject.isOpen())
-			{
-				AppYmlFile appYmlFile = AppYmlFile.createFromProject(m_currProject);
-				m_currRhodesPath      = new Path(appYmlFile.getSdkConfigPath());// FileSystems.getDefault().getPath();
-				
-				if (!m_currRhodesPath.isAbsolute())
-				{
-					IPath basePath = new Path(m_currProject.getLocation().toOSString());
-					m_currRhodesPath = basePath.append(m_currRhodesPath); 
-				}
-				
-				m_ymlFile = new SdkYmlFile(m_currRhodesPath.toFile().getAbsolutePath());
-				
-				m_bbVers  = m_ymlFile.getBbVersions();
-				
-				if (m_bbVers.size() == 0)
-					m_defaultBbVer = "";
-				else
-					m_defaultBbVer = m_bbVers.get(0);
-				
-				initializeDefaultPreferences();
-			}
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 }
