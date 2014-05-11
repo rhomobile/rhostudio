@@ -112,7 +112,7 @@ public class TokenChecker
 		
 		if (!SubscriptionCheckTask.checkRhoHubLicense(workDir))
 		{
-			DialogUtils.error("Wrong token string.", "This token string is invalid. Re-run the build and try to enter token again.");
+			//DialogUtils.error("Wrong token string.", "This token string is invalid. Re-run the build and try to enter token again.");
 			return false;
 		}		
 		
