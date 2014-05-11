@@ -9,7 +9,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
@@ -18,7 +17,8 @@ import rhogenwizard.sdk.task.rhohub.TokenTask;
 
 public class PreferencesPageRhoHub extends BasePreferencePage 
 {
-    PreferenceInitializer m_pInit = null;
+    private PreferenceInitializer m_pInit = null;
+    private StringFieldEditor tokenField = null;
     
     public PreferencesPageRhoHub() 
     {
@@ -34,6 +34,8 @@ public class PreferencesPageRhoHub extends BasePreferencePage
 
         try 
         {
+        	tokenField.store();
+        	
             m_pInit.savePreferences();
         } 
         catch (Exception e) 
@@ -47,17 +49,8 @@ public class PreferencesPageRhoHub extends BasePreferencePage
     public void createFieldEditors() 
     {
         checkRhodesSdk();
-        
-        addField(new StringFieldEditor(IRhoHubSetting.rhoHubUrl, 
-                "&RhoHub API Endpoint (advanced):", getFieldEditorParent()));
-                
-        addField(new StringFieldEditor(IRhoHubSetting.rhoHubToken, 
-                "&API Token:", getFieldEditorParent()));
-        
-        addField(new StringFieldEditor(IRhoHubSetting.rhoHubProxy, 
-                "&HTTP proxy:", getFieldEditorParent()));
     }
-
+    
     @Override
 	protected Control createContents(Composite parent) 
     {
@@ -66,17 +59,19 @@ public class PreferencesPageRhoHub extends BasePreferencePage
     	Composite top = new Composite(parent, SWT.LEFT);
     	
     	editor = new StringFieldEditor(IRhoHubSetting.rhoHubUrl, "&RhoHub API Endpoint (advanced):", top);
-    	editor.setPreferenceStore(getPreferenceStore());
+    	editor.setPreferenceStore(Activator.getDefault().getPreferenceStore());
     	editor.setPreferencePage(this);
     	editor.load();
     	
     	editor = new StringFieldEditor(IRhoHubSetting.rhoHubToken, "&API Token:", top);
-    	editor.setPreferenceStore(getPreferenceStore());
+    	editor.setPreferenceStore(Activator.getDefault().getPreferenceStore());
     	editor.setPreferencePage(this);
     	editor.load();
     	
+    	tokenField = editor;
+    	
     	editor = new StringFieldEditor(IRhoHubSetting.rhoHubProxy, "&HTTP proxy:", top);
-    	editor.setPreferenceStore(getPreferenceStore());
+    	editor.setPreferenceStore(Activator.getDefault().getPreferenceStore());
     	editor.setPreferencePage(this);
     	editor.load();
     	    	
@@ -95,6 +90,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
 			public void widgetSelected(SelectionEvent e) 
 			{
 				TokenTask.clearToken(m_pInit.getRhodesPath());
+		        m_pInit = PreferenceInitializer.getInstance();
 			}
 
 			@Override
