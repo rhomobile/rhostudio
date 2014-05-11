@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import rhogenwizard.Activator;
 import rhogenwizard.PlatformType;
 import rhogenwizard.WinMobileSdk;
+import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -33,6 +34,9 @@ public class Builder extends IncrementalProjectBuilder
     @Override
     protected void clean(IProgressMonitor monitor) throws CoreException
     {
+		if (!TokenChecker.processToken(getProject().getLocation().toOSString()))
+			return;
+    	
         for (PlatformType platformType : PlatformType.values())
         {
             switch (platformType)
