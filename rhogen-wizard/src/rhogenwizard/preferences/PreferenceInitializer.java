@@ -30,7 +30,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 	private List<String> m_bbVers         = null;
 	private IProject     m_currProject    = null;
 	private IPath        m_currRhodesPath = null;
-	private String       m_rhohubToken    = null;  
 			
 	public static PreferenceInitializer getInstance()
 	{
@@ -141,12 +140,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String javaPath       = m_ymlFile.getJavaPath() != null ? m_ymlFile.getJavaPath() : "";
 				String bbJdkPath      = m_ymlFile.getBbJdkPath(m_defaultBbVer) != null ? m_ymlFile.getBbJdkPath(m_defaultBbVer) : "";
 				String bbMdsPath      = m_ymlFile.getBbMdsPath(m_defaultBbVer) != null ? m_ymlFile.getBbMdsPath(m_defaultBbVer) : "";
-				String bbSimPort      = m_ymlFile.getBbSimPort(m_defaultBbVer) != null ? m_ymlFile.getBbSimPort(m_defaultBbVer) : "";
-			
-				if (m_rhohubToken == null)
-				{
-					m_rhohubToken = TokenTask.getToken(m_currProject.getLocation().toOSString());
-				}
+				String bbSimPort      = m_ymlFile.getBbSimPort(m_defaultBbVer) != null ? m_ymlFile.getBbSimPort(m_defaultBbVer) : "";			
+				String rhohubToken    = TokenTask.getToken(m_currProject.getLocation().toOSString());
 				
 				store.setDefault(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setDefault(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -157,7 +152,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				store.setDefault(PreferenceConstants.androidNdkPath, androidNdkPath);
 				store.setDefault(PreferenceConstants.cabWizardPath, cabWizPath);
 				store.setDefault(PreferenceConstants.vcBuildPath, vcbuildPath);
-				store.setDefault(IRhoHubSetting.rhoHubToken, m_rhohubToken);
+				store.setDefault(IRhoHubSetting.rhoHubToken, rhohubToken);
 				
 				store.setValue(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setValue(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -168,7 +163,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				store.setValue(PreferenceConstants.androidNdkPath, androidNdkPath);
 				store.setValue(PreferenceConstants.cabWizardPath, cabWizPath);
 				store.setValue(PreferenceConstants.vcBuildPath, vcbuildPath);
-				store.setValue(IRhoHubSetting.rhoHubToken, m_rhohubToken);				
+				store.setValue(IRhoHubSetting.rhoHubToken, rhohubToken);				
 			}			
 		} 
 		catch (Exception e) 
