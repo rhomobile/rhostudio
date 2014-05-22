@@ -8,14 +8,17 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
+import rhogenwizard.BuildType;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
-import rhogenwizard.builder.rhodes.SelectPlatformDialog;
+import rhogenwizard.builder.rhodes.ConfigProductionBuildDialog;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.rhohub.TokenChecker;
-import rhogenwizard.sdk.task.BuildPlatformTask;
+import rhogenwizard.sdk.task.LocalProductionBuildTask;
+import rhogenwizard.sdk.task.RhohubProductionBuildTask;
+import rhogenwizard.sdk.task.RubyExecTask;
 import rhogenwizard.sdk.task.RunTask;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
@@ -42,26 +45,38 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             return;
         }
 
-        SelectPlatformDialog selectDlg = new SelectPlatformDialog(window.getShell());
-        selectDlg.create();
+        ConfigProductionBuildDialog dialog = new ConfigProductionBuildDialog(window.getShell());
+        dialog.create();
          
-        if (selectDlg.open() == Window.OK)
+        if (dialog.open() == Window.OK)
         {
-        	PlatformType selectPlatform = selectDlg.getSelectedPlatform();
-        	
-            if (selectPlatform != PlatformType.eUnknown)
+            String projectName = "<unknown>";
+            try
             {
-                String projectName = "<unknown>";
-                try
-                {
-                    projectName = project.getDescription().getName();
-                }
-                catch (CoreException e)
-                {
-                }
+                projectName = project.getDescription().getName();
+            }
+            catch (CoreException e)
+            {
+            }
 
-                RunTask task = new BuildPlatformTask(project.getLocation().toOSString(), selectPlatform);
-                task.makeJob("Production build (" + projectName + ")").schedule();
+            PlatformType platformType = dialog.platformType();
+            BuildType    buildType    = dialog.buildType   ();
+        	
+            assert platformType != PlatformType.eUnknown;
+            assert buildType    != BuildType   .eUnknown;
+
+            String workDir = project.getLocation().toOSString();
+            switch (buildType) {
+            case eLocal:
+                new LocalProductionBuildTask(workDir, platformType)
+                .makeJob("Production build (" + projectName + ")")
+                .schedule();
+                break;
+            case eRhoHub:
+                new RhohubProductionBuildTask(workDir, platformType)
+                .makeJob("Rhohub production build (" + projectName + ")")
+                .schedule();
+                break;
             }
         }
     }

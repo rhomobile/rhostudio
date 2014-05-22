@@ -29,7 +29,7 @@ public enum PlatformType
     {
         List<String> list = new ArrayList<String>();
         
-        for (PlatformType pt : PlatformType.values())
+        for (PlatformType pt : values())
         {
             if (pt.publicId != null)
             {
@@ -48,7 +48,7 @@ public enum PlatformType
 
     public static PlatformType fromId(String id)
     {
-        for (PlatformType pt : PlatformType.values())
+        for (PlatformType pt : values())
         {
             if (id.equals(pt.id))
             {
@@ -61,7 +61,7 @@ public enum PlatformType
 
     public static PlatformType fromPublicId(String publicId)
     {
-        for (PlatformType pt : PlatformType.values())
+        for (PlatformType pt : values())
         {
             if (publicId.equals(pt.publicId))
             {

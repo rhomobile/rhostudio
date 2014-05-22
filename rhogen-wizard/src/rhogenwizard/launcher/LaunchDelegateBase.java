@@ -1,6 +1,5 @@
 package rhogenwizard.launcher;
 
-import java.awt.Window;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,7 +34,6 @@ import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.RunTask;
-import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
 import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
 
@@ -62,6 +60,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	
 	protected String          m_projectName   = null;
 	private String            m_runType       = null;
+	private String            m_buildType     = null;    
 	private String            m_platformType  = null;
 	private boolean           m_isClean       = false;
 	private boolean           m_isReloadCode  = false;
@@ -189,7 +188,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
 		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-		m_platformType  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+		m_platformType  = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
+		m_buildType     = configuration.getAttribute(ConfigurationConstants.buildCfgAttribute, "");
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 		m_runType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
