@@ -5,8 +5,7 @@ import java.util.List;
 
 public enum PlatformType
 {
-    eWm("wm", "Windows Mobile"),
-    eWCE("wince", "Windows CE"),
+    eWm("wm", "Windows Mobile / Windows CE"),
     eAndroid("android", "Android"),
     eIPhone("iphone", "iPhone"),
     eWp7("wp8", "Windows Phone"),    

@@ -133,7 +133,6 @@ public class LogFileHelper implements ILogFileHelper
 			switch(m_platformName)
 			{
 			case eWm:
-			case eWCE:
 				wmLog(project);
 				break;
 			case eAndroid:
@@ -154,13 +153,6 @@ public class LogFileHelper implements ILogFileHelper
         String logFilePath = getLogFilePath(project, "run:rhosimulator:get_log");
         Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath, type));
 		waitingLog.start();
-	}
-	
-	private void waitBbLog(IProject project, RunType type) throws Exception
-	{
-        String logFilePath = getLogFilePath(project, "run:bb:get_log");
-        Thread waitingLog = new Thread(new LogFileWaiter(project, this, logFilePath, type));
-        waitingLog.start();
 	}
 	
 	private void wpLog(IProject project) throws Exception
@@ -197,16 +189,6 @@ public class LogFileHelper implements ILogFileHelper
 	{
 		String logPath = getLogFilePath(project, "run:iphone:get_log");
 		
-		if (logPath != null)
-		{
-			asyncFileRead(logPath);
-		}
-	}
-	
-	private void bbLog(IProject project) throws Exception
-	{
-		String logPath = getLogFilePath(project,"run:bb:get_log");
-	
 		if (logPath != null)
 		{
 			asyncFileRead(logPath);

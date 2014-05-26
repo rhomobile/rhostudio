@@ -225,14 +225,6 @@ public class ParametersTab extends  JavaLaunchTab
                         m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformSim)); // select simulator 
                     }
                     
-                    // for windows CE
-                    if (m_platformTypeCombo.getText().equals(RunType.platformSim) && 
-                        m_selectPlatformCombo.getText().equals(PlatformType.eWCE.publicId))
-                    {
-                        DialogUtils.warning("Warning", "For Windows CE platform we can run only device or rhosimulator build.");
-                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); // select device
-                    }
-                    
 					encodePlatformTypeCombo(m_platformTypeCombo.getText());
 					encodePlatformInformation(m_selectPlatformCombo.getText());
 					showApplyButton();
