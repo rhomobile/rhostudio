@@ -4,10 +4,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public class SeqRunTask extends RunTask
 {
-    private final RunTask m_tasks[];
+    private final IRunTask m_tasks[];
     private boolean       m_isOk;
 
-    public SeqRunTask(RunTask... tasks)
+    public SeqRunTask(IRunTask... tasks)
     {
         m_tasks = tasks;
         m_isOk = true;
@@ -22,7 +22,7 @@ public class SeqRunTask extends RunTask
     @Override
     public void run(IProgressMonitor monitor)
     {
-        for (RunTask task : m_tasks)
+        for (IRunTask task : m_tasks)
         {
             if (monitor.isCanceled())
             {

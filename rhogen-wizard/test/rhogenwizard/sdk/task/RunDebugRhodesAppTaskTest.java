@@ -30,7 +30,7 @@ import rhogenwizard.debugger.backend.DebugState;
 import rhogenwizard.debugger.backend.DebugVariableType;
 import rhogenwizard.debugger.backend.IDebugCallback;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
+import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
 
 public class RunDebugRhodesAppTaskTest
 {

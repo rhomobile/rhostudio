@@ -30,7 +30,6 @@ import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
 import rhogenwizard.BuildType;
 import rhogenwizard.RunType;
-import rhogenwizard.WinMobileSdk;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -63,8 +62,6 @@ public class ParametersTab extends  JavaLaunchTab
 		                                       RunType.platformSim,
 		                                       RunType.platformDevice };
 	
-    protected static String wmVersions[] = WinMobileSdk.getVersions();
-
 
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
@@ -492,7 +489,6 @@ public class ParametersTab extends  JavaLaunchTab
 					configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 					configuration.setAttribute(ConfigurationConstants.iphoneVersionAttribute, iphoneVersions[0]);					
 				}
-                configuration.setAttribute(ConfigurationConstants.wmVersionAttribute, wmVersions[0]);
 			} 
 			catch (FileNotFoundException e)
 			{
@@ -607,9 +603,7 @@ public class ParametersTab extends  JavaLaunchTab
 		
 			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 			String selAndroidVer      = configuration.getAttribute(ConfigurationConstants.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
-			String selBlackBarryVer   = configuration.getAttribute(ConfigurationConstants.blackberryVersionAttribute, "");			
 			String selIphoneVer       = configuration.getAttribute(ConfigurationConstants.iphoneVersionAttribute, "");
-			String selWmVer           = configuration.getAttribute(ConfigurationConstants.wmVersionAttribute, WinMobileSdk.v6_0.version);
 			String selPlatformType    = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 
 			showVersionCombo(false);
@@ -636,14 +630,6 @@ public class ParametersTab extends  JavaLaunchTab
                 
 	            m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selIphoneVer));
 			}
-            else if (selProjectPlatform.equals(PlatformType.eWm.id))
-            {
-                m_selectPlatformVersionCombo.setItems(wmVersions);
-
-                showVersionCombo(true);
-
-                m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selWmVer));
-            }
 		}
 		catch (CoreException e) 
 		{
@@ -767,32 +753,11 @@ public class ParametersTab extends  JavaLaunchTab
 				m_ymlFile.setIphoneVer(selVersion);
 				m_ymlFile.save();
             }
-            else if (type == PlatformType.eWm)
-            {
-                m_configuration.setAttribute(ConfigurationConstants.wmVersionAttribute, selVersion);
-			}
 		}
 		catch(CoreException e)
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	private String[] getBbVersions()
-	{
-		try 
-		{
-			String m_ymlSdkPath = m_ymlFile.getSdkConfigPath();
-			
-			SdkYmlFile sdkYmlFile = new SdkYmlFile(m_ymlSdkPath);
-			
-			return sdkYmlFile.getBbVersions().toArray(new String[0]);
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-		return new String[0];
 	}
 	
 	private void encodePlatformInformation(String selPlatform)

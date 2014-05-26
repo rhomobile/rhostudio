@@ -19,7 +19,7 @@ import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunType;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
+import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
 
 public class RunReleaseRhodesAppTaskTest
 {
@@ -72,8 +72,8 @@ public class RunReleaseRhodesAppTaskTest
             ProcessListViewer plv = new ProcessListViewer("-e logcat >> \"/private" + projectLocation
                 + "/rholog.txt\"");
 
-            RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eIPhone,
-                RunType.eEmulator, false, false, null, null, null);
+            RunTask task = new LocalRunRhodesAppTask(projectLocation, PlatformType.eIPhone,
+                RunType.eEmulator, false, false, null, null);
             task.run();
             assertTrue(task.isOk());
 
@@ -90,8 +90,8 @@ public class RunReleaseRhodesAppTaskTest
 
             ProcessListViewer plv = new ProcessListViewer(signature);
 
-            RunTask task = new RunReleaseRhodesAppTask(projectLocation, PlatformType.eAndroid,
-                RunType.eEmulator, false, false, null, null, null);
+            RunTask task = new LocalRunRhodesAppTask(projectLocation, PlatformType.eAndroid,
+                RunType.eEmulator, false, false, null, null);
             task.run();
             assertTrue(task.isOk());
 
@@ -114,8 +114,8 @@ public class RunReleaseRhodesAppTaskTest
 
             ProcessListViewer plv = new ProcessListViewer(signature);
 
-            RunTask task = new RunReleaseRhodesAppTask(projectLocation, platformType, RunType.eRhoEmulator,
-                false, false, null, null, null);
+            RunTask task = new LocalRunRhodesAppTask(projectLocation, platformType, RunType.eRhoEmulator,
+                false, false, null, null);
             task.run();
             assertTrue("for " + platformType, task.isOk());
 

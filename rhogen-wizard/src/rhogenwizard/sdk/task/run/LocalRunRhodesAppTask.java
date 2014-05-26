@@ -6,13 +6,13 @@ import java.util.List;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.WinMobileSdk;
 import rhogenwizard.sdk.task.RubyExecTask;
 
-public class RunReleaseRhodesAppTask extends RubyExecTask
+public class LocalRunRhodesAppTask extends RubyExecTask
 {
-    private static String[] getArgs(PlatformType platformType, RunType runType, boolean isReloadCode,
-        boolean isTrace, String startPathOverride, String wmSdkVersion, String[] additionalRubyExtensions)
+    private static String[] getArgs(PlatformType platformType, RunType runType,
+        boolean isReloadCode, boolean isTrace, String startPathOverride,
+        String[] additionalRubyExtensions)
     {
         String task;
         if (runType == RunType.eDevice)
@@ -47,11 +47,6 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
             cmdLine.add("rho_override_start_path=\'" + startPathOverride + "\'");
         }
 
-        if (platformType == PlatformType.eWm && wmSdkVersion != null)
-        {
-            cmdLine.add("rho_wm_sdk=" + WinMobileSdk.fromVersion(wmSdkVersion).sdkId);
-        }
-
         if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
         {
             cmdLine.add("rho_extensions=" + join(",", additionalRubyExtensions));
@@ -60,12 +55,12 @@ public class RunReleaseRhodesAppTask extends RubyExecTask
         return cmdLine.toArray(new String[0]);
     }
 
-    public RunReleaseRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
-        boolean isReloadCode, boolean isTrace, String startPathOverride, String wmSdkVersion,
+    public LocalRunRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
+        boolean isReloadCode, boolean isTrace, String startPathOverride,
         String[] additionalRubyExtensions)
     {
-        super(workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType, runType, isReloadCode, isTrace,
-            startPathOverride, wmSdkVersion, additionalRubyExtensions));
+        super(workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType, runType, isReloadCode,
+            isTrace, startPathOverride, additionalRubyExtensions));
     }
 
     private static String join(String delimiter, String... text)

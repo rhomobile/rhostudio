@@ -13,7 +13,7 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
 import rhogenwizard.SysCommandExecutor;
 
-public class RubyDebugTask extends RubyTask
+public class RubyDebugTask extends RubyTask implements IDebugTask
 {
     private final ILaunch               m_launch;
     private final String                m_appName;
@@ -38,6 +38,7 @@ public class RubyDebugTask extends RubyTask
         return m_debugProcess != null;
     }
 
+    @Override
     public IProcess getDebugProcess()
     {
         return m_debugProcess;
