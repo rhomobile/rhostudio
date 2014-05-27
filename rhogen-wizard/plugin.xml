@@ -29,7 +29,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.productionBuildAction">
          </action>
-         
+<!--         
          <action
                label="Rhohub build"
                icon="icons/rhohub_icon16.png"
@@ -38,7 +38,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.generateSpecAction">
          </action>
-                
+-->                
       </actionSet>
    </extension>
 
