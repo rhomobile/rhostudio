@@ -8,6 +8,7 @@ public class RubyExecTask extends RubyTask
 {
     private final SysCommandExecutor m_executor;
     private ConsoleHelper.Console    m_console;
+    private String                   m_input;
 
     private Integer                  m_exitValue;
 
@@ -17,8 +18,15 @@ public class RubyExecTask extends RubyTask
 
         m_executor = new SysCommandExecutor();
         m_console  = ConsoleHelper.getBuildConsole();
+        m_input = null;
 
         m_exitValue = null;
+    }
+    
+    public RubyExecTask input(String input)
+    {
+        m_input = input;
+        return this;
     }
 
     @Override
@@ -75,7 +83,7 @@ public class RubyExecTask extends RubyTask
 
         try
         {
-            exitValue = m_executor.runCommand(m_decorator, m_cmdLine);
+            exitValue = m_executor.runCommand(m_decorator, m_cmdLine, m_input);
         }
         catch (RuntimeException e)
         {
