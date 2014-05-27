@@ -59,7 +59,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         Process process;
         try
         {
-            process = executor.startCommand(m_decorator, m_cmdLine);
+            process = executor.startCommand(m_decorator, m_cmdLine, null);
         }
         catch (IOException e)
         {
