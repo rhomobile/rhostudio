@@ -15,7 +15,7 @@ import rhogenwizard.Activator;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.sdk.task.rhohub.TokenTask;
+import rhogenwizard.rhohub.RhoHubCommands;
 
 /**
  * Class used to initialize default preference values.
@@ -141,7 +141,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String bbJdkPath      = m_ymlFile.getBbJdkPath(m_defaultBbVer) != null ? m_ymlFile.getBbJdkPath(m_defaultBbVer) : "";
 				String bbMdsPath      = m_ymlFile.getBbMdsPath(m_defaultBbVer) != null ? m_ymlFile.getBbMdsPath(m_defaultBbVer) : "";
 				String bbSimPort      = m_ymlFile.getBbSimPort(m_defaultBbVer) != null ? m_ymlFile.getBbSimPort(m_defaultBbVer) : "";			
-				String rhohubToken    = TokenTask.getToken(m_currProject.getLocation().toOSString());
+				String rhohubToken    = RhoHubCommands.getToken(m_currProject.getLocation().toOSString());
 				
 				store.setDefault(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setDefault(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -195,7 +195,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String bbSim         = store.getString(PreferenceConstants.bbSim);
 				String hubToken      = store.getString(IRhoHubSetting.rhoHubToken);
 				
-				TokenTask.setToken(m_currProject.getLocation().toOSString(), hubToken);
+				RhoHubCommands.setToken(m_currProject.getLocation().toOSString(), hubToken);
 				
 				m_ymlFile.setJavaPath(javaPath);
 				m_ymlFile.setCabWizPath(cabWizPath);

@@ -13,7 +13,7 @@ import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.sdk.task.rhohub.TokenTask;
+import rhogenwizard.rhohub.RhoHubCommands;
 
 public class PreferencesPageRhoHub extends BasePreferencePage 
 {
@@ -89,7 +89,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				TokenTask.clearToken(m_pInit.getRhodesPath());
+				RhoHubCommands.logout(m_pInit.getRhodesPath());
 		        m_pInit = PreferenceInitializer.getInstance();
 			}
 
