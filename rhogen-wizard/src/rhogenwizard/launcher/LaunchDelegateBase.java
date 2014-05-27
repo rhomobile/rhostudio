@@ -42,21 +42,9 @@ import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
 
 public class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
-	private static class FailBuildExtension extends Throwable
+	private static class FailBuildExtension extends Exception
 	{
 		private static final long serialVersionUID = 5907642700379669820L;
-
-		private final String m_runCommand; 
-		
-		public FailBuildExtension(String runCommand) 
-		{			
-			m_runCommand = runCommand;
-		}		
-		
-		public String getCommand()
-		{
-			return m_runCommand;
-		}
 	}
 	
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
@@ -98,7 +86,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 
         if (!runSelectedBuildConfiguration(project, type))
         {
-            throw new FailBuildExtension("");
+            throw new FailBuildExtension();
         }
 
         activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
@@ -110,7 +98,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
         
         if (m_debugProcess == null)
         {
-            throw new FailBuildExtension("");
+            throw new FailBuildExtension();
         }
 
         return m_debugProcess;        
