@@ -13,8 +13,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import rhogenwizard.DialogUtils;
-import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
+import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.sdk.task.RubyExecTask;
+import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.rhohub.TokenTask;
 
 class TokenCheckDialog extends TitleAreaDialog 
@@ -92,7 +93,7 @@ public class TokenChecker
 {
 	public static boolean processToken(final String workDir)
 	{
-		if (!SubscriptionCheckTask.checkRhoHubLicense(workDir))
+		if (!checkRhoHubLicense(workDir))
 		{
 	        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
 	        {
@@ -110,7 +111,7 @@ public class TokenChecker
 	        });
 		}
 		
-		if (!SubscriptionCheckTask.checkRhoHubLicense(workDir))
+		if (!checkRhoHubLicense(workDir))
 		{
 			//DialogUtils.error("Wrong token string.", "This token string is invalid. Re-run the build and try to enter token again.");
 			return false;
@@ -118,4 +119,11 @@ public class TokenChecker
 		
 		return true;
 	}
+	
+    public static boolean checkRhoHubLicense(String workDir)
+    {
+        RunTask task = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
+        task.run();
+        return task.isOk();
+    }
 }
