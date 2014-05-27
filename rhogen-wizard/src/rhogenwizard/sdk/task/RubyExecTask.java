@@ -90,35 +90,6 @@ public class RubyExecTask extends RubyTask
         stream.print("RET: " + m_exitValue + "\n");
     }
 
-    @SuppressWarnings("unused")
-    private String showWorkingDir()
-    {
-        return m_workDir;
-    }
-
-    @SuppressWarnings("unused")
-    private String showCommandLine()
-    {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-
-        for (String item : m_cmdLine)
-        {
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                sb.append(' ');
-            }
-
-            sb.append(item);
-        }
-
-        return sb.toString();
-    }
-
     private static ILogDevice getLogDevice(final ConsoleHelper.Stream stream)
     {
         return new ILogDevice()
