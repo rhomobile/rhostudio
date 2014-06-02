@@ -8,6 +8,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.Activator;
+import rhogenwizard.preferences.PreferenceInitializer;
 
 
 public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
@@ -41,7 +42,7 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getToken()
     {
-        throw new UnsupportedOperationException("TODO: implement token retrieval");
+        return RhoHubCommands.getToken(PreferenceInitializer.getInstance().getRhodesPath());
     }
 
     @Override
