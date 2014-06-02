@@ -22,150 +22,148 @@ import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
 import rhogenwizard.sdk.task.RunTask;
 
-class TokenCheckDialog extends TitleAreaDialog
-{
-    private Text   m_usernameText;
-    private Text   m_passwordText;
-    private String m_username;
-    private String m_password;
-
-    public TokenCheckDialog()
-    {
-        super(null);
-    }
-
-    @Override
-    public void create()
-    {
-        super.create();
-        setTitle("RhoHub login");
-    }
-
-    @Override
-    protected Control createDialogArea(Composite parent)
-    {
-        Composite area = (Composite) super.createDialogArea(parent);
-        
-        Composite container = new Composite(area, SWT.NONE);
-        container.setLayoutData(new GridData(GridData.FILL_BOTH));
-        container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        container.setLayout(new GridLayout(2, false));
-
-        m_usernameText = addText(container, "Username", SWT.NONE    );
-        m_passwordText = addText(container, "Password", SWT.PASSWORD);
-        addLink(container, "app.rhohub.com", "https://app.rhohub.com");
-        
-        return area;
-    }
-    
-    @Override
-    protected boolean isResizable()
-    {
-        return true;
-    }
-
-    @Override
-    protected void okPressed()
-    {
-        m_username = m_usernameText.getText();
-        m_password = m_passwordText.getText();
-        super.okPressed();
-    }
-
-    public String getUsername()
-    {
-        return m_username;
-    }
-
-    public String getPassword()
-    {
-        return m_password;
-    }
-
-    private Text addText(Composite container, String prompt, int style)
-    {
-        Label label = new Label(container, SWT.RIGHT);
-        label.setText(prompt + ": ");
-        
-        Text text = new Text(container, SWT.SINGLE | SWT.BORDER | style);
-
-        GridData gridData = new GridData();
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.horizontalAlignment = GridData.FILL;
-        text.setLayoutData(gridData);
-
-        return text;
-    }
-    
-    private void addLink(Composite container, String text, final String url)
-    {
-        new Label(container, SWT.NONE);
-        
-        Link link = new Link(container, SWT.NONE);
-        link.setText("<a>" + text + "</a>");
-        link.addSelectionListener(new SelectionListener()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent e)
-            {
-                open();
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-                open();
-            }
-
-            private void open()
-            {
-                try
-                {
-                    PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
-                    .openURL(new URL(url));
-                }
-                catch (PartInitException ex)
-                {
-                    ex.printStackTrace();
-                }
-                catch (MalformedURLException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-        GridData gridData = new GridData();
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.horizontalAlignment = GridData.FILL;
-        link.setLayoutData(gridData);
-    }
-}
-
 public class TokenChecker
 {
-    static class Answer {
-        public boolean ok = false;
-        public String username;
-        public String password;
-    }
-    
-    public static boolean processToken(final String workDir)
+
+    private static class Dialog extends TitleAreaDialog
     {
-        if (checkRhoHubLicense(workDir))
+        private Text   m_usernameText;
+        private Text   m_passwordText;
+        private String m_username;
+        private String m_password;
+
+        public Dialog()
+        {
+            super(null);
+        }
+
+        @Override
+        public void create()
+        {
+            super.create();
+            setTitle("RhoHub login");
+        }
+
+        @Override
+        protected Control createDialogArea(Composite parent)
+        {
+            Composite area = (Composite) super.createDialogArea(parent);
+
+            Composite container = new Composite(area, SWT.NONE);
+            container.setLayoutData(new GridData(GridData.FILL_BOTH));
+            container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+            container.setLayout(new GridLayout(2, false));
+
+            m_usernameText = addText(container, "Username", SWT.NONE);
+            m_passwordText = addText(container, "Password", SWT.PASSWORD);
+            addLink(container, "Don't have an account. <a>Signup</a>",
+                "http://wwwnext.rhomobile.com/pricing.html");
+
+            return area;
+        }
+
+        @Override
+        protected boolean isResizable()
         {
             return true;
         }
 
+        @Override
+        protected void okPressed()
+        {
+            m_username = m_usernameText.getText();
+            m_password = m_passwordText.getText();
+            super.okPressed();
+        }
+
+        public String getUsername()
+        {
+            return m_username;
+        }
+
+        public String getPassword()
+        {
+            return m_password;
+        }
+
+        private Text addText(Composite container, String prompt, int style)
+        {
+            Label label = new Label(container, SWT.RIGHT);
+            label.setText(prompt + ": ");
+
+            Text text = new Text(container, SWT.SINGLE | SWT.BORDER | style);
+
+            GridData gridData = new GridData();
+            gridData.grabExcessHorizontalSpace = true;
+            gridData.horizontalAlignment = GridData.FILL;
+            text.setLayoutData(gridData);
+
+            return text;
+        }
+
+        private void addLink(Composite container, String text, final String url)
+        {
+            new Label(container, SWT.NONE);
+
+            Link link = new Link(container, SWT.NONE);
+            link.setText(text);
+            link.addSelectionListener(new SelectionListener()
+            {
+                @Override
+                public void widgetSelected(SelectionEvent e)
+                {
+                    open();
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e)
+                {
+                    open();
+                }
+
+                private void open()
+                {
+                    try
+                    {
+                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL(
+                            url));
+                    }
+                    catch (PartInitException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    catch (MalformedURLException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            GridData gridData = new GridData();
+            gridData.grabExcessHorizontalSpace = true;
+            gridData.horizontalAlignment = GridData.FILL;
+            link.setLayoutData(gridData);
+        }
+    }
+
+    private static class Answer
+    {
+        public boolean ok = false;
+        public String  username;
+        public String  password;
+    }
+
+    public static boolean login(final String workDir)
+    {
         final Answer answer = new Answer();
-        
+
         PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
         {
             @Override
             public void run()
             {
-                TokenCheckDialog dialog = new TokenCheckDialog();
+                Dialog dialog = new Dialog();
                 dialog.create();
 
                 if (dialog.open() == Window.OK)
@@ -181,13 +179,18 @@ public class TokenChecker
         {
             return false;
         }
-        
+
         RhoHubCommands.login(workDir, answer.username, answer.password);
-        
-        return checkRhoHubLicense(workDir);
+
+        return checkLicense(workDir);
     }
 
-    private static boolean checkRhoHubLicense(String workDir)
+    public static boolean processToken(final String workDir)
+    {
+        return checkLicense(workDir) || login(workDir);
+    }
+
+    private static boolean checkLicense(String workDir)
     {
         RunTask task = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
         task.run();

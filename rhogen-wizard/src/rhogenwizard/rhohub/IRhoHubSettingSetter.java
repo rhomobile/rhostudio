@@ -9,8 +9,6 @@ public interface IRhoHubSettingSetter
 	//
 	public void unsetLinking() throws BackingStoreException;
     //
-    public void setToken(String value) throws BackingStoreException;
-    //
     public void setServerUrl(String value) throws BackingStoreException;
     //
     public void setSelectedPlatform(String value) throws BackingStoreException;

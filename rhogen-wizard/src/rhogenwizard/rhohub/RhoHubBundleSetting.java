@@ -41,12 +41,7 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getToken()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return "";
-        
-        return store.getString(rhoHubToken);
+        throw new UnsupportedOperationException("TODO: implement token retrieval");
     }
 
     @Override
@@ -85,17 +80,6 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
         return "master";
     }
 
-    @Override
-    public void setToken(String value) throws BackingStoreException
-    {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        
-        if (store == null)
-            return;
-        
-        store.setValue(rhoHubToken, value);
-    }
-    
     @Override
     public void setServerUrl(String value) throws BackingStoreException
     {

@@ -15,7 +15,6 @@ import rhogenwizard.Activator;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.rhohub.IRhoHubSetting;
-import rhogenwizard.rhohub.RhoHubCommands;
 
 /**
  * Class used to initialize default preference values.
@@ -141,7 +140,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String bbJdkPath      = m_ymlFile.getBbJdkPath(m_defaultBbVer) != null ? m_ymlFile.getBbJdkPath(m_defaultBbVer) : "";
 				String bbMdsPath      = m_ymlFile.getBbMdsPath(m_defaultBbVer) != null ? m_ymlFile.getBbMdsPath(m_defaultBbVer) : "";
 				String bbSimPort      = m_ymlFile.getBbSimPort(m_defaultBbVer) != null ? m_ymlFile.getBbSimPort(m_defaultBbVer) : "";			
-				String rhohubToken    = RhoHubCommands.getToken(m_currProject.getLocation().toOSString());
 				
 				store.setDefault(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setDefault(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -152,7 +150,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				store.setDefault(PreferenceConstants.androidNdkPath, androidNdkPath);
 				store.setDefault(PreferenceConstants.cabWizardPath, cabWizPath);
 				store.setDefault(PreferenceConstants.vcBuildPath, vcbuildPath);
-				store.setDefault(IRhoHubSetting.rhoHubToken, rhohubToken);
 				
 				store.setValue(PreferenceConstants.bbVersionName, m_defaultBbVer);
 				store.setValue(PreferenceConstants.bbJdkPath, bbJdkPath);
@@ -163,7 +160,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				store.setValue(PreferenceConstants.androidNdkPath, androidNdkPath);
 				store.setValue(PreferenceConstants.cabWizardPath, cabWizPath);
 				store.setValue(PreferenceConstants.vcBuildPath, vcbuildPath);
-				store.setValue(IRhoHubSetting.rhoHubToken, rhohubToken);				
 			}			
 		} 
 		catch (Exception e) 
@@ -193,9 +189,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 				String bbJdkPath     = store.getString(PreferenceConstants.bbJdkPath);
 				String bbMdsPath     = store.getString(PreferenceConstants.bbMdsPath);
 				String bbSim         = store.getString(PreferenceConstants.bbSim);
-				String hubToken      = store.getString(IRhoHubSetting.rhoHubToken);
-				
-				RhoHubCommands.setToken(m_currProject.getLocation().toOSString(), hubToken);
 				
 				m_ymlFile.setJavaPath(javaPath);
 				m_ymlFile.setCabWizPath(cabWizPath);
