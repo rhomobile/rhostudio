@@ -353,7 +353,7 @@
             category="rhogenwizard.preferences.PreferencePage"
             class="rhogenwizard.preferences.PreferencesPageRhoHub"
             id="rhogen-wizard.page4"
-            name="RhoHub">
+            name="RhoMobile.com">
       </page>
     </extension>
 

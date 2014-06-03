@@ -72,9 +72,9 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
                 .makeJob("Production build (" + projectName + ")")
                 .schedule();
                 break;
-            case eRhoHub:
+            case eRhoMobileCom:
                 new RhohubProductionBuildTask(workDir, platformType)
-                .makeJob("Rhohub production build (" + projectName + ")")
+                .makeJob("RhoMobile.com production build (" + projectName + ")")
                 .schedule();
                 break;
             }

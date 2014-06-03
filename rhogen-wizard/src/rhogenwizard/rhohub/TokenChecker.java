@@ -41,7 +41,7 @@ public class TokenChecker
         public void create()
         {
             super.create();
-            setTitle("RhoHub login");
+            setTitle("Rhomobile.com login");
         }
 
         @Override
@@ -126,8 +126,8 @@ public class TokenChecker
                 {
                     try
                     {
-                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL(
-                            url));
+                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
+                        .openURL(new URL(url));
                     }
                     catch (PartInitException ex)
                     {
@@ -156,33 +156,38 @@ public class TokenChecker
 
     public static boolean login(final String workDir)
     {
-        final Answer answer = new Answer();
-
-        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
+        do
         {
-            @Override
-            public void run()
+            final Answer answer = new Answer();
+
+            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
             {
-                Dialog dialog = new Dialog();
-                dialog.create();
-
-                if (dialog.open() == Window.OK)
+                @Override
+                public void run()
                 {
-                    answer.ok = true;
-                    answer.username = dialog.getUsername();
-                    answer.password = dialog.getPassword();
+                    Dialog dialog = new Dialog();
+                    dialog.create();
+
+                    if (dialog.open() == Window.OK)
+                    {
+                        answer.ok = true;
+                        answer.username = dialog.getUsername();
+                        answer.password = dialog.getPassword();
+                    }
                 }
+            });
+
+            if (!answer.ok)
+            {
+                return false;
             }
-        });
 
-        if (!answer.ok)
-        {
-            return false;
+            RhoHubCommands.login(workDir, answer.username, answer.password);
+
         }
-
-        RhoHubCommands.login(workDir, answer.username, answer.password);
-
-        return checkLicense(workDir);
+        while (!checkLicense(workDir));
+        
+        return true;
     }
 
     public static boolean processToken(final String workDir)
@@ -192,7 +197,8 @@ public class TokenChecker
 
     private static boolean checkLicense(String workDir)
     {
-        RunTask task = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
+        RunTask task =
+            new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
         task.run();
         return task.isOk();
     }

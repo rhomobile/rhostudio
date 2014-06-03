@@ -48,12 +48,8 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getServerUrl()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return "";
-        
-        return store.getString(rhoHubUrl);
+        throw new UnsupportedOperationException(
+            "TODO: add getServerUrl implementation. By rake command for example.");
     }
 
     @Override
@@ -79,17 +75,6 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     public String getAppBranch()
     {
         return "master";
-    }
-
-    @Override
-    public void setServerUrl(String value) throws BackingStoreException
-    {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        
-        if (store == null)
-            return;
-        
-        store.setValue(rhoHubUrl, value);
     }
 
     @Override

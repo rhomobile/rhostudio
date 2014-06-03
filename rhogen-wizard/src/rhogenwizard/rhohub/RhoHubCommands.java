@@ -38,7 +38,7 @@ public class RhoHubCommands
     {
         new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:login")
         .input(username + '\n' + password + '\n')
-        .run();    
+        .run();
     }
     
 	public static void logout(String workDir)

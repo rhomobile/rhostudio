@@ -6,7 +6,7 @@ import java.util.List;
 public enum BuildType
 {
     eLocal("local", "Local"),
-    eRhoHub("rhohub", "RhoHub"),
+    eRhoMobileCom("rhomobile.com", "RhoMobile.com"),
     eUnknown(null, null);
 
     public final String id;

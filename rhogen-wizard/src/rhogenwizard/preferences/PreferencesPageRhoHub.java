@@ -51,16 +51,10 @@ public class PreferencesPageRhoHub extends BasePreferencePage
     @Override
     protected Control createContents(Composite parent)
     {
-        StringFieldEditor editor = null;
-
         Composite top = new Composite(parent, SWT.LEFT);
 
-        editor = new StringFieldEditor(IRhoHubSetting.rhoHubUrl, "&RhoHub API Endpoint (advanced):", top);
-        editor.setPreferenceStore(Activator.getDefault().getPreferenceStore());
-        editor.setPage(this);
-        editor.load();
-
-        editor = new StringFieldEditor(IRhoHubSetting.rhoHubProxy, "&HTTP proxy:", top);
+        StringFieldEditor editor =
+            new StringFieldEditor(IRhoHubSetting.rhoHubProxy, "&HTTP proxy:", top);
         editor.setPreferenceStore(Activator.getDefault().getPreferenceStore());
         editor.setPage(this);
         editor.load();
@@ -79,7 +73,9 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                TokenChecker.login(m_pInit.getRhodesPath());
+                String rhodesPath = m_pInit.getRhodesPath();
+                RhoHubCommands.logout(rhodesPath);
+                TokenChecker.login(rhodesPath);
             }
 
             @Override

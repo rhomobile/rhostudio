@@ -155,7 +155,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			return false;
 		
         RunTask task;
-		if (BuildType.fromId(m_buildType) == BuildType.eRhoHub) {
+		if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom) {
             task = new RhohubRunRhodesAppTask(currProject.getLocation().toOSString(),
                 PlatformType.fromId(m_platformType), m_isTrace, m_startPathOverride,
                 m_additionalRubyExtensions);
@@ -175,7 +175,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
 			return null;
 		IDebugTask task;
-        if (BuildType.fromId(m_buildType) == BuildType.eRhoHub)
+        if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom)
         {
             task = new RhohubDebugRhodesAppTask(launch, selType,
                 currProject.getLocation().toOSString(), currProject.getName(),

@@ -129,7 +129,7 @@ public class ParametersTab extends  JavaLaunchTab
             {
                 if (m_configuration != null)
                 {           
-                    if (m_selectBuildCombo.getText().equals(BuildType.eRhoHub.publicId) && 
+                    if (m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId) && 
                         !m_platformTypeCombo.getText().equals(RunType.platformDevice))
                     {
                         m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); 
@@ -158,7 +158,7 @@ public class ParametersTab extends  JavaLaunchTab
 					try 
 					{
 					    if ((m_platformTypeCombo.getText().equals(RunType.platformDevice) ||
-					        m_selectBuildCombo.getText().equals(BuildType.eRhoHub.publicId)) && 
+					        m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId)) && 
 						    m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 					    {
 					        DialogUtils.warning("Warning", iphoneDeviceMsg);
@@ -489,7 +489,7 @@ public class ParametersTab extends  JavaLaunchTab
 			}
 		}
 				
-        configuration.setAttribute(ConfigurationConstants.buildCfgAttribute, BuildType.eRhoHub.id);
+        configuration.setAttribute(ConfigurationConstants.buildCfgAttribute, BuildType.eRhoMobileCom.id);
 		configuration.setAttribute(ConfigurationConstants.platformCfgAttribute, PlatformType.eAndroid.id);
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
 		configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
