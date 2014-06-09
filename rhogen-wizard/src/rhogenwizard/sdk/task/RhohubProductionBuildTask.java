@@ -9,10 +9,10 @@ public class RhohubProductionBuildTask extends SeqRunTask
     {
         super(
             new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT,
-                "rake", "rhohub:build:" + platformType + ":production", "--trace"
+                "rake", "cloud:build:" + platformType + ":production", "--trace"
             ),
             new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT,
-                "rake", "rhohub:download", "--trace"
+                "rake", "cloud:download", "--trace"
             )
         );
     }

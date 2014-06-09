@@ -14,9 +14,9 @@ public class RhohubRunRhodesAppTask extends SeqRunTask
         String startPathOverride, String[] additionalRubyExtensions)
     {
         super(
-            getTask(workDir, "rhohub:build:" + platformType + ":production", isTrace,
+            getTask(workDir, "cloud:build:" + platformType + ":production", isTrace,
                 startPathOverride, additionalRubyExtensions),
-            getTask(workDir, "run:device", isTrace, startPathOverride, additionalRubyExtensions)
+            getTask(workDir, "cloud:run:device", isTrace, startPathOverride, additionalRubyExtensions)
         );
     }
     

@@ -27,7 +27,7 @@ public class RhohubDebugRhodesAppTask implements IDebugTask
         m_lastTask = getDebugTask(launch, runType, workDir, appName, platformType, isTrace,
             startPathOverride, additionalRubyExtensions);
         m_seqTask = new SeqRunTask(
-            getBuildTask(workDir, "rhohub:build:" + platformType + ":production", isTrace,
+            getBuildTask(workDir, "cloud:build:" + platformType + ":production", isTrace,
                 startPathOverride, additionalRubyExtensions),
             m_lastTask
         );
@@ -93,19 +93,19 @@ public class RhohubDebugRhodesAppTask implements IDebugTask
         if(runType == RunType.eEmulator)
         {
             // for emulator
-            args.add("run:" + platformType);
-            args.add("rho_remote_debug=true");
+            args.add("cloud:run:simulator");
         }
         else if(runType == RunType.eDevice)
         {
             // for device
-            args.add("run:" + platformType + ":device");
-            args.add("rho_remote_debug=true");
+            args.add("cloud:run:device");
         }
         else
         {
             return null;
         }
+        
+        args.add("rho_remote_debug=true");
 
         if (isTrace)
         {
