@@ -28,8 +28,8 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
+import rhogenwizard.BuildType;
 import rhogenwizard.RunType;
-import rhogenwizard.WinMobileSdk;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
@@ -62,12 +62,11 @@ public class ParametersTab extends  JavaLaunchTab
 		                                       RunType.platformSim,
 		                                       RunType.platformDevice };
 	
-    protected static String wmVersions[] = WinMobileSdk.getVersions();
-
 
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Combo       m_selectPlatformVersionCombo = null;
+	Combo       m_selectBuildCombo = null;
 	Text 		m_appNameText = null;
 	Text 		m_appLogText = null;
 	Text        m_adroidEmuNameText = null;
@@ -119,6 +118,32 @@ public class ParametersTab extends  JavaLaunchTab
 			}
 		});
 		
+        // 2 row
+        SWTFactory.createLabel(namecomp, "Build:", 1); 
+        
+        m_selectBuildCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, BuildType.getPublicIds());
+        m_selectBuildCombo.addSelectionListener(new SelectionAdapter()
+        {   
+            @Override
+            public void widgetSelected(SelectionEvent e) 
+            {
+                if (m_configuration != null)
+                {           
+                    if (m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId) && 
+                        !m_platformTypeCombo.getText().equals(RunType.platformDevice))
+                    {
+                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); 
+                    }
+
+                    encodeBuildInformation(m_selectBuildCombo.getText());
+                    showApplyButton();
+                }
+            }
+        });
+        m_selectBuildCombo.select(0);        
+            
+        SWTFactory.createLabel(namecomp, "", 1);
+        
 		// 2 row
 		SWTFactory.createLabel(namecomp, "Platform:", 1); 
 		
@@ -132,10 +157,12 @@ public class ParametersTab extends  JavaLaunchTab
 				{			
 					try 
 					{
-					    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
+					    if ((m_platformTypeCombo.getText().equals(RunType.platformDevice) ||
+					        m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId)) && 
 						    m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 					    {
 					        DialogUtils.warning("Warning", iphoneDeviceMsg);
+					        m_selectBuildCombo.select(m_selectBuildCombo.indexOf(BuildType.eLocal.publicId)); // select local build 
 					        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
 					        return;
 					    }
@@ -196,14 +223,6 @@ public class ParametersTab extends  JavaLaunchTab
                     {
                         DialogUtils.warning("Warning", "For Win32 platform we can run only simulator build.");
                         m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformSim)); // select simulator 
-                    }
-                    
-                    // for windows CE
-                    if (m_platformTypeCombo.getText().equals(RunType.platformSim) && 
-                        m_selectPlatformCombo.getText().equals(PlatformType.eWCE.publicId))
-                    {
-                        DialogUtils.warning("Warning", "For Windows CE platform we can run only device or rhosimulator build.");
-                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); // select device
                     }
                     
 					encodePlatformTypeCombo(m_platformTypeCombo.getText());
@@ -290,7 +309,7 @@ public class ParametersTab extends  JavaLaunchTab
 		{
 			try 
 			{
-				String selProjectPlatform = m_configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+				String selProjectPlatform = m_configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 				
 				if (selProjectPlatform.equals(PlatformType.eAndroid.id))
 				{
@@ -359,7 +378,7 @@ public class ParametersTab extends  JavaLaunchTab
 		{
 			showAndroidEmuName(false);
 			
-			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 			String emuName            = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 			String platformType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
@@ -462,7 +481,6 @@ public class ParametersTab extends  JavaLaunchTab
 					configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
 					configuration.setAttribute(ConfigurationConstants.iphoneVersionAttribute, iphoneVersions[0]);					
 				}
-                configuration.setAttribute(ConfigurationConstants.wmVersionAttribute, wmVersions[0]);
 			} 
 			catch (FileNotFoundException e)
 			{
@@ -471,7 +489,8 @@ public class ParametersTab extends  JavaLaunchTab
 			}
 		}
 				
-		configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, PlatformType.eAndroid.id);
+        configuration.setAttribute(ConfigurationConstants.buildCfgAttribute, BuildType.eRhoMobileCom.id);
+		configuration.setAttribute(ConfigurationConstants.platformCfgAttribute, PlatformType.eAndroid.id);
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
 		configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 		configuration.setAttribute(ConfigurationConstants.isTraceAttribute, false);	
@@ -491,9 +510,10 @@ public class ParametersTab extends  JavaLaunchTab
 				sc.setMinSize(scrollParent.computeSize(minTabSize, SWT.DEFAULT));	
 			}
 			
-			String selProjectName = null, selProjectPlatform = null, selAndroidEmuName = null;
+			String selProjectName = null, selProjectPlatform = null, selProjectBuild = null, selAndroidEmuName = null;
 			selProjectName        = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-			selProjectPlatform    = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+			selProjectPlatform    = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
+			selProjectBuild       = configuration.getAttribute(ConfigurationConstants.buildCfgAttribute, "");
 			boolean isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 			boolean isRebuild     = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 			boolean isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
@@ -512,7 +532,8 @@ public class ParametersTab extends  JavaLaunchTab
 				}
 			}
 			
-			setPlatformCombo(selProjectPlatform);
+            setPlatformCombo(selProjectPlatform);
+            setBuildCombo(selProjectBuild);
 			setPlatformVersionCombo(configuration.getWorkingCopy());
 			setPlatfromTypeCombo(configuration.getWorkingCopy());
 			
@@ -532,7 +553,7 @@ public class ParametersTab extends  JavaLaunchTab
 	
 	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
 	{
-		PlatformType selProjectPlatform = PlatformType.fromId(configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, ""));
+		PlatformType selProjectPlatform = PlatformType.fromId(configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, ""));
 		
 		boolean debugMode = getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE);
 		boolean android = selProjectPlatform == PlatformType.eAndroid;
@@ -550,6 +571,21 @@ public class ParametersTab extends  JavaLaunchTab
             m_platformTypeCombo.select(m_platformTypeCombo.indexOf(platformType));
 		}
 	}
+
+    private void setBuildCombo(ILaunchConfigurationWorkingCopy configuration)
+    {
+        BuildType selProjectBuild;
+        try
+        {
+            selProjectBuild = BuildType.fromId(configuration.getAttribute(ConfigurationConstants.buildCfgAttribute, ""));
+        }
+        catch (CoreException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        m_selectBuildCombo.select(m_selectBuildCombo.indexOf(selProjectBuild.publicId));
+    }
 	
 	protected void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 
 	{
@@ -557,11 +593,9 @@ public class ParametersTab extends  JavaLaunchTab
 		{
 			int maxAndroidVerIdx = androidVersions.length - 1;
 		
-			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 			String selAndroidVer      = configuration.getAttribute(ConfigurationConstants.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
-			String selBlackBarryVer   = configuration.getAttribute(ConfigurationConstants.blackberryVersionAttribute, "");			
 			String selIphoneVer       = configuration.getAttribute(ConfigurationConstants.iphoneVersionAttribute, "");
-			String selWmVer           = configuration.getAttribute(ConfigurationConstants.wmVersionAttribute, WinMobileSdk.v6_0.version);
 			String selPlatformType    = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 
 			showVersionCombo(false);
@@ -588,14 +622,6 @@ public class ParametersTab extends  JavaLaunchTab
                 
 	            m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selIphoneVer));
 			}
-            else if (selProjectPlatform.equals(PlatformType.eWm.id))
-            {
-                m_selectPlatformVersionCombo.setItems(wmVersions);
-
-                showVersionCombo(true);
-
-                m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selWmVer));
-            }
 		}
 		catch (CoreException e) 
 		{
@@ -608,6 +634,15 @@ public class ParametersTab extends  JavaLaunchTab
 	    String publicId = PlatformType.fromId(selProjectPlatform).publicId;
 	    m_selectPlatformCombo.select(m_selectPlatformCombo.indexOf(publicId));
 	}
+		
+    private void setBuildCombo(String selBuildPlatform)
+    {
+        String publicId = BuildType.fromId(selBuildPlatform).publicId;
+        if (publicId != null)
+        {
+            m_selectBuildCombo.select(m_selectBuildCombo.indexOf(publicId));
+        }
+    }
 	
 	@Override
 	public boolean canSave()
@@ -694,7 +729,7 @@ public class ParametersTab extends  JavaLaunchTab
 	{
 		try
 		{
-			String selPlatform = m_configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+			String selPlatform = m_configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 			
 			PlatformType type = PlatformType.fromId(selPlatform);
 			
@@ -710,10 +745,6 @@ public class ParametersTab extends  JavaLaunchTab
 				m_ymlFile.setIphoneVer(selVersion);
 				m_ymlFile.save();
             }
-            else if (type == PlatformType.eWm)
-            {
-                m_configuration.setAttribute(ConfigurationConstants.wmVersionAttribute, selVersion);
-			}
 		}
 		catch(CoreException e)
 		{
@@ -721,35 +752,29 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 	}
 	
-	private String[] getBbVersions()
-	{
-		try 
-		{
-			String m_ymlSdkPath = m_ymlFile.getSdkConfigPath();
-			
-			SdkYmlFile sdkYmlFile = new SdkYmlFile(m_ymlSdkPath);
-			
-			return sdkYmlFile.getBbVersions().toArray(new String[0]);
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-		return new String[0];
-	}
-	
 	private void encodePlatformInformation(String selPlatform)
 	{
 		PlatformType pt = PlatformType.fromPublicId(selPlatform);
 		if (pt != PlatformType.eUnknown)
 		{
-			m_configuration.setAttribute(ConfigurationConstants.platforrmCfgAttribute, pt.id);
+			m_configuration.setAttribute(ConfigurationConstants.platformCfgAttribute, pt.id);
 		}
 		
 		setPlatformVersionCombo(m_configuration);
 		setAndroidEmuName(m_configuration);
 	}
-	
+
+    private void encodeBuildInformation(String selBuild)
+    {
+        BuildType bt = BuildType.fromPublicId(selBuild);
+        if (bt != BuildType.eUnknown)
+        {
+            m_configuration.setAttribute(ConfigurationConstants.buildCfgAttribute, bt.id);
+        }
+        
+        setBuildCombo(m_configuration);
+    }
+
 	protected IProject getSelectProject()
 	{
 		return m_selProject;

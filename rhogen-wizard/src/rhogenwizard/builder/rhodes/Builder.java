@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.Activator;
 import rhogenwizard.PlatformType;
-import rhogenwizard.WinMobileSdk;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
@@ -46,7 +45,7 @@ public class Builder extends IncrementalProjectBuilder
                 continue;
             }
              
-            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType, null);
+            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
             task.run(monitor);
         }
 

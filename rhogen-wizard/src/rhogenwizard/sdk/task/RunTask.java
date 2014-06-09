@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-public abstract class RunTask
+public abstract class RunTask implements IRunTask
 {
     public static class StoppedException extends RuntimeException
     {
@@ -22,14 +22,10 @@ public abstract class RunTask
         }
     }
 
-    public abstract boolean isOk();
-
     public void run()
     {
         run(new NullProgressMonitor());
     }
-
-    public abstract void run(IProgressMonitor monitor);
 
     /**
      * @param name

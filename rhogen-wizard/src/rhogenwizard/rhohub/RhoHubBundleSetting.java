@@ -8,6 +8,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
 
 import rhogenwizard.Activator;
+import rhogenwizard.preferences.PreferenceInitializer;
 
 
 public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
@@ -41,23 +42,14 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getToken()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return "";
-        
-        return store.getString(rhoHubToken);
+        return RhoHubCommands.getToken(PreferenceInitializer.getInstance().getRhodesPath());
     }
 
     @Override
     public String getServerUrl()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-        if (store == null)
-            return "";
-        
-        return store.getString(rhoHubUrl);
+        throw new UnsupportedOperationException(
+            "TODO: add getServerUrl implementation. By rake command for example.");
     }
 
     @Override
@@ -83,28 +75,6 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     public String getAppBranch()
     {
         return "master";
-    }
-
-    @Override
-    public void setToken(String value) throws BackingStoreException
-    {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        
-        if (store == null)
-            return;
-        
-        store.setValue(rhoHubToken, value);
-    }
-    
-    @Override
-    public void setServerUrl(String value) throws BackingStoreException
-    {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        
-        if (store == null)
-            return;
-        
-        store.setValue(rhoHubUrl, value);
     }
 
     @Override

@@ -15,6 +15,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import rhogenwizard.preferences.PreferenceInitializer;
+import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.StopSyncAppTask;
 
 /**
@@ -60,6 +62,8 @@ public class Activator extends AbstractUIPlugin
         setEgitDefaultRepositaryPath();
 
         ConsoleHelper.initialize();
+        
+        TokenChecker.processToken(PreferenceInitializer.getInstance().getRhodesPath());
     }
 
     @Override

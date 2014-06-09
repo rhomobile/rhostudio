@@ -80,7 +80,7 @@ public class SysCommandExecutor
         return m_cmdError.toString();
     }
 
-    public Process startCommand(Decorator decorator, List<String> commandLine) throws IOException
+    public Process startCommand(Decorator decorator, List<String> commandLine, String input) throws IOException
     {
         if (m_cmdOutput != null)
         {
@@ -88,11 +88,10 @@ public class SysCommandExecutor
         }
 
         /* run command */
-        Process process = runCommandHelper(Arrays.asList(decorateCommandLine(decorator,
-            commandLine.toArray(new String[0]))));
+        Process process = runCommandHelper(Arrays.asList(decorateCommandLine(decorator, commandLine.toArray(new String[0]))));
 
         /* close process input stream (required for WMIC on Win32) */
-        process.getOutputStream().close();
+        new AsyncStreamWriter(process.getOutputStream(), input).start();
 
         /* start output and error read threads */
         startOutputAndErrorReadThreads(process.getInputStream(), process.getErrorStream());
@@ -100,10 +99,16 @@ public class SysCommandExecutor
         return process;
     }
 
-    public int runCommand(Decorator decorator, List<String> commandLine) throws IOException,
-        InterruptedException
+    public int runCommand(Decorator decorator, List<String> commandLine)
+        throws IOException, InterruptedException
     {
-        Process process = startCommand(decorator, commandLine);
+        return runCommand(decorator, commandLine, null);
+    }
+
+    public int runCommand(Decorator decorator, List<String> commandLine, String input)
+        throws IOException, InterruptedException
+    {
+        Process process = startCommand(decorator, commandLine, input);
 
         try
         {

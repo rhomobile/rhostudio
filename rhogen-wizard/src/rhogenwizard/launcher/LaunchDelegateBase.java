@@ -1,6 +1,5 @@
 package rhogenwizard.launcher;
 
-import java.awt.Window;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,6 +19,7 @@ import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import rhogenwizard.Activator;
+import rhogenwizard.BuildType;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.LogFileHelper;
@@ -28,45 +28,34 @@ import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.WinMobileSdk;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
+import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.RunTask;
-import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
-import rhogenwizard.sdk.task.run.RunDebugRhodesAppTask;
-import rhogenwizard.sdk.task.run.RunReleaseRhodesAppTask;
+import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
+import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
+import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
+import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
 
 public class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
-	private static class FailBuildExtension extends Throwable
+	private static class FailBuildExtension extends Exception
 	{
 		private static final long serialVersionUID = 5907642700379669820L;
-
-		private final String m_runCommand; 
-		
-		public FailBuildExtension(String runCommand) 
-		{			
-			m_runCommand = runCommand;
-		}		
-		
-		public String getCommand()
-		{
-			return m_runCommand;
-		}
 	}
 	
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	protected String          m_projectName   = null;
 	private String            m_runType       = null;
+	private String            m_buildType     = null;    
 	private String            m_platformType  = null;
 	private boolean           m_isClean       = false;
 	private boolean           m_isReloadCode  = false;
 	private boolean           m_isTrace       = false;
-    private String            m_wmSdkVersion  = null;
 	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
 	private IProcess          m_debugProcess  = null;
 	private final String      m_startPathOverride;
@@ -97,7 +86,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 
         if (!runSelectedBuildConfiguration(project, type))
         {
-            throw new FailBuildExtension("");
+            throw new FailBuildExtension();
         }
 
         activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
@@ -109,7 +98,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
         
         if (m_debugProcess == null)
         {
-            throw new FailBuildExtension("");
+            throw new FailBuildExtension();
         }
 
         return m_debugProcess;        
@@ -164,10 +153,18 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
 			return false;
+		
+        RunTask task;
+		if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom) {
+            task = new RhohubRunRhodesAppTask(currProject.getLocation().toOSString(),
+                PlatformType.fromId(m_platformType), m_isTrace, m_startPathOverride,
+                m_additionalRubyExtensions);
+		} else {
+            task = new LocalRunRhodesAppTask(currProject.getLocation().toOSString(),
+                PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace,
+                m_startPathOverride, m_additionalRubyExtensions);
+		}
 				
-		RunTask task = new RunReleaseRhodesAppTask(currProject.getLocation().toOSString(),
-		    PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace, m_startPathOverride,
-		    m_wmSdkVersion, m_additionalRubyExtensions);
 		task.run();
 
 		return task.isOk();
@@ -177,10 +174,21 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	{
 		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
 			return null;
-
-		RunDebugRhodesAppTask task = new RunDebugRhodesAppTask(launch, selType, currProject.getLocation().toOSString(),
-		    currProject.getName(), PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace,
-		    m_startPathOverride, m_wmSdkVersion, m_additionalRubyExtensions);
+		IDebugTask task;
+        if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom)
+        {
+            task = new RhohubDebugRhodesAppTask(launch, selType,
+                currProject.getLocation().toOSString(), currProject.getName(),
+                PlatformType.fromId(m_platformType), m_isReloadCode, m_startPathOverride,
+                m_additionalRubyExtensions);
+        }
+        else
+        {
+            task = new LocalDebugRhodesAppTask(launch, selType,
+                currProject.getLocation().toOSString(), currProject.getName(),
+                PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace, m_startPathOverride,
+                m_additionalRubyExtensions);
+        }
 		task.run();
 		
 		return task.getDebugProcess();
@@ -189,19 +197,20 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
 		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-		m_platformType  = configuration.getAttribute(ConfigurationConstants.platforrmCfgAttribute, "");
+		m_platformType  = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
+		m_buildType     = configuration.getAttribute(ConfigurationConstants.buildCfgAttribute, "");
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
 		m_runType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
-		m_wmSdkVersion  = configuration.getAttribute(ConfigurationConstants.wmVersionAttribute, WinMobileSdk.v6_0.version);
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor) throws FileNotFoundException
 	{
 		if (isClean) 
 		{			
-			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(), PlatformType.fromId(m_platformType), m_wmSdkVersion);
+			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(),
+			    PlatformType.fromId(m_platformType));
 			task.run(monitor);		
 		}
 	}
@@ -231,8 +240,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			
 			setupConfigAttributes(configuration);
 			
-			PlatformType currPlType = PlatformType.fromId(m_platformType);
-				
 			if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
 			{
 				throw new IllegalArgumentException("Platform and project name should be assigned");

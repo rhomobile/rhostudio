@@ -1,121 +1,205 @@
 package rhogenwizard.rhohub;
 
-import org.eclipse.jface.dialogs.IMessageProvider;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import rhogenwizard.DialogUtils;
-import rhogenwizard.sdk.task.rhohub.SubscriptionCheckTask;
-import rhogenwizard.sdk.task.rhohub.TokenTask;
-
-class TokenCheckDialog extends TitleAreaDialog 
-{
-	private Text m_tokenText;
-
-	private String m_strToken;
-
-	public TokenCheckDialog(Shell parentShell) 
-	{
-		super(parentShell);
-	}
-
-	@Override
-	public void create() 
-	{
-		super.create();
-		setTitle("Setup token dialog");
-		setMessage("Dialog for setup new token.", IMessageProvider.INFORMATION);
-	}
-
-	@Override
-	protected Control createDialogArea(Composite parent)
-	{
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-		GridLayout layout = new GridLayout(2, false);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		container.setLayout(layout);
-
-		createFirstName(container);
-
-		return area;
-	}
-
-	private void createFirstName(Composite container) 
-	{
-		Label tokenLabel = new Label(container, SWT.NONE);
-		tokenLabel.setText("Token: ");
-
-		GridData dataFirstName = new GridData();
-		dataFirstName.grabExcessHorizontalSpace = true;
-		dataFirstName.horizontalAlignment = GridData.FILL;
-
-		m_tokenText = new Text(container, SWT.BORDER);
-		m_tokenText.setLayoutData(dataFirstName);
-	}
-
-	@Override
-	protected boolean isResizable() 
-	{
-		return true;
-	}
-
-	private void saveInput() 
-	{
-		m_strToken = m_tokenText.getText();
-	}
-
-	@Override
-	protected void okPressed() 
-	{
-		saveInput();
-		super.okPressed();
-	}
-
-	public String getTokenString()
-	{
-		return m_strToken;
-	}
-}
+import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.sdk.task.RubyExecTask;
+import rhogenwizard.sdk.task.RunTask;
 
 public class TokenChecker
 {
-	public static boolean processToken(final String workDir)
-	{
-		if (!SubscriptionCheckTask.checkRhoHubLicense(workDir))
-		{
-	        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
-	        {
-	            @Override
-	            public void run()
-	            {
-	    			TokenCheckDialog dialog = new TokenCheckDialog(null);
-	    			dialog.create();
 
-	    			if (dialog.open() == Window.OK) 
-	    			{    				
-	    				TokenTask.setToken(workDir, dialog.getTokenString());
-	    			} 	
-	            }
-	        });
-		}
-		
-		if (!SubscriptionCheckTask.checkRhoHubLicense(workDir))
-		{
-			//DialogUtils.error("Wrong token string.", "This token string is invalid. Re-run the build and try to enter token again.");
-			return false;
-		}		
-		
-		return true;
-	}
+    private static class Dialog extends TitleAreaDialog
+    {
+        private Text   m_usernameText;
+        private Text   m_passwordText;
+        private String m_username;
+        private String m_password;
+
+        public Dialog()
+        {
+            super(null);
+        }
+
+        @Override
+        public void create()
+        {
+            super.create();
+            setTitle("Rhomobile.com login");
+        }
+
+        @Override
+        protected Control createDialogArea(Composite parent)
+        {
+            Composite area = (Composite) super.createDialogArea(parent);
+
+            Composite container = new Composite(area, SWT.NONE);
+            container.setLayoutData(new GridData(GridData.FILL_BOTH));
+            container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+            container.setLayout(new GridLayout(2, false));
+
+            m_usernameText = addText(container, "Username", SWT.NONE);
+            m_passwordText = addText(container, "Password", SWT.PASSWORD);
+            addLink(container, "Don't have an account. <a>Signup</a>",
+                "http://wwwnext.rhomobile.com/pricing.html");
+
+            return area;
+        }
+
+        @Override
+        protected boolean isResizable()
+        {
+            return true;
+        }
+
+        @Override
+        protected void okPressed()
+        {
+            m_username = m_usernameText.getText();
+            m_password = m_passwordText.getText();
+            super.okPressed();
+        }
+
+        public String getUsername()
+        {
+            return m_username;
+        }
+
+        public String getPassword()
+        {
+            return m_password;
+        }
+
+        private Text addText(Composite container, String prompt, int style)
+        {
+            Label label = new Label(container, SWT.RIGHT);
+            label.setText(prompt + ": ");
+
+            Text text = new Text(container, SWT.SINGLE | SWT.BORDER | style);
+
+            GridData gridData = new GridData();
+            gridData.grabExcessHorizontalSpace = true;
+            gridData.horizontalAlignment = GridData.FILL;
+            text.setLayoutData(gridData);
+
+            return text;
+        }
+
+        private void addLink(Composite container, String text, final String url)
+        {
+            new Label(container, SWT.NONE);
+
+            Link link = new Link(container, SWT.NONE);
+            link.setText(text);
+            link.addSelectionListener(new SelectionListener()
+            {
+                @Override
+                public void widgetSelected(SelectionEvent e)
+                {
+                    open();
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e)
+                {
+                    open();
+                }
+
+                private void open()
+                {
+                    try
+                    {
+                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
+                        .openURL(new URL(url));
+                    }
+                    catch (PartInitException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    catch (MalformedURLException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            GridData gridData = new GridData();
+            gridData.grabExcessHorizontalSpace = true;
+            gridData.horizontalAlignment = GridData.FILL;
+            link.setLayoutData(gridData);
+        }
+    }
+
+    private static class Answer
+    {
+        public boolean ok = false;
+        public String  username;
+        public String  password;
+    }
+
+    public static boolean login(final String workDir)
+    {
+        do
+        {
+            final Answer answer = new Answer();
+
+            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Dialog dialog = new Dialog();
+                    dialog.create();
+
+                    if (dialog.open() == Window.OK)
+                    {
+                        answer.ok = true;
+                        answer.username = dialog.getUsername();
+                        answer.password = dialog.getPassword();
+                    }
+                }
+            });
+
+            if (!answer.ok)
+            {
+                return false;
+            }
+
+            RhoHubCommands.login(workDir, answer.username, answer.password);
+
+        }
+        while (!checkLicense(workDir));
+        
+        return true;
+    }
+
+    public static boolean processToken(final String workDir)
+    {
+        return checkLicense(workDir) || login(workDir);
+    }
+
+    private static boolean checkLicense(String workDir)
+    {
+        RunTask task =
+            new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
+        task.run();
+        return task.isOk();
+    }
 }

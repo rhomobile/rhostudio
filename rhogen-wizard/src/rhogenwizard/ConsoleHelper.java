@@ -13,22 +13,17 @@ public class ConsoleHelper
     public interface Stream
     {
         void print(String message);
-
         void println();
-
         void println(String message);
     }
 
     public interface Console
     {
         void show();
-
         void clear();
-
+        void disable();
         Stream getStream();
-
         Stream getOutputStream();
-
         Stream getErrorStream();
     }
 
@@ -59,6 +54,11 @@ public class ConsoleHelper
 
                                           @Override
                                           public void clear()
+                                          {
+                                          }
+
+                                          @Override
+                                          public void disable()
                                           {
                                           }
 
@@ -267,12 +267,8 @@ public class ConsoleHelper
     public static void disableConsoles()
     {
         initialize();
-        
-        ConsoleImpl _appConsole  = (ConsoleImpl) appConsole;
-        _appConsole.disable();
-        
-        ConsoleImpl _buildConsole = (ConsoleImpl) buildConsole;
-        _buildConsole.disable();
+        appConsole.disable();
+        buildConsole.disable();
     }
 
     public static Console getAppConsole()

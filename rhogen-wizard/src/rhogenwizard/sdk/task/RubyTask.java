@@ -88,12 +88,12 @@ public abstract class RubyTask extends RunTask
 
     protected String showCommand()
     {
-        return "\nPWD: " + showWorkingDir() + "\nCMD: " + showCommandLine() + "\n";
-    }
-
-    private String showWorkingDir()
-    {
-        return m_workDir;
+        String show = "\nCMD: " + showCommandLine() + "\n";
+        if (m_workDir != null)
+        {
+            show = "\nPWD: " + m_workDir + show;
+        }
+        return show;
     }
 
     private String showCommandLine()

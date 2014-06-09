@@ -29,7 +29,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.productionBuildAction">
          </action>
-         
+<!--         
          <action
                label="Rhohub build"
                icon="icons/rhohub_icon16.png"
@@ -38,7 +38,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.generateSpecAction">
          </action>
-                
+-->                
       </actionSet>
    </extension>
 
@@ -337,12 +337,14 @@
             id="rhogen-wizard.page1"
             name="Android">
       </page>
+      <!-- 
       <page
             category="rhogenwizard.preferences.PreferencePage"
             class="rhogenwizard.preferences.PreferencePageBb"
             id="rhogen-wizard.page2"
             name="Blackberry">
       </page>
+      -->
       <page
             category="rhogenwizard.preferences.PreferencePage"
             class="rhogenwizard.preferences.PreferencePageWm"
@@ -353,7 +355,7 @@
             category="rhogenwizard.preferences.PreferencePage"
             class="rhogenwizard.preferences.PreferencesPageRhoHub"
             id="rhogen-wizard.page4"
-            name="RhoHub">
+            name="RhoMobile.com">
       </page>
     </extension>
 
