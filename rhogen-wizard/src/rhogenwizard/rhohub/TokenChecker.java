@@ -2,6 +2,7 @@ package rhogenwizard.rhohub;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.window.Window;
@@ -197,9 +198,10 @@ public class TokenChecker
 
     private static boolean checkLicense(String workDir)
     {
-        RunTask task =
+        RubyExecTask task =
             new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
         task.run();
-        return task.isOk();
+        return task.isOk() &&
+            Arrays.asList(task.getOutput().split("\n")).contains("TokenValid[YES]");
     }
 }
