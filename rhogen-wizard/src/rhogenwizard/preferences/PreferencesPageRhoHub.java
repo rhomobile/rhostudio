@@ -4,10 +4,12 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
@@ -51,21 +53,13 @@ public class PreferencesPageRhoHub extends BasePreferencePage
     @Override
     protected Control createContents(Composite parent)
     {
-        Composite top = new Composite(parent, SWT.LEFT);
-
-        StringFieldEditor editor =
-            new StringFieldEditor(IRhoHubSetting.rhoHubProxy, "&HTTP proxy:", top);
-        editor.setPreferenceStore(Activator.getDefault().getPreferenceStore());
-        editor.setPage(this);
-        editor.load();
-
-        top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        parent.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         GridData checkBoxAligment = new GridData();
         checkBoxAligment.horizontalAlignment = GridData.FILL;
         checkBoxAligment.horizontalSpan = 3;
 
-        Button loginButton = new Button(top, SWT.NONE);
+        Button loginButton = new Button(parent, SWT.NONE);
         loginButton.setText("Login rhomobile.com");
         loginButton.setLayoutData(checkBoxAligment);
         loginButton.addSelectionListener(new SelectionListener()
@@ -84,7 +78,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             }
         });
 
-        Button logoutButton = new Button(top, SWT.NONE);
+        Button logoutButton = new Button(parent, SWT.NONE);
         logoutButton.setText("Logout rhomobile.com");
         logoutButton.setLayoutData(checkBoxAligment);
         logoutButton.addSelectionListener(new SelectionListener()
@@ -101,7 +95,8 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             }
         });
 
-        return top;
+        //return parent;
+        return new Composite(parent, SWT.NULL);
     }
 
     public void init(IWorkbench workbench)
