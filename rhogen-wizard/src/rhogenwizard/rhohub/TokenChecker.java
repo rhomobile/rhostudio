@@ -21,7 +21,6 @@ import org.eclipse.ui.PlatformUI;
 
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
-import rhogenwizard.sdk.task.RunTask;
 
 public class TokenChecker
 {

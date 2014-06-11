@@ -18,8 +18,6 @@ import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.LocalProductionBuildTask;
 import rhogenwizard.sdk.task.RhohubProductionBuildTask;
-import rhogenwizard.sdk.task.RubyExecTask;
-import rhogenwizard.sdk.task.RunTask;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 {

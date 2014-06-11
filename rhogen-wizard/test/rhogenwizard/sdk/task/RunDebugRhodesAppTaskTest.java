@@ -11,9 +11,6 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.Launch;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,14 +20,12 @@ import org.junit.Test;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
-import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
 import rhogenwizard.debugger.backend.DebugServer;
 import rhogenwizard.debugger.backend.DebugState;
 import rhogenwizard.debugger.backend.DebugVariableType;
 import rhogenwizard.debugger.backend.IDebugCallback;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
 
 public class RunDebugRhodesAppTaskTest
 {

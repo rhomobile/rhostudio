@@ -2,7 +2,6 @@ package rhogenwizard.editors;
 
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -30,7 +29,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.editors.text.TextEditor;
 
-import rhogenwizard.PlatformType;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;

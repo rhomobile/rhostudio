@@ -34,18 +34,18 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
 {
     private static int wizardHeigth = 500;
     private static int wizardWidth  = 800;
-        
+
     private IWorkbenchWindow window;
 
     /**
      * The action has been activated. The argument of the method represents the
      * 'real' action sitting in the workbench UI.
-     * 
+     *
      * @see IWorkbenchWindowActionDelegate#run
      */
     @Override
     public void run(IAction action)
-    {       
+    {
         IProject project = ProjectFactory.getInstance().getSelectedProject();
 
         if (project == null)
@@ -59,25 +59,25 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             DialogUtils.error("Error", "Remote build can run only for RhoMobile project's");
             return;
         }
-        
-		if (!TokenChecker.processToken(project.getLocation().toOSString()))
-			return;
+
+        if (!TokenChecker.processToken(project.getLocation().toOSString()))
+            return;
 
         IRhoHubSetting setting = RhoHubBundleSetting.createGetter(project);
-        
+
         if (setting.getToken().isEmpty() || setting.getServerUrl().isEmpty())
         {
             DialogUtils.error("Error", "Before use Rhohub specify user token and server url in preferences settings.");
             return;
         }
-        
+
         if (!checkProjectProperties(project))
         {
-            if (DialogUtils.confirm("Error", "Application " + project.getName() + 
+            if (DialogUtils.confirm("Error", "Application " + project.getName() +
                     " was not found on RhoHub.  Would you like to add " + project.getName() + " to RhoHub?"))
             {
                 LinkWizard linkWizard = new LinkWizard(project);
-                
+
                 if (createWizardDialog(linkWizard, "Link") == Window.CANCEL)
                     return;
             }
@@ -86,82 +86,81 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
                 return;
             }
         }
-        
+
         if (setting.isLinking())
         {
-        	BuildWizard  buildWizard =  new BuildWizard(project);
-        	createWizardDialog(buildWizard, "Build");
+            BuildWizard  buildWizard =  new BuildWizard(project);
+            createWizardDialog(buildWizard, "Build");
         }
     }
-    
+
     int createWizardDialog(IWizard wizard, final String finishButtonTitle)
     {
-        WizardDialog buildWizardDialog = new WizardDialog(window.getShell(), wizard) 
+        WizardDialog buildWizardDialog = new WizardDialog(window.getShell(), wizard)
         {
-        	private Button           m_finishButton;
-        	private Button           m_cancelButton;
-        	private SelectionAdapter m_cancelListener;
-         	
-        	private Button createCancelButton(Composite parent) 
-        	{
-        		m_cancelListener = new SelectionAdapter()
-        		{
-        			public void widgetSelected(SelectionEvent e) 
-        			{
-        				cancelPressed();
-        			}
-        		};
-        		
-        		// increment the number of columns in the button bar
-        		((GridLayout) parent.getLayout()).numColumns++;
-        		Button button = new Button(parent, SWT.PUSH);
-        		button.setText(IDialogConstants.CANCEL_LABEL);
-        		setButtonLayoutData(button);
-        		button.setFont(parent.getFont());
-        		button.setData(new Integer(IDialogConstants.CANCEL_ID));
-        		button.addSelectionListener(m_cancelListener);
-        		return button;
-        	}
-        	
-            @Override
-			public void updateButtons()
-            {
-        		boolean canFinish = getWizard().canFinish();
-        		
-        		m_finishButton.setEnabled(canFinish);
-			}
+            private Button           m_finishButton;
+            private SelectionAdapter m_cancelListener;
 
-			@Override
-			protected void createButtonsForButtonBar(Composite parent) 
+            private Button createCancelButton(Composite parent)
             {
-				m_finishButton = createButton(parent, IDialogConstants.FINISH_ID, finishButtonTitle, true);
-        		
-        		m_cancelButton = createCancelButton(parent);
-        		
-        		if (parent.getDisplay().getDismissalAlignment() == SWT.RIGHT)
-        		{
+                m_cancelListener = new SelectionAdapter()
+                {
+                    public void widgetSelected(SelectionEvent e)
+                    {
+                        cancelPressed();
+                    }
+                };
+
+                // increment the number of columns in the button bar
+                ((GridLayout) parent.getLayout()).numColumns++;
+                Button button = new Button(parent, SWT.PUSH);
+                button.setText(IDialogConstants.CANCEL_LABEL);
+                setButtonLayoutData(button);
+                button.setFont(parent.getFont());
+                button.setData(new Integer(IDialogConstants.CANCEL_ID));
+                button.addSelectionListener(m_cancelListener);
+                return button;
+            }
+
+            @Override
+            public void updateButtons()
+            {
+                boolean canFinish = getWizard().canFinish();
+
+                m_finishButton.setEnabled(canFinish);
+            }
+
+            @Override
+            protected void createButtonsForButtonBar(Composite parent)
+            {
+                m_finishButton = createButton(parent, IDialogConstants.FINISH_ID, finishButtonTitle, true);
+
+                createCancelButton(parent);
+
+                if (parent.getDisplay().getDismissalAlignment() == SWT.RIGHT)
+                {
                     // Make the default button the right-most button.
                     // See also special code in org.eclipse.jface.dialogs.Dialog#initializeBounds()
-        			m_finishButton.moveBelow(null);
-        		}
-			}
+                    m_finishButton.moveBelow(null);
+                }
+            }
 
-			@Override
-            protected void configureShell(Shell newShell) 
+            @Override
+            protected void configureShell(Shell newShell)
             {
                 super.configureShell(newShell);
                 newShell.setSize(wizardWidth, wizardHeigth);
-            }       
+            }
         };
-        
+
         buildWizardDialog.create();
-        return buildWizardDialog.open(); 
+        return buildWizardDialog.open();
     }
 
     private boolean checkProjectProperties(IProject project)
     {
         IRhoHubSetting setting = new RhoHubBundleSetting(project);
-        
+
         if (!setting.isLinking())
         {
             if (RhoHub.getInstance(setting).isRemoteProjectExist(project))
@@ -178,7 +177,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
                 }
             }
         }
-        
+
         return setting.isLinking();
     }
 
@@ -186,7 +185,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
      * Selection in the workbench has been changed. We can change the state of
      * the 'real' action here if we want, but this can only happen after the
      * delegate has been created.
-     * 
+     *
      * @see IWorkbenchWindowActionDelegate#selectionChanged
      */
     @Override
@@ -197,7 +196,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
     /**
      * We can use this method to dispose of any system resources we previously
      * allocated.
-     * 
+     *
      * @see IWorkbenchWindowActionDelegate#dispose
      */
     @Override
@@ -208,7 +207,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
     /**
      * We will cache window object in order to be able to provide parent shell
      * for the message dialog.
-     * 
+     *
      * @see IWorkbenchWindowActionDelegate#init
      */
     @Override

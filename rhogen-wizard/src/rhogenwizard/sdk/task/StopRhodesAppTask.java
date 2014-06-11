@@ -9,8 +9,6 @@ import rhogenwizard.SysCommandExecutor;
 
 public class StopRhodesAppTask extends RubyExecTask
 {
-    private static final RunTask[] empty = {};
-
     private static String[] getArgs(PlatformType platformType, RunType runType)
     {      
         String task;       	

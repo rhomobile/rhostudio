@@ -1,19 +1,15 @@
 package rhogenwizard.preferences;
 
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.IWorkbench;
 
 import rhogenwizard.Activator;
-import rhogenwizard.rhohub.IRhoHubSetting;
 import rhogenwizard.rhohub.RhoHubCommands;
 import rhogenwizard.rhohub.TokenChecker;
 
