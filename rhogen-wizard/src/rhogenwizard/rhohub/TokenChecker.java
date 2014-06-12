@@ -201,6 +201,6 @@ public class TokenChecker
             new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
         task.run();
         return task.isOk() &&
-            Arrays.asList(task.getOutput().split("\n")).contains("TokenValid[YES]");
+            Arrays.asList(task.getOutput().split("\n|\r")).contains("TokenValid[YES]");
     }
 }
