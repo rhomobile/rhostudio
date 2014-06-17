@@ -337,14 +337,6 @@
             id="rhogen-wizard.page1"
             name="Android">
       </page>
-      <!-- 
-      <page
-            category="rhogenwizard.preferences.PreferencePage"
-            class="rhogenwizard.preferences.PreferencePageBb"
-            id="rhogen-wizard.page2"
-            name="Blackberry">
-      </page>
-      -->
       <page
             category="rhogenwizard.preferences.PreferencePage"
             class="rhogenwizard.preferences.PreferencePageWm"
