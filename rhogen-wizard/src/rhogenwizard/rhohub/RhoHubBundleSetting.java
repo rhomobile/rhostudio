@@ -42,7 +42,7 @@ public class RhoHubBundleSetting implements IRhoHubSetting, IRhoHubSettingSetter
     @Override
     public String getToken()
     {
-        return RhoHubCommands.getToken(PreferenceInitializer.getInstance().getRhodesPath());
+        return RhoHubCommands.getToken(PreferenceInitializer.getRhodesPath());
     }
 
     @Override

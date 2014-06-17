@@ -32,8 +32,6 @@ public class PreferenceAndroidPage extends BasePreferencePage
 	 */
 	public void createFieldEditors() 
 	{
-		checkRhodesSdk();
-		
 		addField(new DirectoryFieldEditor(PreferenceConstants.androidSdkParh, 
 				"&Android SDK:", getFieldEditorParent()));
 		

@@ -27,11 +27,6 @@ public class RunExeHelper
         return executor.getCommandOutput();
     }
 
-    public static void killBbSimulator()
-    {
-        run(SysCommandExecutor.CRT, "taskkill", "/IM", "fledge.exe");
-    }
-
     public static String getSdkInfo()
     {
         String out = run(SysCommandExecutor.RUBY_BAT, "get-rhodes-info", "--rhodes-path");

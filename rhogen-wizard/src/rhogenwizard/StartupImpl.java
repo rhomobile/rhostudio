@@ -14,12 +14,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IStartup;
 
+import rhogenwizard.preferences.PreferenceInitializer;
 import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.project.extension.BadProjectTagException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
+import rhogenwizard.rhohub.TokenChecker;
 
 public class StartupImpl implements IStartup 
 {
@@ -98,6 +100,8 @@ public class StartupImpl implements IStartup
 	public void earlyStartup() 
 	{
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
+
+		TokenChecker.processToken(PreferenceInitializer.getRhodesPath());
 	}
 }
 

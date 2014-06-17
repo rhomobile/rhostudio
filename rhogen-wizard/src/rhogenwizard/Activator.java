@@ -62,8 +62,6 @@ public class Activator extends AbstractUIPlugin
         setEgitDefaultRepositaryPath();
 
         ConsoleHelper.initialize();
-        
-        TokenChecker.processToken(PreferenceInitializer.getInstance().getRhodesPath());
     }
 
     @Override

@@ -31,7 +31,6 @@ import rhogenwizard.PlatformType;
 import rhogenwizard.BuildType;
 import rhogenwizard.RunType;
 import rhogenwizard.buildfile.AppYmlFile;
-import rhogenwizard.buildfile.SdkYmlFile;
 import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
@@ -391,28 +390,6 @@ public class ParametersTab extends  JavaLaunchTab
 			}
 		}
 		catch (CoreException e) 
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public void showBbEmuName()
-	{
-		try 
-		{
-			String sdkPath = m_ymlFile.getSdkConfigPath();
-			String bbVer = m_ymlFile.getBlackberryVer();
-
-			SdkYmlFile sdkFile = new SdkYmlFile(sdkPath);
-			
-			if (sdkFile.getBbSimPort(bbVer) != null)
-				m_adroidEmuNameText.setText(sdkFile.getBbSimPort(bbVer));
-			else
-				m_adroidEmuNameText.setText("Simulator name is not define in rhobuild.yml file");
-			
-			m_androidEmuNameLabel.setText("Simulator name:");
-		} 
-		catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
 		}

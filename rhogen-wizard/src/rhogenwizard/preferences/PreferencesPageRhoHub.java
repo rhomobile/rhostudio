@@ -43,7 +43,6 @@ public class PreferencesPageRhoHub extends BasePreferencePage
 
     public void createFieldEditors()
     {
-        checkRhodesSdk();
     }
 
     @Override
@@ -63,7 +62,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                String rhodesPath = m_pInit.getRhodesPath();
+                String rhodesPath = PreferenceInitializer.getRhodesPath();
                 RhoHubCommands.logout(rhodesPath);
                 TokenChecker.login(rhodesPath, null);
             }
@@ -82,7 +81,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                RhoHubCommands.logout(m_pInit.getRhodesPath());
+                RhoHubCommands.logout(PreferenceInitializer.getRhodesPath());
             }
 
             @Override

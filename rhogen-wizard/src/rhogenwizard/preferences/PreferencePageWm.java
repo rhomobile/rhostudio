@@ -42,8 +42,6 @@ public class PreferencePageWm extends BasePreferencePage
 	 */
 	public void createFieldEditors() 
 	{
-		checkRhodesSdk();
-		
 		addField(new DirectoryFieldEditor(PreferenceConstants.cabWizardPath, 
 				"&Cab wizard path:", getFieldEditorParent()));
 				

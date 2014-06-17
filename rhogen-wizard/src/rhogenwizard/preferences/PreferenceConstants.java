@@ -11,10 +11,4 @@ public class PreferenceConstants
 	public static final String androidNdkPath = "androidNdkPathPreference";
 	public static final String cabWizardPath  = "cabwizPathPreference";
 	public static final String vcBuildPath    = "vcbuildPathPreference";
-	
-	public static final String bbVersion     = "bbVersionPreference";
-	public static final String bbVersionName = "bbVersionPreference";
-	public static final String bbJdkPath     = "jdkPathPreference";
-	public static final String bbMdsPath     = "mdsPathPreference";
-	public static final String bbSim         = "bbSimPreference";
 }
