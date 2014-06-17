@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,14 +29,25 @@ public class TokenChecker
 
     private static class Dialog extends TitleAreaDialog
     {
+        private final String m_message;
+        private final int    m_messageType;
         private Text   m_usernameText;
         private Text   m_passwordText;
         private String m_username;
         private String m_password;
 
-        public Dialog()
+        /*
+         * messageType should be one of:
+         * IMessageProvider.NONE
+         * IMessageProvider.INFORMATION
+         * IMessageProvider.WARNING
+         * IMessageProvider.ERROR
+         */
+        public Dialog(String message, int messageType)
         {
             super(null);
+            m_message = message;
+            m_messageType = messageType;
         }
 
         @Override
@@ -42,6 +55,7 @@ public class TokenChecker
         {
             super.create();
             setTitle("Rhomobile.com login");
+            setMessage(m_message, m_messageType);
         }
 
         @Override
@@ -57,8 +71,8 @@ public class TokenChecker
 
             m_usernameText = addText(container, "Username", SWT.NONE);
             m_passwordText = addText(container, "Password", SWT.PASSWORD);
-            addLink(container, "Don't have an account. <a>Signup</a>",
-                "http://wwwnext.rhomobile.com/pricing.html");
+            addLink(container,
+                "Don't have an account? <a>Signup</a>", "http://rhomobile.com/signup");
 
             return area;
         }
@@ -126,8 +140,8 @@ public class TokenChecker
                 {
                     try
                     {
-                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
-                        .openURL(new URL(url));
+                        PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL(
+                            url));
                     }
                     catch (PartInitException ex)
                     {
@@ -154,28 +168,14 @@ public class TokenChecker
         public String  password;
     }
 
-    public static boolean login(final String workDir)
+    public static boolean login(String workDir, String firstMessage)
     {
+        String message = firstMessage;
+        int messageType =
+            (firstMessage == null) ? IMessageProvider.NONE : IMessageProvider.INFORMATION;
         do
         {
-            final Answer answer = new Answer();
-
-            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    Dialog dialog = new Dialog();
-                    dialog.create();
-
-                    if (dialog.open() == Window.OK)
-                    {
-                        answer.ok = true;
-                        answer.username = dialog.getUsername();
-                        answer.password = dialog.getPassword();
-                    }
-                }
-            });
+            Answer answer = login(message, messageType);
 
             if (!answer.ok)
             {
@@ -184,15 +184,42 @@ public class TokenChecker
 
             RhoHubCommands.login(workDir, answer.username, answer.password);
 
+            message = "Your credentials aren't valid. Please try again.";
+            messageType = IMessageProvider.WARNING;
         }
         while (!checkLicense(workDir));
-        
+
         return true;
     }
 
     public static boolean processToken(final String workDir)
     {
-        return checkLicense(workDir) || login(workDir);
+        return checkLicense(workDir) ||
+            login(workDir, "You must be logged in to RhoMobile.com to build.");
+    }
+
+    private static Answer login(final String message, final int messageType)
+    {
+        final Answer answer = new Answer();
+
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Dialog dialog = new Dialog(message, messageType);
+                dialog.create();
+
+                if (dialog.open() == Window.OK)
+                {
+                    answer.ok = true;
+                    answer.username = dialog.getUsername();
+                    answer.password = dialog.getPassword();
+                }
+            }
+        });
+
+        return answer;
     }
 
     private static boolean checkLicense(String workDir)

@@ -65,7 +65,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             {
                 String rhodesPath = m_pInit.getRhodesPath();
                 RhoHubCommands.logout(rhodesPath);
-                TokenChecker.login(rhodesPath);
+                TokenChecker.login(rhodesPath, null);
             }
 
             @Override
