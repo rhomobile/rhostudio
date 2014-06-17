@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 
+import rhogenwizard.CloudUtils;
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.SysCommandExecutor;
@@ -27,7 +28,7 @@ public class RhohubDebugRhodesAppTask implements IDebugTask
         m_lastTask = getDebugTask(launch, runType, workDir, appName, platformType, isTrace,
             startPathOverride, additionalRubyExtensions);
         m_seqTask = new SeqRunTask(
-            getBuildTask(workDir, "cloud:build:" + platformType + ":production", isTrace,
+            getBuildTask(workDir, CloudUtils.buildTask(platformType), isTrace,
                 startPathOverride, additionalRubyExtensions),
             m_lastTask
         );

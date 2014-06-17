@@ -3,6 +3,7 @@ package rhogenwizard.sdk.task.run;
 import java.util.ArrayList;
 import java.util.List;
 
+import rhogenwizard.CloudUtils;
 import rhogenwizard.PlatformType;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
@@ -14,9 +15,10 @@ public class RhohubRunRhodesAppTask extends SeqRunTask
         String startPathOverride, String[] additionalRubyExtensions)
     {
         super(
-            getTask(workDir, "cloud:build:" + platformType + ":production", isTrace,
-                startPathOverride, additionalRubyExtensions),
-            getTask(workDir, "cloud:run:device", isTrace, startPathOverride, additionalRubyExtensions)
+            getTask(workDir, CloudUtils.buildTask(platformType), isTrace, startPathOverride,
+                additionalRubyExtensions),
+            getTask(workDir, "cloud:run:device", isTrace, startPathOverride,
+                additionalRubyExtensions)
         );
     }
     
