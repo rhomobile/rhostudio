@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.window.Window;
@@ -21,11 +22,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.preferences.PreferenceInitializer;
 import rhogenwizard.sdk.task.RubyExecTask;
 
 public class TokenChecker
 {
-
     private static class Dialog extends TitleAreaDialog
     {
         private final String m_message;
@@ -160,6 +161,11 @@ public class TokenChecker
         }
     }
 
+    private static class CheckLicenseException extends Exception
+    {
+        private static final long serialVersionUID = 1L;
+    }
+
     private static class Answer
     {
         public boolean ok = false;
@@ -172,29 +178,53 @@ public class TokenChecker
         String message = firstMessage;
         int messageType =
             (firstMessage == null) ? IMessageProvider.NONE : IMessageProvider.INFORMATION;
-        do
+        try
         {
-            Answer answer = login(message, messageType);
-
-            if (!answer.ok)
+            do
             {
-                return false;
+                Answer answer = login(message, messageType);
+
+                if (!answer.ok)
+                {
+                    return false;
+                }
+
+                RhoHubCommands.login(workDir, answer.username, answer.password);
+
+                message = "Your credentials aren't valid. Please try again.";
+                messageType = IMessageProvider.WARNING;
             }
-
-            RhoHubCommands.login(workDir, answer.username, answer.password);
-
-            message = "Your credentials aren't valid. Please try again.";
-            messageType = IMessageProvider.WARNING;
+            while (!checkLicense(workDir));
         }
-        while (!checkLicense(workDir));
+        catch (CheckLicenseException e)
+        {
+            return false;
+        }
 
         return true;
     }
 
-    public static boolean processToken(final String workDir)
+    public static boolean processToken(IProject project)
     {
-        return checkLicense(workDir) ||
-            login(workDir, "You must be logged in to RhoMobile.com to build.");
+        return processToken(project.getLocation().toOSString());
+    }
+
+    public static boolean processToken()
+    {
+        return processToken(PreferenceInitializer.getRhodesPath());
+    }
+
+    private static boolean processToken(String workDir)
+    {
+        try
+        {
+            return checkLicense(workDir) ||
+                login(workDir, "You must be logged in to RhoMobile.com to build.");
+        }
+        catch (CheckLicenseException e)
+        {
+            return false;
+        }
     }
 
     private static Answer login(final String message, final int messageType)
@@ -221,12 +251,15 @@ public class TokenChecker
         return answer;
     }
 
-    private static boolean checkLicense(String workDir)
+    private static boolean checkLicense(String workDir) throws CheckLicenseException
     {
         RubyExecTask task =
             new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT, "rake", "token:check");
         task.run();
-        return task.isOk() &&
-            Arrays.asList(task.getOutput().split("\n|\r")).contains("TokenValid[YES]");
+        if (!task.isOk())
+        {
+            throw new CheckLicenseException();
+        }
+        return Arrays.asList(task.getOutput().split("\n|\r")).contains("TokenValid[YES]");
     }
 }

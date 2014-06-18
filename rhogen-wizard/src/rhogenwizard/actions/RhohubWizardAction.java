@@ -60,7 +60,7 @@ public class RhohubWizardAction implements IWorkbenchWindowActionDelegate
             return;
         }
 
-        if (!TokenChecker.processToken(project.getLocation().toOSString()))
+        if (!TokenChecker.processToken(project))
             return;
 
         IRhoHubSetting setting = RhoHubBundleSetting.createGetter(project);

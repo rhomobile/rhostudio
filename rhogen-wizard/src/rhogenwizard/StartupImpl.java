@@ -101,7 +101,7 @@ public class StartupImpl implements IStartup
 	{
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
 
-		TokenChecker.processToken(PreferenceInitializer.getRhodesPath());
+		TokenChecker.processToken();
 	}
 }
 

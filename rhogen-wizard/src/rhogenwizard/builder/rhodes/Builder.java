@@ -33,7 +33,7 @@ public class Builder extends IncrementalProjectBuilder
     @Override
     protected void clean(IProgressMonitor monitor) throws CoreException
     {
-		if (!TokenChecker.processToken(getProject().getLocation().toOSString()))
+		if (!TokenChecker.processToken(getProject()))
 			return;
     	
         for (PlatformType platformType : PlatformType.values())

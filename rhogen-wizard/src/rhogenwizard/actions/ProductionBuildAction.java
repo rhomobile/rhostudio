@@ -34,12 +34,14 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             return;
         }
 
-		if (!TokenChecker.processToken(project.getLocation().toOSString()))
-			return;
-
         if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
         {
             DialogUtils.error("Error", "Production build can run only for RhoMobile project");
+            return;
+        }
+
+        if (!TokenChecker.processToken(project))
+        {
             return;
         }
 

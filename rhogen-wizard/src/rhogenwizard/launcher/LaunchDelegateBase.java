@@ -151,7 +151,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 
 	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
-		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
+		if (!TokenChecker.processToken(currProject))
 			return false;
 		
         RunTask task;
@@ -172,7 +172,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{
-		if (!TokenChecker.processToken(currProject.getLocation().toOSString()))
+		if (!TokenChecker.processToken(currProject))
 			return null;
 		IDebugTask task;
         if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom)
