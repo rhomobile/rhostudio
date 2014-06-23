@@ -91,20 +91,7 @@ public class RhohubDebugRhodesAppTask implements IDebugTask
         List<String> args = new ArrayList<String>();
         args.add("rake");
         
-        if(runType == RunType.eEmulator)
-        {
-            // for emulator
-            args.add("cloud:run:simulator");
-        }
-        else if(runType == RunType.eDevice)
-        {
-            // for device
-            args.add("cloud:run:device");
-        }
-        else
-        {
-            return null;
-        }
+        args.add(CloudUtils.runTask(runType));
         
         args.add("rho_remote_debug=true");
 

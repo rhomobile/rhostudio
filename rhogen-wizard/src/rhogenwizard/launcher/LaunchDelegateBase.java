@@ -157,7 +157,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
         RunTask task;
 		if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom) {
             task = new RhohubRunRhodesAppTask(currProject.getLocation().toOSString(),
-                PlatformType.fromId(m_platformType), m_isTrace, m_startPathOverride,
+                PlatformType.fromId(m_platformType), selType, m_isTrace, m_startPathOverride,
                 m_additionalRubyExtensions);
 		} else {
             task = new LocalRunRhodesAppTask(currProject.getLocation().toOSString(),

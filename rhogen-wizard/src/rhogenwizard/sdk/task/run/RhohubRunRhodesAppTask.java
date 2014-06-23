@@ -5,23 +5,24 @@ import java.util.List;
 
 import rhogenwizard.CloudUtils;
 import rhogenwizard.PlatformType;
+import rhogenwizard.RunType;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.RubyExecTask;
 import rhogenwizard.sdk.task.SeqRunTask;
 
 public class RhohubRunRhodesAppTask extends SeqRunTask
 {
-    public RhohubRunRhodesAppTask(String workDir, PlatformType platformType, boolean isTrace,
-        String startPathOverride, String[] additionalRubyExtensions)
+    public RhohubRunRhodesAppTask(String workDir, PlatformType platformType, RunType runType,
+        boolean isTrace, String startPathOverride, String[] additionalRubyExtensions)
     {
         super(
             getTask(workDir, CloudUtils.buildTask(platformType), isTrace, startPathOverride,
                 additionalRubyExtensions),
-            getTask(workDir, "cloud:run:device", isTrace, startPathOverride,
+            getTask(workDir, CloudUtils.runTask(runType), isTrace, startPathOverride,
                 additionalRubyExtensions)
         );
     }
-    
+
     private static RubyExecTask getTask(String workDir, String task, boolean isTrace,
         String startPathOverride, String[] additionalRubyExtensions)
     {
