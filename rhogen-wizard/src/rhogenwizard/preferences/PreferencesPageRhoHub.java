@@ -20,6 +20,7 @@ public class PreferencesPageRhoHub extends BasePreferencePage
     public PreferencesPageRhoHub()
     {
         super(GRID);
+        noDefaultAndApplyButton();
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
         setDescription("");
     }
