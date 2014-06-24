@@ -147,7 +147,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
 					job.schedule();
 					
-					target = new DebugTarget(launch, null, project, RunType.eUnknow, PlatformType.eUnknown);
+					target = new DebugTarget(launch, null, project, RunType.eUnknown, PlatformType.eUnknown);
 				}
 			
 				startBuildThread(project, mode, launch);

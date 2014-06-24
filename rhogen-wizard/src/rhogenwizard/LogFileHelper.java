@@ -105,7 +105,7 @@ public class LogFileHelper implements ILogFileHelper
 
 	public void endWaitLog(IProject project, RunType type) throws Exception 
 	{
-		if (type.equals(RunType.eRhoEmulator))
+		if (type == RunType.eRhoSimulator)
 		{
 			rhoSimLog(project);
 		}
@@ -124,7 +124,7 @@ public class LogFileHelper implements ILogFileHelper
 	{
 		m_platformName = platformName;
 		
-		if ( runType.equals(RunType.eRhoEmulator))
+		if (runType == RunType.eRhoSimulator)
 		{
 			waitSimLog(project, runType);
 		}

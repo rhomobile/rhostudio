@@ -57,11 +57,6 @@ public class ParametersTab extends  JavaLaunchTab
 	protected static String iphoneVersions[] = { "iphone",
 											     "ipad" };
 
-	private static String simulatorTypes[] = { RunType.platformRhoSim,
-		                                       RunType.platformSim,
-		                                       RunType.platformDevice };
-	
-
 	Composite 	m_comp = null;
 	Combo 	  	m_selectPlatformCombo = null;
 	Combo       m_selectPlatformVersionCombo = null;
@@ -129,9 +124,9 @@ public class ParametersTab extends  JavaLaunchTab
                 if (m_configuration != null)
                 {           
                     if (m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId) && 
-                        !m_platformTypeCombo.getText().equals(RunType.platformDevice))
+                        m_platformTypeCombo.getText().equals(RunType.eRhoSimulator.publicId))
                     {
-                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformDevice)); 
+                        selectByItem(m_platformTypeCombo, RunType.eDevice.publicId);
                     }
 
                     encodeBuildInformation(m_selectBuildCombo.getText());
@@ -154,25 +149,19 @@ public class ParametersTab extends  JavaLaunchTab
 			{
 				if (m_configuration != null)
 				{			
-					try 
+					if ((m_platformTypeCombo.getText().equals(RunType.eDevice.publicId) ||
+					    m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId)) &&
+					    m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 					{
-					    if ((m_platformTypeCombo.getText().equals(RunType.platformDevice) ||
-					        m_selectBuildCombo.getText().equals(BuildType.eRhoMobileCom.publicId)) && 
-						    m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
-					    {
-					        DialogUtils.warning("Warning", iphoneDeviceMsg);
-					        m_selectBuildCombo.select(m_selectBuildCombo.indexOf(BuildType.eLocal.publicId)); // select local build 
-					        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
-					        return;
-					    }
+					    DialogUtils.warning("Warning", iphoneDeviceMsg);
+					    selectByItem(m_selectBuildCombo, BuildType.eLocal.publicId); 
+					    selectByItem(m_platformTypeCombo, RunType.eRhoSimulator.publicId);
+					    return;
+					}
 
-					    encodePlatformInformation(m_selectPlatformCombo.getText());
-					    setPlatfromTypeCombo(m_configuration);
-					    showApplyButton();
-					}
-					catch (CoreException e1) 
-					{
-					}
+                    encodePlatformInformation(m_selectPlatformCombo.getText());
+                    setPlatfromTypeCombo(m_configuration);
+                    showApplyButton();
 				}
 			}
 		});
@@ -200,7 +189,7 @@ public class ParametersTab extends  JavaLaunchTab
 		// 3 row
 		m_platformTypeLabel = SWTFactory.createLabel(namecomp, "Simulator type:", 1);
 		
-		m_platformTypeCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, simulatorTypes);
+		m_platformTypeCombo = SWTFactory.createCombo(namecomp, SWT.READ_ONLY, 1, RunType.getPublicIds());
 		m_platformTypeCombo.addSelectionListener(new SelectionAdapter()
 		{	
 			@Override
@@ -209,22 +198,22 @@ public class ParametersTab extends  JavaLaunchTab
 				if (m_configuration != null)
 				{
 				    // for iphone platform we can't deploy application on device, it's need to do by hand
-				    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
+				    if (m_platformTypeCombo.getText().equals(RunType.eDevice.publicId) &&
 				        m_selectPlatformCombo.getText().equals(PlatformType.eIPhone.publicId))
 				    {
 				        DialogUtils.warning("Warning", iphoneDeviceMsg);
-				        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim)); // select rhosimuator 
+				        selectByItem(m_platformTypeCombo, RunType.eRhoSimulator.publicId);
 				    }
 				    
-                    // for win32
-                    if (m_platformTypeCombo.getText().equals(RunType.platformDevice) && 
-                        m_selectPlatformCombo.getText().equals(PlatformType.eWin32.publicId))
-                    {
-                        DialogUtils.warning("Warning", "For Win32 platform we can run only simulator build.");
-                        m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformSim)); // select simulator 
-                    }
+				    // for win32
+				    if (m_platformTypeCombo.getText().equals(RunType.eDevice.publicId) &&
+				        m_selectPlatformCombo.getText().equals(PlatformType.eWin32.publicId))
+				    {
+				        DialogUtils.warning("Warning", "For Win32 platform we can run only simulator build.");
+				        selectByItem(m_platformTypeCombo, RunType.eEmulator.publicId);
+				    }
                     
-					encodePlatformTypeCombo(m_platformTypeCombo.getText());
+					encodePlatformTypeCombo(RunType.fromPublicId(m_platformTypeCombo.getText()));
 					encodePlatformInformation(m_selectPlatformCombo.getText());
 					showApplyButton();
 				}
@@ -338,11 +327,11 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 	}
 	
-	protected void encodePlatformTypeCombo(String text)
+	protected void encodePlatformTypeCombo(RunType runType)
 	{
-		m_reloadButton.setVisible(text.equals(RunType.platformRhoSim));
+		m_reloadButton.setVisible(runType == RunType.eRhoSimulator);
 		
-		m_configuration.setAttribute(ConfigurationConstants.simulatorType, text);
+		m_configuration.setAttribute(ConfigurationConstants.simulatorType, runType.id);
 	}
 
 	private void showAndroidEmuName(boolean isVisible)
@@ -379,9 +368,9 @@ public class ParametersTab extends  JavaLaunchTab
 			
 			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 			String emuName            = configuration.getAttribute(ConfigurationConstants.androidEmuNameAttribute, "");
-			String platformType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+			String runTypeId          = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 			
-			if (!platformType.equals(RunType.platformDevice) && selProjectPlatform.equals(PlatformType.eAndroid.id))
+			if (!runTypeId.equals(RunType.eDevice.id) && selProjectPlatform.equals(PlatformType.eAndroid.id))
 			{
 				showAndroidEmuName(true);
 				
@@ -471,7 +460,7 @@ public class ParametersTab extends  JavaLaunchTab
 		configuration.setAttribute(ConfigurationConstants.isCleanAttribute, false);
 		configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 		configuration.setAttribute(ConfigurationConstants.isTraceAttribute, false);	
-		configuration.setAttribute(ConfigurationConstants.simulatorType, RunType.platformRhoSim);
+		configuration.setAttribute(ConfigurationConstants.simulatorType, RunType.eRhoSimulator.id);
 	}
 
 	@Override
@@ -528,9 +517,11 @@ public class ParametersTab extends  JavaLaunchTab
 		} 
 	}
 	
-	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration) throws CoreException
+	private void setPlatfromTypeCombo(ILaunchConfigurationWorkingCopy configuration)
 	{
-		PlatformType selProjectPlatform = PlatformType.fromId(configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, ""));
+		PlatformType selProjectPlatform = PlatformType.fromId(getStringAttr(
+		    configuration, ConfigurationConstants.platformCfgAttribute, null
+		));
 		
 		boolean debugMode = getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE);
 		boolean android = selProjectPlatform == PlatformType.eAndroid;
@@ -538,14 +529,16 @@ public class ParametersTab extends  JavaLaunchTab
 		if (debugMode && !android && !iphone)
 		{
 			m_platformTypeCombo.setEnabled(false);
-			m_platformTypeCombo.select(m_platformTypeCombo.indexOf(RunType.platformRhoSim));
+			selectByItem(m_platformTypeCombo, RunType.eRhoSimulator.publicId);
 		}
 		else
 		{
-			String platformType = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+			RunType runType = RunType.fromId(getStringAttr(
+			    configuration, ConfigurationConstants.simulatorType, null
+			));
 			
 			m_platformTypeCombo.setEnabled(true);
-            m_platformTypeCombo.select(m_platformTypeCombo.indexOf(platformType));
+			selectByItem(m_platformTypeCombo, runType.publicId);
 		}
 	}
 
@@ -561,7 +554,7 @@ public class ParametersTab extends  JavaLaunchTab
             e.printStackTrace();
             return;
         }
-        m_selectBuildCombo.select(m_selectBuildCombo.indexOf(selProjectBuild.publicId));
+        selectByItem(m_selectBuildCombo, selProjectBuild.publicId);
     }
 	
 	protected void setPlatformVersionCombo(ILaunchConfigurationWorkingCopy configuration) 
@@ -573,14 +566,14 @@ public class ParametersTab extends  JavaLaunchTab
 			String selProjectPlatform = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 			String selAndroidVer      = configuration.getAttribute(ConfigurationConstants.androidVersionAttribute, androidVersions[maxAndroidVerIdx]);
 			String selIphoneVer       = configuration.getAttribute(ConfigurationConstants.iphoneVersionAttribute, "");
-			String selPlatformType    = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
+			String runTypeId          = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 
 			showVersionCombo(false);
 			showAndroidEmuName(false);
 
 			if (selProjectPlatform.equals(PlatformType.eAndroid.id))
 			{
-				if (!selPlatformType.equals(RunType.platformDevice))
+				if (!runTypeId.equals(RunType.eDevice.id))
 				{
 			        m_selectPlatformVersionCombo.setItems(androidVersions); 
 
@@ -588,7 +581,7 @@ public class ParametersTab extends  JavaLaunchTab
 					showAndroidEmuName(true);
 					setAndroidEmuName(configuration);
 					
-                    m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selAndroidVer));
+                    selectByItem(m_selectPlatformVersionCombo, selAndroidVer);
 				}
 			}
 			else if (selProjectPlatform.equals(PlatformType.eIPhone.id))
@@ -597,7 +590,7 @@ public class ParametersTab extends  JavaLaunchTab
 				
 	            showVersionCombo(true);
                 
-	            m_selectPlatformVersionCombo.select(m_selectPlatformVersionCombo.indexOf(selIphoneVer));
+	            selectByItem(m_selectPlatformVersionCombo, selIphoneVer);
 			}
 		}
 		catch (CoreException e) 
@@ -608,17 +601,12 @@ public class ParametersTab extends  JavaLaunchTab
 
 	private void setPlatformCombo(String selProjectPlatform)
 	{
-	    String publicId = PlatformType.fromId(selProjectPlatform).publicId;
-	    m_selectPlatformCombo.select(m_selectPlatformCombo.indexOf(publicId));
+	    selectByItem(m_selectPlatformCombo, PlatformType.fromId(selProjectPlatform).publicId);
 	}
 		
     private void setBuildCombo(String selBuildPlatform)
     {
-        String publicId = BuildType.fromId(selBuildPlatform).publicId;
-        if (publicId != null)
-        {
-            m_selectBuildCombo.select(m_selectBuildCombo.indexOf(publicId));
-        }
+        selectByItem(m_selectBuildCombo, BuildType.fromId(selBuildPlatform).publicId);
     }
 	
 	@Override
@@ -756,4 +744,25 @@ public class ParametersTab extends  JavaLaunchTab
 	{
 		return m_selProject;
 	}
+
+    private static void selectByItem(Combo combo, String item)
+    {
+        if (item != null)
+        {
+            combo.select(combo.indexOf(item));
+        }
+    }
+
+    private static String getStringAttr(
+        ILaunchConfiguration configuration, String attributeName, String defaultValue)
+    {
+        try
+        {
+            return configuration.getAttribute(attributeName, defaultValue);
+        }
+        catch (CoreException e)
+        {
+            return defaultValue;
+        }
+    }
 }

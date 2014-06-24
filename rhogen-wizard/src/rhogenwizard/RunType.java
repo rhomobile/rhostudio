@@ -1,48 +1,65 @@
 package rhogenwizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum RunType 
 {
-	eUnknow,
-	eDevice,
-	eEmulator,
-	eRhoEmulator;
+	eUnknown(null, null),
+	eDevice("device", "Device"),
+	eEmulator("simulator", "Simulator"),
+	eRhoSimulator("rhosimulator", "RhoSimulator");
 
-	/* platforms types */
-	public static final String platformRhoSim = "RhoSimulator";
-	public static final String platformSim    = "Simulator";
-	public static final String platformDevice = "Device";
+    public final String id;
+	public final String publicId;
 	
-	@Override
-	public String toString()
+	private RunType(String id, String publicId)
 	{
-		switch(this)
-		{
-		case eDevice:
-			return platformDevice.toLowerCase();
-		case eEmulator:
-			return platformSim.toLowerCase();
-		case eRhoEmulator:
-			return platformRhoSim.toLowerCase();
-		}
-		
-		return "";
+        this.id = id;
+	    this.publicId = publicId;
 	}
 	
-	public static RunType fromString(String newType)
+    public static String[] getPublicIds()
+    {
+        List<String> list = new ArrayList<String>();
+
+        for (RunType rt : values())
+        {
+            if (rt.publicId != null)
+            {
+                list.add(rt.publicId);
+            }
+        }
+
+        return list.toArray(new String[0]);
+    }
+
+    public static RunType fromId(String id)
+    {
+        if (id != null)
+        {
+            for (RunType rt : values())
+            {
+                if (id.equals(rt.id))
+                {
+                    return rt;
+                }
+            }
+        }
+
+        return eUnknown;
+    }
+
+	public static RunType fromPublicId(String publicId)
 	{
-		if (platformRhoSim.toLowerCase().equals(newType.toLowerCase()))
-		{
-			return RunType.eRhoEmulator;
-		}
-		else if (platformSim.toLowerCase().equals(newType.toLowerCase()))
-		{
-			return RunType.eEmulator;
-		}
-		else if (platformDevice.toLowerCase().equals(newType.toLowerCase()))
-		{
-			return RunType.eDevice;
-		}
-		
-		return eUnknow;
+        for (RunType rt : values())
+        {
+            if (publicId.equals(rt.publicId))
+            {
+                return rt;
+            }
+        }
+
+        return eUnknown;
 	}
 }

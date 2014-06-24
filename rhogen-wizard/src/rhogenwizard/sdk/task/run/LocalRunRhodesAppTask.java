@@ -22,7 +22,7 @@ public class LocalRunRhodesAppTask extends RubyExecTask
                 task = "run:" + platformType.id + ":device";
                 break;
             }
-        else if (runType == RunType.eRhoEmulator)
+        else if (runType == RunType.eRhoSimulator)
             task = "run:" + platformType.id + ":rhosimulator";
         else
             task = "run:" + platformType.id;
@@ -36,7 +36,7 @@ public class LocalRunRhodesAppTask extends RubyExecTask
             cmdLine.add("--trace");
         }
 
-        if (runType == RunType.eRhoEmulator)
+        if (runType == RunType.eRhoSimulator)
         {
             cmdLine.add("rho_debug_port=9000");
             cmdLine.add("rho_reload_app_changes=" + (isReloadCode ? "1" : "0"));

@@ -27,7 +27,7 @@ public class LocalDebugRhodesAppTask extends RubyDebugTask
         List<String> args = new ArrayList<String>();
         args.add("rake");
         
-        if (runType == RunType.eRhoEmulator)
+        if (runType == RunType.eRhoSimulator)
         {
         	args.add("run:" + platformType + ":rhosimulator_debug");
         }

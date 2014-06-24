@@ -2,6 +2,7 @@ package rhogenwizard.launcher;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -50,7 +51,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	protected String          m_projectName   = null;
-	private String            m_runType       = null;
 	private String            m_buildType     = null;    
 	private String            m_platformType  = null;
 	private boolean           m_isClean       = false;
@@ -104,9 +104,10 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
         return m_debugProcess;        
 	}
 	
-	public void startBuildThread(final IProject project, final String mode, final ILaunch launch)
+	private void startBuildThread(final IProject project, final String mode,
+	    final ILaunch launch, ILaunchConfiguration configuration)
 	{
-		final RunType type = RunType.fromString(m_runType);
+		final RunType runType = getRunType(configuration);
 		
 		Thread cancelingThread = new Thread(new Runnable() 
 		{	
@@ -119,17 +120,17 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					
 				    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
 					stream.println("build started");
-					
+
 					if (mode.equals(ILaunchManager.DEBUG_MODE))
 					{
-					    debugBuild(project, type, launch);
+					    debugBuild(project, runType, launch);
 					}
 					else
 					{
-					    releaseBuild(project, type);
+					    releaseBuild(project, runType);
 					}
 					
-					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, type);		
+					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, runType);
 					
 					ConsoleHelper.getAppConsole().show();
 				} 
@@ -200,7 +201,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		m_platformType  = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
 		m_buildType     = configuration.getAttribute(ConfigurationConstants.buildCfgAttribute, "");
 		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
-		m_runType       = configuration.getAttribute(ConfigurationConstants.simulatorType, "");
 		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
 		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
 	}
@@ -240,7 +240,9 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			
 			setupConfigAttributes(configuration);
 			
-			if (m_projectName == null || m_projectName.length() == 0 || m_runType == null || m_runType.length() == 0) 
+			RunType runType = getRunType(configuration);
+			
+			if (m_projectName == null || m_projectName.length() == 0 || runType.id == null) 
 			{
 				throw new IllegalArgumentException("Platform and project name should be assigned");
 			}
@@ -264,14 +266,14 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					e.printStackTrace();
 				}
 				
-				target = new DebugTarget(launch, null, project, RunType.fromString(m_runType), PlatformType.fromId(m_platformType));
+				target = new DebugTarget(launch, null, project, runType, PlatformType.fromId(m_platformType));
 			}
 			
 			try
 			{
 				cleanSelectedPlatform(project, m_isClean, monitor);
 			
-				startBuildThread(project, mode, launch);
+				startBuildThread(project, mode, launch, configuration);
 	
 				while(true)
 				{
@@ -332,6 +334,26 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
     @Override
     public void handleDebugEvents(DebugEvent[] events)
     {
+    }
+
+    private static RunType getRunType(ILaunchConfiguration configuration)
+    {
+        return RunType.fromId(getStringAttr(
+            configuration, ConfigurationConstants.simulatorType, null
+        ));
+    }
+
+    private static String getStringAttr(
+        ILaunchConfiguration configuration, String attributeName, String defaultValue)
+    {
+        try
+        {
+            return configuration.getAttribute(attributeName, defaultValue);
+        }
+        catch (CoreException e)
+        {
+            return defaultValue;
+        }
     }
 }
 

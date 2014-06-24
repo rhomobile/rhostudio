@@ -47,15 +47,18 @@ public enum PlatformType
 
     public static PlatformType fromId(String id)
     {
-        for (PlatformType pt : values())
+        if (id != null)
         {
-            if (id.equals(pt.id))
+            for (PlatformType pt : values())
             {
-                return pt;
+                if (id.equals(pt.id))
+                {
+                    return pt;
+                }
             }
         }
         
-        return PlatformType.eUnknown;
+        return eUnknown;
     }
 
     public static PlatformType fromPublicId(String publicId)
@@ -68,6 +71,6 @@ public enum PlatformType
             }
         }
         
-        return PlatformType.eUnknown;
+        return eUnknown;
     }
 }

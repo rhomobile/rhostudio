@@ -114,7 +114,7 @@ public class RunReleaseRhodesAppTaskTest
 
             ProcessListViewer plv = new ProcessListViewer(signature);
 
-            RunTask task = new LocalRunRhodesAppTask(projectLocation, platformType, RunType.eRhoEmulator,
+            RunTask task = new LocalRunRhodesAppTask(projectLocation, platformType, RunType.eRhoSimulator,
                 false, false, null, null);
             task.run();
             assertTrue("for " + platformType, task.isOk());
