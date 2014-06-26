@@ -2,7 +2,6 @@ package rhogenwizard.launcher.rhoconnect;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -23,7 +22,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
-import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.RhodesConfigurationRO;
+import rhogenwizard.RhodesConfigurationRW;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
 
@@ -60,7 +60,7 @@ public class ParametersTab extends  JavaLaunchTab
 			{
 				if (m_configuration != null)
 				{
-					m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_appNameText.getText());
+					new RhodesConfigurationRW(m_configuration).project(m_appNameText.getText());
 					showApplyButton();
 				}
 			}
@@ -124,37 +124,30 @@ public class ParametersTab extends  JavaLaunchTab
 		}
 		else
 		{
-			configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());
+		    new RhodesConfigurationRW(configuration).project(m_selProject.getName());
 		}				
 	}
 
 	@Override
-	public void initializeFrom(ILaunchConfiguration configuration) 
-	{
-		try 
-		{
-			Control scrollParent = getLaunchConfigurationDialog().getActiveTab().getControl().getParent();
-			
-			if (scrollParent instanceof ScrolledComposite)
-			{
-				ScrolledComposite sc = (ScrolledComposite)scrollParent;
-				sc.setMinSize(scrollParent.computeSize(minTabSize, SWT.DEFAULT));	
-			}
-			
-			String selProjectName = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-			
-			if (selProjectName == null || selProjectName.length() == 0)
-				return;
-			
-			m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);	
-			
-			m_appNameText.setText(selProjectName);
-		}
-		catch (CoreException e) 
-		{
-			e.printStackTrace();
-		} 
-	}
+    public void initializeFrom(ILaunchConfiguration configuration)
+    {
+        Control scrollParent = getLaunchConfigurationDialog().getActiveTab().getControl().getParent();
+
+        if (scrollParent instanceof ScrolledComposite)
+        {
+            ((ScrolledComposite) scrollParent).setMinSize(
+                scrollParent.computeSize(minTabSize, SWT.DEFAULT));
+        }
+
+        String selProjectName = new RhodesConfigurationRO(configuration).project();
+
+        if (selProjectName == null || selProjectName.length() == 0)
+            return;
+
+        m_selProject = ResourcesPlugin.getWorkspace().getRoot().getProject(selProjectName);
+
+        m_appNameText.setText(selProjectName);
+    }
 	
 	@Override
 	public boolean canSave()
@@ -193,7 +186,7 @@ public class ParametersTab extends  JavaLaunchTab
 				m_selProject = selProject;
 				m_appNameText.setText(selProjectName);
 				
-				m_configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, m_selProject.getName());
+				new RhodesConfigurationRW(m_configuration).project(m_selProject.getName());
 								
 				showApplyButton();
 			}

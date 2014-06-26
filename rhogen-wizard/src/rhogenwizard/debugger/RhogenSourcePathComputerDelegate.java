@@ -24,7 +24,7 @@ import org.eclipse.debug.core.sourcelookup.containers.FolderSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.ProjectSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.WorkspaceSourceContainer;
 
-import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.RhodesConfigurationRO;
 
 /**
  * Computes the default source lookup path for a PDA launch configuration.
@@ -39,7 +39,7 @@ public class RhogenSourcePathComputerDelegate implements ISourcePathComputerDele
 	 */
 	public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException 
 	{
-		String m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
+		String m_projectName = new RhodesConfigurationRO(configuration).project();
 		ISourceContainer sourceContainer = null;
 		
 		if (m_projectName != null)

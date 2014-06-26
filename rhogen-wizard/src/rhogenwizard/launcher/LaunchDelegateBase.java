@@ -27,9 +27,9 @@ import rhogenwizard.LogFileHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.PlatformType;
 import rhogenwizard.ProcessListViewer;
+import rhogenwizard.RhodesConfigurationRO;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.rhohub.TokenChecker;
@@ -51,8 +51,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
 	protected String          m_projectName   = null;
-	private String            m_buildType     = null;    
-	private String            m_platformType  = null;
+	private PlatformType      m_platformType  = null;
+	private BuildType         m_buildType     = null;    
 	private boolean           m_isClean       = false;
 	private boolean           m_isReloadCode  = false;
 	private boolean           m_isTrace       = false;
@@ -130,7 +130,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					    releaseBuild(project, runType);
 					}
 					
-					rhodesLogHelper.startLog(PlatformType.fromId(m_platformType), project, runType);
+					rhodesLogHelper.startLog(m_platformType, project, runType);
 					
 					ConsoleHelper.getAppConsole().show();
 				} 
@@ -156,13 +156,13 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			return false;
 		
         RunTask task;
-		if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom) {
+		if (m_buildType == BuildType.eRhoMobileCom) {
             task = new RhohubRunRhodesAppTask(currProject.getLocation().toOSString(),
-                PlatformType.fromId(m_platformType), selType, m_isTrace, m_startPathOverride,
+                m_platformType, selType, m_isTrace, m_startPathOverride,
                 m_additionalRubyExtensions);
 		} else {
             task = new LocalRunRhodesAppTask(currProject.getLocation().toOSString(),
-                PlatformType.fromId(m_platformType), selType, m_isReloadCode, m_isTrace,
+                m_platformType, selType, m_isReloadCode, m_isTrace,
                 m_startPathOverride, m_additionalRubyExtensions);
 		}
 				
@@ -176,18 +176,18 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 		if (!TokenChecker.processToken(currProject))
 			return null;
 		IDebugTask task;
-        if (BuildType.fromId(m_buildType) == BuildType.eRhoMobileCom)
+        if (m_buildType == BuildType.eRhoMobileCom)
         {
             task = new RhohubDebugRhodesAppTask(launch, selType,
                 currProject.getLocation().toOSString(), currProject.getName(),
-                PlatformType.fromId(m_platformType), m_isReloadCode, m_startPathOverride,
+                m_platformType, m_isReloadCode, m_startPathOverride,
                 m_additionalRubyExtensions);
         }
         else
         {
             task = new LocalDebugRhodesAppTask(launch, selType,
                 currProject.getLocation().toOSString(), currProject.getName(),
-                PlatformType.fromId(m_platformType), m_isReloadCode, m_isTrace, m_startPathOverride,
+                m_platformType, m_isReloadCode, m_isTrace, m_startPathOverride,
                 m_additionalRubyExtensions);
         }
 		task.run();
@@ -197,20 +197,23 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 	
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
 	{
-		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-		m_platformType  = configuration.getAttribute(ConfigurationConstants.platformCfgAttribute, "");
-		m_buildType     = configuration.getAttribute(ConfigurationConstants.buildCfgAttribute, "");
-		m_isClean       = configuration.getAttribute(ConfigurationConstants.isCleanAttribute, false);
-		m_isReloadCode  = configuration.getAttribute(ConfigurationConstants.isReloadCodeAttribute, false);
-		m_isTrace       = configuration.getAttribute(ConfigurationConstants.isTraceAttribute, false);
+	    
+		RhodesConfigurationRO rc = new RhodesConfigurationRO(configuration);
+		
+		m_projectName   = rc.project();
+		m_platformType  = rc.platformType();
+		m_buildType     = rc.buildType();
+		m_isClean       = rc.clean();
+		m_isReloadCode  = rc.reloadCode();
+		m_isTrace       = rc.trace();
 	}
 	
 	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor) throws FileNotFoundException
 	{
 		if (isClean) 
 		{			
-			RunTask task = new CleanPlatformTask(project.getLocation().toOSString(),
-			    PlatformType.fromId(m_platformType));
+			RunTask task = new CleanPlatformTask(
+			    project.getLocation().toOSString(), m_platformType);
 			task.run(monitor);		
 		}
 	}
@@ -266,7 +269,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					e.printStackTrace();
 				}
 				
-				target = new DebugTarget(launch, null, project, runType, PlatformType.fromId(m_platformType));
+				target = new DebugTarget(launch, null, project, runType, m_platformType);
 			}
 			
 			try
@@ -338,22 +341,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 
     private static RunType getRunType(ILaunchConfiguration configuration)
     {
-        return RunType.fromId(getStringAttr(
-            configuration, ConfigurationConstants.simulatorType, null
-        ));
-    }
-
-    private static String getStringAttr(
-        ILaunchConfiguration configuration, String attributeName, String defaultValue)
-    {
-        try
-        {
-            return configuration.getAttribute(attributeName, defaultValue);
-        }
-        catch (CoreException e)
-        {
-            return defaultValue;
-        }
+        return new RhodesConfigurationRO(configuration).runType();
     }
 }
 

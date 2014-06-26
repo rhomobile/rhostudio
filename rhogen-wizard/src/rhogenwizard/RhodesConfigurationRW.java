@@ -2,7 +2,6 @@ package rhogenwizard;
 
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 
-import rhogenwizard.constants.ConfigurationConstants;
 
 public class RhodesConfigurationRW extends RhodesConfigurationRO
 {
@@ -16,51 +15,51 @@ public class RhodesConfigurationRW extends RhodesConfigurationRO
 
     public void project(String p)
     {
-        configuration.setAttribute(ConfigurationConstants.projectNameCfgAttribute, p);
+        configuration.setAttribute(projectAttribute, p);
     }
 
     public void platformType(PlatformType pt)
     {
-        configuration.setAttribute(ConfigurationConstants.platformCfgAttribute, pt.id);
+        configuration.setAttribute(platformTypeAttribute, pt.id);
     }
 
     public void runType(RunType rt)
     {
-        configuration.setAttribute(ConfigurationConstants.simulatorType, rt.id);
+        configuration.setAttribute(runTypeAttribute, rt.id);
     }
 
     public void buildType(BuildType bt)
     {
-        configuration.setAttribute(ConfigurationConstants.buildCfgAttribute, bt.id);
+        configuration.setAttribute(buildTypeAttribute, bt.id);
     }
     
     public void androidVersion(String v)
     {
-        configuration.setAttribute(ConfigurationConstants.androidVersionAttribute, v);
+        configuration.setAttribute(androidVersionAttribute, v);
     }
     
     public void iphoneVersion(String v)
     {
-        configuration.setAttribute(ConfigurationConstants.iphoneVersionAttribute, v);
+        configuration.setAttribute(iphoneVersionAttribute, v);
     }
     
     public void androidEmulator(String v)
     {
-        configuration.setAttribute(ConfigurationConstants.androidEmuNameAttribute, v);
+        configuration.setAttribute(androidEmuNameAttribute, v);
     }
     
     public void clean(boolean f)
     {
-        configuration.setAttribute(ConfigurationConstants.isCleanAttribute, f);
+        configuration.setAttribute(cleanAttribute, f);
     }
 
     public void reloadCode(boolean f)
     {
-        configuration.setAttribute(ConfigurationConstants.isReloadCodeAttribute, f);
+        configuration.setAttribute(reloadCodeAttribute, f);
     }
 
     public void trace(boolean f)
     {
-        configuration.setAttribute(ConfigurationConstants.isTraceAttribute, f);
+        configuration.setAttribute(traceAttribute, f);
     }
 }

@@ -38,9 +38,9 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.PlatformType;
+import rhogenwizard.RhodesConfigurationRO;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowOnlyHidePerspectiveJob;
-import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.RhogenWatchExpression;
 import rhogenwizard.debugger.RhogenWatchExpressionResult;
@@ -146,14 +146,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
     {
         if (m_programName == null)
         {
-            try
-            {
-                m_programName = getLaunch().getLaunchConfiguration().getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-            }
-            catch (CoreException e)
-            {
-                m_programName = "";
-            }
+            m_programName = new RhodesConfigurationRO(getLaunch().getLaunchConfiguration()).project();
         }
 
         return m_programName;

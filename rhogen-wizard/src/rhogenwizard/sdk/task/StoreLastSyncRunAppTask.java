@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
-import rhogenwizard.constants.ConfigurationConstants;
+import rhogenwizard.RhodesStore;
 
 public class StoreLastSyncRunAppTask extends RunTask
 {
@@ -24,7 +24,6 @@ public class StoreLastSyncRunAppTask extends RunTask
     @Override
     public void run(IProgressMonitor monitor)
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        store.setValue(ConfigurationConstants.lastSyncRunApp, m_workDir);
+        new RhodesStore(Activator.getDefault().getPreferenceStore()).lastSyncRunApp(m_workDir);
     }
 }

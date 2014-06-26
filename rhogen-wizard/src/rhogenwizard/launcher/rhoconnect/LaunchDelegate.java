@@ -22,9 +22,9 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.LogFileHelper;
 import rhogenwizard.PlatformType;
+import rhogenwizard.RhodesConfigurationRO;
 import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
-import rhogenwizard.constants.ConfigurationConstants;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.sdk.task.RunTask;
@@ -104,11 +104,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		return task.getDebugProcess();
 	}
 	
-	private void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
-	{
-		m_projectName   = configuration.getAttribute(ConfigurationConstants.projectNameCfgAttribute, "");
-	}
-				
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -126,7 +121,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			ConsoleHelper.getBuildConsole().clear();
 			ConsoleHelper.getBuildConsole().show();
 			
-			setupConfigAttributes(configuration);
+			m_projectName = new RhodesConfigurationRO(configuration).project();
 	
 			if (m_projectName == null || m_projectName.length() == 0) 
 			{

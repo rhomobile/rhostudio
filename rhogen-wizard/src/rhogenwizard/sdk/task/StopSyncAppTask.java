@@ -5,8 +5,8 @@ import java.io.File;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import rhogenwizard.Activator;
+import rhogenwizard.RhodesStore;
 import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.constants.ConfigurationConstants;
 
 public class StopSyncAppTask extends SeqRunTask
 {
@@ -22,7 +22,7 @@ public class StopSyncAppTask extends SeqRunTask
         if (store == null)
             return empty;
 
-        final String prevRunningRhoconnectApp = store.getString(ConfigurationConstants.lastSyncRunApp);
+        final String prevRunningRhoconnectApp = new RhodesStore(store).lastSyncRunApp();
 
         if (prevRunningRhoconnectApp == null || prevRunningRhoconnectApp.length() == 0)
             return empty;
