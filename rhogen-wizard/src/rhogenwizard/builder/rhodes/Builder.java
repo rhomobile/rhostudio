@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import rhogenwizard.Activator;
 import rhogenwizard.PlatformType;
 import rhogenwizard.rhohub.TokenChecker;
+import rhogenwizard.sdk.task.CleanCloudCacheTask;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.RunTask;
@@ -45,9 +46,11 @@ public class Builder extends IncrementalProjectBuilder
                 continue;
             }
              
-            RunTask task = new CleanPlatformTask(getProject().getLocation().toOSString(), platformType);
-            task.run(monitor);
+            new CleanPlatformTask(getProject().getLocation().toOSString(), platformType)
+                .run(monitor);
         }
+
+        new CleanCloudCacheTask(getProject().getLocation().toOSString()).run(monitor);
 
         super.clean(monitor);
     }
