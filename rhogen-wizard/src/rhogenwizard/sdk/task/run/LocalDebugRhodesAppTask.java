@@ -31,7 +31,7 @@ public class LocalDebugRhodesAppTask extends RubyDebugTask
         {
         	args.add("run:" + platformType + ":rhosimulator_debug");
         }
-        else if(runType == RunType.eEmulator)
+        else if(runType == RunType.eSimulator)
         {
         	// for emulator
         	args.add("run:" + platformType);

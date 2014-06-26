@@ -7,7 +7,7 @@ public enum RunType
 {
 	eUnknown(null, null),
 	eDevice("device", "Device"),
-	eEmulator("simulator", "Simulator"),
+	eSimulator("simulator", "Simulator"),
 	eRhoSimulator("rhosimulator", "RhoSimulator");
 
     public final String id;

@@ -19,7 +19,7 @@ public class CloudUtils
         {
         case eDevice:
             return "device";
-        case eEmulator:
+        case eSimulator:
             return "simulator";
         }
         throw new IllegalArgumentException();

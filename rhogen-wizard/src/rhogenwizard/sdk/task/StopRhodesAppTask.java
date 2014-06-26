@@ -19,7 +19,7 @@ public class StopRhodesAppTask extends RubyExecTask
     	case eDevice:
     		task += "device";
     		break;
-    	case eEmulator:
+    	case eSimulator:
     		task += "emulator";
     	}
 

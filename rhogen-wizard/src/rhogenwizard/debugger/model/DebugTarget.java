@@ -205,7 +205,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
             {
                 new StopSyncAppTask().run();
             }
-            else if (m_runType == RunType.eDevice || m_runType == RunType.eEmulator)
+            else if (m_runType == RunType.eDevice || m_runType == RunType.eSimulator)
             {
             	String workDir = m_debugProject.getLocation().makeAbsolute().toString();
             	
