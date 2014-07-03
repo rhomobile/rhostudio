@@ -26,22 +26,9 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
     @Override
     public void run(IAction action)
     {
-        IProject project = ProjectFactory.getInstance().getSelectedProject();
-
-        if (project == null)
+        if (!ConfigProductionBuildDialog.thereAreRhomobileProjects())
         {
-            DialogUtils.error("Error", "Before run production build select RhoMobile project");
-            return;
-        }
-
-        if (!RhodesProject.checkNature(project) && !RhoelementsProject.checkNature(project))
-        {
-            DialogUtils.error("Error", "Production build can run only for RhoMobile project");
-            return;
-        }
-
-        if (!TokenChecker.processToken(project))
-        {
+            DialogUtils.error("Error", "There are no RhoMobile projects.");
             return;
         }
 
@@ -50,13 +37,11 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
          
         if (dialog.open() == Window.OK)
         {
-            String projectName = "<unknown>";
-            try
+            IProject project = dialog.project();
+
+            if (!TokenChecker.processToken(project))
             {
-                projectName = project.getDescription().getName();
-            }
-            catch (CoreException e)
-            {
+                return;
             }
 
             PlatformType platformType = dialog.platformType();
@@ -69,12 +54,12 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             switch (buildType) {
             case eLocal:
                 new LocalProductionBuildTask(workDir, platformType)
-                .makeJob("Production build (" + projectName + ")")
+                .makeJob("Production build (" + project.getName() + ")")
                 .schedule();
                 break;
             case eRhoMobileCom:
                 new RhohubProductionBuildTask(workDir, platformType)
-                .makeJob("RhoMobile.com production build (" + projectName + ")")
+                .makeJob("RhoMobile.com production build (" + project.getName() + ")")
                 .schedule();
                 break;
             }

@@ -1,8 +1,6 @@
 package rhogenwizard.sdk.task;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.preference.IPreferenceStore;
-
 import rhogenwizard.Activator;
 import rhogenwizard.RhodesStore;
 

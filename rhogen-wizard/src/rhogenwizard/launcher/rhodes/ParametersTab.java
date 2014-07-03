@@ -36,6 +36,7 @@ import rhogenwizard.BuildType;
 import rhogenwizard.RhodesConfigurationRO;
 import rhogenwizard.RhodesConfigurationRW;
 import rhogenwizard.RunType;
+import rhogenwizard.UiUtils;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
@@ -437,9 +438,9 @@ public class ParametersTab extends JavaLaunchTab
                 }
             }
 
-            selectByItem(m_platformTypeCombo, rc.platformType().publicId);
-            selectByItem(m_runTypeCombo     , rc.runType     ().publicId);
-            selectByItem(m_buildTypeCombo   , rc.buildType   ().publicId);
+            UiUtils.selectByItem(m_platformTypeCombo, rc.platformType().publicId);
+            UiUtils.selectByItem(m_runTypeCombo     , rc.runType     ().publicId);
+            UiUtils.selectByItem(m_buildTypeCombo   , rc.buildType   ().publicId);
 
             m_platformVersion.switchTo(uiPlatformType());
             m_platformVersion.setValue(PlatformType.eAndroid, rc.androidVersion());
@@ -528,8 +529,9 @@ public class ParametersTab extends JavaLaunchTab
 
     private void updateUi()
     {
-        updateCombo(m_runTypeCombo, getRunTypePublicIds(uiPlatformType()));
-        updateCombo(m_buildTypeCombo, getBuildTypePublicIds(uiPlatformType(), uiRunType()));
+        UiUtils.updateCombo(m_runTypeCombo, getRunTypePublicIds(uiPlatformType()));
+        UiUtils.updateCombo(m_buildTypeCombo,
+            getBuildTypePublicIds(uiPlatformType(), uiRunType()));
 
         m_reloadButton.setVisible(uiRunType() == RunType.eRhoSimulator);
 
@@ -545,25 +547,6 @@ public class ParametersTab extends JavaLaunchTab
         m_adroidEmuNameText.setVisible(visible);
 
         getLaunchConfigurationDialog().updateButtons();
-    }
-
-    private static void selectByItem(Combo combo, String item)
-    {
-        if (item != null)
-        {
-            combo.select(combo.indexOf(item));
-        }
-    }
-
-    private static void updateCombo(Combo combo, String[] items)
-    {
-        assert items.length > 0;
-        combo.setEnabled(items.length > 1);
-
-        String oldItem = combo.getText();
-        combo.setItems(items);
-        combo.select(0);
-        selectByItem(combo, oldItem);
     }
 
     private PlatformType uiPlatformType()
