@@ -14,7 +14,9 @@ import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanCloudCacheTask;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
+import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RunTask;
+import rhogenwizard.sdk.task.RunTask.StoppedException;
 
 public class Builder extends IncrementalProjectBuilder
 {
@@ -46,11 +48,11 @@ public class Builder extends IncrementalProjectBuilder
                 continue;
             }
              
-            new CleanPlatformTask(getProject().getLocation().toOSString(), platformType)
-                .run(monitor);
+            run_silent(monitor, new CleanPlatformTask(
+                getProject().getLocation().toOSString(), platformType));
         }
 
-        new CleanCloudCacheTask(getProject().getLocation().toOSString()).run(monitor);
+        run_silent(monitor, new CleanCloudCacheTask(getProject().getLocation().toOSString()));
 
         super.clean(monitor);
     }
@@ -59,7 +61,8 @@ public class Builder extends IncrementalProjectBuilder
     {
         try
         {
-            CompileRubyPartTask task = new CompileRubyPartTask(getProject().getLocation().toOSString());
+            CompileRubyPartTask task = new CompileRubyPartTask(
+                getProject().getLocation().toOSString());
             task.run(monitor);
             List<String> out = task.getOutputStrings();
             getProject().accept(new ResourceVisitor(out));
@@ -67,6 +70,14 @@ public class Builder extends IncrementalProjectBuilder
         catch (CoreException e)
         {
             Activator.logError(e);
+        }
+    }
+
+    private static void run_silent(IProgressMonitor monitor, IRunTask task)
+    {
+        try {
+            task.run(monitor);
+        } catch (StoppedException e) {
         }
     }
 }
