@@ -15,7 +15,6 @@ import rhogenwizard.sdk.task.CleanCloudCacheTask;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.IRunTask;
-import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.RunTask.StoppedException;
 
 public class Builder extends IncrementalProjectBuilder
