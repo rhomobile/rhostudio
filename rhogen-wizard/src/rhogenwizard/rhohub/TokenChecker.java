@@ -31,9 +31,9 @@ public class TokenChecker
     {
         private final String m_message;
         private final int    m_messageType;
-        private Text   m_usernameText;
+        private Text   m_emailText;
         private Text   m_passwordText;
-        private String m_username;
+        private String m_email;
         private String m_password;
 
         /*
@@ -69,7 +69,7 @@ public class TokenChecker
 
             container.setLayout(new GridLayout(2, false));
 
-            m_usernameText = addText(container, "Username", SWT.NONE);
+            m_emailText = addText(container, "Email", SWT.NONE);
             m_passwordText = addText(container, "Password", SWT.PASSWORD);
             addLink(container,
                 "Don't have an account? <a>Signup</a>", "http://rhomobile.com/signup");
@@ -86,14 +86,14 @@ public class TokenChecker
         @Override
         protected void okPressed()
         {
-            m_username = m_usernameText.getText();
+            m_email = m_emailText.getText();
             m_password = m_passwordText.getText();
             super.okPressed();
         }
 
-        public String getUsername()
+        public String getEmail()
         {
-            return m_username;
+            return m_email;
         }
 
         public String getPassword()
@@ -169,7 +169,7 @@ public class TokenChecker
     private static class Answer
     {
         public boolean ok = false;
-        public String  username;
+        public String  email;
         public String  password;
     }
 
@@ -189,7 +189,7 @@ public class TokenChecker
                     return false;
                 }
 
-                RhoHubCommands.login(workDir, answer.username, answer.password);
+                RhoHubCommands.login(workDir, answer.email, answer.password);
 
                 message = "Your credentials aren't valid. Please try again.";
                 messageType = IMessageProvider.WARNING;
@@ -242,7 +242,7 @@ public class TokenChecker
                 if (dialog.open() == Window.OK)
                 {
                     answer.ok = true;
-                    answer.username = dialog.getUsername();
+                    answer.email = dialog.getEmail();
                     answer.password = dialog.getPassword();
                 }
             }
