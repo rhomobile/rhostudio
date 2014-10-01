@@ -576,7 +576,7 @@ public class ParametersTab extends JavaLaunchTab
         case eAndroid: map = debug ? "lclcl-" : "lclcl-"; break;
         case eIPhone : map = debug ? "--lcl-" : "--lcl-"; break;
         case eWm     : map = debug ? "----l-" : "lclcl-"; break;
-        case eWin32  : map = debug ? "----l-" : "---cl-"; break;
+        case eWin32  : map = debug ? "----l-" : "----l-"; break;
         case eWp7    : map = debug ? "----l-" : "l-l-l-"; break;
         }
         assert map != null;
