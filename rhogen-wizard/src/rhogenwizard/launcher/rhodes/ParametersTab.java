@@ -542,7 +542,7 @@ public class ParametersTab extends JavaLaunchTab
         m_platformVersion.switchTo(uiPlatformType());
 
         boolean visible =
-            uiPlatformType() == PlatformType.eAndroid && uiRunType() != RunType.eDevice;
+            uiPlatformType() == PlatformType.eAndroid && uiRunType() == RunType.eSimulator;
         m_androidEmuNameLabel.setVisible(visible);
         m_adroidEmuNameText.setVisible(visible);
 
