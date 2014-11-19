@@ -1,5 +1,9 @@
 package rhogenwizard.preferences;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -7,7 +11,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 import rhogenwizard.Activator;
 import rhogenwizard.rhohub.RhoHubCommands;
@@ -16,6 +22,7 @@ import rhogenwizard.rhohub.TokenChecker;
 public class PreferencesPageRhoHub extends BasePreferencePage
 {
     private PreferenceInitializer m_pInit = null;
+    private Label m_messageLabel = null;
 
     public PreferencesPageRhoHub()
     {
@@ -63,9 +70,20 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                String rhodesPath = PreferenceInitializer.getRhodesPath();
-                RhoHubCommands.logout(rhodesPath);
-                TokenChecker.login(rhodesPath, null);
+                new Job("Logging in...") {
+                    @Override
+                    protected IStatus run(IProgressMonitor monitor)
+                    {
+                        showMessage("Please wait...");
+                        String rhodesPath = PreferenceInitializer.getRhodesPath();
+                        RhoHubCommands.logout(rhodesPath);
+                        showMessage(TokenChecker.login(rhodesPath, null) ?
+                            "You are logged in to rhomobile.com." :
+                            "You aren't logged in to rhomobile.com."
+                        );
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
             }
 
             @Override
@@ -82,7 +100,16 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                RhoHubCommands.logout(PreferenceInitializer.getRhodesPath());
+                new Job("Logging out...") {
+                    @Override
+                    protected IStatus run(IProgressMonitor monitor)
+                    {
+                        showMessage("Please wait...");
+                        RhoHubCommands.logout(PreferenceInitializer.getRhodesPath());
+                        showMessage("You are logged out.");
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
             }
 
             @Override
@@ -91,12 +118,30 @@ public class PreferencesPageRhoHub extends BasePreferencePage
             }
         });
 
-        //return parent;
+        m_messageLabel = new Label(parent, SWT.NONE);
+
         return new Composite(parent, SWT.NULL);
     }
 
     public void init(IWorkbench workbench)
     {
         m_pInit = PreferenceInitializer.getInstance();
+    }
+
+    private void showMessage(final String message)
+    {
+        final Label messageLabel = m_messageLabel;
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (messageLabel != null)
+                {
+                    messageLabel.setText(message);
+                    messageLabel.getParent().layout();
+                }
+            }
+        });
     }
 }
