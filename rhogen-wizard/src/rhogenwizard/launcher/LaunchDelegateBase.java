@@ -2,7 +2,6 @@ package rhogenwizard.launcher;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
@@ -132,7 +131,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 					
 					rhodesLogHelper.startLog(m_platformType, project, runType);
 					
-					ConsoleHelper.getAppConsole().show();
+					ConsoleHelper.getAppConsole().showOnNextMessage();
 				} 
 				catch (FailBuildExtension e) 
 				{

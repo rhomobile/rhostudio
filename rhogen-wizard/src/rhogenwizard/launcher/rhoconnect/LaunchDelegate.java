@@ -83,7 +83,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 					e.printStackTrace();
 				}
 				
-				ConsoleHelper.getAppConsole().show();
+				ConsoleHelper.getAppConsole().showOnNextMessage();
 				setProcessFinished(true);
 			}
 		});

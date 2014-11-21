@@ -20,6 +20,7 @@ public class ConsoleHelper
     public interface Console
     {
         void show();
+        void showOnNextMessage();
         void clear();
         void disable();
         Stream getStream();
@@ -53,6 +54,11 @@ public class ConsoleHelper
                                           }
 
                                           @Override
+                                          public void showOnNextMessage()
+                                          {
+                                          }
+
+                                          @Override
                                           public void clear()
                                           {
                                           }
@@ -81,14 +87,21 @@ public class ConsoleHelper
                                           }
                                       };
 
+    private interface Callback
+    {
+        void call();
+    }
+
     private static class StreamImpl implements Stream
     {
         private boolean              m_enabled;
+        private Callback             m_callback;
         private MessageConsoleStream m_stream;
 
-        public StreamImpl(MessageConsole console, int swtColorId)
+        public StreamImpl(MessageConsole console, Callback callback, int swtColorId)
         {
             m_enabled = true;
+            m_callback = callback;
             m_stream = console.newMessageStream();
             setColor(m_stream, swtColorId);
         }
@@ -103,6 +116,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
+                m_callback.call();
                 m_stream.print(message);
             }
         }
@@ -112,6 +126,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
+                m_callback.call();
                 m_stream.println();
             }
         }
@@ -121,6 +136,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
+                m_callback.call();
                 m_stream.println(message);
             }
         }
@@ -155,15 +171,29 @@ public class ConsoleHelper
         private final StreamImpl     m_outputStream;
         private final StreamImpl     m_errorStream;
         private boolean              m_enabled;
+        private boolean              m_showOnNextMessage;
 
         public ConsoleImpl(String name)
         {
+            Callback callback = new Callback()
+            {
+                @Override
+                public void call()
+                {
+                    if (m_showOnNextMessage)
+                    {
+                        show();
+                        m_showOnNextMessage = false;
+                    }
+                }
+            };
             m_console = findConsole(name);
-            m_stream = new StreamImpl(m_console, SWT.COLOR_BLACK);
-            m_outputStream = new StreamImpl(m_console, SWT.COLOR_DARK_BLUE);
-            m_errorStream = new StreamImpl(m_console, SWT.COLOR_DARK_RED);
+            m_stream = new StreamImpl(m_console, callback, SWT.COLOR_BLACK);
+            m_outputStream = new StreamImpl(m_console, callback, SWT.COLOR_DARK_BLUE);
+            m_errorStream = new StreamImpl(m_console, callback, SWT.COLOR_DARK_RED);
 
             m_enabled = true;
+            m_showOnNextMessage = false;
         }
 
         @Override
@@ -184,6 +214,15 @@ public class ConsoleHelper
 
                 conMan.showConsoleView(m_console);
                 conMan.refresh(m_console);
+            }
+        }
+
+        @Override
+        public void showOnNextMessage()
+        {
+            if (m_enabled)
+            {
+                m_showOnNextMessage = true;
             }
         }
 

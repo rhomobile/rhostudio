@@ -2,6 +2,10 @@ package rhogenwizard.sdk.task;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.IStreamListener;
@@ -73,6 +77,16 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         {
             attachConsole(m_debugProcess, m_console);
         }
+
+        new Job("Bring console back.")
+        {
+            @Override
+            protected IStatus run(IProgressMonitor monitor)
+            {
+                m_console.show();
+                return Status.OK_STATUS;
+            }
+        }.schedule(1000);
     }
 
     public static void attachConsole(IProcess process, ConsoleHelper.Console console)
