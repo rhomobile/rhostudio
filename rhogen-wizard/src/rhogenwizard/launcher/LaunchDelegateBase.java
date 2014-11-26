@@ -220,10 +220,12 @@ class BuildProjectAsRelease implements Callable<Boolean>
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////
+
 public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {		
-	private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10));
-	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
+	private static ThreadPoolExecutor executor        = new ThreadPoolExecutor(1, 1, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10));
+	private static LogFileHelper      rhodesLogHelper = new LogFileHelper();
 	
 	protected String          m_projectName   = null;
 	private PlatformType      m_platformType  = null;   
@@ -291,17 +293,18 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 						e.printStackTrace();
 					}
 					
-					target = new DebugTarget(launch, null, project, runType, m_platformType);
-			
 					Future<IProcess> result = executor.submit(new BuildProjectAsDebug(new RhodesConfigurationRO(configuration), launch, m_startPathOverride, m_additionalRubyExtensions));
 					
-					IProcess debugProcess = result.get(); 
+					IProcess debugProcess = result.get();
+					
+					target = new DebugTarget(launch, null, project, runType, m_platformType);
 					target.setProcess(debugProcess);
 					launch.addDebugTarget(target);			
 				}
 				else
 				{
-					Future<Boolean> result = executor.submit(new BuildProjectAsRelease(new RhodesConfigurationRO(configuration), launch,  m_startPathOverride, m_additionalRubyExtensions));						
+					Future<Boolean> result = executor.submit(new BuildProjectAsRelease(new RhodesConfigurationRO(configuration), launch,  m_startPathOverride, m_additionalRubyExtensions));
+					result.get();
 				}
 			} 
 			catch (InterruptedException e) 
