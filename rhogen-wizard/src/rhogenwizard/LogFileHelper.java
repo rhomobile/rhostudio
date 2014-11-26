@@ -19,7 +19,7 @@ class AppLogAdapter implements ILogDevice
 	private ConsoleHelper.Console m_console = ConsoleHelper.getAppConsole();
 
 	@Override
-	public void log(String str) 
+	public void log(String str) throws Exception 
 	{
 	    //m_console.show();
 		

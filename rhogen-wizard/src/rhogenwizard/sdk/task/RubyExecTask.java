@@ -68,34 +68,41 @@ public class RubyExecTask extends RubyTask
     @Override
     protected void exec()
     {
-        m_console.show();
-
-        ConsoleHelper.Stream stream = m_console.getStream();
-
-        stream.print(showCommand());
-
-        m_executor.setOutputLogDevice(getLogDevice(m_console.getOutputStream()));
-        m_executor.setErrorLogDevice(getLogDevice(m_console.getErrorStream()));
-
-        int exitValue = -1;
-
-        m_executor.setWorkingDirectory(m_workDir);
-
-        try
+        try 
         {
-            exitValue = m_executor.runCommand(m_decorator, m_cmdLine, m_input);
-        }
-        catch (RuntimeException e)
+        	m_console.show();
+        	
+        	ConsoleHelper.Stream stream = m_console.getStream();
+        	
+			stream.print(showCommand());
+	
+	        m_executor.setOutputLogDevice(getLogDevice(m_console.getOutputStream()));
+	        m_executor.setErrorLogDevice(getLogDevice(m_console.getErrorStream()));
+	
+	        int exitValue = -1;
+	
+	        m_executor.setWorkingDirectory(m_workDir);
+	
+	        try
+	        {
+	            exitValue = m_executor.runCommand(m_decorator, m_cmdLine, m_input);
+	        }
+	        catch (RuntimeException e)
+	        {
+	            throw e;
+	        }
+	        catch (Exception e)
+	        {
+	        }
+	
+	        m_exitValue = exitValue;
+	
+	        stream.print("RET: " + m_exitValue + "\n");
+		} 
+        catch (Exception e) 
         {
-            throw e;
-        }
-        catch (Exception e)
-        {
-        }
-
-        m_exitValue = exitValue;
-
-        stream.print("RET: " + m_exitValue + "\n");
+			e.printStackTrace();
+		}
     }
 
     private static ILogDevice getLogDevice(final ConsoleHelper.Stream stream)
@@ -103,7 +110,7 @@ public class RubyExecTask extends RubyTask
         return new ILogDevice()
         {
             @Override
-            public void log(String str)
+            public void log(String str) throws Exception
             {
                 stream.println(str.replaceAll("\\p{Cntrl}", " "));
             }

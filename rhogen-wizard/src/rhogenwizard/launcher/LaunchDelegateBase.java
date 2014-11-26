@@ -103,8 +103,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
         return m_debugProcess;        
 	}
 	
-	private void startBuildThread(final IProject project, final String mode,
-	    final ILaunch launch, ILaunchConfiguration configuration)
+	private void startBuildThread(final IProject project, final String mode, final ILaunch launch, ILaunchConfiguration configuration)
 	{
 		final RunType runType = getRunType(configuration);
 		
@@ -136,7 +135,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 				catch (FailBuildExtension e) 
 				{
 					ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
-					stream.println("Error in build application. Build is terminated.");
+					//stream.println("Error in build application. Build is terminated.");
 				}
 				catch (Exception e) 
 				{

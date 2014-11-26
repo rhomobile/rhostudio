@@ -14,9 +14,9 @@ public class ConsoleHelper
 {
     public interface Stream
     {
-        void print(String message);
-        void println();
-        void println(String message);
+        void print(String message) throws Exception;
+        void println() throws Exception;
+        void println(String message) throws Exception;
     }
 
     public interface Console
@@ -89,11 +89,6 @@ public class ConsoleHelper
                                           }
                                       };
 
-    private interface Callback
-    {
-        void call();
-    }
-
     private static class StreamImpl implements Stream
     {
         private boolean              m_enabled;
@@ -114,53 +109,32 @@ public class ConsoleHelper
         }
 
         @Override
-        public void print(String message)
+        public void print(String message) throws Exception
         {
             if (m_enabled)
             {
-                try 
-                {
-					m_callback.call();
-					m_stream.print(message);
-				} 
-                catch (Exception e) 
-				{
-					e.printStackTrace();
-				}                
+                m_callback.call();
+                m_stream.print(message);
             }
         }
 
         @Override
-        public void println()
+        public void println() throws Exception
         {
             if (m_enabled)
             {
-                try 
-                {
-					m_callback.call();
-					m_stream.println();
-				} 
-                catch (Exception e) 
-				{
-					e.printStackTrace();
-				}  
+				m_callback.call();
+				m_stream.println();
             }
         }
 
         @Override
-        public void println(String message)
+        public void println(String message) throws Exception
         {
             if (m_enabled)
             {
-                try 
-                {
-					m_callback.call();
-					m_stream.println(message);
-				} 
-                catch (Exception e) 
-				{
-					e.printStackTrace();
-				}  
+                m_callback.call();
+                m_stream.println(message);
             }
         }
 

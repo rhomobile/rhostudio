@@ -1,7 +1,6 @@
 package rhogenwizard;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -55,7 +54,7 @@ public class AsyncStreamReader extends Thread
 		}
 	}
 	
-	private void readFile() throws IOException, InterruptedException
+	private void readFile() throws Exception
 	{
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));
 		String line = null;
@@ -92,7 +91,7 @@ public class AsyncStreamReader extends Thread
 		}
 	}
 	
-	private void readCommandOutput() throws IOException
+	private void readCommandOutput() throws Exception
 	{		
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));		
 		String line = null;
@@ -113,7 +112,7 @@ public class AsyncStreamReader extends Thread
 		m_stopFlag = true;
 	}
 	
-	private void printToDisplayDevice(String line)
+	private void printToDisplayDevice(String line) throws Exception
 	{
 		if( m_logDevice != null )
 			m_logDevice.log(line);
