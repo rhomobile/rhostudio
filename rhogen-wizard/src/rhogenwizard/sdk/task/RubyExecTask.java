@@ -18,7 +18,7 @@ public class RubyExecTask extends RubyTask
 
         m_executor = new SysCommandExecutor();
         m_console  = ConsoleHelper.getBuildConsole();
-        m_input = null;
+        m_input    = null;
 
         m_exitValue = null;
     }

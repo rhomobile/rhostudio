@@ -1,8 +1,11 @@
 package rhogenwizard.launcher;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -18,6 +21,7 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
+
 import rhogenwizard.Activator;
 import rhogenwizard.BuildType;
 import rhogenwizard.ConsoleHelper;
@@ -34,120 +38,166 @@ import rhogenwizard.debugger.model.DebugTarget;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.IDebugTask;
+import rhogenwizard.sdk.task.RubyDebugTask;
 import rhogenwizard.sdk.task.RunTask;
-import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
-import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
+import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
+import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
-public class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
-{		
-	private static class FailBuildExtension extends Exception
+/////////////////////////////////////////////////////////////////////////
+
+class FailBuildExtension extends Exception
+{
+	private static final long serialVersionUID = 5907642700379669820L;
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+class CleanProject implements Callable<Object>
+{
+	private IProject     m_project      = null;
+	private boolean      m_isClean      = false;
+	private PlatformType m_platformType = null;
+	
+	final IProgressMonitor m_monitor;
+	
+	public CleanProject(IProject project, boolean isClean, PlatformType platformType, final IProgressMonitor monitor)
 	{
-		private static final long serialVersionUID = 5907642700379669820L;
+		m_project      = project;
+		m_isClean      = isClean;
+		m_monitor      = monitor;
+		m_platformType = platformType;
 	}
 	
-	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
-	
-	protected String          m_projectName   = null;
-	private PlatformType      m_platformType  = null;
-	private BuildType         m_buildType     = null;    
-	private boolean           m_isClean       = false;
-	private boolean           m_isReloadCode  = false;
-	private boolean           m_isTrace       = false;
-	private AtomicBoolean     m_buildFinished = new AtomicBoolean();
-	private IProcess          m_debugProcess  = null;
-	private final String      m_startPathOverride;
-	private final String[]    m_additionalRubyExtensions;
-	
-	public LaunchDelegateBase(String startPathOverride, String[] additionalRubyExtensions)
+	@Override
+	public Object call() throws Exception 
 	{
-	    m_startPathOverride        = startPathOverride;
-	    m_additionalRubyExtensions = additionalRubyExtensions;
-	}
+		if (m_isClean)
+		{
+			RunTask task = new CleanPlatformTask(m_project.getLocation().toOSString(), m_platformType);
+			task.run(m_monitor);			
+		}
 		
-	private void setProcessFinished(boolean b)
-	{
-		m_buildFinished.set(b);
+		return null;
 	}
+}
 
-	private boolean getProcessFinished()
+/////////////////////////////////////////////////////////////////////////
+
+class BuildProjectAsDebug implements Callable<IProcess>
+{
+	private IProject     m_currProject  = null;
+	private RunType      m_selType      = null;
+	private ILaunch      m_launch       = null;
+	private BuildType    m_buildType    = null;
+	private PlatformType m_platformType = null;
+	private boolean      m_isReloadCode = false;
+	private boolean      m_isTrace      = false;
+	
+	private String      m_startPathOverride        = null;
+	private String[]    m_additionalRubyExtensions = null;
+	
+	public BuildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions)
 	{
-		return m_buildFinished.get();
+		m_platformType             = configuration.platformType();
+		m_buildType                = configuration.buildType();
+		m_isReloadCode             = configuration.reloadCode();
+		m_isTrace                  = configuration.trace();
+		m_selType                  = configuration.runType();
+		m_launch                   = launch;
+		m_startPathOverride        = startPathOverride;
+		m_additionalRubyExtensions = additionalRubyExtensions;
+		
+		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
 	}
+	
+	@Override
+	public IProcess call() throws Exception 
+	{		
+		return debugSelectedBuildConfiguration(m_currProject, m_selType, m_launch);
+	}	
+	
+	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
+	{		
+		if (!TokenChecker.processToken(currProject))
+			return null;
+		
+		IDebugTask task;
+		
+        if (m_buildType == BuildType.eRhoMobileCom)
+        {
+            task = new RhohubDebugRhodesAppTask(launch, selType,
+                currProject.getLocation().toOSString(), currProject.getName(),
+                m_platformType, m_isReloadCode, m_startPathOverride,
+                m_additionalRubyExtensions);
+            
+            RubyDebugTask debugTask = (RubyDebugTask)task;
+            debugTask.runAndWaitJob("Debug build");
+        }
+        else
+        {
+            task = new LocalDebugRhodesAppTask(launch, selType,
+                currProject.getLocation().toOSString(), currProject.getName(),
+                m_platformType, m_isReloadCode, m_isTrace, m_startPathOverride,
+                m_additionalRubyExtensions);
+            
+            task.run();
+        }
 
-	private void releaseBuild(IProject project, RunType type) throws Exception, FailBuildExtension
+        return task.getDebugProcess();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+class BuildProjectAsRelease implements Callable<Boolean>
+{
+	private IProject     m_currProject  = null;
+	private RunType      m_selType      = null;
+	private ILaunch      m_launch       = null;
+	private BuildType    m_buildType    = null;
+	private PlatformType m_platformType = null;
+	private boolean      m_isReloadCode = false;
+	private boolean      m_isTrace      = false;
+	
+	private String      m_startPathOverride        = null;
+	private String[]    m_additionalRubyExtensions = null;
+	
+	public BuildProjectAsRelease(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions)
+	{
+		m_platformType             = configuration.platformType();
+		m_buildType                = configuration.buildType();
+		m_isReloadCode             = configuration.reloadCode();
+		m_isTrace                  = configuration.trace();
+		m_selType                  = configuration.runType();
+		m_launch                   = launch;
+		m_startPathOverride        = startPathOverride;
+		m_additionalRubyExtensions = additionalRubyExtensions;
+		
+		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
+	}
+	
+	@Override
+	public Boolean call() throws Exception
 	{
         Activator activator = Activator.getDefault();
         activator.killProcessesForForRunReleaseRhodesAppTask();
 
         ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe \"-approot=\'");
 
-        if (!runSelectedBuildConfiguration(project, type))
+        boolean buildResult = runSelectedBuildConfiguration(m_currProject, m_selType);
+        
+        if (!buildResult)
         {
             throw new FailBuildExtension();
         }
 
         activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
-	}
-	
-	private IProcess debugBuild(IProject project, RunType type, ILaunch launch) throws Exception, FailBuildExtension
-	{
-        m_debugProcess = debugSelectedBuildConfiguration(project, type, launch);
         
-        if (m_debugProcess == null)
-        {
-            throw new FailBuildExtension();
-        }
-
-        return m_debugProcess;        
-	}
+		return buildResult;
+	}	
 	
-	private void startBuildThread(final IProject project, final String mode, final ILaunch launch, ILaunchConfiguration configuration)
-	{
-		final RunType runType = getRunType(configuration);
-		
-		Thread cancelingThread = new Thread(new Runnable() 
-		{	
-			@Override
-			public void run() 
-			{
-				try 
-				{
-					ConsoleHelper.getBuildConsole().show();
-					
-				    ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
-					stream.println("build started");
-
-					if (mode.equals(ILaunchManager.DEBUG_MODE))
-					{
-					    debugBuild(project, runType, launch);
-					}
-					else
-					{
-					    releaseBuild(project, runType);
-					}
-					
-					rhodesLogHelper.startLog(m_platformType, project, runType);
-					
-					ConsoleHelper.getAppConsole().showOnNextMessage();
-				} 
-				catch (FailBuildExtension e) 
-				{
-					ConsoleHelper.Stream stream = ConsoleHelper.getBuildConsole().getStream();
-					//stream.println("Error in build application. Build is terminated.");
-				}
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-				
-				setProcessFinished(true);
-			}
-		});
-		cancelingThread.start();
-	}
-
 	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
 	{
 		if (!TokenChecker.processToken(currProject))
@@ -163,75 +213,43 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
                 m_platformType, selType, m_isReloadCode, m_isTrace,
                 m_startPathOverride, m_additionalRubyExtensions);
 		}
-				
-		task.run();
+
+		task.runAndWaitJob("Release build");
 
 		return task.isOk();
 	}
+}
+
+public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
+{		
+	private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10));
+	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
-	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
+	protected String          m_projectName   = null;
+	private PlatformType      m_platformType  = null;   
+	private boolean           m_isClean       = false;
+	private final String      m_startPathOverride;
+	private final String[]    m_additionalRubyExtensions;
+	
+	public LaunchDelegateBase(String startPathOverride, String[] additionalRubyExtensions)
 	{
-		if (!TokenChecker.processToken(currProject))
-			return null;
-		IDebugTask task;
-        if (m_buildType == BuildType.eRhoMobileCom)
-        {
-            task = new RhohubDebugRhodesAppTask(launch, selType,
-                currProject.getLocation().toOSString(), currProject.getName(),
-                m_platformType, m_isReloadCode, m_startPathOverride,
-                m_additionalRubyExtensions);
-        }
-        else
-        {
-            task = new LocalDebugRhodesAppTask(launch, selType,
-                currProject.getLocation().toOSString(), currProject.getName(),
-                m_platformType, m_isReloadCode, m_isTrace, m_startPathOverride,
-                m_additionalRubyExtensions);
-        }
-		task.run();
-		
-		return task.getDebugProcess();
+	    m_startPathOverride        = startPathOverride;
+	    m_additionalRubyExtensions = additionalRubyExtensions;
 	}
 	
 	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
-	{
-	    
+	{	    
 		RhodesConfigurationRO rc = new RhodesConfigurationRO(configuration);
 		
 		m_projectName   = rc.project();
 		m_platformType  = rc.platformType();
-		m_buildType     = rc.buildType();
 		m_isClean       = rc.clean();
-		m_isReloadCode  = rc.reloadCode();
-		m_isTrace       = rc.trace();
-	}
-	
-	private void cleanSelectedPlatform(IProject project, boolean isClean, IProgressMonitor monitor) throws FileNotFoundException
-	{
-		if (isClean) 
-		{			
-			RunTask task = new CleanPlatformTask(
-			    project.getLocation().toOSString(), m_platformType);
-			task.run(monitor);		
-		}
-	}
-
-	public synchronized void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
-	{
-		setupConfigAttributes(configuration);
-		
-		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(m_projectName);
-				
-		launchLocalProject(project, configuration, mode, launch, monitor);
 	}
 
 	public synchronized void launchLocalProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
 	{
 		try
 		{
-			DebugTarget target = null;
-			setProcessFinished(false); 
-			
 			rhodesLogHelper.stopLog();
 			
 			setStandartConsoleOutputIsOff();
@@ -252,69 +270,50 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate implements I
 			{
 				throw new IllegalArgumentException("Project " + project.getName() + " not found");
 			}		
-			
-			if (mode.equals(ILaunchManager.DEBUG_MODE))
-			{
-				ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-				job.schedule();
-				
-				try 
-				{
-					OSHelper.killProcess("rhosimulator");
-				}
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-				
-				target = new DebugTarget(launch, null, project, runType, m_platformType);
-			}
-			
-			try
-			{
-				cleanSelectedPlatform(project, m_isClean, monitor);
-			
-				startBuildThread(project, mode, launch, configuration);
-	
-				while(true)
-				{
-					if (monitor.isCanceled()) 
-				    {
-						OSHelper.killProcess("ruby");
-						return;
-				    }
-					
-					if (getProcessFinished())
-					{
-						break;
-					}
 
-					Thread.sleep(100);
-				}
-			}
-		    catch (InterruptedException e) 
-		    {
-		    	e.printStackTrace();
-		    	Activator.logError(e);
-		    }
-			catch (FileNotFoundException e) 
+			executor.submit(new CleanProject(project, m_isClean, m_platformType, monitor));
+		
+			try 
 			{
-				DialogUtils.error("Missing build.yml", "Configuration file build.yml is not found in application folder. Build was terminated.");
-				Activator.logError(e);
-			}
-			catch (IOException e) 
-		    {
+				if (mode.equals(ILaunchManager.DEBUG_MODE))
+				{
+					DebugTarget target = null;
+					
+					ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
+					job.schedule();
+					
+					try 
+					{
+						OSHelper.killProcess("rhosimulator");
+					}
+					catch (Exception e) 
+					{
+						e.printStackTrace();
+					}
+					
+					target = new DebugTarget(launch, null, project, runType, m_platformType);
+			
+					Future<IProcess> result = executor.submit(new BuildProjectAsDebug(new RhodesConfigurationRO(configuration), launch, m_startPathOverride, m_additionalRubyExtensions));
+					
+					IProcess debugProcess = result.get(); 
+					target.setProcess(debugProcess);
+					launch.addDebugTarget(target);			
+				}
+				else
+				{
+					Future<Boolean> result = executor.submit(new BuildProjectAsRelease(new RhodesConfigurationRO(configuration), launch,  m_startPathOverride, m_additionalRubyExtensions));						
+				}
+			} 
+			catch (InterruptedException e) 
+			{
 				e.printStackTrace();
-				Activator.logError(e);
+			} 
+			catch (ExecutionException e) 
+			{
+				e.printStackTrace();
 			}
 			
 			monitor.done();
-			
-			if (mode.equals(ILaunchManager.DEBUG_MODE))
-			{
-				target.setProcess(m_debugProcess);
-				launch.addDebugTarget(target);			
-			}
 		}
 		catch (IllegalArgumentException e) 
 		{
