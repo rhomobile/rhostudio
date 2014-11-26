@@ -691,32 +691,25 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
     @Override
     synchronized public void evaluation(boolean valid, String code, String value)
     {
-    	try
-    	{
-            ConsoleHelper.getAppConsole().show();
-            ConsoleHelper.getAppConsole().getStream().println("start");
+        ConsoleHelper.getAppConsole().show();
+        ConsoleHelper.getAppConsole().getStream().println("start");
 
-            IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
+        IExpressionManager expManager = DebugPlugin.getDefault().getExpressionManager();
 
-            IExpression[] modelExps = expManager.getExpressions();
+        IExpression[] modelExps = expManager.getExpressions();
 
-            for (IExpression currExp : modelExps)
+        for (IExpression currExp : modelExps)
+        {
+            if (currExp.getExpressionText().equals(code))
             {
-                if (currExp.getExpressionText().equals(code))
+                if (currExp instanceof RhogenWatchExpression)
                 {
-                    if (currExp instanceof RhogenWatchExpression)
-                    {
-                        IValue watchVal = new DebugValue(this, value);
-                        RhogenWatchExpression watchExp = (RhogenWatchExpression) currExp;
-                        watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
-                    }
+                    IValue watchVal = new DebugValue(this, value);
+                    RhogenWatchExpression watchExp = (RhogenWatchExpression) currExp;
+                    watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
                 }
-            }    		
-    	}
-    	catch(Exception e)
-    	{
-    		e.printStackTrace();
-    	}
+            }
+        }    		
     }
 
     @Override

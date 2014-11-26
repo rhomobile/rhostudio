@@ -14,9 +14,9 @@ public class ConsoleHelper
 {
     public interface Stream
     {
-        void print(String message) throws Exception;
-        void println() throws Exception;
-        void println(String message) throws Exception;
+        void print(String message);
+        void println();
+        void println(String message);
     }
 
     public interface Console
@@ -92,10 +92,10 @@ public class ConsoleHelper
     private static class StreamImpl implements Stream
     {
         private boolean              m_enabled;
-        private Callable<Object>     m_callback;
+        private Runnable             m_callback;
         private MessageConsoleStream m_stream;
 
-        public StreamImpl(MessageConsole console, Callable<Object> callback, int swtColorId)
+        public StreamImpl(MessageConsole console, Runnable callback, int swtColorId)
         {
             m_enabled  = true;
             m_callback = callback;
@@ -109,31 +109,31 @@ public class ConsoleHelper
         }
 
         @Override
-        public void print(String message) throws Exception
+        public void print(String message)
         {
             if (m_enabled)
             {
-                m_callback.call();
+                m_callback.run();
                 m_stream.print(message);
             }
         }
 
         @Override
-        public void println() throws Exception
+        public void println()
         {
             if (m_enabled)
             {
-				m_callback.call();
+				m_callback.run();
 				m_stream.println();
             }
         }
 
         @Override
-        public void println(String message) throws Exception
+        public void println(String message)
         {
             if (m_enabled)
             {
-                m_callback.call();
+                m_callback.run();
                 m_stream.println(message);
             }
         }
@@ -172,10 +172,10 @@ public class ConsoleHelper
 
         public ConsoleImpl(String name)
         {
-        	Callable<Object> callback = new Callable<Object>()
+        	Runnable callback = new Runnable()
             {
                 @Override
-                public Object call()
+                public void run()
                 {
                     if (m_showOnNextMessage)
                     {
@@ -183,7 +183,7 @@ public class ConsoleHelper
                         m_showOnNextMessage = false;
                     }
                     
-                    return null;
+
                 }
             };
             

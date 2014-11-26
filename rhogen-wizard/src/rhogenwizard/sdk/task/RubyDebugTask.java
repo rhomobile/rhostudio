@@ -79,7 +79,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         }
 
         m_debugProcess = DebugPlugin.newProcess(m_launch, process, m_appName);
-
+        
         if (m_debugProcess != null)
         {
             attachConsole(m_debugProcess, m_console);
@@ -128,7 +128,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         return new ILogDevice()
         {
             @Override
-            public void log(String str) throws Exception
+            public void log(String str)
             {
                 stream.println(str.replaceAll("\\p{Cntrl}", " "));
             }

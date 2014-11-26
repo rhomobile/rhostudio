@@ -110,7 +110,7 @@ public class RubyExecTask extends RubyTask
         return new ILogDevice()
         {
             @Override
-            public void log(String str) throws Exception
+            public void log(String str)
             {
                 stream.println(str.replaceAll("\\p{Cntrl}", " "));
             }
