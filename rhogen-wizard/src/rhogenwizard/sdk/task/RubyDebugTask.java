@@ -51,9 +51,16 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
     @Override
     public void exec()
     {
-        m_console.show();
-        m_console.getStream().print(showCommand());
-
+    	try
+    	{
+	        m_console.show();
+	        m_console.getStream().print(showCommand());
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	
         SysCommandExecutor executor = new SysCommandExecutor();
         executor.setOutputLogDevice(getLogDevice(m_console.getOutputStream()));
         executor.setErrorLogDevice(getLogDevice(m_console.getErrorStream()));
@@ -104,7 +111,14 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
             @Override
             public void streamAppended(String text, IStreamMonitor monitor)
             {
-                stream.println(text);
+            	try
+            	{
+            		stream.println(text);	
+            	}
+            	catch(Exception e)
+            	{
+            		e.printStackTrace();
+            	}                
             }
         };
     }
@@ -114,7 +128,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         return new ILogDevice()
         {
             @Override
-            public void log(String str)
+            public void log(String str) throws Exception
             {
                 stream.println(str.replaceAll("\\p{Cntrl}", " "));
             }
