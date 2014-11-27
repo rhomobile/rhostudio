@@ -1,5 +1,6 @@
 package rhogenwizard.launcher;
 
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -75,6 +76,8 @@ class CleanProject implements Callable<Object>
 	@Override
 	public Object call() throws Exception 
 	{
+    	m_monitor.setTaskName("Run clean project build files");
+    	
 		if (m_isClean)
 		{
 			RunTask task = new CleanPlatformTask(m_project.getLocation().toOSString(), m_platformType);
@@ -100,7 +103,9 @@ class BuildProjectAsDebug implements Callable<IProcess>
 	private String      m_startPathOverride        = null;
 	private String[]    m_additionalRubyExtensions = null;
 	
-	public BuildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions)
+	final IProgressMonitor m_monitor;
+	
+	public BuildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,  String startPathOverride, String[] additionalRubyExtensions, final IProgressMonitor monitor)
 	{
 		m_platformType             = configuration.platformType();
 		m_buildType                = configuration.buildType();
@@ -110,6 +115,7 @@ class BuildProjectAsDebug implements Callable<IProcess>
 		m_launch                   = launch;
 		m_startPathOverride        = startPathOverride;
 		m_additionalRubyExtensions = additionalRubyExtensions;
+		m_monitor                  = monitor;
 		
 		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
 	}
@@ -122,8 +128,12 @@ class BuildProjectAsDebug implements Callable<IProcess>
 	
 	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
 	{		
+		m_monitor.setTaskName("Build debug configuration of project " + m_currProject.getName());
+		
 		if (!TokenChecker.processToken(currProject))
 			return null;
+		
+		setupBuildFinishWait();
 		
 		IDebugTask task;		
         if (m_buildType == BuildType.eRhoMobileCom)
@@ -143,7 +153,53 @@ class BuildProjectAsDebug implements Callable<IProcess>
 
         task.run();
         
+        waitBuildFinish();
+        
         return task.getDebugProcess();
+	}
+	
+	Set<Integer> rubyProcessIds = null;
+	
+	private void setupBuildFinishWait()
+	{
+		if (!OSHelper.isWindows())
+			return;
+		
+		try 
+		{
+			rubyProcessIds = OSHelper.getProcessesIds("ruby.exe");
+		}
+		catch (InterruptedException e) 
+		{
+			rubyProcessIds = null;			
+			e.printStackTrace();
+		}		
+	}
+	
+	private void waitBuildFinish()
+	{
+		if (!OSHelper.isWindows() || rubyProcessIds == null)
+			return;
+				
+        try 
+        {
+        	while(true)
+        	{
+        		Set<Integer> ids = OSHelper.getProcessesIds("ruby.exe");        		
+        		 
+        		if (ids.size() == rubyProcessIds.size())
+        		{
+            		if(ids.containsAll(rubyProcessIds))
+            		{
+            			break;
+            		}        			
+        		}        		
+        	}
+		} 
+        catch (InterruptedException e) 
+        {
+			e.printStackTrace();
+		}	
 	}
 }
 
@@ -162,7 +218,9 @@ class BuildProjectAsRelease implements Callable<Boolean>
 	private String      m_startPathOverride        = null;
 	private String[]    m_additionalRubyExtensions = null;
 	
-	public BuildProjectAsRelease(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions)
+	final IProgressMonitor m_monitor;
+	
+	public BuildProjectAsRelease(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions, final IProgressMonitor monitor)
 	{
 		m_platformType             = configuration.platformType();
 		m_buildType                = configuration.buildType();
@@ -172,6 +230,7 @@ class BuildProjectAsRelease implements Callable<Boolean>
 		m_launch                   = launch;
 		m_startPathOverride        = startPathOverride;
 		m_additionalRubyExtensions = additionalRubyExtensions;
+		m_monitor                  = monitor;
 		
 		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
 	}
@@ -179,6 +238,8 @@ class BuildProjectAsRelease implements Callable<Boolean>
 	@Override
 	public Boolean call() throws Exception
 	{
+		m_monitor.setTaskName("Build release configuration of project " + m_currProject.getName());
+		
         Activator activator = Activator.getDefault();
         activator.killProcessesForForRunReleaseRhodesAppTask();
 
@@ -293,7 +354,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
     public synchronized void launchLocalProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
     {
         try
-        {       	 
+        {         	
             rhodesLogHelper.stopLog();
 
             setStandartConsoleOutputIsOff();
@@ -316,18 +377,17 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
             }
 
             CancelMonitorObserver cancelObserver = new CancelMonitorObserver(monitor);
+            RhodesConfigurationRO rc             = new RhodesConfigurationRO(configuration);
             
             try 
             {
-                Future<Object> cancelTask = executor.submit(new CleanProject(project, m_isClean, m_platformType, monitor));
-                cancelTask.get();
+                Future<Object> cleanTask = executor.submit(new CleanProject(project, m_isClean, m_platformType, monitor));
+                cleanTask.get();
             	
             	executor.submit(cancelObserver);
             	
                 if (mode.equals(ILaunchManager.DEBUG_MODE))
                 {
-                    DebugTarget target = null;
-
                     ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
                     job.schedule();
 
@@ -340,17 +400,17 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 						e.printStackTrace();
 					}
 					
-					Future<IProcess> debugTask = executor.submit(new BuildProjectAsDebug(new RhodesConfigurationRO(configuration), launch, m_startPathOverride, m_additionalRubyExtensions));
+					Future<IProcess> debugTask = executor.submit(new BuildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor));
 					
 					IProcess debugProcess = debugTask.get();
 					
-					target = new DebugTarget(launch, null, project, runType, m_platformType);
+					DebugTarget target = new DebugTarget(launch, null, project, runType, m_platformType);
 					target.setProcess(debugProcess);
 					launch.addDebugTarget(target);			
                 }
                 else
                 {
-					Future<Boolean> releaseTask = executor.submit(new BuildProjectAsRelease(new RhodesConfigurationRO(configuration), launch,  m_startPathOverride, m_additionalRubyExtensions));
+					Future<Boolean> releaseTask = executor.submit(new BuildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor));
 					releaseTask.get();
                 }
             }
