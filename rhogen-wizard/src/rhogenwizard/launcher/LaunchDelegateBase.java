@@ -404,9 +404,12 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 					
 					IProcess debugProcess = debugTask.get();
 					
-					DebugTarget target = new DebugTarget(launch, null, project, runType, m_platformType);
-					target.setProcess(debugProcess);
-					launch.addDebugTarget(target);			
+					if(!debugProcess.isTerminated())
+					{
+						DebugTarget target = new DebugTarget(launch, null, project, runType, m_platformType);
+						target.setProcess(debugProcess);
+						launch.addDebugTarget(target);						
+					}
                 }
                 else
                 {
