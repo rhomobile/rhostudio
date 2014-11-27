@@ -89,23 +89,6 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
                 return Status.OK_STATUS;
             }
         }.schedule(1000);
-        
-        try 
-        {
-        	while(true)
-        	{
-        		Set<Integer> ids = OSHelper.getProcessesIds("ruby.exe");
-        		
-        		if(ids.size() == 0)
-        		{
-        			break;
-        		}
-        	}
-		} 
-        catch (InterruptedException e) 
-        {
-			e.printStackTrace();
-		}
     }
 
     public static void attachConsole(IProcess process, ConsoleHelper.Console console)
