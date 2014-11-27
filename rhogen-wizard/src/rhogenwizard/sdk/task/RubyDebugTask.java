@@ -1,6 +1,7 @@
 package rhogenwizard.sdk.task;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -15,6 +16,7 @@ import org.eclipse.debug.core.model.IStreamMonitor;
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
+import rhogenwizard.OSHelper;
 import rhogenwizard.SysCommandExecutor;
 
 public class RubyDebugTask extends RubyTask implements IDebugTask
@@ -87,6 +89,23 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
                 return Status.OK_STATUS;
             }
         }.schedule(1000);
+        
+        try 
+        {
+        	while(true)
+        	{
+        		Set<Integer> ids = OSHelper.getProcessesIds("ruby.exe");
+        		
+        		if(ids.size() == 0)
+        		{
+        			break;
+        		}
+        	}
+		} 
+        catch (InterruptedException e) 
+        {
+			e.printStackTrace();
+		}
     }
 
     public static void attachConsole(IProcess process, ConsoleHelper.Console console)
