@@ -1,6 +1,7 @@
 package rhogenwizard.sdk.task;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -15,6 +16,7 @@ import org.eclipse.debug.core.model.IStreamMonitor;
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
+import rhogenwizard.OSHelper;
 import rhogenwizard.SysCommandExecutor;
 
 public class RubyDebugTask extends RubyTask implements IDebugTask
@@ -53,7 +55,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
     {
         m_console.show();
         m_console.getStream().print(showCommand());
-
+    	
         SysCommandExecutor executor = new SysCommandExecutor();
         executor.setOutputLogDevice(getLogDevice(m_console.getOutputStream()));
         executor.setErrorLogDevice(getLogDevice(m_console.getErrorStream()));
@@ -72,7 +74,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         }
 
         m_debugProcess = DebugPlugin.newProcess(m_launch, process, m_appName);
-
+                
         if (m_debugProcess != null)
         {
             attachConsole(m_debugProcess, m_console);
@@ -87,6 +89,23 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
                 return Status.OK_STATUS;
             }
         }.schedule(1000);
+        
+        try 
+        {
+        	while(true)
+        	{
+        		Set<Integer> ids = OSHelper.getProcessesIds("ruby.exe");
+        		
+        		if(ids.size() == 0)
+        		{
+        			break;
+        		}
+        	}
+		} 
+        catch (InterruptedException e) 
+        {
+			e.printStackTrace();
+		}
     }
 
     public static void attachConsole(IProcess process, ConsoleHelper.Console console)
@@ -104,7 +123,7 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
             @Override
             public void streamAppended(String text, IStreamMonitor monitor)
             {
-                stream.println(text);
+        		stream.println(text);              
             }
         };
     }
