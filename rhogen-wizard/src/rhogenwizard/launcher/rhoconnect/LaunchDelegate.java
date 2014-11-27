@@ -58,29 +58,22 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 			@Override
 			public void run() 
 			{
-				try 
-				{				
-					ConsoleHelper.getBuildConsole().getStream().println("build started");
-					
-					if (mode.equals(ILaunchManager.DEBUG_MODE))
-					{
-						m_debugProcess = debugSelectedBuildConfiguration(project, launch);
-							
-						if (m_debugProcess == null)
-						{
-						    ConsoleHelper.getBuildConsole().getStream().println("Error in build application");
-							setProcessFinished(true);
-							return;
-						}
-					}
-					else
-					{
-						runSelectedBuildConfiguration(project);
-					}
-				} 
-				catch (Exception e) 
+				ConsoleHelper.getBuildConsole().getStream().println("build started");
+				
+				if (mode.equals(ILaunchManager.DEBUG_MODE))
 				{
-					e.printStackTrace();
+					m_debugProcess = debugSelectedBuildConfiguration(project, launch);
+						
+					if (m_debugProcess == null)
+					{
+					    ConsoleHelper.getBuildConsole().getStream().println("Error in build application");
+						setProcessFinished(true);
+						return;
+					}
+				}
+				else
+				{
+					runSelectedBuildConfiguration(project);
 				}
 				
 				ConsoleHelper.getAppConsole().showOnNextMessage();
@@ -90,13 +83,13 @@ public class LaunchDelegate extends LaunchConfigurationDelegate implements IDebu
 		cancelingThread.start();
 	}
 
-	private void runSelectedBuildConfiguration(IProject currProject) throws Exception
+	private void runSelectedBuildConfiguration(IProject currProject)
 	{
 		RunTask task = new RunReleaseRhoconnectAppTask(currProject.getLocation().toOSString());
 		task.run();
 	}
 	
-	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch) throws Exception
+	private IProcess debugSelectedBuildConfiguration(IProject currProject, ILaunch launch)
 	{
 		RunDebugRhoconnectAppTask task = new RunDebugRhoconnectAppTask(currProject.getLocation().toOSString(),
 		    currProject.getName(), launch);

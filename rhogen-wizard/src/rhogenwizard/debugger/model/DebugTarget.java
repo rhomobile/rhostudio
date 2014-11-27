@@ -709,7 +709,7 @@ public class DebugTarget extends DebugElement implements IDebugTarget, IDebugCal
                     watchExp.setResult(new RhogenWatchExpressionResult(code, watchVal));
                 }
             }
-        }
+        }    		
     }
 
     @Override

@@ -2,9 +2,8 @@ package rhogenwizard.sdk.task;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public interface IRunTask
+public interface IRunTask extends Runnable
 {
     boolean isOk();
-    void run();
     void run(IProgressMonitor monitor);
 }

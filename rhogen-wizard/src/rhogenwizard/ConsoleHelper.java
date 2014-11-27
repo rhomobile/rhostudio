@@ -1,5 +1,7 @@
 package rhogenwizard;
 
+import java.util.concurrent.Callable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -87,22 +89,17 @@ public class ConsoleHelper
                                           }
                                       };
 
-    private interface Callback
-    {
-        void call();
-    }
-
     private static class StreamImpl implements Stream
     {
         private boolean              m_enabled;
-        private Callback             m_callback;
+        private Runnable             m_callback;
         private MessageConsoleStream m_stream;
 
-        public StreamImpl(MessageConsole console, Callback callback, int swtColorId)
+        public StreamImpl(MessageConsole console, Runnable callback, int swtColorId)
         {
-            m_enabled = true;
+            m_enabled  = true;
             m_callback = callback;
-            m_stream = console.newMessageStream();
+            m_stream   = console.newMessageStream();
             setColor(m_stream, swtColorId);
         }
 
@@ -116,7 +113,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                m_callback.call();
+                m_callback.run();
                 m_stream.print(message);
             }
         }
@@ -126,8 +123,8 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                m_callback.call();
-                m_stream.println();
+				m_callback.run();
+				m_stream.println();
             }
         }
 
@@ -136,7 +133,7 @@ public class ConsoleHelper
         {
             if (m_enabled)
             {
-                m_callback.call();
+                m_callback.run();
                 m_stream.println(message);
             }
         }
@@ -175,24 +172,27 @@ public class ConsoleHelper
 
         public ConsoleImpl(String name)
         {
-            Callback callback = new Callback()
+        	Runnable callback = new Runnable()
             {
                 @Override
-                public void call()
+                public void run()
                 {
                     if (m_showOnNextMessage)
                     {
                         show();
                         m_showOnNextMessage = false;
                     }
+                    
+
                 }
             };
-            m_console = findConsole(name);
-            m_stream = new StreamImpl(m_console, callback, SWT.COLOR_BLACK);
+            
+            m_console      = findConsole(name);
+            m_stream       = new StreamImpl(m_console, callback, SWT.COLOR_BLACK);
             m_outputStream = new StreamImpl(m_console, callback, SWT.COLOR_DARK_BLUE);
-            m_errorStream = new StreamImpl(m_console, callback, SWT.COLOR_DARK_RED);
+            m_errorStream  = new StreamImpl(m_console, callback, SWT.COLOR_DARK_RED);
 
-            m_enabled = true;
+            m_enabled           = true;
             m_showOnNextMessage = false;
         }
 

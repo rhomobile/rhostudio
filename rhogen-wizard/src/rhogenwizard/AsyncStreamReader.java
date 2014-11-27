@@ -55,7 +55,7 @@ public class AsyncStreamReader extends Thread
 		}
 	}
 	
-	private void readFile() throws IOException, InterruptedException
+	private void readFile() throws IOException, InterruptedException 
 	{
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));
 		String line = null;
@@ -92,7 +92,7 @@ public class AsyncStreamReader extends Thread
 		}
 	}
 	
-	private void readCommandOutput() throws IOException
+	private void readCommandOutput() throws Exception
 	{		
 		BufferedReader bufOut = new BufferedReader(new InputStreamReader(m_inputStream));		
 		String line = null;

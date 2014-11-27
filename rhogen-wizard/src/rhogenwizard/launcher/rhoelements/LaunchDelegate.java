@@ -80,7 +80,6 @@ public class LaunchDelegate extends rhogenwizard.launcher.LaunchDelegateBase
 		}
 		catch (FileNotFoundException e) 
 		{
-			//TODO - add error messages
 			e.printStackTrace();
 		} 
 		catch (InterruptedException e) 
