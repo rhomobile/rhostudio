@@ -20,7 +20,7 @@ end
 
 def getRhostudioSuitePath
   startInstallDrive = "c:\\"      
-  suiteNameTemplate = "MotorolaRhoMobileSuite*" 
+  suiteNameTemplate = "RhoMobileSuite*"
 
   findItem = getPathByTemplate(startInstallDrive, suiteNameTemplate)
 

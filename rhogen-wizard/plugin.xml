@@ -239,20 +239,6 @@
     
     <!-- ************************** launch configuration **************************************** -->
     
-    <!-- see rhodes cfg
-    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
-        <launchConfigurationType
-           delegate="rhogenwizard.launcher.rhoelements.LaunchDelegate"
-           id="rhogenwizard.launcher.rhoelementsApp"
-           modes="run, debug"
-           name="Rhoelements Application"
-           public="true"
-           sourceLocatorId="com.rhomobile.rhostudio.sourceLookupDirector_pda"
-           sourcePathComputerId="com.rhomobile.rhostudio.sourcePathComputer_pda">        
-        </launchConfigurationType>
-    </extension>
-    -->
-		 
    	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
            delegate="rhogenwizard.launcher.rhodes.LaunchDelegate"
