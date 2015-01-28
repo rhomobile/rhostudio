@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IPath;
+
 public class OSHelper extends OSValidator
 {
     private static ILogDevice nullLogDevice = new ILogDevice()
@@ -79,6 +81,26 @@ public class OSHelper extends OSValidator
         }
 
         SysCommandExecutor executor = new SysCommandExecutor();
+        executor.runCommand(SysCommandExecutor.CRT, cmdLine);
+    }
+    
+    public static void openFolder(IPath directory) throws IOException, InterruptedException
+    {
+        List<String> cmdLine = new ArrayList<String>();
+
+        if (OSValidator.OSType.WINDOWS == OSValidator.detect())
+        {
+            cmdLine.add("start");
+            cmdLine.add(".");
+        }
+        else
+        {
+            cmdLine.add("open");
+            cmdLine.add(directory.toOSString());
+        }
+
+        SysCommandExecutor executor = new SysCommandExecutor();
+        executor.setWorkingDirectory(directory.toOSString());
         executor.runCommand(SysCommandExecutor.CRT, cmdLine);
     }
 
