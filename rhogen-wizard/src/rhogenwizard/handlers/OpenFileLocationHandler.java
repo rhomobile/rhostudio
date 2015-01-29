@@ -15,39 +15,42 @@ import org.eclipse.ui.internal.ObjectPluginAction;
 
 import rhogenwizard.OSHelper;
 
+@SuppressWarnings("restriction")
 public class OpenFileLocationHandler extends ActionDelegate implements IActionDelegate 
 {
-
 	@Override
 	public void run(IAction action) 
 	{
-		ObjectPluginAction actionObject = (ObjectPluginAction)action;
-		IStructuredSelection selObject  = (IStructuredSelection)actionObject.getSelection();
-		IFile selFile  = (IFile)selObject.getFirstElement();
-		IPath filePath = selFile.getLocation();
-		
-		List<String> cloneSegList = new ArrayList<String>(Arrays.asList(filePath.segments()));
-		cloneSegList.remove(cloneSegList.size()-1);
-		
-		IPath newPath = (IPath) new Path(filePath.getDevice() + Path.SEPARATOR);
+		if (action instanceof ObjectPluginAction)
+		{
+			ObjectPluginAction actionObject = (ObjectPluginAction)action;
+			IStructuredSelection selObject  = (IStructuredSelection)actionObject.getSelection();
+			IFile selFile                   = (IFile)selObject.getFirstElement();
+			IPath filePath                  = selFile.getLocation();
+			
+			List<String> cloneSegList = new ArrayList<String>(Arrays.asList(filePath.segments()));
+			cloneSegList.remove(cloneSegList.size()-1);
+			
+			IPath newPath = (IPath) new Path(filePath.getDevice() + Path.SEPARATOR);
 
-		for (String s : cloneSegList) {
-			newPath = newPath.append(s);
+			for (String s : cloneSegList) {
+				newPath = newPath.append(s);
+			}
+			
+			try 
+			{
+				OSHelper.openFolder(newPath);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}			
 		}
-		
-		try 
-		{
-			OSHelper.openFolder(newPath);
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
-		
+
 		super.run(action);
 	}
 }
