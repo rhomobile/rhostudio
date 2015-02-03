@@ -112,6 +112,13 @@
             id="rhogenwizard.editors.RhodesEditor"
             name="RhoMobile Yaml File Editor">
       </editor>
+      <editor
+            class="rhogenwizard.editors.LiveUpdateEditor"
+            default="false"
+            filenames="Live update setting"
+            id="RhogenWizard.editor1"
+            name="Live update setting">
+      </editor>
    </extension>
    
 	<extension point="org.eclipse.ui.editors">
@@ -525,7 +532,7 @@
             label="Open file location"
             icon="icons/rhodes_icon16.png"
             menubarPath="additions" 
-            class="rhogenwizard.handlers.OpenFileLocationHandler"> 
+            class="rhogenwizard.actions.OpenFileLocationHandler"> 
         </action>
          
     </objectContribution> 

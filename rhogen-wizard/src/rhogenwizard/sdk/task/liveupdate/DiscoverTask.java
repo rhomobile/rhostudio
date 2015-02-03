@@ -9,11 +9,12 @@ public class DiscoverTask extends RubyExecTask
 {
 	public DiscoverTask(String workDir, String subnetAddress) 
 	{		
-		super(workDir, SysCommandExecutor.RUBY_BAT, "");
+		super(workDir, SysCommandExecutor.RUBY_BAT, "rake");
 	}
 	
 	@Override
-	public void run(IProgressMonitor monitor) {
+	public void run(IProgressMonitor monitor)
+	{
 		// TODO Auto-generated method stub
 		super.run(monitor);
 		
