@@ -1,13 +1,16 @@
 package rhogenwizard.editors;
 
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
@@ -33,8 +36,18 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.progress.UIJob;
 
 import rhogenwizard.sdk.task.liveupdate.DiscoverTask;
+import rhogenwizard.sdk.task.liveupdate.LUDevice;
 import rhogenwizard.sdk.task.liveupdate.LiveUpdateSwitchTask;
 import rhogenwizard.sdk.task.liveupdate.PrintSubnetsTask;
+ 
+class LiveUpdateObserver extends Observable 
+{
+	public void notifyUi(Object arg)
+	{
+		this.setChanged();
+		this.notifyObservers(arg);
+	}
+}
 
 class TableItemUpdateUIJob extends UIJob
 {
@@ -59,6 +72,51 @@ class TableItemUpdateUIJob extends UIJob
 	}
 }
 
+class DevicesTableFillUIJob extends UIJob
+{
+	private Table    m_table   = null; 
+	private IProject m_project = null;
+	
+	public DevicesTableFillUIJob(IProject project, Table table)
+	{
+		super("Update UI");
+		
+		m_table   = table;
+		m_project = project;
+	}
+
+	@Override
+	public IStatus runInUIThread(IProgressMonitor monitor) 
+	{
+		m_table.removeAll();
+		
+		IPath path = m_project.getLocation();
+		path = path.append(LUDevice.configFileName);
+		
+		try 
+		{
+			List<LUDevice> devices = LUDevice.load(path);
+			
+			if (devices != null && devices.size() != 0)
+			{
+				for (LUDevice itemDev : devices) {
+					 TableItem item = new TableItem(m_table, SWT.NONE);
+					 item.setText(0, itemDev.Name);
+					 item.setText(1, itemDev.URI);
+					 item.setText(2, itemDev.Application);
+					 item.setText(3, itemDev.Platfrom);
+				}
+			}
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return Status.OK_STATUS;
+	}
+}
+
 class SearchProgressMonitor implements Runnable
 {
 	private TableItem m_item = null; 
@@ -68,7 +126,7 @@ class SearchProgressMonitor implements Runnable
 	private static int foundId    = 0;
 	private static int notFoundId = 1;
 	private static int emptyId    = 2;
-	private static int searchId   = 3;
+	private static int searchId   = 3; 
 
 	public SearchProgressMonitor(IProject project, String subnetMask, TableItem item)
 	{	
@@ -118,6 +176,8 @@ class SearchProgressMonitor implements Runnable
 			else {
 				new TableItemUpdateUIJob(m_item, notFoundId).schedule();
 			}
+			
+			LiveUpdateEditor.eventHandler.notifyUi("update");
 		} 
 		catch (InterruptedException e) 
 		{
@@ -155,10 +215,14 @@ class DiscoverSubnet implements Runnable
 	}	
 }
 
-public class LiveUpdateEditor extends EditorPart 
+public class LiveUpdateEditor extends EditorPart implements Observer
 {
+	private static QualifiedName isLiveUpdateEnableTag = new QualifiedName(null, "is-live-update-ebnable");
+	
 	public static String[] discoverStatus = {"Found", "Not Found", "Empty", "Search.", "Search..", "Search..."};
 	public static String[] switchLUButtonText = {"Enable live update", "Disable live update"};
+			
+	public static LiveUpdateObserver eventHandler =  new LiveUpdateObserver();
 	
     private static int liveUpdateEnableId  = 0;
 	private static int liveUpdateDisableId = 1;
@@ -172,6 +236,7 @@ public class LiveUpdateEditor extends EditorPart
         	
 	private IProject m_project = null;
 	private Button   m_liveUpdateSwitchButton = null;
+	private Table    m_devicesTable = null;
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) 
@@ -194,6 +259,8 @@ public class LiveUpdateEditor extends EditorPart
 		
 		setSite(site);
 		setInput(input);
+		
+		eventHandler.addObserver(this);
 	}
 
 	@Override
@@ -233,59 +300,108 @@ public class LiveUpdateEditor extends EditorPart
 		createLUSwitchButton(container);
 		
 		// row 2
-		createTitleLabel(container, "Subnets:");
-
+		createTitleLabel(container, "Subnets: ");
+//		(for discover do double click on subnet)
 		// row 3
 		new Label(container, SWT.NONE).setText("");		
 		createSubnetsTable(container);
 		
 		// row 4
 		createTitleLabel(container, "Found devices:");
+		
+		// row 5
+		new Label(container, SWT.NONE).setText("");	
 		createDevicesTable(container);	
 	}
 
 	private void createLUSwitchButton(Composite container)
 	{
-		final Button liveUpdateSwitchButton = new Button(container,  SWT.TOGGLE);
-		liveUpdateSwitchButton.setText(switchLUButtonText[liveUpdateEnableId]);		
-		liveUpdateSwitchButton.setLayoutData(textAligment);
-		liveUpdateSwitchButton.addSelectionListener(new SelectionListener()
+		try
 		{
-		    @Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				Button btn = (Button)e.widget;
-				
-				try 
-				{
-					LiveUpdateSwitchTask task = new LiveUpdateSwitchTask(m_project.getLocation(), btn.getSelection());
-					Job taskJob = task.makeJob("Switch live update state");
-					taskJob.schedule();
-					taskJob.join();
-					
-					if (task.isOk() && btn.getSelection())
-					{
-						btn.setText(switchLUButtonText[liveUpdateDisableId]);
-					}
-					else if (task.isOk() && !btn.getSelection())
-					{
-						btn.setText(switchLUButtonText[liveUpdateEnableId]);
-					}
-				} 
-				catch (InterruptedException e1) 
-				{
-					e1.printStackTrace();
-				}
-			}
+			final Boolean isEnable = (Boolean)m_project.getSessionProperty(isLiveUpdateEnableTag);
+			final Button  liveUpdateSwitchButton = new Button(container,  SWT.TOGGLE);
 			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-		});
-	}
+			liveUpdateSwitchButton.setText(switchLUButtonText[liveUpdateEnableId]);		
+			liveUpdateSwitchButton.setLayoutData(textAligment);
+			liveUpdateSwitchButton.setSelection(isEnable != null ? isEnable.booleanValue() : false);
+			liveUpdateSwitchButton.addSelectionListener(new SelectionListener()
+			{
+			    @Override
+				public void widgetSelected(SelectionEvent e) 
+				{
+					Button btn = (Button)e.widget;
+					
+					try 
+					{
+						m_project.setSessionProperty(isLiveUpdateEnableTag, btn.getSelection());
 	
+						LiveUpdateSwitchTask task = new LiveUpdateSwitchTask(m_project.getLocation(), btn.getSelection());
+						Job taskJob = task.makeJob("Switch live update state");
+						taskJob.schedule();
+						taskJob.join();
+						
+						if (task.isOk() && btn.getSelection())
+						{
+							btn.setText(switchLUButtonText[liveUpdateDisableId]);
+						}
+						else if (task.isOk() && !btn.getSelection())
+						{
+							btn.setText(switchLUButtonText[liveUpdateEnableId]);
+						}
+					} 
+					catch (CoreException e1) 
+					{
+						e1.printStackTrace();
+					}
+					catch (InterruptedException e1) 
+					{
+						e1.printStackTrace();
+					}
+				}
+				
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+			});
+		} 
+		catch (CoreException e2) 
+		{
+			e2.printStackTrace();
+		}
+	}
+
 	private void createDevicesTable(Composite container)
 	{
+		Composite tblContainer = new Composite(container, SWT.NONE);
+		tblContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		tblContainer.setLayout(new FillLayout());
+		
+		m_devicesTable = new Table(tblContainer, SWT.SINGLE | SWT.FULL_SELECTION);
+		m_devicesTable.setHeaderVisible(true);
+		m_devicesTable.setLinesVisible(true);
+		
+		TableColumn columnSubnetIp = new TableColumn(m_devicesTable, SWT.NONE);
+		columnSubnetIp.setText("Device name");
+		columnSubnetIp.setWidth(100);
+		
+		final TableColumn column2 = new TableColumn(m_devicesTable, SWT.CENTER);
+		column2.setText("URI");
+		column2.setWidth(200);
+
+		final TableColumn column3 = new TableColumn(m_devicesTable, SWT.CENTER);
+		column3.setText("Application name");
+		column3.setWidth(200);
+		
+		final TableColumn column4 = new TableColumn(m_devicesTable, SWT.CENTER);
+		column4.setText("Device platform");
+		column4.setWidth(200);
+
+		fillDevicesTable(container, m_devicesTable);
+	}
+	
+	private void fillDevicesTable(Composite container, Table table)
+	{
+		new DevicesTableFillUIJob(m_project, table).schedule();
 	}
 
 	private void createSubnetsTable(Composite container) 
@@ -294,25 +410,25 @@ public class LiveUpdateEditor extends EditorPart
 		tblContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		tblContainer.setLayout(new FillLayout());
 		
-		final Table m_subnetTable = new Table(tblContainer, SWT.SINGLE | SWT.FULL_SELECTION);
-		m_subnetTable.setHeaderVisible(true);
-		m_subnetTable.setLinesVisible(true);
-		TableColumn columnSubnetIp = new TableColumn(m_subnetTable, SWT.NONE);
+		final Table subnetTable = new Table(tblContainer, SWT.SINGLE | SWT.FULL_SELECTION);
+		subnetTable.setHeaderVisible(true);
+		subnetTable.setLinesVisible(true);
+		TableColumn columnSubnetIp = new TableColumn(subnetTable, SWT.NONE);
 		columnSubnetIp.setText("Subnet");
 		columnSubnetIp.setWidth(100);
 		
-		final TableColumn column2 = new TableColumn(m_subnetTable, SWT.CENTER);
+		final TableColumn column2 = new TableColumn(subnetTable, SWT.CENTER);
 		column2.setText("Status");
 		column2.setWidth(300);
 
-		fillTable(container, m_subnetTable);
+		fillSubnetsTable(container, subnetTable);
 		
-		m_subnetTable.addListener(SWT.MouseDoubleClick, new Listener()
+		subnetTable.addListener(SWT.MouseDoubleClick, new Listener()
 		{			
 			@Override
 			public void handleEvent(Event event) 
 			{
-				dblClickHandler((TableItem)m_subnetTable.getSelection()[0]);
+				dblClickHandler((TableItem)subnetTable.getSelection()[0]);
 			}
 		});
 	}
@@ -328,8 +444,10 @@ public class LiveUpdateEditor extends EditorPart
 		new Thread(new SearchProgressMonitor(m_project, item.getText(0), item)).start();
 	}
 	
-	private void fillTable(Composite container, Table table)
+	private void fillSubnetsTable(Composite container, Table table)
 	{
+		table.clearAll();
+		
 		DiscoverSubnet discoverJob = new DiscoverSubnet(m_project);
 		BusyIndicator.showWhile(container.getShell().getDisplay(), discoverJob);
 				
@@ -341,5 +459,11 @@ public class LiveUpdateEditor extends EditorPart
 				 item.setText(1, discoverStatus[emptyId]);
 			}
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) 
+	{
+		fillDevicesTable(null, m_devicesTable);
 	}
 }
