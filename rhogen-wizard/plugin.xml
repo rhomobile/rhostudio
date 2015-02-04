@@ -29,15 +29,6 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.productionBuildAction">
          </action>
-         
-         <action
-               label="Live update discover"
-               icon="icons/rhodes_icon16.png"
-               class="rhogenwizard.actions.LiveUpdateDiscoverAction"
-               tooltip=""
-               menubarPath="rhomobileMenu/rhomobileGroup"               
-               id="rhostudio.actions.liveUpdateDiscoverAction">
-         </action>
             
       </actionSet>
    </extension>
