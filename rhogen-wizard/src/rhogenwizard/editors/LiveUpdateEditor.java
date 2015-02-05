@@ -88,6 +88,9 @@ class DevicesTableFillUIJob extends UIJob
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) 
 	{
+		if (m_table.isDisposed())
+			return Status.OK_STATUS;
+		
 		m_table.removeAll();
 		
 		IPath path = m_project.getLocation();
@@ -170,7 +173,7 @@ class SearchProgressMonitor implements Runnable
 				Thread.sleep(1000);
 			}
 			
-			if (task.isDeviceFound()) {
+			if (task.isOk()) {
 				new TableItemUpdateUIJob(m_item, foundId).schedule();
 			}
 			else {
@@ -202,9 +205,9 @@ class DiscoverSubnet implements Runnable
 		PrintSubnetsTask task = new PrintSubnetsTask(m_pathToProject);
 		task.run();
 		
-		//if (task.isOk()) {
+		if (task.isOk()) {
 			m_subnets = task.getSubnets();
-		//}
+		}
 		
 		try { Thread.sleep(2000); } catch (InterruptedException e) {}//debug
 	}	
