@@ -125,11 +125,6 @@ class SearchProgressMonitor implements Runnable
 	private TableItem m_item = null; 
 	private IProject  m_project = null;
 	private String    m_subnetMask = null;
-	
-	private static int foundId    = 0;
-	private static int notFoundId = 1;
-	private static int emptyId    = 2;
-	private static int searchId   = 3; 
 
 	public SearchProgressMonitor(IProject project, String subnetMask, TableItem item)
 	{	
@@ -143,7 +138,7 @@ class SearchProgressMonitor implements Runnable
 	{
 		try 
 		{	
-			new TableItemUpdateUIJob(m_item, searchId).schedule();
+			new TableItemUpdateUIJob(m_item, LiveUpdateEditor.searchId).schedule();
 			
 			DiscoverTask task = new DiscoverTask(m_project.getLocation().toOSString(), m_subnetMask);		
 			Job taskJob = task.makeJob("Discover devices in " + m_subnetMask + " subnet");
@@ -159,7 +154,7 @@ class SearchProgressMonitor implements Runnable
 				else
 					searchIdx++;
 				
-				new TableItemUpdateUIJob(m_item, searchId + searchIdx).schedule();
+				new TableItemUpdateUIJob(m_item, LiveUpdateEditor.searchId + searchIdx).schedule();
 				
 				if (taskJob.getResult() != null)
 					break;
@@ -174,10 +169,10 @@ class SearchProgressMonitor implements Runnable
 			}
 			
 			if (task.isOk()) {
-				new TableItemUpdateUIJob(m_item, foundId).schedule();
+				new TableItemUpdateUIJob(m_item, LiveUpdateEditor.foundId).schedule();
 			}
 			else {
-				new TableItemUpdateUIJob(m_item, notFoundId).schedule();
+				new TableItemUpdateUIJob(m_item, LiveUpdateEditor.notFoundId).schedule();
 			}
 			
 			LiveUpdateEditor.eventHandler.notifyUi("update");
@@ -230,15 +225,14 @@ public class LiveUpdateEditor extends EditorPart implements Observer
     private static int liveUpdateEnableId  = 0;
 	private static int liveUpdateDisableId = 1;
 	
-    private static int foundId    = 0;
-    private static int notFoundId = 1;
-    private static int emptyId    = 2;
-    private static int searchId   = 3;
+    public static int foundId    = 0;
+    public static int notFoundId = 1;
+    public static int emptyId    = 2;
+    public static int searchId   = 3;
     
     private static GridData textAligment = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
         	
 	private IProject m_project = null;
-	private Button   m_liveUpdateSwitchButton = null;
 	private Table    m_devicesTable = null;
 	
 	@Override
@@ -303,8 +297,9 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 		createLUSwitchButton(container);
 		
 		// row 2
-		createTitleLabel(container, "Subnets: ");
-//		(for discover do double click on subnet)
+		new Label(container, SWT.NONE).setText("Subnets: ");
+		new Label(container, SWT.NONE).setText("(for discover make double click on the item of the table)");
+		
 		// row 3
 		new Label(container, SWT.NONE).setText("");		
 		createSubnetsTable(container);
@@ -322,7 +317,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 		try
 		{
 			final Boolean isEnable = (Boolean)m_project.getSessionProperty(isLiveUpdateEnableTag);
-			final Button  liveUpdateSwitchButton = new Button(container,  SWT.TOGGLE);
+			final Button  liveUpdateSwitchButton = new Button(container, SWT.TOGGLE);
 			
 			liveUpdateSwitchButton.setText(switchLUButtonText[liveUpdateEnableId]);		
 			liveUpdateSwitchButton.setLayoutData(textAligment);

@@ -1,11 +1,9 @@
 package rhogenwizard.sdk.task.liveupdate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import rhogenwizard.SysCommandExecutor;
-import rhogenwizard.SysCommandExecutor.Decorator;
 import rhogenwizard.sdk.task.RubyExecTask;
 
 public class PrintSubnetsTask extends RubyExecTask 

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +20,7 @@ public class LUDevice
 	public String Platfrom    = null;
 	public String Application = null;
 	
+	@SuppressWarnings("unchecked")
 	static public List<LUDevice> load(IPath path) throws FileNotFoundException 
 	{
 		List<LUDevice> devices = new ArrayList<LUDevice>();
