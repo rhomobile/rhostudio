@@ -7,6 +7,6 @@ public class DiscoverTask extends RubyExecTask
 {
 	public DiscoverTask(String workDir, String subnetAddress) 
 	{		
-		super(workDir, SysCommandExecutor.RUBY, "rake", "dev:network:discovery[" + subnetAddress + "]");
+		super(workDir, SysCommandExecutor.RUBY_BAT, "rake", "dev:network:discovery[" + subnetAddress + "]");
 	}
 }

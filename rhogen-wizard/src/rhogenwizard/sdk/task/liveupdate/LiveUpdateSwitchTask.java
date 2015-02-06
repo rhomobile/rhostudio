@@ -10,12 +10,6 @@ public class LiveUpdateSwitchTask extends RubyExecTask
 	public LiveUpdateSwitchTask(IPath iPath, boolean isEnable) 
 	{
 		super(iPath.toOSString(), SysCommandExecutor.RUBY_BAT, "rake", 
-				isEnable == true ? "discover:on" : "discover:off");	
-	}
-
-	@Override
-	public boolean isOk() {
-		// TODO Auto-generated method stub
-		return true;//super.isOk();
+				isEnable == true ? "dev:update:auto" : "dev:update:auto_stop");	
 	}
 }
