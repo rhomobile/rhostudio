@@ -35,9 +35,10 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.progress.UIJob;
 
+import rhogenwizard.sdk.task.JobNotificationMonitor;
 import rhogenwizard.sdk.task.liveupdate.DiscoverTask;
 import rhogenwizard.sdk.task.liveupdate.LUDevice;
-import rhogenwizard.sdk.task.liveupdate.LiveUpdateSwitchTask;
+import rhogenwizard.sdk.task.liveupdate.LiveUpdateTask;
 import rhogenwizard.sdk.task.liveupdate.PrintSubnetsTask;
  
 class LiveUpdateObserver extends Observable 
@@ -122,6 +123,8 @@ class DevicesTableFillUIJob extends UIJob
 
 class SearchProgressMonitor implements Runnable
 {
+	private static final int updateUiSleep = 1000;
+	
 	private TableItem m_item = null; 
 	private IProject  m_project = null;
 	private String    m_subnetMask = null;
@@ -165,7 +168,7 @@ class SearchProgressMonitor implements Runnable
 					break;
 				}
 				
-				Thread.sleep(1000);
+				Thread.sleep(updateUiSleep);
 			}
 			
 			if (task.isOk()) {
@@ -200,17 +203,60 @@ class DiscoverSubnet implements Runnable
 		PrintSubnetsTask task = new PrintSubnetsTask(m_pathToProject);
 		task.run();
 		
-		if (task.isOk()) {
+		if (task.isOk()) 
+		{
 			m_subnets = task.getSubnets();
 		}
-		
-		try { Thread.sleep(2000); } catch (InterruptedException e) {}//debug
 	}	
 	
 	public List<String> getSubnets()
 	{
 		return m_subnets;
 	}	
+}
+
+class LUJobNotifications implements JobNotificationMonitor
+{
+	class OffButtonSelectionUiJob extends UIJob
+	{
+		final Button m_btn;
+		
+		public OffButtonSelectionUiJob(final Button btn, String name) 
+		{
+			super(name);
+			
+			m_btn = btn;
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) 
+		{
+			m_btn.setSelection(false);
+			m_btn.setText(LiveUpdateEditor.switchLUButtonText[LiveUpdateEditor.liveUpdateEnableId]);
+			return Status.OK_STATUS;
+		}	
+	}
+	
+	OffButtonSelectionUiJob m_uiJob;
+	
+	public LUJobNotifications(final Button btn)
+	{
+		m_uiJob = new OffButtonSelectionUiJob(btn, "update ui");
+	}
+	
+	@Override
+	public void onJobStop() 
+	{
+		m_uiJob.schedule();
+	}
+
+	@Override
+	public void onJobStart() {
+	}
+
+	@Override
+	public void onJobFinished() {
+	}
 }
 
 public class LiveUpdateEditor extends EditorPart implements Observer
@@ -222,8 +268,8 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 			
 	public static LiveUpdateObserver eventHandler =  new LiveUpdateObserver();
 	
-    private static int liveUpdateEnableId  = 0;
-	private static int liveUpdateDisableId = 1;
+    public static int liveUpdateEnableId  = 0;
+	public static int liveUpdateDisableId = 1;
 	
     public static int foundId    = 0;
     public static int notFoundId = 1;
@@ -311,7 +357,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 		new Label(container, SWT.NONE).setText("");	
 		createDevicesTable(container);	
 	}
-
+	
 	private void createLUSwitchButton(Composite container)
 	{
 		try
@@ -332,26 +378,21 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 					try 
 					{
 						m_project.setSessionProperty(isLiveUpdateEnableTag, btn.getSelection());
-	
-						LiveUpdateSwitchTask task = new LiveUpdateSwitchTask(m_project.getLocation(), btn.getSelection());
-						Job taskJob = task.makeJob("Switch live update state");
+//	sss
+						LiveUpdateTask task = new LiveUpdateTask(m_project.getLocation(), btn.getSelection());
+						Job taskJob = task.makeJob("live update is running", new LUJobNotifications(btn));
 						taskJob.schedule();
-						taskJob.join();
 						
-						if (task.isOk() && btn.getSelection())
+						if (btn.getSelection())
 						{
 							btn.setText(switchLUButtonText[liveUpdateDisableId]);
 						}
-						else if (task.isOk() && !btn.getSelection())
+						else
 						{
 							btn.setText(switchLUButtonText[liveUpdateEnableId]);
 						}
 					} 
 					catch (CoreException e1) 
-					{
-						e1.printStackTrace();
-					}
-					catch (InterruptedException e1) 
 					{
 						e1.printStackTrace();
 					}

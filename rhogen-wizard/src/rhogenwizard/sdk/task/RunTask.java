@@ -52,6 +52,37 @@ public abstract class RunTask implements IRunTask
         };
     }
     
+    /**
+     * @param name
+     * @return associate Job object with task
+     */
+    public Job makeJob(String name, final JobNotificationMonitor jobMonitor)
+    {
+        return new Job(name)
+        {
+            @Override
+            protected IStatus run(IProgressMonitor monitor)
+            {
+            	jobMonitor.onJobStart();
+            	
+                try
+                {
+                    RunTask.this.run(monitor);
+                }
+                catch (StoppedException e)
+                {
+                	jobMonitor.onJobStop();
+                	
+                    return Status.CANCEL_STATUS;
+                }
+                
+                jobMonitor.onJobFinished();
+                
+                return Status.OK_STATUS;
+            }
+        };
+    }
+    
     public void runAndWaitJob(String name) throws InterruptedException
     {
         Job theJob = makeJob(name);
