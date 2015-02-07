@@ -203,8 +203,7 @@ class DiscoverSubnet implements Runnable
 		PrintSubnetsTask task = new PrintSubnetsTask(m_pathToProject);
 		task.run();
 		
-		if (task.isOk()) 
-		{
+		if (task.isOk()) {
 			m_subnets = task.getSubnets();
 		}
 	}	
@@ -217,41 +216,89 @@ class DiscoverSubnet implements Runnable
 
 class LUJobNotifications implements JobNotificationMonitor
 {
-	class OffButtonSelectionUiJob extends UIJob
+	IProject     m_project = null;
+	final Button m_btn;
+
+	class StopUiJob extends UIJob
 	{
-		final Button m_btn;
-		
-		public OffButtonSelectionUiJob(final Button btn, String name) 
+		public StopUiJob(String name) 
 		{
 			super(name);
-			
-			m_btn = btn;
 		}
 
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) 
 		{
-			m_btn.setSelection(false);
-			m_btn.setText(LiveUpdateEditor.switchLUButtonText[LiveUpdateEditor.liveUpdateEnableId]);
+			try 
+			{
+				m_project.setSessionProperty(LiveUpdateEditor.isLiveUpdateEnableTag, true);
+			
+				if (!m_btn.isDisposed())
+				{
+					m_btn.setEnabled(true);
+					m_btn.setText(LiveUpdateEditor.switchLUButtonText[LiveUpdateEditor.liveUpdateEnableId]);				
+				}
+			} 
+			catch (CoreException e) {
+				e.printStackTrace();
+			}
+			
 			return Status.OK_STATUS;
 		}	
 	}
 	
-	OffButtonSelectionUiJob m_uiJob;
-	
-	public LUJobNotifications(final Button btn)
+	class OnStartUiJob extends UIJob
 	{
-		m_uiJob = new OffButtonSelectionUiJob(btn, "update ui");
+		public OnStartUiJob(String name) 
+		{
+			super(name);
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) 
+		{
+			try 
+			{
+				m_project.setSessionProperty(LiveUpdateEditor.isLiveUpdateEnableTag, m_btn.getEnabled());
+			} 
+			catch (CoreException e) {
+				e.printStackTrace();
+			}
+
+			return Status.OK_STATUS;
+		}	
+	}
+	
+	public LUJobNotifications(IProject project, final Button btn)
+	{
+		m_project = project;
+		m_btn     = btn;
 	}
 	
 	@Override
 	public void onJobStop() 
-	{
-		m_uiJob.schedule();
+	{	
+		LiveUpdateTask task = new LiveUpdateTask(m_project.getLocation(), false);
+		task.run();
+		 
+		if (task.isOk()) {
+			StopUiJob uiJob = new StopUiJob("update ui");
+			uiJob.schedule();
+		}
 	}
 
 	@Override
-	public void onJobStart() {
+	public void onJobStart() 
+	{
+		try 
+		{
+			OnStartUiJob job = new OnStartUiJob("update ui");
+			job.schedule();
+			job.join();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -261,7 +308,7 @@ class LUJobNotifications implements JobNotificationMonitor
 
 public class LiveUpdateEditor extends EditorPart implements Observer
 {
-	private static QualifiedName isLiveUpdateEnableTag = new QualifiedName(null, "is-live-update-ebnable");
+	public static QualifiedName isLiveUpdateEnableTag = new QualifiedName(null, "is-live-update-ebnable");
 	
 	public static String[] discoverStatus = {"Found", "Not Found", "Empty", "Search.", "Search..", "Search..."};
 	public static String[] switchLUButtonText = {"Enable live update", "Disable live update"};
@@ -280,6 +327,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
         	
 	private IProject m_project = null;
 	private Table    m_devicesTable = null;
+	private Job      m_liveUpdateTaskJob = null;
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) 
@@ -363,39 +411,22 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 		try
 		{
 			final Boolean isEnable = (Boolean)m_project.getSessionProperty(isLiveUpdateEnableTag);
-			final Button  liveUpdateSwitchButton = new Button(container, SWT.TOGGLE);
+			final Button  liveUpdateSwitchButton = new Button(container, SWT.PUSH);
 			
 			liveUpdateSwitchButton.setText(switchLUButtonText[liveUpdateEnableId]);		
 			liveUpdateSwitchButton.setLayoutData(textAligment);
-			liveUpdateSwitchButton.setSelection(isEnable != null ? isEnable.booleanValue() : false);
+			liveUpdateSwitchButton.setEnabled(isEnable != null ? isEnable.booleanValue() : true);
 			liveUpdateSwitchButton.addSelectionListener(new SelectionListener()
 			{
 			    @Override
 				public void widgetSelected(SelectionEvent e) 
 				{
-					Button btn = (Button)e.widget;
-					
-					try 
-					{
-						m_project.setSessionProperty(isLiveUpdateEnableTag, btn.getSelection());
-//	sss
-						LiveUpdateTask task = new LiveUpdateTask(m_project.getLocation(), btn.getSelection());
-						Job taskJob = task.makeJob("live update is running", new LUJobNotifications(btn));
-						taskJob.schedule();
-						
-						if (btn.getSelection())
-						{
-							btn.setText(switchLUButtonText[liveUpdateDisableId]);
-						}
-						else
-						{
-							btn.setText(switchLUButtonText[liveUpdateEnableId]);
-						}
-					} 
-					catch (CoreException e1) 
-					{
-						e1.printStackTrace();
-					}
+					Button btn = (Button)e.widget;					
+					btn.setEnabled(false);
+
+					LiveUpdateTask task = new LiveUpdateTask(m_project.getLocation(), true);
+					m_liveUpdateTaskJob = task.makeJob("live update is running", new LUJobNotifications(m_project, btn));
+					m_liveUpdateTaskJob.schedule();				
 				}
 				
 				@Override
