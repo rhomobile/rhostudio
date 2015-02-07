@@ -1,7 +1,11 @@
 package rhogenwizard.project;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -56,12 +60,23 @@ public abstract class RhomobileProject implements IRhomobileProject
 		m_project.delete(false, false, null);
 	}
 	
+	private void createLiveUpdateLink() throws CoreException
+	{
+		IFile liveUpdateFile = m_project.getFile("Live update setting");		
+	    byte[] bytes = "live update fake contents".getBytes();
+	    InputStream source = new ByteArrayInputStream(bytes);
+	    liveUpdateFile.create(source, IResource.NONE, null);
+
+	}
+	
 	@Override
 	public void refreshProject() throws ProjectNotFoundException, CoreException
 	{
 		if (m_project == null)
     		throw new ProjectNotFoundException("");
 
+		createLiveUpdateLink();
+		
 		m_project.refreshLocal(IResource.DEPTH_INFINITE, null);		
 	}
 }

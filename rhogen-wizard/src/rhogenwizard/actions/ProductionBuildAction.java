@@ -1,7 +1,6 @@
 package rhogenwizard.actions;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
@@ -12,9 +11,6 @@ import rhogenwizard.BuildType;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
 import rhogenwizard.builder.rhodes.ConfigProductionBuildDialog;
-import rhogenwizard.project.ProjectFactory;
-import rhogenwizard.project.RhodesProject;
-import rhogenwizard.project.RhoelementsProject;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.LocalProductionBuildTask;
 import rhogenwizard.sdk.task.RhohubProductionBuildTask;

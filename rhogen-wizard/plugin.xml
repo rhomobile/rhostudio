@@ -29,16 +29,7 @@
                menubarPath="rhomobileMenu/rhomobileGroup"               
                id="rhostudio.actions.productionBuildAction">
          </action>
-<!--         
-         <action
-               label="Rhohub build"
-               icon="icons/rhohub_icon16.png"
-               class="rhogenwizard.actions.RhohubWizardAction"
-               tooltip=""
-               menubarPath="rhomobileMenu/rhomobileGroup"               
-               id="rhostudio.actions.generateSpecAction">
-         </action>
--->                
+            
       </actionSet>
    </extension>
 
@@ -111,6 +102,13 @@
             icon="icons/rhodes_icon16.png"
             id="rhogenwizard.editors.RhodesEditor"
             name="RhoMobile Yaml File Editor">
+      </editor>
+      <editor
+            class="rhogenwizard.editors.LiveUpdateEditor"
+            default="false"
+            filenames="Live update setting"
+            id="RhogenWizard.editor1"
+            name="Live update setting">
       </editor>
    </extension>
    
@@ -311,6 +309,7 @@
 	</extension>
 	
 	<!-- ************************** pref pages **************************************** -->
+	
     <extension point="org.eclipse.ui.preferencePages">
       <page
             name="RhoMobile"
@@ -344,6 +343,7 @@
     </extension>
     
     <!-- ************************** toolbar commands **************************************** -->
+    
     <extension point="org.eclipse.ui.navigator.navigatorContent">
        <commonWizard
              menuGroupId="asd"
@@ -374,38 +374,18 @@
        </commonWizard>
     </extension>
     
-    <extension point="org.eclipse.core.runtime.products"
-            id="rhostudio_id">
-       <product
-             application="org.eclipse.ui.ide.workbench"
-             name="RhoStudio">
-          <property
-                name="appName"
-                value="RhoStudio">
-          </property>
-          <property
-                name="aboutImage"
-                value="icons/about_rhostudio.png">
-          </property>
-          <property
-                name="windowImages"
-                value="icons/rhostudio_icon16.png,icons/rhostudio_icon32.png,icons/rhostudio_icon48.png,icons/rhostudio_icon64.png,icons/rhostudio_icon128.png">
-          </property>
-          <property
-                name="preferenceCustomization"
-                value="plugin_customization.ini">
-          </property>
-       </product>
-    </extension>
+    <!-- ************************** perspectives ********************************** -->
     
-   <extension point="org.eclipse.ui.perspectives">
+    <extension point="org.eclipse.ui.perspectives">
       <perspective
             class="rhogenwizard.perspectives.RhostudioPerspective"
             icon="icons/rhostudio_icon16.png"
             id="rhogenwizard.perspectives.RhostudioPerspective"
             name="RhoStudio">
       </perspective>
-   </extension>
+    </extension>
+   
+   <!-- ************************** debugger **************************************** -->
       
    <extension
          point="org.eclipse.debug.core.sourceLocators">
@@ -442,7 +422,6 @@
       <persistent
             value="true">
       </persistent>
-      
    </extension>
 
    <extension
@@ -480,7 +459,32 @@
      </watchExpressionDelegate>
     </extension>
     
-   <extension
+    <!-- ************************** product and branding **************************************** -->
+    
+    <extension point="org.eclipse.core.runtime.products" id="rhostudio_id">
+       <product
+             application="org.eclipse.ui.ide.workbench"
+             name="RhoStudio">
+          <property
+                name="appName"
+                value="RhoStudio">
+          </property>
+          <property
+                name="aboutImage"
+                value="icons/about_rhostudio.png">
+          </property>
+          <property
+                name="windowImages"
+                value="icons/rhostudio_icon16.png,icons/rhostudio_icon32.png,icons/rhostudio_icon48.png,icons/rhostudio_icon64.png,icons/rhostudio_icon128.png">
+          </property>
+          <property
+                name="preferenceCustomization"
+                value="plugin_customization.ini">
+          </property>
+       </product>
+    </extension>
+    
+    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
@@ -503,6 +507,26 @@
                value="RhoStudio">
          </property>
       </product>
-   </extension>
+    </extension>
    
+    <!-- ************************** menu **************************************** -->
+   
+    <extension point="org.eclipse.ui.popupMenus"> 
+    <objectContribution
+          adaptable="true"
+          id="org.eclipse.ui.articles.action.contribution.popup.object"
+          nameFilter="*.*"
+          objectClass="org.eclipse.core.resources.IFile">
+        
+        <action
+            id="org.eclipse.ui.articles.action.contribution.object.action1" 
+            label="Open file location"
+            icon="icons/rhodes_icon16.png"
+            menubarPath="additions" 
+            class="rhogenwizard.actions.OpenFileLocationHandler"> 
+        </action>
+         
+    </objectContribution> 
+    </extension>
+    
 </plugin>
