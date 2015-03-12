@@ -17,6 +17,8 @@ public class PrintSubnetsTask extends RubyExecTask
 	{
 		String out = getOutput();
 		
+		out = out.replaceAll("\\p{Cntrl}", "");  
+	
 		List<String> subnetsList = Arrays.asList(out.split(";"));
 		
 		return subnetsList;
