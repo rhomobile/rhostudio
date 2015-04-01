@@ -29,12 +29,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.progress.UIJob;
 
+import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.JobNotificationMonitor;
 import rhogenwizard.sdk.task.liveupdate.DiscoverTask;
 import rhogenwizard.sdk.task.liveupdate.LUDevice;
@@ -47,6 +49,35 @@ class LiveUpdateObserver extends Observable
 	{
 		this.setChanged();
 		this.notifyObservers(arg);
+	}
+}
+
+class CloseEditorUIJob extends UIJob
+{
+	private IEditorPart m_editor = null;
+	
+	public CloseEditorUIJob(IEditorPart editor)
+	{
+		super("Update UI");
+		
+		m_editor = editor;
+	}
+
+	@Override
+	public IStatus runInUIThread(IProgressMonitor monitor) 
+	{
+		try 
+		{
+			Thread.sleep(500);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		
+		m_editor.getEditorSite().getPage().closeEditor(m_editor, false);
+		
+		return Status.OK_STATUS;
 	}
 }
 
@@ -377,6 +408,23 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 		if (m_project == null)
 			return;
 			
+		final IEditorPart editor = this;
+		
+		if (!TokenChecker.processToken(m_project))
+		{
+			new Thread(new Runnable()
+            {
+				@Override
+				public void run()
+				{
+						CloseEditorUIJob job = new CloseEditorUIJob(editor);
+						job.schedule(); 
+				}
+			}).start();
+
+			return;
+		}
+		
 		Composite area = parent;
 		Composite container = new Composite(area, SWT.NONE);
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
