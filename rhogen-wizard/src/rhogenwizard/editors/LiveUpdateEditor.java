@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -36,6 +37,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.progress.UIJob;
 
+import rhogenwizard.OSHelper;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.JobNotificationMonitor;
 import rhogenwizard.sdk.task.liveupdate.DiscoverTask;
@@ -43,6 +45,8 @@ import rhogenwizard.sdk.task.liveupdate.LUDevice;
 import rhogenwizard.sdk.task.liveupdate.LiveUpdateTask;
 import rhogenwizard.sdk.task.liveupdate.PrintSubnetsTask;
  
+/* ---------------------------------------------------------------------- */
+
 class LiveUpdateObserver extends Observable 
 {
 	public void notifyUi(Object arg)
@@ -51,6 +55,41 @@ class LiveUpdateObserver extends Observable
 		this.notifyObservers(arg);
 	}
 }
+
+/* ---------------------------------------------------------------------- */
+
+class CancelLiveUpdateUIJob extends UIJob
+{
+	private Button m_enableBtn     = null;
+	
+	public CancelLiveUpdateUIJob(Button enableBtn)
+	{
+		super("Update UI");
+
+		m_enableBtn     = enableBtn;
+	}
+
+	@Override
+	public IStatus runInUIThread(IProgressMonitor monitor) 
+	{
+		Job[] runningJobs = Job.getJobManager().find(null);
+		
+		for (Job job : runningJobs) 
+		{
+			if (job.getName().equals(LiveUpdateEditor.liveUpdateJobName))
+			{
+				job.cancel();
+			}
+		}
+		
+		if (!m_enableBtn.isDisposed())
+			m_enableBtn.setEnabled(true);	
+		
+		return Status.OK_STATUS;
+	}
+}
+
+/* ---------------------------------------------------------------------- */
 
 class CloseEditorUIJob extends UIJob
 {
@@ -81,6 +120,8 @@ class CloseEditorUIJob extends UIJob
 	}
 }
 
+/* ---------------------------------------------------------------------- */
+
 class TableItemUpdateUIJob extends UIJob
 {
 	private int       m_showIndex = 0;
@@ -103,6 +144,8 @@ class TableItemUpdateUIJob extends UIJob
 		return Status.OK_STATUS;
 	}
 }
+
+/* ---------------------------------------------------------------------- */
 
 class DevicesTableFillUIJob extends UIJob
 {
@@ -151,6 +194,8 @@ class DevicesTableFillUIJob extends UIJob
 		return Status.OK_STATUS;
 	}
 }
+
+/* ---------------------------------------------------------------------- */
 
 class SearchProgressMonitor implements Runnable
 {
@@ -218,6 +263,8 @@ class SearchProgressMonitor implements Runnable
 	}
 }
 
+/* ---------------------------------------------------------------------- */
+
 class DiscoverSubnet implements Runnable
 {
 	private List<String> m_subnets = null;
@@ -244,6 +291,8 @@ class DiscoverSubnet implements Runnable
 		return m_subnets;
 	}	
 }
+
+/* ---------------------------------------------------------------------- */
 
 class LUJobNotifications implements JobNotificationMonitor
 {
@@ -337,14 +386,20 @@ class LUJobNotifications implements JobNotificationMonitor
 	}
 }
 
+/* ---------------------------------------------------------------------- */
+
 public class LiveUpdateEditor extends EditorPart implements Observer
 {
 	public static QualifiedName isLiveUpdateEnableTag = new QualifiedName(null, "is-live-update-ebnable");
 	
 	public static String[] discoverStatus = {"Found", "Not Found", "Empty", "Search.", "Search..", "Search..."};
 	public static String[] switchLUButtonText = {"Enable live update", "Disable live update"};
-			
-	public static LiveUpdateObserver eventHandler =  new LiveUpdateObserver();
+	
+	private static final String webrickCommandLineTag = "dev:webserver:privateStart";
+	public  static final String liveUpdateJobName = "live update is running";
+	
+	public  static LiveUpdateObserver eventHandler =  new LiveUpdateObserver();
+	private static Thread             webrickWatcherThread = null;
 	
     public static int liveUpdateEnableId  = 0;
 	public static int liveUpdateDisableId = 1;
@@ -461,6 +516,9 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 			final Boolean isEnable = (Boolean)m_project.getSessionProperty(isLiveUpdateEnableTag);
 			final Button  liveUpdateSwitchButton = new Button(container, SWT.PUSH);
 			
+			LiveUpdateTask task = new LiveUpdateTask(m_project.getLocation(), true);
+			m_liveUpdateTaskJob = task.makeJob(liveUpdateJobName, new LUJobNotifications(m_project, liveUpdateSwitchButton));
+
 			liveUpdateSwitchButton.setText(switchLUButtonText[liveUpdateEnableId]);		
 			liveUpdateSwitchButton.setLayoutData(textAligment);
 			liveUpdateSwitchButton.setEnabled(isEnable != null ? isEnable.booleanValue() : true);
@@ -469,23 +527,75 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 			    @Override
 				public void widgetSelected(SelectionEvent e) 
 				{
-					Button btn = (Button)e.widget;					
-					btn.setEnabled(false);
+					final Button enableBtn = (Button)e.widget;					
+					enableBtn.setEnabled(false);
 
-					LiveUpdateTask task = new LiveUpdateTask(m_project.getLocation(), true);
-					m_liveUpdateTaskJob = task.makeJob("live update is running", new LUJobNotifications(m_project, btn));
-					m_liveUpdateTaskJob.schedule();				
+					m_liveUpdateTaskJob.schedule();
 				}
 				
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 			});
+	
+			webrickWatcherThread = new Thread(new Runnable()
+			{	
+				@Override
+				public void run() 
+				{
+					try 
+					{
+						Set<Integer> startIds = null;
+						
+						while(true)
+						{
+							startIds = OSHelper.getProcessesIds(webrickCommandLineTag);	
+							
+							if (!startIds.isEmpty())
+								break;
+							
+							Thread.sleep(1000);
+						}
+
+						while(true)
+						{
+							Set<Integer> ids = OSHelper.getProcessesIds(webrickCommandLineTag);
+							
+							if (!ids.containsAll(startIds))
+							{
+								CancelLiveUpdateUIJob job = new CancelLiveUpdateUIJob(liveUpdateSwitchButton);
+								job.schedule();
+								job.join();
+								return;
+							}
+							
+							Thread.sleep(100);
+						}
+					} 
+					catch (InterruptedException e) {
+					}	
+				}
+			});
+			
+			webrickWatcherThread.start();
+
 		} 
 		catch (CoreException e2) 
 		{
 			e2.printStackTrace();
 		}
+	}
+
+	@Override
+	public void dispose() 
+	{
+		if (webrickWatcherThread != null)
+		{
+			webrickWatcherThread.stop();
+			webrickWatcherThread = null;
+		}
+		
+		super.dispose();
 	}
 
 	private void createDevicesTable(Composite container)
