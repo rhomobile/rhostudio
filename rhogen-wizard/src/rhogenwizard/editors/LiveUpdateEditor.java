@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -60,13 +61,13 @@ class LiveUpdateObserver extends Observable
 
 class CancelLiveUpdateUIJob extends UIJob
 {
-	private Button m_enableBtn     = null;
-	
+	private Button m_enableBtn = null;
+
 	public CancelLiveUpdateUIJob(Button enableBtn)
 	{
 		super("Update UI");
 
-		m_enableBtn     = enableBtn;
+		m_enableBtn = enableBtn;
 	}
 
 	@Override
@@ -79,6 +80,7 @@ class CancelLiveUpdateUIJob extends UIJob
 			if (job.getName().equals(LiveUpdateEditor.liveUpdateJobName))
 			{
 				job.cancel();
+				break;
 			}
 		}
 		
@@ -362,8 +364,7 @@ class LUJobNotifications implements JobNotificationMonitor
 		task.run();
 		 
 		if (task.isOk()) {
-			StopUiJob uiJob = new StopUiJob("update ui");
-			uiJob.schedule();
+			new StopUiJob("update ui").schedule();
 		}
 	}
 
@@ -462,23 +463,6 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 	{
 		if (m_project == null)
 			return;
-			
-		final IEditorPart editor = this;
-		
-		if (!TokenChecker.processToken(m_project))
-		{
-			new Thread(new Runnable()
-            {
-				@Override
-				public void run()
-				{
-						CloseEditorUIJob job = new CloseEditorUIJob(editor);
-						job.schedule(); 
-				}
-			}).start();
-
-			return;
-		}
 		
 		Composite area = parent;
 		Composite container = new Composite(area, SWT.NONE);
@@ -513,6 +497,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 	{
 		try
 		{
+//			final IEditorPart editor = this;
 			final Boolean isEnable = (Boolean)m_project.getSessionProperty(isLiveUpdateEnableTag);
 			final Button  liveUpdateSwitchButton = new Button(container, SWT.PUSH);
 			
@@ -527,6 +512,20 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 			    @Override
 				public void widgetSelected(SelectionEvent e) 
 				{
+					if (!TokenChecker.processToken(m_project))
+					{
+//						new Thread(new Runnable()
+//			            {
+//							@Override
+//							public void run()
+//							{
+//								new CloseEditorUIJob(editor).schedule();
+//							}
+//						}).start();
+
+						return;
+					}
+					
 					final Button enableBtn = (Button)e.widget;					
 					enableBtn.setEnabled(false);
 
@@ -551,7 +550,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 						{
 							startIds = OSHelper.getProcessesIds(webrickCommandLineTag);	
 							
-							if (!startIds.isEmpty())
+							if (!startIds.isEmpty() )
 								break;
 							
 							Thread.sleep(1000);
@@ -572,13 +571,13 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 							Thread.sleep(100);
 						}
 					} 
-					catch (InterruptedException e) {
+					catch (InterruptedException e) 
+					{
 					}	
 				}
 			});
 			
 			webrickWatcherThread.start();
-
 		} 
 		catch (CoreException e2) 
 		{
@@ -591,7 +590,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 	{
 		if (webrickWatcherThread != null)
 		{
-			webrickWatcherThread.stop();
+			webrickWatcherThread.interrupt();
 			webrickWatcherThread = null;
 		}
 		
