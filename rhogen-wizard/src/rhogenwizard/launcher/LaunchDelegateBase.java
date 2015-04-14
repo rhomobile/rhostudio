@@ -49,47 +49,14 @@ import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
 /////////////////////////////////////////////////////////////////////////
 
-class FailBuildExtension extends Exception
+class FailBuildException extends Exception
 {
 	private static final long serialVersionUID = 5907642700379669820L;
 }
 
 /////////////////////////////////////////////////////////////////////////
 
-class CleanProject implements Callable<Object>
-{
-	private IProject     m_project      = null;
-	private boolean      m_isClean      = false;
-	private PlatformType m_platformType = null;
-	
-	final IProgressMonitor m_monitor;
-	
-	public CleanProject(IProject project, boolean isClean, PlatformType platformType, final IProgressMonitor monitor)
-	{
-		m_project      = project;
-		m_isClean      = isClean;
-		m_monitor      = monitor;
-		m_platformType = platformType;
-	}
-	
-	@Override
-	public Object call() throws Exception 
-	{
-    	m_monitor.setTaskName("Run clean project build files");
-    	
-		if (m_isClean)
-		{
-			RunTask task = new CleanPlatformTask(m_project.getLocation().toOSString(), m_platformType);
-			task.run(m_monitor);			
-		}
-		
-		return null;
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////
-
-class BuildProjectAsDebug implements Callable<IProcess>
+class BuildProjectAsDebug
 {
 	private IProject     m_currProject  = null;
 	private RunType      m_selType      = null;
@@ -119,13 +86,12 @@ class BuildProjectAsDebug implements Callable<IProcess>
 		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
 	}
 	
-	@Override
-	public IProcess call() throws Exception 
+	public IProcess xcall() 
 	{		
 		return debugSelectedBuildConfiguration(m_currProject, m_selType, m_launch);
 	}	
 	
-	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch) throws Exception
+	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch)
 	{		
 		m_monitor.setTaskName("Build debug configuration of project " + m_currProject.getName());
 		
@@ -204,7 +170,7 @@ class BuildProjectAsDebug implements Callable<IProcess>
 
 ///////////////////////////////////////////////////////////////////////////
 
-class BuildProjectAsRelease implements Callable<Boolean>
+class BuildProjectAsRelease
 {
 	private IProject     m_currProject  = null;
 	private RunType      m_selType      = null;
@@ -232,8 +198,7 @@ class BuildProjectAsRelease implements Callable<Boolean>
 		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
 	}
 	
-	@Override
-	public Boolean call() throws Exception
+	public boolean xcall() throws InterruptedException
 	{
 		m_monitor.setTaskName("Build release configuration of project " + m_currProject.getName());
 		
@@ -244,17 +209,15 @@ class BuildProjectAsRelease implements Callable<Boolean>
 
         boolean buildResult = runSelectedBuildConfiguration(m_currProject, m_selType);
         
-        if (!buildResult)
+        if (buildResult)
         {
-            throw new FailBuildExtension();
+            activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
         }
 
-        activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
-        
 		return buildResult;
 	}	
 	
-	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType) throws Exception
+	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType)
 	{
 		if (!TokenChecker.processToken(currProject))
 			return false;
@@ -378,8 +341,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
             
             try 
             {
-                Future<Object> cleanTask = executor.submit(new CleanProject(project, m_isClean, m_platformType, monitor));
-                cleanTask.get();
+                cleanProject(project, m_isClean, m_platformType, monitor);
             	
             	executor.submit(cancelObserver);
             	
@@ -397,9 +359,8 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 						e.printStackTrace();
 					}
 					
-					Future<IProcess> debugTask = executor.submit(new BuildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor));
-					
-					IProcess debugProcess = debugTask.get();
+                    BuildProjectAsDebug b = new BuildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
+					IProcess debugProcess = b.xcall();
 					
 					if(!debugProcess.isTerminated())
 					{
@@ -410,15 +371,18 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
                 }
                 else
                 {
-					Future<Boolean> releaseTask = executor.submit(new BuildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor));
-					releaseTask.get();
+                    BuildProjectAsRelease b = new BuildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor);
+                    if (!b.xcall())
+                    {
+                        throw new FailBuildException();
+                    }
                 }
             }
             catch (InterruptedException e) 
             {
                 e.printStackTrace();
             } 
-            catch (ExecutionException e) 
+            catch (FailBuildException e)
             {
                 e.printStackTrace();
             }
@@ -452,5 +416,15 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
     {
         return new RhodesConfigurationRO(configuration).runType();
     }
+    
+    private static void cleanProject(IProject project, boolean isClean,
+        PlatformType platformType, IProgressMonitor monitor)
+    {
+        monitor.setTaskName("Run clean project build files");
+        
+        if (isClean)
+        {
+            new CleanPlatformTask(project.getLocation().toOSString(), platformType).run(monitor);
+        }
+    }
 }
-
