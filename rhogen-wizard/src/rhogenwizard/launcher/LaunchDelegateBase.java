@@ -41,7 +41,6 @@ import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.IRunTask;
-import rhogenwizard.sdk.task.RubyDebugTask;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
@@ -210,7 +209,6 @@ class BuildProjectAsRelease implements Callable<Boolean>
 	private IProject     m_currProject  = null;
 	private RunType      m_selType      = null;
 	private BuildType    m_buildType    = null;
-	private ILaunch      m_launch       = null;
 	private PlatformType m_platformType = null;
 	private boolean      m_isReloadCode = false;
 	private boolean      m_isTrace      = false;
@@ -227,7 +225,6 @@ class BuildProjectAsRelease implements Callable<Boolean>
 		m_isReloadCode             = configuration.reloadCode();
 		m_isTrace                  = configuration.trace();
 		m_selType                  = configuration.runType();
-		m_launch                   = launch;
 		m_startPathOverride        = startPathOverride;
 		m_additionalRubyExtensions = additionalRubyExtensions;
 		m_monitor                  = monitor;
