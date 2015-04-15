@@ -18,7 +18,7 @@ import rhogenwizard.sdk.task.SeqRunTask;
 
 public class RhohubDebugRhodesAppTask implements IDebugTask
 {
-    private final IDebugTask m_lastTask;
+    private final RubyDebugTask m_lastTask;
     private final SeqRunTask m_seqTask;
     
     public RhohubDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
@@ -32,6 +32,12 @@ public class RhohubDebugRhodesAppTask implements IDebugTask
                 startPathOverride, additionalRubyExtensions),
             m_lastTask
         );
+    }
+
+    public RhohubDebugRhodesAppTask sync()
+    {
+        m_lastTask.sync();
+        return this;
     }
 
     @Override
