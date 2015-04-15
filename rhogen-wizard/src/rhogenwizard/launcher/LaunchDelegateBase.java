@@ -1,12 +1,5 @@
 package rhogenwizard.launcher;
 
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -39,6 +32,7 @@ import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.IRunTask;
+import rhogenwizard.sdk.task.RunTask.StoppedException;
 import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
 import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
@@ -55,7 +49,7 @@ class FailBuildException extends Exception
 
 class BuildProjectAsDebug
 {
-	public IProcess xcall(RhodesConfigurationRO configuration, ILaunch launch,
+	public static IProcess xcall(RhodesConfigurationRO configuration, ILaunch launch,
 	    String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor) 
 	{		
 	    PlatformType platformType = configuration.platformType();
@@ -74,67 +68,23 @@ class BuildProjectAsDebug
         if (!TokenChecker.processToken(project))
             return null;
         
-        Set<Integer> rubyProcessIds = setupBuildFinishWait();
-        
         IDebugTask task;        
         if (buildType == BuildType.eRhoMobileCom)
         {
             task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, startPathOverride, additionalRubyExtensions);
+                platformType, reloadCode, startPathOverride, additionalRubyExtensions)
+            .sync();
         }
         else
         {
             task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions);
+                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions)
+            .sync();
         }
 
-        task.run();
-        
-        waitBuildFinish(rubyProcessIds);
+        task.run(monitor);
         
         return task.getDebugProcess();
-	}	
-	
-	private Set<Integer> setupBuildFinishWait()
-	{
-		if (!OSHelper.isWindows())
-			return null;
-		
-		try 
-		{
-			return OSHelper.getProcessesIds("ruby.exe");
-		}
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}		
-        return null;            
-	}
-	
-	private void waitBuildFinish(Set<Integer> rubyProcessIds)
-	{
-		if (!OSHelper.isWindows() || rubyProcessIds == null)
-			return;
-				
-        try 
-        {
-        	while(true)
-        	{
-        		Set<Integer> ids = OSHelper.getProcessesIds("ruby.exe");        		
-        		 
-        		if (ids.size() == rubyProcessIds.size())
-        		{
-            		if(ids.containsAll(rubyProcessIds))
-            		{
-            			break;
-            		}        			
-        		}        		
-        	}
-		} 
-        catch (InterruptedException e) 
-        {
-			e.printStackTrace();
-		}	
 	}
 }
 
@@ -205,7 +155,7 @@ class BuildProjectAsRelease
                 m_startPathOverride, m_additionalRubyExtensions);
 		}
 
-		task.run();
+		task.run(m_monitor);
 
 		return task.isOk();
 	}
@@ -213,51 +163,8 @@ class BuildProjectAsRelease
 
 ///////////////////////////////////////////////////////////////////////////
 
-class CancelMonitorObserver implements Callable<Object>
-{
-	private final IProgressMonitor m_monitor;
-	
-	private AtomicBoolean m_isTaksFinished = new AtomicBoolean();
-	
-	public CancelMonitorObserver(final IProgressMonitor monitor)
-	{
-		m_isTaksFinished.set(false);
-		m_monitor = monitor;
-	}
-	
-	public void finishedTask()
-	{
-		m_isTaksFinished.set(true);
-	}
-	
-	@Override
-	public Object call() throws Exception 
-	{
-		while(true)
-		{
-			if (m_monitor.isCanceled())
-			{
-				OSHelper.killProcess("ruby");
-				break;
-			}
-						
-			if (m_isTaksFinished.get())
-			{
-				break;
-			}
-			
-			Thread.sleep(100);
-		}
-		
-		return null;
-	}	
-}
-
-///////////////////////////////////////////////////////////////////////////
-
 public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {
-	private static ThreadPoolExecutor executor        = new ThreadPoolExecutor(2, 2, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10));
 	private static LogFileHelper      rhodesLogHelper = new LogFileHelper();
 	
 	protected String          m_projectName   = null;
@@ -306,14 +213,11 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
                 throw new IllegalArgumentException("Project " + project.getName() + " not found");
             }
 
-            CancelMonitorObserver cancelObserver = new CancelMonitorObserver(monitor);
             RhodesConfigurationRO rc             = new RhodesConfigurationRO(configuration);
             
             try 
             {
                 cleanProject(project, m_isClean, m_platformType, monitor);
-            	
-            	executor.submit(cancelObserver);
             	
                 if (mode.equals(ILaunchManager.DEBUG_MODE))
                 {
@@ -329,7 +233,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 						e.printStackTrace();
 					}
 					
-                    IProcess debugProcess = new BuildProjectAsDebug().xcall(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
+					IProcess debugProcess = BuildProjectAsDebug.xcall(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
 					
 					if(!debugProcess.isTerminated())
 					{
@@ -355,9 +259,10 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
             {
                 e.printStackTrace();
             }
+            catch (StoppedException e)
+            {
+            }
 
-            cancelObserver.finishedTask();
-            
             monitor.done();
         }
         catch (IllegalArgumentException e) 
