@@ -45,49 +45,6 @@ class FailBuildException extends Exception
 	private static final long serialVersionUID = 5907642700379669820L;
 }
 
-/////////////////////////////////////////////////////////////////////////
-
-class BuildProjectAsDebug
-{
-	public static IProcess xcall(RhodesConfigurationRO configuration, ILaunch launch,
-	    String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor) 
-	{		
-	    PlatformType platformType = configuration.platformType();
-	    BuildType    buildType    = configuration.buildType();
-	    boolean      reloadCode   = configuration.reloadCode();
-	    boolean      trace        = configuration.trace();
-        RunType      runType      = configuration.runType();
-        IProject     project      = ResourcesPlugin.getWorkspace().getRoot().getProject(
-            configuration.project());
-        
-        String projectName = project.getName();
-        String projectDir  = project.getLocation().toOSString(); 
-        
-        monitor.setTaskName("Build debug configuration of project " + projectName);
-        
-        if (!TokenChecker.processToken(project))
-            return null;
-        
-        IDebugTask task;        
-        if (buildType == BuildType.eRhoMobileCom)
-        {
-            task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, startPathOverride, additionalRubyExtensions)
-            .sync();
-        }
-        else
-        {
-            task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions)
-            .sync();
-        }
-
-        task.run(monitor);
-        
-        return task.getDebugProcess();
-	}
-}
-
 ///////////////////////////////////////////////////////////////////////////
 
 class BuildProjectAsRelease
@@ -213,7 +170,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
                 throw new IllegalArgumentException("Project " + project.getName() + " not found");
             }
 
-            RhodesConfigurationRO rc             = new RhodesConfigurationRO(configuration);
+            RhodesConfigurationRO rc = new RhodesConfigurationRO(configuration);
             
             try 
             {
@@ -233,7 +190,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 						e.printStackTrace();
 					}
 					
-					IProcess debugProcess = BuildProjectAsDebug.xcall(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
+					IProcess debugProcess = buildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
 					
 					if(!debugProcess.isTerminated())
 					{
@@ -300,5 +257,45 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
         {
             new CleanPlatformTask(project.getLocation().toOSString(), platformType).run(monitor);
         }
+    }
+
+    public static IProcess buildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,
+        String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor)
+    {
+        PlatformType platformType = configuration.platformType();
+        BuildType    buildType    = configuration.buildType();
+        boolean      reloadCode   = configuration.reloadCode();
+        boolean      trace        = configuration.trace();
+        RunType      runType      = configuration.runType();
+        IProject     project      = ResourcesPlugin.getWorkspace().getRoot().getProject(
+            configuration.project());
+
+        String projectName = project.getName();
+        String projectDir  = project.getLocation().toOSString();
+
+        monitor.setTaskName("Build debug configuration of project " + projectName);
+
+        if (!TokenChecker.processToken(project))
+        {
+            return null;
+        }
+
+        IDebugTask task;
+        if (buildType == BuildType.eRhoMobileCom)
+        {
+            task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
+                platformType, reloadCode, startPathOverride, additionalRubyExtensions)
+            .sync();
+        }
+        else
+        {
+            task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
+                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions)
+            .sync();
+        }
+
+        task.run(monitor);
+
+        return task.getDebugProcess();
     }
 }
