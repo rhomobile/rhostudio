@@ -55,90 +55,63 @@ class FailBuildException extends Exception
 
 class BuildProjectAsDebug
 {
-	private IProject     m_currProject  = null;
-	private RunType      m_selType      = null;
-	private ILaunch      m_launch       = null;
-	private BuildType    m_buildType    = null;
-	private PlatformType m_platformType = null;
-	private boolean      m_isReloadCode = false;
-	private boolean      m_isTrace      = false;
-	
-	private String      m_startPathOverride        = null;
-	private String[]    m_additionalRubyExtensions = null;
-	
-	final IProgressMonitor m_monitor;
-	
-	public BuildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,  String startPathOverride, String[] additionalRubyExtensions, final IProgressMonitor monitor)
-	{
-		m_platformType             = configuration.platformType();
-		m_buildType                = configuration.buildType();
-		m_isReloadCode             = configuration.reloadCode();
-		m_isTrace                  = configuration.trace();
-		m_selType                  = configuration.runType();
-		m_launch                   = launch;
-		m_startPathOverride        = startPathOverride;
-		m_additionalRubyExtensions = additionalRubyExtensions;
-		m_monitor                  = monitor;
-		
-		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
-	}
-	
-	public IProcess xcall() 
+	public IProcess xcall(RhodesConfigurationRO configuration, ILaunch launch,
+	    String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor) 
 	{		
-		return debugSelectedBuildConfiguration(m_currProject, m_selType, m_launch);
-	}	
-	
-	private IProcess debugSelectedBuildConfiguration(IProject currProject, RunType selType, ILaunch launch)
-	{		
-		m_monitor.setTaskName("Build debug configuration of project " + m_currProject.getName());
-		
-		if (!TokenChecker.processToken(currProject))
-			return null;
-		
-		setupBuildFinishWait();
-		
-		IDebugTask task;		
-        if (m_buildType == BuildType.eRhoMobileCom)
+	    PlatformType platformType = configuration.platformType();
+	    BuildType    buildType    = configuration.buildType();
+	    boolean      reloadCode   = configuration.reloadCode();
+	    boolean      trace        = configuration.trace();
+        RunType      runType      = configuration.runType();
+        IProject     project      = ResourcesPlugin.getWorkspace().getRoot().getProject(
+            configuration.project());
+        
+        String projectName = project.getName();
+        String projectDir  = project.getLocation().toOSString(); 
+        
+        monitor.setTaskName("Build debug configuration of project " + projectName);
+        
+        if (!TokenChecker.processToken(project))
+            return null;
+        
+        Set<Integer> rubyProcessIds = setupBuildFinishWait();
+        
+        IDebugTask task;        
+        if (buildType == BuildType.eRhoMobileCom)
         {
-            task = new RhohubDebugRhodesAppTask(launch, selType,
-                currProject.getLocation().toOSString(), currProject.getName(),
-                m_platformType, m_isReloadCode, m_startPathOverride,
-                m_additionalRubyExtensions);
+            task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
+                platformType, reloadCode, startPathOverride, additionalRubyExtensions);
         }
         else
         {
-            task = new LocalDebugRhodesAppTask(launch, selType,
-                currProject.getLocation().toOSString(), currProject.getName(),
-                m_platformType, m_isReloadCode, m_isTrace, m_startPathOverride,
-                m_additionalRubyExtensions);
+            task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
+                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions);
         }
 
         task.run();
         
-        waitBuildFinish();
+        waitBuildFinish(rubyProcessIds);
         
         return task.getDebugProcess();
-	}
+	}	
 	
-	Set<Integer> rubyProcessIds = null;
-	
-	private void setupBuildFinishWait()
+	private Set<Integer> setupBuildFinishWait()
 	{
 		if (!OSHelper.isWindows())
-			return;
+			return null;
 		
 		try 
 		{
-			rubyProcessIds = OSHelper.getProcessesIds("ruby.exe");
+			return OSHelper.getProcessesIds("ruby.exe");
 		}
 		catch (InterruptedException e) 
 		{
-			rubyProcessIds = null;			
 			e.printStackTrace();
 		}		
+        return null;            
 	}
 	
-	private void waitBuildFinish()
+	private void waitBuildFinish(Set<Integer> rubyProcessIds)
 	{
 		if (!OSHelper.isWindows() || rubyProcessIds == null)
 			return;
@@ -356,8 +329,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 						e.printStackTrace();
 					}
 					
-                    BuildProjectAsDebug b = new BuildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
-					IProcess debugProcess = b.xcall();
+                    IProcess debugProcess = new BuildProjectAsDebug().xcall(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
 					
 					if(!debugProcess.isTerminated())
 					{
