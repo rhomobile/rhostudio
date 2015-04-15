@@ -1,8 +1,6 @@
 package rhogenwizard.sdk.task;
 
 import java.io.IOException;
-import java.util.Set;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -16,7 +14,6 @@ import org.eclipse.debug.core.model.IStreamMonitor;
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
-import rhogenwizard.OSHelper;
 import rhogenwizard.SysCommandExecutor;
 
 public class RubyDebugTask extends RubyTask implements IDebugTask
