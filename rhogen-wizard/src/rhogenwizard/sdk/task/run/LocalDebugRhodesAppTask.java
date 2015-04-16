@@ -80,13 +80,13 @@ public class LocalDebugRhodesAppTask implements IDebugTask
         else if(runType == RunType.eSimulator)
         {
         	// for emulator
-        	args.add("run:" + platformType);
+            args.add("run:" + platformType + "[" + debugCommandFile + "]");
             args.add("rho_remote_debug=true");
         }
         else if(runType == RunType.eDevice)
         {
         	// for device
-        	args.add("run:" + platformType + ":device");
+            args.add("run:" + platformType + ":device" + "[" + debugCommandFile + "]");
             args.add("rho_remote_debug=true");
         }
         else
