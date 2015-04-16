@@ -1,5 +1,7 @@
 package rhogenwizard.launcher;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -212,6 +214,10 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
             {
                 e.printStackTrace();
             } 
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
             catch (FailBuildException e)
             {
                 e.printStackTrace();
@@ -261,6 +267,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 
     public static IProcess buildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,
         String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor)
+            throws IOException
     {
         PlatformType platformType = configuration.platformType();
         BuildType    buildType    = configuration.buildType();

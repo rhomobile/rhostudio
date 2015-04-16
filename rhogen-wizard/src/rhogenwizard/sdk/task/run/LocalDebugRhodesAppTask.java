@@ -1,5 +1,7 @@
 package rhogenwizard.sdk.task.run;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +22,15 @@ public class LocalDebugRhodesAppTask implements IDebugTask
     public LocalDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
         String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
         String startPathOverride, String[] additionalRubyExtensions)
+            throws IOException
     {
+        File debugCommandFile = File.createTempFile("debug_command_", null);
+        debugCommandFile.deleteOnExit();
+        String dcf = debugCommandFile.getPath();
+
         m_debugTask = new RubyDebugTask(launch, appName, workDir,
-            SysCommandExecutor.RUBY_BAT, getArgs(platformType,
-            runType, isTrace, isReloadCode, startPathOverride, additionalRubyExtensions));
+            SysCommandExecutor.RUBY_BAT, getBuildArgs(platformType,
+            runType, isTrace, isReloadCode, startPathOverride, additionalRubyExtensions, dcf));
     }
 
     public LocalDebugRhodesAppTask sync()
@@ -56,16 +63,16 @@ public class LocalDebugRhodesAppTask implements IDebugTask
         return m_debugTask.getDebugProcess();
     }
 
-    private static String[] getArgs(PlatformType platformType, RunType runType,
+    private static String[] getBuildArgs(PlatformType platformType, RunType runType,
         boolean isReloadCode, boolean isTrace, String startPathOverride,
-        String[] additionalRubyExtensions)
+        String[] additionalRubyExtensions, String debugCommandFile)
     {
         List<String> args = new ArrayList<String>();
         args.add("rake");
         
         if (runType == RunType.eRhoSimulator)
         {
-        	args.add("run:" + platformType + ":rhosimulator_debug");
+            args.add("run:" + platformType + ":rhosimulator_debug[" + debugCommandFile + "]");
         }
         else if(runType == RunType.eSimulator)
         {
