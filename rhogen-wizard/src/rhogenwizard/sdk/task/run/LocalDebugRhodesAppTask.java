@@ -1,6 +1,8 @@
 package rhogenwizard.sdk.task.run;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +15,15 @@ import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.IDebugTask;
+import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RubyDebugTask;
+import rhogenwizard.sdk.task.RubyExecTask;
+import rhogenwizard.sdk.task.SeqRunTask;
 
 public class LocalDebugRhodesAppTask implements IDebugTask
 {
-    private final RubyDebugTask m_debugTask;
+    private final IDebugTask m_debugTask;
+    private final SeqRunTask m_seqTask;
 
     public LocalDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
         String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
@@ -28,33 +34,30 @@ public class LocalDebugRhodesAppTask implements IDebugTask
         debugCommandFile.deleteOnExit();
         String dcf = debugCommandFile.getPath();
 
-        m_debugTask = new RubyDebugTask(launch, appName, workDir,
-            SysCommandExecutor.RUBY_BAT, getBuildArgs(platformType,
-            runType, isTrace, isReloadCode, startPathOverride, additionalRubyExtensions, dcf));
-    }
+        IRunTask buildTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT,
+            getBuildArgs(platformType, runType, isTrace, isReloadCode, startPathOverride,
+                additionalRubyExtensions, dcf));
+        m_debugTask = getDebugTask(launch, workDir, appName, dcf);
 
-    public LocalDebugRhodesAppTask sync()
-    {
-        m_debugTask.sync();
-        return this;
+        m_seqTask = new SeqRunTask(buildTask, m_debugTask);
     }
 
     @Override
     public boolean isOk()
     {
-        return m_debugTask.isOk();
+        return m_seqTask.isOk();
     }
 
     @Override
     public void run(IProgressMonitor monitor)
     {
-        m_debugTask.run(monitor);
+        m_seqTask.run(monitor);
     }
 
     @Override
     public void run()
     {
-        m_debugTask.run();
+        m_seqTask.run();
     }
 
     @Override
@@ -110,6 +113,81 @@ public class LocalDebugRhodesAppTask implements IDebugTask
         }
         
         return args.toArray(new String[0]);
+    }
+
+    private static IDebugTask getDebugTask(final ILaunch launch, final String workDir,
+        final String appName, final String debugCommandFile)
+    {
+        return new IDebugTask()
+        {
+            private IDebugTask m_task = null;
+
+            @Override
+            public void run()
+            {
+                init().run();
+            }
+
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                init().run(monitor);
+            }
+
+            @Override
+            public boolean isOk()
+            {
+                return get().isOk();
+            }
+
+            @Override
+            public IProcess getDebugProcess()
+            {
+                return get().getDebugProcess();
+            }
+
+            private IDebugTask init()
+            {
+                String[] args;
+                try
+                {
+                    args = readLinesFromFile(debugCommandFile);
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+                m_task = new RubyDebugTask(launch, appName, workDir, SysCommandExecutor.CRT, args);
+                return m_task;
+            }
+
+            private IDebugTask get()
+            {
+                if (m_task == null)
+                {
+                    throw new IllegalStateException("The task is not finished yet.");
+                }
+                return m_task;
+            }
+        };
+    }
+
+    private static String[] readLinesFromFile(String path) throws IOException
+    {
+        List<String> lines = new ArrayList<String>();
+        try (BufferedReader br = new BufferedReader(new FileReader(path)))
+        {
+            while (true)
+            {
+                String line = br.readLine();
+                if (line == null)
+                {
+                    break;
+                }
+                lines.add(line);
+            }
+        }
+        return lines.toArray(new String[0]);
     }
 
     private static String join(String delimiter, String... text)

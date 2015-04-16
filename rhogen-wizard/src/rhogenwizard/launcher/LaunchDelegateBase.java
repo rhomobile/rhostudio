@@ -297,8 +297,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
         else
         {
             task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions)
-            .sync();
+                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions);
         }
 
         task.run(monitor);
