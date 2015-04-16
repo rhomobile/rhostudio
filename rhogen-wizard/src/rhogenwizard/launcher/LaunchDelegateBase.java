@@ -191,15 +191,19 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 					{
 						e.printStackTrace();
 					}
-					
-					IProcess debugProcess = buildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
-					
-					if(!debugProcess.isTerminated())
-					{
-						DebugTarget target = new DebugTarget(launch, null, project, runType, m_platformType);
-						target.setProcess(debugProcess);
-						launch.addDebugTarget(target);						
-					}
+
+                    IDebugTask task = buildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
+                    if (task.isOk())
+                    {
+                        IProcess debugProcess = task.getDebugProcess();
+                        if (!debugProcess.isTerminated())
+                        {
+                            DebugTarget target = new DebugTarget(launch, null, project, runType,
+                                m_platformType);
+                            target.setProcess(debugProcess);
+                            launch.addDebugTarget(target);
+                        }
+                    }
                 }
                 else
                 {
@@ -265,7 +269,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
         }
     }
 
-    public static IProcess buildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,
+    public static IDebugTask buildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,
         String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor)
             throws IOException
     {
@@ -302,6 +306,6 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
 
         task.run(monitor);
 
-        return task.getDebugProcess();
+        return task;
     }
 }
