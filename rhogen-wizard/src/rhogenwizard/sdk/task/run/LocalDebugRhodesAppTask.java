@@ -3,21 +3,57 @@ package rhogenwizard.sdk.task.run;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.RubyDebugTask;
 
-public class LocalDebugRhodesAppTask extends RubyDebugTask
+public class LocalDebugRhodesAppTask implements IDebugTask
 {
+    private final RubyDebugTask m_debugTask;
+
     public LocalDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
         String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
         String startPathOverride, String[] additionalRubyExtensions)
     {
-        super(launch, appName, workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType,
+        m_debugTask = new RubyDebugTask(launch, appName, workDir,
+            SysCommandExecutor.RUBY_BAT, getArgs(platformType,
             runType, isTrace, isReloadCode, startPathOverride, additionalRubyExtensions));
+    }
+
+    public LocalDebugRhodesAppTask sync()
+    {
+        m_debugTask.sync();
+        return this;
+    }
+
+    @Override
+    public boolean isOk()
+    {
+        return m_debugTask.isOk();
+    }
+
+    @Override
+    public void run(IProgressMonitor monitor)
+    {
+        m_debugTask.run(monitor);
+    }
+
+    @Override
+    public void run()
+    {
+        m_debugTask.run();
+    }
+
+    @Override
+    public IProcess getDebugProcess()
+    {
+        return m_debugTask.getDebugProcess();
     }
 
     private static String[] getArgs(PlatformType platformType, RunType runType,
