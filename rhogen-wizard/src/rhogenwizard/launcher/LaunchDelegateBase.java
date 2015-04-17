@@ -60,7 +60,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         RunType      runType      = rc.runType();
         boolean      clean        = rc.clean();
 
-
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
         if (!TokenChecker.processToken(project))
@@ -89,7 +88,11 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 
         try
         {
-            cleanProject(project, clean, platformType, monitor);
+            if (rc.clean())
+            {
+                monitor.setTaskName("Run clean project build files");
+                new CleanPlatformTask(project.getLocation().toOSString(), platformType).run(monitor);
+            }
 
             if (mode.equals(ILaunchManager.DEBUG_MODE))
             {
@@ -142,17 +145,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
     }
 
-    private static void cleanProject(IProject project, boolean isClean,
-        PlatformType platformType, IProgressMonitor monitor)
-    {
-        monitor.setTaskName("Run clean project build files");
-
-        if (isClean)
-        {
-            new CleanPlatformTask(project.getLocation().toOSString(), platformType).run(monitor);
-        }
-    }
-
     public IDebugTask buildProjectAsDebug(RhodesConfigurationRO configuration, IProject project,
         ILaunch launch, IProgressMonitor monitor)
     {
@@ -194,6 +186,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         boolean      trace        = configuration.trace();
         RunType      runType      = configuration.runType();
 
+        String projectDir  = project.getLocation().toOSString();
+        
         monitor.setTaskName("Build release configuration of project " + project.getName());
 
         Activator activator = Activator.getDefault();
@@ -203,15 +197,13 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 
         IRunTask task;
         if (buildType == BuildType.eRhoMobileCom) {
-            task = new RhohubRunRhodesAppTask(project.getLocation().toOSString(),
-                platformType, runType, trace, m_startPathOverride,
-                m_additionalRubyExtensions);
+            task = new RhohubRunRhodesAppTask(projectDir, platformType, runType, trace,
+                m_startPathOverride, m_additionalRubyExtensions);
         }
         else
         {
-            task = new LocalRunRhodesAppTask(project.getLocation().toOSString(),
-                platformType, runType, reloadCode, trace,
-                m_startPathOverride, m_additionalRubyExtensions);
+            task = new LocalRunRhodesAppTask(projectDir, platformType, runType, reloadCode,
+                trace, m_startPathOverride, m_additionalRubyExtensions);
         }
 
         task.run(monitor);
