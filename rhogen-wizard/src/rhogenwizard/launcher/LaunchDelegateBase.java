@@ -70,79 +70,74 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
             return;
         }
 
-        try
-        {         	
-            rhodesLogHelper.stopLog();
-
-            setStandartConsoleOutputIsOff();
-
-            ConsoleHelper.getBuildConsole().clear();
-            ConsoleHelper.getBuildConsole().show();
-
-            if (projectName == null || projectName.length() == 0 || runType.id == null)
-            {
-                throw new IllegalArgumentException("Platform and project name should be assigned");
-            }
-
-            if (!project.isOpen()) 
-            {
-                throw new IllegalArgumentException("Project " + project.getName() + " not found");
-            }
-
-            try 
-            {
-                cleanProject(project, clean, platformType, monitor);
-
-                if (mode.equals(ILaunchManager.DEBUG_MODE))
-                {
-                    ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
-                    job.schedule();
-
-                    try 
-                    {
-                        OSHelper.killProcess("rhosimulator");
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                    IDebugTask task = buildProjectAsDebug(rc, project, launch, monitor);
-                    if (task.isOk())
-                    {
-                        IProcess debugProcess = task.getDebugProcess();
-                        if (!debugProcess.isTerminated())
-                        {
-                            DebugTarget target = new DebugTarget(launch, null, project, runType,
-                                platformType);
-                            target.setProcess(debugProcess);
-                            launch.addDebugTarget(target);
-                        }
-                    }
-                }
-                else
-                {
-                    buildProjectAsRelease(rc, project, launch, monitor);
-                }
-            }
-            catch (InterruptedException e) 
-            {
-                e.printStackTrace();
-            } 
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (StoppedException e)
-            {
-            }
-
-            monitor.done();
-        }
-        catch (IllegalArgumentException e) 
+        if (projectName == null || projectName.length() == 0 || runType.id == null)
         {
-            DialogUtils.error("Error", e.getMessage());
+            DialogUtils.error("Error", "Platform and project name should be assigned");
+            return;
         }
+
+        if (!project.isOpen())
+        {
+            DialogUtils.error("Error", "Project " + project.getName() + " not found");
+            return;
+        }
+
+        rhodesLogHelper.stopLog();
+
+        setStandartConsoleOutputIsOff();
+
+        ConsoleHelper.getBuildConsole().clear();
+        ConsoleHelper.getBuildConsole().show();
+
+        try
+        {
+            cleanProject(project, clean, platformType, monitor);
+
+            if (mode.equals(ILaunchManager.DEBUG_MODE))
+            {
+                ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective",
+                    DebugConstants.debugPerspectiveId);
+                job.schedule();
+
+                try
+                {
+                    OSHelper.killProcess("rhosimulator");
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                IDebugTask task = buildProjectAsDebug(rc, project, launch, monitor);
+                if (task.isOk())
+                {
+                    IProcess debugProcess = task.getDebugProcess();
+                    if (!debugProcess.isTerminated())
+                    {
+                        DebugTarget target = new DebugTarget(launch, null, project, runType, platformType);
+                        target.setProcess(debugProcess);
+                        launch.addDebugTarget(target);
+                    }
+                }
+            }
+            else
+            {
+                buildProjectAsRelease(rc, project, launch, monitor);
+            }
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (StoppedException e)
+        {
+        }
+
+        monitor.done();
     }
 
 	private void setStandartConsoleOutputIsOff()
