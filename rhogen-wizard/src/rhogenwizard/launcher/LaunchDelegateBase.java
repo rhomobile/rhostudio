@@ -40,12 +40,6 @@ import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
 import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
-/////////////////////////////////////////////////////////////////////////
-
-class FailBuildException extends Exception
-{
-	private static final long serialVersionUID = 5907642700379669820L;
-}
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -207,11 +201,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
                 }
                 else
                 {
-                    BuildProjectAsRelease b = new BuildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor);
-                    if (!b.xcall())
-                    {
-                        throw new FailBuildException();
-                    }
+                    new BuildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor).xcall();
                 }
             }
             catch (InterruptedException e) 
@@ -219,10 +209,6 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
                 e.printStackTrace();
             } 
             catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (FailBuildException e)
             {
                 e.printStackTrace();
             }
