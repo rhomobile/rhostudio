@@ -93,9 +93,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 
             if (mode.equals(ILaunchManager.DEBUG_MODE))
             {
-                ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective",
-                    DebugConstants.debugPerspectiveId);
-                job.schedule();
+                new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId)
+                .schedule();
 
                 try
                 {
@@ -112,9 +111,8 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
                     IProcess debugProcess = task.getDebugProcess();
                     if (!debugProcess.isTerminated())
                     {
-                        DebugTarget target = new DebugTarget(launch, null, project, runType, platformType);
-                        target.setProcess(debugProcess);
-                        launch.addDebugTarget(target);
+                        launch.addDebugTarget(new DebugTarget(launch, debugProcess, project,
+                            runType, platformType));
                     }
                 }
             }
