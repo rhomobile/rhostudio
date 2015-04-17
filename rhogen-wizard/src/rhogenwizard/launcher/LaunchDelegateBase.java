@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -39,13 +38,10 @@ import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
 
-public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate 
+public class LaunchDelegateBase extends LaunchConfigurationDelegate
 {
-	private static LogFileHelper      rhodesLogHelper = new LogFileHelper();
+	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
 	
-	protected String          m_projectName   = null;
-	private PlatformType      m_platformType  = null;   
-	private boolean           m_isClean       = false;
 	private final String      m_startPathOverride;
 	private final String[]    m_additionalRubyExtensions;
 	
@@ -55,17 +51,23 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
 	    m_additionalRubyExtensions = additionalRubyExtensions;
 	}
 	
-	protected void setupConfigAttributes(ILaunchConfiguration configuration) throws CoreException
-	{	    
-		RhodesConfigurationRO rc = new RhodesConfigurationRO(configuration);
-		
-		m_projectName  = rc.project();
-		m_platformType = rc.platformType();
-		m_isClean      = rc.clean();
-	}
-
-    public synchronized void launchLocalProject(IProject project, ILaunchConfiguration configuration, String mode, ILaunch launch, final IProgressMonitor monitor) throws CoreException 
+    @Override
+    public synchronized void launch(ILaunchConfiguration configuration, String mode,
+        ILaunch launch, IProgressMonitor monitor)
     {
+        RhodesConfigurationRO rc = new RhodesConfigurationRO(configuration);
+
+        String       projectName  = rc.project();
+        PlatformType platformType = rc.platformType();
+        boolean      clean        = rc.clean();
+
+        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+
+        if (!TokenChecker.processToken(project))
+        {
+            return;
+        }
+
         try
         {         	
             rhodesLogHelper.stopLog();
@@ -75,11 +77,9 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
             ConsoleHelper.getBuildConsole().clear();
             ConsoleHelper.getBuildConsole().show();
 
-            setupConfigAttributes(configuration);
-
             RunType runType = getRunType(configuration);
 
-            if (m_projectName == null || m_projectName.length() == 0 || runType.id == null) 
+            if (projectName == null || projectName.length() == 0 || runType.id == null)
             {
                 throw new IllegalArgumentException("Platform and project name should be assigned");
             }
@@ -89,12 +89,10 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
                 throw new IllegalArgumentException("Project " + project.getName() + " not found");
             }
 
-            RhodesConfigurationRO rc = new RhodesConfigurationRO(configuration);
-            
             try 
             {
-                cleanProject(project, m_isClean, m_platformType, monitor);
-            	
+                cleanProject(project, clean, platformType, monitor);
+
                 if (mode.equals(ILaunchManager.DEBUG_MODE))
                 {
                     ShowPerspectiveJob job = new ShowPerspectiveJob("show debug perspective", DebugConstants.debugPerspectiveId);
@@ -103,20 +101,20 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
                     try 
                     {
                         OSHelper.killProcess("rhosimulator");
-					}
-					catch (Exception e) 
-					{
-						e.printStackTrace();
-					}
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
 
-                    IDebugTask task = buildProjectAsDebug(rc, launch, m_startPathOverride, m_additionalRubyExtensions, monitor);
+                    IDebugTask task = buildProjectAsDebug(rc, project, launch, monitor);
                     if (task.isOk())
                     {
                         IProcess debugProcess = task.getDebugProcess();
                         if (!debugProcess.isTerminated())
                         {
                             DebugTarget target = new DebugTarget(launch, null, project, runType,
-                                m_platformType);
+                                platformType);
                             target.setProcess(debugProcess);
                             launch.addDebugTarget(target);
                         }
@@ -124,7 +122,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
                 }
                 else
                 {
-                    buildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor);
+                    buildProjectAsRelease(rc, project, launch, monitor);
                 }
             }
             catch (InterruptedException e) 
@@ -147,7 +145,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
         }
     }
 
-    void setStandartConsoleOutputIsOff()
+	private void setStandartConsoleOutputIsOff()
     {
         IPreferenceStore prefs = DebugUIPlugin.getDefault().getPreferenceStore();
 
@@ -173,8 +171,8 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
         }
     }
 
-    public static IDebugTask buildProjectAsDebug(RhodesConfigurationRO configuration, ILaunch launch,
-        String startPathOverride, String[] additionalRubyExtensions, IProgressMonitor monitor)
+    public IDebugTask buildProjectAsDebug(RhodesConfigurationRO configuration, IProject project,
+        ILaunch launch, IProgressMonitor monitor)
             throws IOException
     {
         PlatformType platformType = configuration.platformType();
@@ -182,29 +180,22 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
         boolean      reloadCode   = configuration.reloadCode();
         boolean      trace        = configuration.trace();
         RunType      runType      = configuration.runType();
-        IProject     project      = ResourcesPlugin.getWorkspace().getRoot().getProject(
-            configuration.project());
 
         String projectName = project.getName();
         String projectDir  = project.getLocation().toOSString();
 
         monitor.setTaskName("Build debug configuration of project " + projectName);
 
-        if (!TokenChecker.processToken(project))
-        {
-            return null;
-        }
-
         IDebugTask task;
         if (buildType == BuildType.eRhoMobileCom)
         {
             task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, startPathOverride, additionalRubyExtensions);
+                platformType, reloadCode, m_startPathOverride, m_additionalRubyExtensions);
         }
         else
         {
             task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, trace, startPathOverride, additionalRubyExtensions);
+                platformType, reloadCode, trace, m_startPathOverride, m_additionalRubyExtensions);
         }
 
         task.run(monitor);
@@ -212,14 +203,15 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
         return task;
     }
 
-    private static void buildProjectAsRelease(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions, final IProgressMonitor monitor) throws InterruptedException
+    private void buildProjectAsRelease(RhodesConfigurationRO configuration, IProject project,
+        ILaunch launch, IProgressMonitor monitor)
+            throws InterruptedException
     {
         PlatformType platformType = configuration.platformType();
         BuildType    buildType    = configuration.buildType();
         boolean      reloadCode   = configuration.reloadCode();
         boolean      trace        = configuration.trace();
         RunType      runType      = configuration.runType();
-        IProject     project      = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());
 
         monitor.setTaskName("Build release configuration of project " + project.getName());
 
@@ -228,20 +220,17 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate
 
         ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe \"-approot=\'");
 
-        if (!TokenChecker.processToken(project))
-            return;
-
         IRunTask task;
         if (buildType == BuildType.eRhoMobileCom) {
             task = new RhohubRunRhodesAppTask(project.getLocation().toOSString(),
-                platformType, runType, trace, startPathOverride,
-                additionalRubyExtensions);
+                platformType, runType, trace, m_startPathOverride,
+                m_additionalRubyExtensions);
         }
         else
         {
             task = new LocalRunRhodesAppTask(project.getLocation().toOSString(),
                 platformType, runType, reloadCode, trace,
-                startPathOverride, additionalRubyExtensions);
+                m_startPathOverride, m_additionalRubyExtensions);
         }
 
         task.run(monitor);
