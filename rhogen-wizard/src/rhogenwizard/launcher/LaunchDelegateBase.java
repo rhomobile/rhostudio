@@ -40,17 +40,17 @@ import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
 public class LaunchDelegateBase extends LaunchConfigurationDelegate
 {
-	private static LogFileHelper rhodesLogHelper = new LogFileHelper();
-	
-	private final String      m_startPathOverride;
-	private final String[]    m_additionalRubyExtensions;
-	
-	public LaunchDelegateBase(String startPathOverride, String... additionalRubyExtensions)
-	{
-	    m_startPathOverride        = startPathOverride;
-	    m_additionalRubyExtensions = additionalRubyExtensions;
-	}
-	
+    private static LogFileHelper rhodesLogHelper = new LogFileHelper();
+
+    private final String      m_startPathOverride;
+    private final String[]    m_additionalRubyExtensions;
+
+    public LaunchDelegateBase(String startPathOverride, String... additionalRubyExtensions)
+    {
+        m_startPathOverride        = startPathOverride;
+        m_additionalRubyExtensions = additionalRubyExtensions;
+    }
+
     @Override
     public synchronized void launch(ILaunchConfiguration configuration, String mode,
         ILaunch launch, IProgressMonitor monitor)
@@ -140,7 +140,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         monitor.done();
     }
 
-	private void setStandartConsoleOutputIsOff()
+    private void setStandartConsoleOutputIsOff()
     {
         IPreferenceStore prefs = DebugUIPlugin.getDefault().getPreferenceStore();
 
@@ -148,13 +148,13 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         prefs.setDefault(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
         prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_OUT, false);
         prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
-	}
+    }
 
     private static void cleanProject(IProject project, boolean isClean,
         PlatformType platformType, IProgressMonitor monitor)
     {
         monitor.setTaskName("Run clean project build files");
-        
+
         if (isClean)
         {
             new CleanPlatformTask(project.getLocation().toOSString(), platformType).run(monitor);
