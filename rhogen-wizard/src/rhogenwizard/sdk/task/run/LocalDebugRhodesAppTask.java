@@ -87,7 +87,7 @@ public class LocalDebugRhodesAppTask implements IDebugTask
         String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
         String startPathOverride, String[] additionalRubyExtensions)
     {
-        IArgsBuilder ab = makeArgsBuilder(platformType, runType, isTrace, isReloadCode,
+        IArgsBuilder ab = makeArgsBuilder(platformType, runType, isReloadCode, isTrace,
                 startPathOverride, additionalRubyExtensions);
         IRunTask buildTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT,
             ab.getArgs("build"));
