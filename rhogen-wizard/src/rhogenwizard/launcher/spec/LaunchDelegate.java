@@ -4,6 +4,6 @@ public class LaunchDelegate extends rhogenwizard.launcher.LaunchDelegateBase
 {
     public LaunchDelegate()
     {
-        super("/app/SpecRunner", new String[] { "mspec", "fileutils" });
+        super("/app/SpecRunner", "mspec", "fileutils");
     }
 }

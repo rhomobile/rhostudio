@@ -45,7 +45,7 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 	private final String      m_startPathOverride;
 	private final String[]    m_additionalRubyExtensions;
 	
-	public LaunchDelegateBase(String startPathOverride, String[] additionalRubyExtensions)
+	public LaunchDelegateBase(String startPathOverride, String... additionalRubyExtensions)
 	{
 	    m_startPathOverride        = startPathOverride;
 	    m_additionalRubyExtensions = additionalRubyExtensions;
