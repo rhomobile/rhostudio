@@ -129,10 +129,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         {
             e.printStackTrace();
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
         catch (StoppedException e)
         {
         }
@@ -163,7 +159,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 
     public IDebugTask buildProjectAsDebug(RhodesConfigurationRO configuration, IProject project,
         ILaunch launch, IProgressMonitor monitor)
-            throws IOException
     {
         PlatformType platformType = configuration.platformType();
         BuildType    buildType    = configuration.buildType();
