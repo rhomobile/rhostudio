@@ -34,12 +34,6 @@ public class RhohubDebugRhodesAppTask implements IDebugTask
         );
     }
 
-    public RhohubDebugRhodesAppTask sync()
-    {
-        m_lastTask.sync();
-        return this;
-    }
-
     @Override
     public boolean isOk()
     {

@@ -295,8 +295,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
         if (buildType == BuildType.eRhoMobileCom)
         {
             task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, startPathOverride, additionalRubyExtensions)
-            .sync();
+                platformType, reloadCode, startPathOverride, additionalRubyExtensions);
         }
         else
         {

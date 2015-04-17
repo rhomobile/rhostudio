@@ -39,12 +39,6 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         m_exitValue    = null;
     }
 
-    public RubyDebugTask sync()
-    {
-        m_sync = true;
-        return this;
-    }
-
     @Override
     public boolean isOk()
     {
