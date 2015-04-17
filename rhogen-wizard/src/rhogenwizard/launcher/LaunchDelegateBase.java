@@ -41,81 +41,6 @@ import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
 
-///////////////////////////////////////////////////////////////////////////
-
-class BuildProjectAsRelease
-{
-	private IProject     m_currProject  = null;
-	private RunType      m_selType      = null;
-	private BuildType    m_buildType    = null;
-	private PlatformType m_platformType = null;
-	private boolean      m_isReloadCode = false;
-	private boolean      m_isTrace      = false;
-	
-	private String      m_startPathOverride        = null;
-	private String[]    m_additionalRubyExtensions = null;
-	
-	final IProgressMonitor m_monitor;
-	
-	public BuildProjectAsRelease(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions, final IProgressMonitor monitor)
-	{
-		m_platformType             = configuration.platformType();
-		m_buildType                = configuration.buildType();
-		m_isReloadCode             = configuration.reloadCode();
-		m_isTrace                  = configuration.trace();
-		m_selType                  = configuration.runType();
-		m_startPathOverride        = startPathOverride;
-		m_additionalRubyExtensions = additionalRubyExtensions;
-		m_monitor                  = monitor;
-		
-		m_currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());		
-	}
-	
-	public boolean xcall() throws InterruptedException
-	{
-		m_monitor.setTaskName("Build release configuration of project " + m_currProject.getName());
-		
-        Activator activator = Activator.getDefault();
-        activator.killProcessesForForRunReleaseRhodesAppTask();
-
-        ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe \"-approot=\'");
-
-        boolean buildResult = runSelectedBuildConfiguration(m_currProject, m_selType);
-        
-        if (buildResult)
-        {
-            activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
-        }
-
-		return buildResult;
-	}	
-	
-	private boolean runSelectedBuildConfiguration(IProject currProject, RunType selType)
-	{
-		if (!TokenChecker.processToken(currProject))
-			return false;
-		
-        IRunTask task;
-		if (m_buildType == BuildType.eRhoMobileCom) {
-            task = new RhohubRunRhodesAppTask(currProject.getLocation().toOSString(),
-                m_platformType, selType, m_isTrace, m_startPathOverride,
-                m_additionalRubyExtensions);
-		}
-		else 
-		{
-            task = new LocalRunRhodesAppTask(currProject.getLocation().toOSString(),
-                m_platformType, selType, m_isReloadCode, m_isTrace,
-                m_startPathOverride, m_additionalRubyExtensions);
-		}
-
-		task.run(m_monitor);
-
-		return task.isOk();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////
-
 public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
 {
 	private static LogFileHelper      rhodesLogHelper = new LogFileHelper();
@@ -201,7 +126,7 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
                 }
                 else
                 {
-                    new BuildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor).xcall();
+                    buildProjectAsRelease(rc, launch,  m_startPathOverride, m_additionalRubyExtensions, monitor);
                 }
             }
             catch (InterruptedException e) 
@@ -292,5 +217,45 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
         task.run(monitor);
 
         return task;
+    }
+
+    private static void buildProjectAsRelease(RhodesConfigurationRO configuration, ILaunch launch, String startPathOverride, String[] additionalRubyExtensions, final IProgressMonitor monitor) throws InterruptedException
+    {
+        PlatformType platformType = configuration.platformType();
+        BuildType    buildType    = configuration.buildType();
+        boolean      reloadCode   = configuration.reloadCode();
+        boolean      trace        = configuration.trace();
+        RunType      runType      = configuration.runType();
+        IProject     project      = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.project());
+
+        monitor.setTaskName("Build release configuration of project " + project.getName());
+
+        Activator activator = Activator.getDefault();
+        activator.killProcessesForForRunReleaseRhodesAppTask();
+
+        ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe \"-approot=\'");
+
+        if (!TokenChecker.processToken(project))
+            return;
+
+        IRunTask task;
+        if (buildType == BuildType.eRhoMobileCom) {
+            task = new RhohubRunRhodesAppTask(project.getLocation().toOSString(),
+                platformType, runType, trace, startPathOverride,
+                additionalRubyExtensions);
+        }
+        else
+        {
+            task = new LocalRunRhodesAppTask(project.getLocation().toOSString(),
+                platformType, runType, reloadCode, trace,
+                startPathOverride, additionalRubyExtensions);
+        }
+
+        task.run(monitor);
+
+        if (task.isOk())
+        {
+            activator.storeProcessesForForRunReleaseRhodesAppTask(rhosims.getNewProcesses());
+        }
     }
 }
