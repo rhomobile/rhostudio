@@ -21,6 +21,7 @@ import rhogenwizard.ConsoleHelper;
 import rhogenwizard.OSHelper;
 import rhogenwizard.OSValidator;
 import rhogenwizard.ProcessListViewer;
+import rhogenwizard.StringUtils;
 import rhogenwizard.debugger.backend.DebugServer;
 import rhogenwizard.debugger.backend.DebugState;
 import rhogenwizard.debugger.backend.DebugVariableType;
@@ -187,7 +188,7 @@ public class RunDebugRhodesAppTaskTest
                 /* 15 */"end",
                 /* 16 */"" };
                 String appRb = OSHelper.concat(projectLocation, "app", "application.rb").getPath();
-                writeTextFile(appRb, join("\n", text));
+                writeTextFile(appRb, StringUtils.join("\n", text));
             }
 
             // start debug server
@@ -322,25 +323,6 @@ public class RunDebugRhodesAppTaskTest
             resume();
             suspend(event);
         }
-    }
-
-    private static String join(String delimiter, String... text)
-    {
-        boolean first = true;
-        StringBuilder sb = new StringBuilder();
-        for (String line : text)
-        {
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                sb.append(delimiter);
-            }
-            sb.append(line);
-        }
-        return sb.toString();
     }
 
     private static void writeTextFile(String filename, String text) throws IOException

@@ -9,6 +9,7 @@ import org.eclipse.debug.core.model.IProcess;
 
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
+import rhogenwizard.StringUtils;
 import rhogenwizard.SysCommandExecutor;
 import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.IRunTask;
@@ -37,18 +38,18 @@ public class LocalDebugRhodesAppTask implements IDebugTask
 
                 if (runType == RunType.eRhoSimulator)
                 {
-                    args.add(join(":", "run", platformType.toString(), "rhosimulator", stage));
+                    args.add(StringUtils.join(":", "run", platformType.toString(), "rhosimulator", stage));
                 }
                 else if(runType == RunType.eSimulator)
                 {
                     // for emulator
-                    args.add(join(":", "run", platformType.toString(), stage));
+                    args.add(StringUtils.join(":", "run", platformType.toString(), stage));
                     args.add("rho_remote_debug=true");
                 }
                 else if(runType == RunType.eDevice)
                 {
                     // for device
-                    args.add(join(":", "run", platformType.toString(), "device", stage));
+                    args.add(StringUtils.join(":", "run", platformType.toString(), "device", stage));
                     args.add("rho_remote_debug=true");
                 }
                 else
@@ -71,7 +72,7 @@ public class LocalDebugRhodesAppTask implements IDebugTask
 
                 if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
                 {
-                    args.add("rho_extensions=" + join(",", additionalRubyExtensions));
+                    args.add("rho_extensions=" + StringUtils.join(",", additionalRubyExtensions));
                 }
 
                 return args.toArray(new String[0]);
@@ -118,24 +119,5 @@ public class LocalDebugRhodesAppTask implements IDebugTask
     public IProcess getDebugProcess()
     {
         return m_debugTask.getDebugProcess();
-    }
-
-    private static String join(String delimiter, String... text)
-    {
-        boolean first = true;
-        StringBuilder sb = new StringBuilder();
-        for (String line : text)
-        {
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                sb.append(delimiter);
-            }
-            sb.append(line);
-        }
-        return sb.toString();
     }
 }
