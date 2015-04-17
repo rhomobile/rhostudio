@@ -59,7 +59,9 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 
         String       projectName  = rc.project();
         PlatformType platformType = rc.platformType();
+        RunType      runType      = rc.runType();
         boolean      clean        = rc.clean();
+
 
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
@@ -76,8 +78,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
 
             ConsoleHelper.getBuildConsole().clear();
             ConsoleHelper.getBuildConsole().show();
-
-            RunType runType = getRunType(configuration);
 
             if (projectName == null || projectName.length() == 0 || runType.id == null)
             {
@@ -155,11 +155,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
 	}
 
-    private static RunType getRunType(ILaunchConfiguration configuration)
-    {
-        return new RhodesConfigurationRO(configuration).runType();
-    }
-    
     private static void cleanProject(IProject project, boolean isClean,
         PlatformType platformType, IProgressMonitor monitor)
     {
