@@ -41,7 +41,7 @@ import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
 
-public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate implements IDebugEventSetListener 
+public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate 
 {
 	private static LogFileHelper      rhodesLogHelper = new LogFileHelper();
 	
@@ -158,11 +158,6 @@ public abstract class LaunchDelegateBase extends LaunchConfigurationDelegate imp
         prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_OUT, false);
         prefs.setValue(IDebugPreferenceConstants.CONSOLE_OPEN_ON_ERR, false);
 	}
-
-    @Override
-    public void handleDebugEvents(DebugEvent[] events)
-    {
-    }
 
     private static RunType getRunType(ILaunchConfiguration configuration)
     {
