@@ -58,7 +58,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         String       projectName  = rc.project();
         PlatformType platformType = rc.platformType();
         RunType      runType      = rc.runType();
-        boolean      clean        = rc.clean();
 
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
