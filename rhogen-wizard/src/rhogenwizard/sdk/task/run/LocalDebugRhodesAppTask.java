@@ -3,10 +3,7 @@ package rhogenwizard.sdk.task.run;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.model.IProcess;
-
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.StringUtils;
@@ -15,20 +12,28 @@ import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RubyDebugTask;
 import rhogenwizard.sdk.task.RubyExecTask;
-import rhogenwizard.sdk.task.SeqRunTask;
+import rhogenwizard.sdk.task.SeqDebugTask;
 
-public class LocalDebugRhodesAppTask implements IDebugTask
+public class LocalDebugRhodesAppTask extends SeqDebugTask
 {
     private static interface IArgsBuilder
     {
         String[] getArgs(String stage);
     }
 
-    private static IArgsBuilder makeArgsBuilder(final PlatformType platformType,
-            final RunType runType, final boolean reloadCode, final boolean trace,
-            final String startPathOverride, final String[] additionalRubyExtensions)
+    public LocalDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
+        String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
+        String startPathOverride, String[] additionalRubyExtensions)
     {
-        return new IArgsBuilder()
+        super(getArgs(launch, runType, workDir, appName, platformType, isReloadCode, isTrace,
+            startPathOverride, additionalRubyExtensions));
+    }
+
+    private static SeqDebugTask.Args getArgs(ILaunch launch, final RunType runType, String workDir,
+        String appName, final PlatformType platformType, final boolean reloadCode, final boolean trace,
+        final String startPathOverride, final String[] additionalRubyExtensions)
+    {
+        IArgsBuilder ab = new IArgsBuilder()
         {
             @Override
             public String[] getArgs(String stage)
@@ -78,46 +83,12 @@ public class LocalDebugRhodesAppTask implements IDebugTask
                 return args.toArray(new String[0]);
             }
         };
-    }
-
-    private final IDebugTask m_debugTask;
-    private final SeqRunTask m_seqTask;
-
-    public LocalDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
-        String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
-        String startPathOverride, String[] additionalRubyExtensions)
-    {
-        IArgsBuilder ab = makeArgsBuilder(platformType, runType, isReloadCode, isTrace,
-                startPathOverride, additionalRubyExtensions);
+        
         IRunTask buildTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT,
             ab.getArgs("build"));
-        m_debugTask = new RubyDebugTask(launch, appName, workDir, SysCommandExecutor.RUBY_BAT,
-            ab.getArgs("debug"));
+        IDebugTask debugTask = new RubyDebugTask(launch, appName, workDir,
+            SysCommandExecutor.RUBY_BAT, ab.getArgs("debug"));
 
-        m_seqTask = new SeqRunTask(buildTask, m_debugTask);
-    }
-
-    @Override
-    public boolean isOk()
-    {
-        return m_seqTask.isOk();
-    }
-
-    @Override
-    public void run(IProgressMonitor monitor)
-    {
-        m_seqTask.run(monitor);
-    }
-
-    @Override
-    public void run()
-    {
-        m_seqTask.run();
-    }
-
-    @Override
-    public IProcess getDebugProcess()
-    {
-        return m_debugTask.getDebugProcess();
+        return new SeqDebugTask.Args(new IRunTask[]{ buildTask }, debugTask);
     }
 }
