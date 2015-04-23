@@ -497,7 +497,6 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 	{
 		try
 		{
-//			final IEditorPart editor = this;
 			final Boolean isEnable = (Boolean)m_project.getSessionProperty(isLiveUpdateEnableTag);
 			final Button  liveUpdateSwitchButton = new Button(container, SWT.PUSH);
 			
@@ -514,15 +513,6 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 				{
 					if (!TokenChecker.processToken(m_project))
 					{
-//						new Thread(new Runnable()
-//			            {
-//							@Override
-//							public void run()
-//							{
-//								new CloseEditorUIJob(editor).schedule();
-//							}
-//						}).start();
-
 						return;
 					}
 					
@@ -548,27 +538,30 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 						
 						while(true)
 						{
-							startIds = OSHelper.getProcessesIds(webrickCommandLineTag);	
-							
-							if (!startIds.isEmpty() )
-								break;
-							
-							Thread.sleep(1000);
-						}
-
-						while(true)
-						{
-							Set<Integer> ids = OSHelper.getProcessesIds(webrickCommandLineTag);
-							
-							if (!ids.containsAll(startIds))
+							while(true)
 							{
-								CancelLiveUpdateUIJob job = new CancelLiveUpdateUIJob(liveUpdateSwitchButton);
-								job.schedule();
-								job.join();
-								return;
+								startIds = OSHelper.getProcessesIds(webrickCommandLineTag);	
+								
+								if (!startIds.isEmpty() )
+									break;
+								
+								Thread.sleep(1000);
 							}
-							
-							Thread.sleep(100);
+	
+							while(true)
+							{
+								Set<Integer> ids = OSHelper.getProcessesIds(webrickCommandLineTag);
+								
+								if (!ids.containsAll(startIds))
+								{
+									CancelLiveUpdateUIJob job = new CancelLiveUpdateUIJob(liveUpdateSwitchButton);
+									job.schedule();
+									job.join();
+									break;
+								}
+								
+								Thread.sleep(100);
+							}
 						}
 					} 
 					catch (InterruptedException e) 
@@ -576,7 +569,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 					}	
 				}
 			});
-			
+
 			webrickWatcherThread.start();
 		} 
 		catch (CoreException e2) 
