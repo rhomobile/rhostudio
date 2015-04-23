@@ -3,6 +3,8 @@ package rhogenwizard.sdk.task.run;
 import java.util.ArrayList;
 import java.util.List;
 
+import rhogenwizard.StringUtils;
+
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
 import rhogenwizard.SysCommandExecutor;
@@ -49,7 +51,7 @@ public class LocalRunRhodesAppTask extends RubyExecTask
 
         if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
         {
-            cmdLine.add("rho_extensions=" + join(",", additionalRubyExtensions));
+            cmdLine.add("rho_extensions=" + StringUtils.join(",", additionalRubyExtensions));
         }
 
         return cmdLine.toArray(new String[0]);
@@ -61,24 +63,5 @@ public class LocalRunRhodesAppTask extends RubyExecTask
     {
         super(workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType, runType, isReloadCode,
             isTrace, startPathOverride, additionalRubyExtensions));
-    }
-
-    private static String join(String delimiter, String... text)
-    {
-        boolean first = true;
-        StringBuilder sb = new StringBuilder();
-        for (String line : text)
-        {
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                sb.append(delimiter);
-            }
-            sb.append(line);
-        }
-        return sb.toString();
     }
 }

@@ -1,8 +1,6 @@
 package rhogenwizard.sdk.task;
 
 import java.io.IOException;
-import java.util.Set;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -16,7 +14,6 @@ import org.eclipse.debug.core.model.IStreamMonitor;
 import rhogenwizard.Activator;
 import rhogenwizard.ConsoleHelper;
 import rhogenwizard.ILogDevice;
-import rhogenwizard.OSHelper;
 import rhogenwizard.SysCommandExecutor;
 
 public class RubyDebugTask extends RubyTask implements IDebugTask
@@ -24,7 +21,9 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
     private final ILaunch               m_launch;
     private final String                m_appName;
     private final ConsoleHelper.Console m_console;
+    private boolean                     m_sync;
     private IProcess                    m_debugProcess;
+    private Integer                     m_exitValue;
 
     public RubyDebugTask(ILaunch launch, String appName, String workDir,
         SysCommandExecutor.Decorator decorator, String... args)
@@ -35,13 +34,15 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
         m_appName = appName;
         m_console = ConsoleHelper.getBuildConsole();
 
+        m_sync         = false;
         m_debugProcess = null;
+        m_exitValue    = null;
     }
 
     @Override
     public boolean isOk()
     {
-        return m_debugProcess != null;
+        return (m_sync) ? m_exitValue != null : m_debugProcess != null;
     }
 
     @Override
@@ -89,6 +90,18 @@ public class RubyDebugTask extends RubyTask implements IDebugTask
                 return Status.OK_STATUS;
             }
         }.schedule(1000);
+        
+        if (m_sync)
+        {
+            try
+            {
+                m_exitValue = process.waitFor();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void attachConsole(IProcess process, ConsoleHelper.Console console)

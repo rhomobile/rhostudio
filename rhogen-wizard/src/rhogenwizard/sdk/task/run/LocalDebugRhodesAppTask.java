@@ -4,87 +4,91 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.debug.core.ILaunch;
-
 import rhogenwizard.PlatformType;
 import rhogenwizard.RunType;
+import rhogenwizard.StringUtils;
 import rhogenwizard.SysCommandExecutor;
+import rhogenwizard.sdk.task.IDebugTask;
+import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RubyDebugTask;
+import rhogenwizard.sdk.task.RubyExecTask;
+import rhogenwizard.sdk.task.SeqDebugTask;
 
-public class LocalDebugRhodesAppTask extends RubyDebugTask
+public class LocalDebugRhodesAppTask extends SeqDebugTask
 {
+    private static interface IArgsBuilder
+    {
+        String[] getArgs(String stage);
+    }
+
     public LocalDebugRhodesAppTask(ILaunch launch, RunType runType, String workDir,
         String appName, PlatformType platformType, boolean isReloadCode, boolean isTrace,
         String startPathOverride, String[] additionalRubyExtensions)
     {
-        super(launch, appName, workDir, SysCommandExecutor.RUBY_BAT, getArgs(platformType,
-            runType, isTrace, isReloadCode, startPathOverride, additionalRubyExtensions));
+        super(getArgs(launch, runType, workDir, appName, platformType, isReloadCode, isTrace,
+            startPathOverride, additionalRubyExtensions));
     }
 
-    private static String[] getArgs(PlatformType platformType, RunType runType,
-        boolean isReloadCode, boolean isTrace, String startPathOverride,
-        String[] additionalRubyExtensions)
+    private static SeqDebugTask.Args getArgs(ILaunch launch, final RunType runType, String workDir,
+        String appName, final PlatformType platformType, final boolean reloadCode, final boolean trace,
+        final String startPathOverride, final String[] additionalRubyExtensions)
     {
-        List<String> args = new ArrayList<String>();
-        args.add("rake");
-        
-        if (runType == RunType.eRhoSimulator)
+        IArgsBuilder ab = new IArgsBuilder()
         {
-        	args.add("run:" + platformType + ":rhosimulator_debug");
-        }
-        else if(runType == RunType.eSimulator)
-        {
-        	// for emulator
-        	args.add("run:" + platformType);
-            args.add("rho_remote_debug=true");
-        }
-        else if(runType == RunType.eDevice)
-        {
-        	// for device
-        	args.add("run:" + platformType + ":device");
-            args.add("rho_remote_debug=true");
-        }
-        else
-        {
-        	return null;
-        }
-
-        if (isTrace)
-        {
-            args.add("--trace");
-        }
-
-        args.add("rho_debug_port=9000");
-        args.add("rho_reload_app_changes=" + (isReloadCode ? "1" : "0"));
-        
-        if (startPathOverride != null)
-        {
-            args.add("rho_override_start_path=\'" + startPathOverride + "\'");
-        }
-
-        if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
-        {
-            args.add("rho_extensions=" + join(",", additionalRubyExtensions));
-        }
-        
-        return args.toArray(new String[0]);
-    }
-
-    private static String join(String delimiter, String... text)
-    {
-        boolean first = true;
-        StringBuilder sb = new StringBuilder();
-        for (String line : text)
-        {
-            if (first)
+            @Override
+            public String[] getArgs(String stage)
             {
-                first = false;
+                List<String> args = new ArrayList<String>();
+                args.add("rake");
+
+                if (runType == RunType.eRhoSimulator)
+                {
+                    args.add(StringUtils.join(":", "run", platformType.toString(), "rhosimulator", stage));
+                }
+                else if(runType == RunType.eSimulator)
+                {
+                    // for emulator
+                    args.add(StringUtils.join(":", "run", platformType.toString(), stage));
+                    args.add("rho_remote_debug=true");
+                }
+                else if(runType == RunType.eDevice)
+                {
+                    // for device
+                    args.add(StringUtils.join(":", "run", platformType.toString(), "device", stage));
+                    args.add("rho_remote_debug=true");
+                }
+                else
+                {
+                    return null;
+                }
+
+                if (trace)
+                {
+                    args.add("--trace");
+                }
+
+                args.add("rho_debug_port=9000");
+                args.add("rho_reload_app_changes=" + (reloadCode ? "1" : "0"));
+
+                if (startPathOverride != null)
+                {
+                    args.add("rho_override_start_path=\'" + startPathOverride + "\'");
+                }
+
+                if (additionalRubyExtensions != null && additionalRubyExtensions.length > 0)
+                {
+                    args.add("rho_extensions=" + StringUtils.join(",", additionalRubyExtensions));
+                }
+
+                return args.toArray(new String[0]);
             }
-            else
-            {
-                sb.append(delimiter);
-            }
-            sb.append(line);
-        }
-        return sb.toString();
+        };
+        
+        IRunTask buildTask = new RubyExecTask(workDir, SysCommandExecutor.RUBY_BAT,
+            ab.getArgs("build"));
+        IDebugTask debugTask = new RubyDebugTask(launch, appName, workDir,
+            SysCommandExecutor.RUBY_BAT, ab.getArgs("debug"));
+
+        return new SeqDebugTask.Args(new IRunTask[]{ buildTask }, debugTask);
     }
 }
