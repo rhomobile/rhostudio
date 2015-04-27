@@ -1,6 +1,11 @@
 package rhogenwizard.editors;
 
+import java.io.DataInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -46,6 +51,48 @@ import rhogenwizard.sdk.task.liveupdate.LUDevice;
 import rhogenwizard.sdk.task.liveupdate.LiveUpdateTask;
 import rhogenwizard.sdk.task.liveupdate.PrintSubnetsTask;
  
+/* ---------------------------------------------------------------------- */
+
+class NetworkListener 
+{
+	private String m_networkAddess = null;
+	
+	public NetworkListener(String address)
+	{
+		m_networkAddess = address;
+	}
+	
+	public boolean waitServer()
+	{
+		try
+		{
+			URL              url; 
+			URLConnection    urlConn; 
+			DataInputStream  dis;
+			
+			url = new URL(m_networkAddess);
+			
+			urlConn = url.openConnection(); 
+			urlConn.setDoInput(true); 
+			urlConn.setUseCaches(false);
+	
+			dis = new DataInputStream(urlConn.getInputStream()); 
+			String s;
+			byte[] data = new byte[100];
+			
+			dis.read(data);
+
+			return true;    		
+		}
+		catch (MalformedURLException mue) {
+		} 
+		catch (IOException ioe) {
+		} 
+		
+		return false;
+	}
+}
+
 /* ---------------------------------------------------------------------- */
 
 class LiveUpdateObserver extends Observable 
@@ -396,7 +443,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 	public static String[] discoverStatus = {"Found", "Not Found", "Empty", "Search.", "Search..", "Search..."};
 	public static String[] switchLUButtonText = {"Enable live update", "Disable live update"};
 	
-	private static final String webrickCommandLineTag = "dev:webserver:privateStart";
+	private static final String webrickCommandLineTag = "http://127.0.0.1:3000/auto_update_pid"; //"dev:webserver:privateStart";
 	public  static final String liveUpdateJobName = "live update is running";
 	
 	public  static LiveUpdateObserver eventHandler =  new LiveUpdateObserver();
@@ -534,34 +581,23 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 				{
 					try 
 					{
-						Set<Integer> startIds = null;
+						NetworkListener listener = new NetworkListener(webrickCommandLineTag);
 						
 						while(true)
 						{
-							while(true)
+							while(!listener.waitServer())
 							{
-								startIds = OSHelper.getProcessesIds(webrickCommandLineTag);	
-								
-								if (!startIds.isEmpty() )
-									break;
-								
 								Thread.sleep(1000);
 							}
 	
-							while(true)
+							while(listener.waitServer())
 							{
-								Set<Integer> ids = OSHelper.getProcessesIds(webrickCommandLineTag);
-								
-								if (!ids.containsAll(startIds))
-								{
-									CancelLiveUpdateUIJob job = new CancelLiveUpdateUIJob(liveUpdateSwitchButton);
-									job.schedule();
-									job.join();
-									break;
-								}
-								
-								Thread.sleep(100);
+								Thread.sleep(1000);
 							}
+
+							CancelLiveUpdateUIJob job = new CancelLiveUpdateUIJob(liveUpdateSwitchButton);
+							job.schedule();
+							job.join();
 						}
 					} 
 					catch (InterruptedException e) 
