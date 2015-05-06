@@ -55,33 +55,30 @@ public class ProjectFactory implements IProjectFactory
     {
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectInfo.appName);
-
-        if (!newProject.exists())
+        if (newProject.exists())
         {
-            IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
-            
-            if (!projectInfo.isInDefaultWs)
+            throw new AlredyCreatedException(newProject);
+        }
+
+        IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
+
+        if (!projectInfo.isInDefaultWs)
+        {
+            if (projectInfo.existCreate && !isProjectLocationInWorkspace(projectInfo.appDir))
             {
-                if (projectInfo.existCreate && !isProjectLocationInWorkspace(projectInfo.appDir))
-                {
-                    desc.setLocation(projectInfo.getAppDirPath());   
-                }
-                else if (!projectInfo.existCreate)
-                {
-                    desc.setLocation(projectInfo.getAppDirPath());
-                }
+                desc.setLocation(projectInfo.getAppDirPath());
             }
-            
-            newProject.create(desc, new NullProgressMonitor());
-            
-            if (!newProject.isOpen())
+            else if (!projectInfo.existCreate)
             {
-                newProject.open(new NullProgressMonitor());
+                desc.setLocation(projectInfo.getAppDirPath());
             }
         }
-        else
+
+        newProject.create(desc, new NullProgressMonitor());
+
+        if (!newProject.isOpen())
         {
-        	throw new AlredyCreatedException(newProject);
+            newProject.open(new NullProgressMonitor());
         }
 
         return newProject;
