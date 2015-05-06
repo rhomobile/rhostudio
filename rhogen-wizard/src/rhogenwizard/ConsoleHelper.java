@@ -1,7 +1,5 @@
 package rhogenwizard;
 
-import java.util.concurrent.Callable;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
