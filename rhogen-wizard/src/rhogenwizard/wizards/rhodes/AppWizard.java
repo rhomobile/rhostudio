@@ -3,7 +3,9 @@ package rhogenwizard.wizards.rhodes;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -193,9 +195,36 @@ public class AppWizard extends BaseAppWizard
         {
             DialogUtils.warning("Warning", e.toString());
         }
+        catch (CoreException e)
+        {
+            if (!showError(e.getStatus()))
+            {
+                e.printStackTrace();
+            }
+        }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+
+    private static boolean showError(IStatus status)
+    {
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+            if (status.isMultiStatus())
+            {
+                for (IStatus child : status.getChildren())
+                {
+                    if (showError(child))
+                    {
+                        return true;
+                    }
+                }
+            }
+            DialogUtils.error("Error", status.getMessage());
+            return true;
+        }
+        return false;
     }
 }
