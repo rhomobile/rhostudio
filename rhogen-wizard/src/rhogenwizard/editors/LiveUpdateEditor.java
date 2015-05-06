@@ -9,9 +9,6 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -43,7 +40,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.progress.UIJob;
 
-import rhogenwizard.OSHelper;
 import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.JobNotificationMonitor;
 import rhogenwizard.sdk.task.liveupdate.DiscoverTask;
@@ -77,7 +73,6 @@ class NetworkListener
 			urlConn.setUseCaches(false);
 	
 			dis = new DataInputStream(urlConn.getInputStream()); 
-			String s;
 			byte[] data = new byte[100];
 			
 			dis.read(data);
