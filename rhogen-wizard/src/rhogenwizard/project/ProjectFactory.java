@@ -58,26 +58,16 @@ public class ProjectFactory implements IProjectFactory
 
         if (!newProject.exists())
         {
-            String path = null;
-
             IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
             
-            if (projectInfo.isInDefaultWs)
+            if (!projectInfo.isInDefaultWs)
             {
-                path = getWorkspaceDir() + File.separator + projectInfo.appName;                
-            }
-            else
-            {
-                path = projectInfo.appDir;
-                
-                if (projectInfo.existCreate && !isProjectLocationInWorkspace(path))
+                if (projectInfo.existCreate && !isProjectLocationInWorkspace(projectInfo.appDir))
                 {
                     desc.setLocation(projectInfo.getAppDirPath());   
                 }
                 else if (!projectInfo.existCreate)
                 {
-                    path = projectInfo.appDir + File.separator + projectInfo.appName;
-                    
                     desc.setLocation(projectInfo.getAppDirPath());
                 }
             }
