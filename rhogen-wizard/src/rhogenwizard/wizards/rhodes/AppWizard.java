@@ -19,7 +19,6 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
-import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
 import rhogenwizard.sdk.task.generate.GenerateRhoelementsAppTask;
@@ -190,10 +189,6 @@ public class AppWizard extends BaseAppWizard
         	}
 
         	DialogUtils.error("Error", msg);
-        }
-        catch (AlredyCreatedException e)
-        {
-            DialogUtils.warning("Warning", e.toString());
         }
         catch (CoreException e)
         {

@@ -3,7 +3,9 @@ package rhogenwizard.wizards.rhoconnect;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -20,7 +22,6 @@ import rhogenwizard.constants.UiConstants;
 import rhogenwizard.project.IRhomobileProject;
 import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhoconnectProject;
-import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhoconnectAppTask;
 
@@ -153,9 +154,12 @@ public class AppWizard extends Wizard implements INewWizard
         {
             DialogUtils.error("Error", MsgConstants.errFindRhosync);
         }
-        catch (AlredyCreatedException e)
+        catch (CoreException e)
         {
-            DialogUtils.warning("Warning", e.toString());
+            if (!showError(e.getStatus()))
+            {
+                e.printStackTrace();
+            }
         }
         catch (Exception e)
         {
@@ -171,5 +175,25 @@ public class AppWizard extends Wizard implements INewWizard
      */
     public void init(IWorkbench workbench, IStructuredSelection selection)
     {
+    }
+
+    private static boolean showError(IStatus status)
+    {
+        if (status.getSeverity() == IStatus.ERROR)
+        {
+            if (status.isMultiStatus())
+            {
+                for (IStatus child : status.getChildren())
+                {
+                    if (showError(child))
+                    {
+                        return true;
+                    }
+                }
+            }
+            DialogUtils.error("Error", status.getMessage());
+            return true;
+        }
+        return false;
     }
 }

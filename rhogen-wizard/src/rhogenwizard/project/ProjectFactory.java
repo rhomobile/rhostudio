@@ -1,6 +1,5 @@
 package rhogenwizard.project;
 
-import java.io.File;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -10,15 +9,17 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import rhogenwizard.Activator;
 import rhogenwizard.BuildInfoHolder;
-import rhogenwizard.project.extension.AlredyCreatedException;
 import rhogenwizard.project.extension.BadProjectTagException;
 import rhogenwizard.project.extension.ProjectNotFoundException;
 
@@ -48,16 +49,16 @@ public class ProjectFactory implements IProjectFactory
      *
      * @param location
      * @param projectName
-     * @throws AlredyCreatedException 
      * @throws CoreException 
      */
-    private IProject createBaseProject(BuildInfoHolder projectInfo) throws AlredyCreatedException, CoreException 
+    private IProject createBaseProject(BuildInfoHolder projectInfo) throws CoreException
     {
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectInfo.appName);
         if (newProject.exists())
         {
-            throw new AlredyCreatedException(newProject);
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                "Project " + projectInfo.appName + " already exists."));
         }
 
         IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
@@ -110,7 +111,7 @@ public class ProjectFactory implements IProjectFactory
     }
     
 	public IRhomobileProject createProject(Class<? extends IRhomobileProject> projectTag, BuildInfoHolder projectInfo) 
-		throws CoreException, ProjectNotFoundException, AlredyCreatedException, BadProjectTagException
+		throws CoreException, ProjectNotFoundException, BadProjectTagException
 	{
         Assert.isNotNull(projectInfo.appName);
         Assert.isTrue(projectInfo.appName.trim().length() != 0);
