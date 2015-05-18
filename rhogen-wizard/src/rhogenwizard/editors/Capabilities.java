@@ -84,7 +84,6 @@ public class Capabilities
         capabilityList.add(new Capabilities("phone", PlatformType.eUnknown));
         capabilityList.add(new Capabilities("bluetooth", PlatformType.eUnknown));
         capabilityList.add(new Capabilities("calendar", PlatformType.eUnknown));
-        capabilityList.add(new Capabilities("native_browser", PlatformType.eUnknown));
         capabilityList.add(new Capabilities("hardware_acceleration", PlatformType.eAndroid));
         capabilityList.add(new Capabilities("push", PlatformType.eUnknown));
         capabilityList.add(new Capabilities("network_state", PlatformType.eUnknown));
