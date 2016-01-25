@@ -123,6 +123,7 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <import plugin="org.junit"/>
       <import plugin="com.jcraft.jsch" version="0.1.41" match="greaterOrEqual"/>
       <import plugin="org.eclipse.egit.ui"/>
+      <import plugin="org.eclipse.ui.cheatsheets"/>
    </requires>
 
    <plugin
