@@ -126,13 +126,25 @@ For Android and BlackBerry platform you may select emulator version. For Android
 
 Press Run button to build and run application. Build output will appear in the Rhodes build output console. Application log will be available in the Rhodes application output console.
 
-## Steps to build RhoStudio
+## Steps to build RhoStudio 
 
-- download latest JDK
-- download and install [Eclipse for RCP and RAP Developers](http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/heliossr2)
-- install DLTK (http://download.eclipse.org/technology/dltk/updates/)
-- clone RhoStudio sources from git repository
+###Prerequisite Downloads
+- download Java Development Kit (JDK)1.7   [here](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
+- download [Eclipse 3.7.2 (Indigo SR2) for RCP and RAP Developers ](http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/indigosr2)
+- download [Eclipse 3.7.2 delta pack](http://archive.eclipse.org/eclipse/downloads/drops/R-3.7.2-201202080800/download.php?dropFile=eclipse-3.7.2-delta-pack.zip)  
+- download [DLTK SDK 4.0 core for Eclipse](http://www.eclipse.org/downloads/download.php?file=/technology/dltk/downloads/drops/R4.0/R-4.0-201206120903/dltk-core-sdk-R-4.0-201206120903.zip&mirror_id=1135)
+- download [DLTK SDK 4.0 Ruby for Eclipse ](http://www.eclipse.org/downloads/download.php?file=/technology/dltk/downloads/drops/R4.0/R-4.0-201206120903/dltk-ruby-sdk-R-4.0-201206120903.zip) 
+
+###Configure
+- Install JDK(make sure its present in program files->java). 
+- Extract Eclipse
+- Extract DeltaPack to override on top of eclipse.(Either it can be overridden directly by using extract here(if eclipse and deltapack are in the same folder) or can be extracted anywhere and paste it to override the eclipse) 
+- Create new Eclipse workspace 
+- Clone RhoStudio sources from git repository
 - import project into Eclipse workspace (menu item File/Import)
+- install DLTK SDK 4.0 core into Eclipse(go to Help->Install New software->Add->Archieve->DLTK.zip) 
+- install DLTK-ruby-SDK-R-4.0  into Eclipse 
+- import rhostudio project into workspace
 - build project (menu item Project/Build). If this menu item disabled then uncheck 'build automatically' located below
 - export jar package: 
    open export dialog (menu item File/Export); 
