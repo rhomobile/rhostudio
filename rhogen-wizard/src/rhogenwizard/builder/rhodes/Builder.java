@@ -10,8 +10,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import rhogenwizard.Activator;
 import rhogenwizard.PlatformType;
-import rhogenwizard.rhohub.TokenChecker;
-import rhogenwizard.sdk.task.CleanCloudCacheTask;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.CompileRubyPartTask;
 import rhogenwizard.sdk.task.IRunTask;
@@ -35,8 +33,6 @@ public class Builder extends IncrementalProjectBuilder
     @Override
     protected void clean(IProgressMonitor monitor) throws CoreException
     {
-		if (!TokenChecker.processToken(getProject()))
-			return;
     	
         for (PlatformType platformType : PlatformType.values())
         {
@@ -50,8 +46,6 @@ public class Builder extends IncrementalProjectBuilder
             run_silent(monitor, new CleanPlatformTask(
                 getProject().getLocation().toOSString(), platformType));
         }
-
-        run_silent(monitor, new CleanCloudCacheTask(getProject().getLocation().toOSString()));
 
         super.clean(monitor);
     }

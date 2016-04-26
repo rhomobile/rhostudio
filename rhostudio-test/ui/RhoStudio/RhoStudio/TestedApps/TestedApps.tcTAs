@@ -25,7 +25,7 @@
 					<Node name="runmodeparams">
 						<Node name="simple">
 							<Prp name="filename" type="S" value="RhoStudio.exe"/>
-							<Prp name="filepath" type="S" value="c:/MotorolaRhoMobileSuite2.2.1.12/rhostudio/win32.win32.x86"/>
+							<Prp name="filepath" type="S" value="c:/RhoMobileSuite2.2.1.12/rhostudio/win32.win32.x86"/>
 						</Node>
 						<Prp name="activerunmode" type="S" value="Simple"/>
 					</Node>

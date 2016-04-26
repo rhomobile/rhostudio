@@ -25,15 +25,12 @@ import rhogenwizard.RunType;
 import rhogenwizard.ShowPerspectiveJob;
 import rhogenwizard.constants.DebugConstants;
 import rhogenwizard.debugger.model.DebugTarget;
-import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.CleanPlatformTask;
 import rhogenwizard.sdk.task.IDebugTask;
 import rhogenwizard.sdk.task.IRunTask;
 import rhogenwizard.sdk.task.RunTask.StoppedException;
 import rhogenwizard.sdk.task.run.LocalDebugRhodesAppTask;
 import rhogenwizard.sdk.task.run.LocalRunRhodesAppTask;
-import rhogenwizard.sdk.task.run.RhohubDebugRhodesAppTask;
-import rhogenwizard.sdk.task.run.RhohubRunRhodesAppTask;
 
 
 public class LaunchDelegateBase extends LaunchConfigurationDelegate
@@ -60,11 +57,6 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         RunType      runType      = rc.runType();
 
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-
-        if (!TokenChecker.processToken(project))
-        {
-            return;
-        }
 
         if (projectName == null || projectName.length() == 0 || runType.id == null)
         {
@@ -159,16 +151,9 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         monitor.setTaskName("Build debug configuration of project " + projectName);
 
         IDebugTask task;
-        if (buildType == BuildType.eRhoMobileCom)
-        {
-            task = new RhohubDebugRhodesAppTask(launch, runType, projectDir, projectName,
-                platformType, reloadCode, m_startPathOverride, m_additionalRubyExtensions);
-        }
-        else
-        {
-            task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
+        
+        task = new LocalDebugRhodesAppTask(launch, runType, projectDir, projectName,
                 platformType, reloadCode, trace, m_startPathOverride, m_additionalRubyExtensions);
-        }
 
         task.run(monitor);
 
@@ -195,15 +180,9 @@ public class LaunchDelegateBase extends LaunchConfigurationDelegate
         ProcessListViewer rhosims = new ProcessListViewer("/RhoSimulator/rhosimulator.exe \"-approot=\'");
 
         IRunTask task;
-        if (buildType == BuildType.eRhoMobileCom) {
-            task = new RhohubRunRhodesAppTask(projectDir, platformType, runType, trace,
-                m_startPathOverride, m_additionalRubyExtensions);
-        }
-        else
-        {
-            task = new LocalRunRhodesAppTask(projectDir, platformType, runType, reloadCode,
+
+        task = new LocalRunRhodesAppTask(projectDir, platformType, runType, reloadCode,
                 trace, m_startPathOverride, m_additionalRubyExtensions);
-        }
 
         task.run(monitor);
 

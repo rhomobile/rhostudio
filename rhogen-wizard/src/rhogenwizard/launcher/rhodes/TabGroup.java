@@ -12,7 +12,6 @@ public class TabGroup extends AbstractLaunchConfigurationTabGroup
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] 
 		{
 			new ParametersTab(),
-			//new RhohubParameterTab(),
 		};
 		
 		setTabs(tabs);

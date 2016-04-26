@@ -11,9 +11,7 @@ import rhogenwizard.BuildType;
 import rhogenwizard.DialogUtils;
 import rhogenwizard.PlatformType;
 import rhogenwizard.builder.rhodes.ConfigProductionBuildDialog;
-import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.LocalProductionBuildTask;
-import rhogenwizard.sdk.task.RhohubProductionBuildTask;
 
 public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
 {
@@ -34,12 +32,6 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
         if (dialog.open() == Window.OK)
         {
             IProject project = dialog.project();
-
-            if (!TokenChecker.processToken(project))
-            {
-                return;
-            }
-
             PlatformType platformType = dialog.platformType();
             BuildType    buildType    = dialog.buildType   ();
         	
@@ -51,11 +43,6 @@ public class ProductionBuildAction implements IWorkbenchWindowActionDelegate
             case eLocal:
                 new LocalProductionBuildTask(workDir, platformType)
                 .makeJob("Production build (" + project.getName() + ")")
-                .schedule();
-                break;
-            case eRhoMobileCom:
-                new RhohubProductionBuildTask(workDir, platformType)
-                .makeJob("RhoMobile.com production build (" + project.getName() + ")")
                 .schedule();
                 break;
             }

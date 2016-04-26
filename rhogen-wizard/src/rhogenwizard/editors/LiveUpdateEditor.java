@@ -40,7 +40,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.progress.UIJob;
 
-import rhogenwizard.rhohub.TokenChecker;
 import rhogenwizard.sdk.task.JobNotificationMonitor;
 import rhogenwizard.sdk.task.liveupdate.DiscoverTask;
 import rhogenwizard.sdk.task.liveupdate.LUDevice;
@@ -552,12 +551,7 @@ public class LiveUpdateEditor extends EditorPart implements Observer
 			{
 			    @Override
 				public void widgetSelected(SelectionEvent e) 
-				{
-					if (!TokenChecker.processToken(m_project))
-					{
-						return;
-					}
-					
+				{	
 					final Button enableBtn = (Button)e.widget;					
 					enableBtn.setEnabled(false);
 

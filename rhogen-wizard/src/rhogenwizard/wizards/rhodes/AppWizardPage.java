@@ -40,7 +40,6 @@ public class AppWizardPage extends WizardPage
 	private Button     m_defaultPathButton = null;
 	private Button     m_browseButton      = null;
 	private Button     m_exitsCreateButton = null;
-	private Button     m_rhoelementsEnableButton = null;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -84,19 +83,6 @@ public class AppWizardPage extends WizardPage
 		
 		label = new Label(composite, SWT.NULL);
 		
-		// 0 row
-		m_rhoelementsEnableButton = new Button(composite, SWT.CHECK);
-		m_rhoelementsEnableButton.setText("Use RhoElements");
-		m_rhoelementsEnableButton.setSelection(false);
-		m_rhoelementsEnableButton.setLayoutData(checkBoxAligment);
-		m_rhoelementsEnableButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-				dialogChanged();
-			}
-		});
-	
 		// 2 row
 		m_defaultPathButton = new Button(composite, SWT.CHECK);
 		m_defaultPathButton.setText("Create application in default workspace");
@@ -159,7 +145,6 @@ public class AppWizardPage extends WizardPage
 		m_defaultPathButton.setEnabled(!enableDefPath);
 		m_browseButton.setEnabled(enableDefPath);
 		m_appFolderText.setEnabled(enableDefPath);
-		m_rhoelementsEnableButton.setEnabled(!enableDefPath);
 	}
 
 	/**
@@ -291,7 +276,6 @@ public class AppWizardPage extends WizardPage
 		newInfo.appDir           = m_appFolderText.getText();
 		newInfo.appName          = m_appNameText.getText();
 		newInfo.existCreate      = m_exitsCreateButton.getSelection();
-		newInfo.isRhoelementsApp = m_rhoelementsEnableButton.getSelection();
 		newInfo.isInDefaultWs    = m_defaultPathButton.getSelection();
 		
 		return newInfo;

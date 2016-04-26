@@ -404,7 +404,7 @@ public class ParametersTab extends JavaLaunchTab
 
         rc.platformType(PlatformType.eAndroid);
         rc.runType(RunType.eSimulator);
-        rc.buildType(BuildType.eRhoMobileCom);
+        rc.buildType(BuildType.eLocal);
         rc.androidVersion(androidVersion);
         rc.iphoneVersion(iphoneVersion);
         rc.androidEmulator(androidEmuName);
@@ -605,7 +605,6 @@ public class ParametersTab extends JavaLaunchTab
                 switch (bt)
                 {
                 case eLocal       : c = 'l'; break;
-                case eRhoMobileCom: c = 'c'; break;
                 }
                 assert c != -1;
 

@@ -202,7 +202,6 @@ public class ConfigProductionBuildDialog extends TitleAreaDialog
                 switch (bt)
                 {
                 case eLocal       : include = true                   ; break;
-                case eRhoMobileCom: include = pt != PlatformType.eWp7; break;
                 default:
                     assert false;
                 }

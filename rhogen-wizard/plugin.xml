@@ -328,12 +328,6 @@
             id="rhogen-wizard.page3"
             name="Windows Mobile">
       </page>
-      <page
-            category="rhogenwizard.preferences.PreferencePage"
-            class="rhogenwizard.preferences.PreferencesPageRhoHub"
-            id="rhogen-wizard.page4"
-            name="RhoMobile.com">
-      </page>
     </extension>
 
     <extension point="org.eclipse.core.runtime.preferences">

@@ -21,7 +21,6 @@ import rhogenwizard.project.ProjectFactory;
 import rhogenwizard.project.RhodesProject;
 import rhogenwizard.sdk.task.RunTask;
 import rhogenwizard.sdk.task.generate.GenerateRhodesAppTask;
-import rhogenwizard.sdk.task.generate.GenerateRhoelementsAppTask;
 import rhogenwizard.wizards.BaseAppWizard;
 
 public class AppWizard extends BaseAppWizard
@@ -100,15 +99,7 @@ public class AppWizard extends BaseAppWizard
             pathToApp = infoHolder.appDir;
         }
         
-        if (infoHolder.isRhoelementsApp)
-        {
-            task = new GenerateRhoelementsAppTask(pathToApp, infoHolder.appName);
-        }
-        else
-        {
-            task = new GenerateRhodesAppTask(pathToApp, infoHolder.appName);
-        }
-
+        task = new GenerateRhodesAppTask(pathToApp, infoHolder.appName);
         task.run(monitor);
 
         if (!task.isOk())
@@ -178,15 +169,8 @@ public class AppWizard extends BaseAppWizard
         {
         	String msg = null;
         	
-        	if (infoHolder.isRhoelementsApp)
-        	{
-                msg = "Cannot find Rhoelements, install the gem before generate Rhoelements applications."; 
-        	}
-        	else
-        	{
-                msg = "Cannot find Rhodes, need version equal or greater " 
+            msg = "Cannot find Rhodes, need version equal or greater " 
                         + CommonConstants.rhodesVersion + " (See 'http://docs.rhomobile.com/rhodes/install' for more information)";
-        	}
 
         	DialogUtils.error("Error", msg);
         }

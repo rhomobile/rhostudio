@@ -15,7 +15,6 @@ import rhogenwizard.Activator;
 import rhogenwizard.RunExeHelper;
 import rhogenwizard.buildfile.AppYmlFile;
 import rhogenwizard.buildfile.SdkYmlFile;
-import rhogenwizard.rhohub.IRhoHubSetting;
 
 /**
  * Class used to initialize default preference values.
@@ -91,8 +90,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
             e.printStackTrace();
         }
 
-        store.setDefault(IRhoHubSetting.rhoHubProxy, "");
-        store.setDefault(IRhoHubSetting.rhoHubSelectedRhodesVesion, rhodesDefaultVersion);
     }
 
     public void savePreferences()
