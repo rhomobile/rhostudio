@@ -5,6 +5,9 @@
 
    <aboutInfo>
       <image path="/RhogenWizard/icons/about_rhostudio.png"/>
+      <text>
+   More info on tau-technologies.com
+      </text>
    </aboutInfo>
 
    <configIni use="default">
