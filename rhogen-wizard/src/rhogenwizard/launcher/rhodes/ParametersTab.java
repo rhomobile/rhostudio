@@ -117,7 +117,9 @@ public class ParametersTab extends JavaLaunchTab
                 "1.6",
                 "2.1", "2.2", "2.3.1", "2.3.3",
                 "3.0", "3.1", "3.2",
-                "4.0", "4.0.3", "4.1.2", "4.2.2", "4.3.1", "4.4.2"
+                "4.0", "4.0.3", "4.1.2", "4.2.2", "4.3.1", "4.4.2",
+                "5.0.1", "5.1.1",
+                "6.0"
             });
             versions.put(PlatformType.eIPhone, new String[]{ "iphone", "ipad" });
             return versions;
