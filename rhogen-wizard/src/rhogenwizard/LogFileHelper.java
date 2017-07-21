@@ -141,7 +141,7 @@ public class LogFileHelper implements ILogFileHelper
 			case eIPhone:
 				iphoneLog(project);
 				break;
-			case eWp7:
+			case eUWP:
 				wpLog(project);
 				break;
 			}
@@ -157,7 +157,7 @@ public class LogFileHelper implements ILogFileHelper
 	
 	private void wpLog(IProject project) throws Exception
 	{
-        String logPath = getLogFilePath(project, "run:wp:get_log");
+        String logPath = getLogFilePath(project, "run:uwp:get_log");
 		
         if (logPath != null)
         {
